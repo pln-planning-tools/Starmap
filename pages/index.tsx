@@ -19,7 +19,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Roadmapping on Protocol Labs Network!</h1>
+        <h1 className={styles.title}>Welcome to Roadmapping on PLN!</h1>
 
         <div className={styles.grid}>
           <a
