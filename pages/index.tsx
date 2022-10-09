@@ -7,7 +7,7 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Nikas</title>
+        <title>Roadmapping | Protocol Labs Network</title>
         <meta
           name='description'
           content='Nikas Home'
@@ -19,25 +19,15 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Nikas!</h1>
-
-        {/* <p className={styles.description}>Look around and explore.</p> */}
+        <h1 className={styles.title}>Welcome to Roadmapping on Protocol Labs Network!</h1>
 
         <div className={styles.grid}>
           <a
             href='#'
             className={styles.card}
           >
-            <h2>Projects</h2>
-            <p>Learn about our projects.</p>
-          </a>
-
-          <a
-            href='#'
-            className={styles.card}
-          >
-            <h2>Research</h2>
-            <p>Learn about Nikas Research!</p>
+            <h2>Roadmaps</h2>
+            <p>Learn more about our public roadmaps.</p>
           </a>
         </div>
       </main>
