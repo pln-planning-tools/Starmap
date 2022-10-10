@@ -10,10 +10,11 @@
   },
   "dependencies": {
     "@octokit/graphql-schema": "^12.9.1",
-    "@primer/react": "35.11.0-rc.65a8bb8a",
+    "@primer/react": "^0.0.0-202291024741",
     "@types/lodash": "^4.14.186",
     "lodash": "^4.17.21",
     "next": "12.3.1",
+    "next-transpile-modules": "^9.0.0",
     "octokit": "^2.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

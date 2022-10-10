@@ -583,7 +583,7 @@
   resolved "https://registry.yarnpkg.com/@primer/behaviors/-/behaviors-1.2.0.tgz#35952a30d049ec546440af09c2058c47abe63115"
   integrity sha512-SeD00vXuTNFviLdJiehRsV5T7uk39TcZF1yhiyPTVFDNuJC8hrkC9NdCMZyF2DXtH+yaaWGM5/gp4F0KYhRa3g==
 
-"@primer/octicons-react@^17.3.0":
+"@primer/octicons-react@^17.7.0":
   version "17.7.0"
   resolved "https://registry.yarnpkg.com/@primer/octicons-react/-/octicons-react-17.7.0.tgz#50f3ceb2f636154a3e7fa6e355350b75f03bba88"
   integrity sha512-rxJiArra+q7lorhzQH223btMcRR8di9TUei9DhQG18jmVEI+wQTY+MypI5FZqU8UyehBOtcnD4TWx+i4Zwpz5Q==
@@ -593,16 +593,16 @@
   resolved "https://registry.yarnpkg.com/@primer/primitives/-/primitives-7.9.0.tgz#c8a27287488c8308b1715a7d73214629c331544a"
   integrity sha512-ZHHfwB0z0z6nDJp263gyGIClYDy+rl0nwqyi4qhcv3Cxhkmtf+If2KVjr6FQqBBFfi1wQwUzaax2FBvfEMFBnw==
 
-"@primer/react@35.11.0-rc.65a8bb8a":
-  version "35.11.0-rc.65a8bb8a"
-  resolved "https://registry.yarnpkg.com/@primer/react/-/react-35.11.0-rc.65a8bb8a.tgz#6372cbddf772788b631d2fa539a337fdbc1046b3"
-  integrity sha512-PiD2hDBBj5jU1M+qfqKwpW1frJRXOZUXX9br1amqCZhipaeMoQenzF8dlyqxzXsiPvJucATKuwoTruGPenO59g==
+"@primer/react@^0.0.0-202291024741":
+  version "0.0.0-202291024741"
+  resolved "https://registry.yarnpkg.com/@primer/react/-/react-0.0.0-202291024741.tgz#1dab104d77e528aa636d07180bd47753095ec42a"
+  integrity sha512-jQyr4t4l+/uzA2t+8/4k3nVWLegdwJUmLv0GQIgsqRB7X9LsCLlp0xVVeXKqzNQwa09VrCF1b0tJtGteNlRPdg==
   dependencies:
     "@github/combobox-nav" "^2.1.5"
     "@github/markdown-toolbar-element" "^2.1.0"
     "@github/paste-markdown" "^1.4.0"
     "@primer/behaviors" "^1.1.1"
-    "@primer/octicons-react" "^17.3.0"
+    "@primer/octicons-react" "^17.7.0"
     "@primer/primitives" "7.9.0"
     "@react-aria/ssr" "^3.1.0"
     "@styled-system/css" "^5.1.5"
@@ -1299,6 +1299,14 @@ emoji-regex@^9.2.2:
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-9.2.2.tgz#840c8803b0d8047f4ff0cf963176b32d4ef3ed72"
   integrity sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==
 
+enhanced-resolve@^5.7.0:
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.10.0.tgz#0dc579c3bb2a1032e357ac45b8f3a6f3ad4fb1e6"
+  integrity sha512-T0yTFjdpldGY8PmuXXR0PyQ1ufZpEGiHVrp7zHKB7jdR4qlmZHhONVM5AQOAWXuF/w3dnHbEQVrNptJgt7F+cQ==
+  dependencies:
+    graceful-fs "^4.2.4"
+    tapable "^2.2.0"
+
 es-abstract@^1.19.0, es-abstract@^1.19.1, es-abstract@^1.19.2, es-abstract@^1.19.5:
   version "1.20.4"
   resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.20.4.tgz#1d103f9f8d78d4cf0713edcd6d0ed1a46eed5861"
@@ -1344,6 +1352,11 @@ es-to-primitive@^1.2.1:
     is-callable "^1.1.4"
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
+
+escalade@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/escalade/-/escalade-3.1.1.tgz#d8cfdc7000965c5a0174b4a82eaa5c0552742e40"
+  integrity sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==
 
 escape-string-regexp@^1.0.5:
   version "1.0.5"
@@ -1760,6 +1773,11 @@ globby@^11.1.0:
     ignore "^5.2.0"
     merge2 "^1.4.1"
     slash "^3.0.0"
+
+graceful-fs@^4.2.4:
+  version "4.2.10"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
+  integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
 
 grapheme-splitter@^1.0.4:
   version "1.0.4"
@@ -2202,6 +2220,14 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
+
+next-transpile-modules@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/next-transpile-modules/-/next-transpile-modules-9.0.0.tgz#133b1742af082e61cc76b02a0f12ffd40ce2bf90"
+  integrity sha512-VCNFOazIAnXn1hvgYYSTYMnoWgKgwlYh4lm1pKbSfiB3kj5ZYLcKVhfh3jkPOg1cnd9DP+pte9yCUocdPEUBTQ==
+  dependencies:
+    enhanced-resolve "^5.7.0"
+    escalade "^3.1.1"
 
 next@12.3.1:
   version "12.3.1"
@@ -2690,6 +2716,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+tapable@^2.2.0:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.1.tgz#1967a73ef4060a82f12ab96af86d52fdb76eeca0"
+  integrity sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==
 
 text-table@^0.2.0:
   version "0.2.0"
