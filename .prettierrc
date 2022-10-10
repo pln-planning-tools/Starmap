@@ -10,7 +10,7 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "useTabs": false,
-  "singleAttributePerLine": true,
+  "singleAttributePerLine": false,
   "importOrder": [
     "^@vercel/?(.*)?$",
     "^next/?(.*)?$",
