@@ -1,13 +1,15 @@
-import React from 'react'
-import {ThemeProvider, BaseStyles} from '@primer/react'
+import React from 'react';
+import { ThemeProvider, BaseStyles, SSRProvider } from '@primer/react';
 
 function App({ Component, pageProps }) {
   return (
-    <ThemeProvider>
-      <BaseStyles>
-        <Component {...pageProps} />
-      </BaseStyles>
-    </ThemeProvider>
+    <SSRProvider>
+      <ThemeProvider>
+        <BaseStyles>
+          <Component {...pageProps} />
+        </BaseStyles>
+      </ThemeProvider>
+    </SSRProvider>
   );
 }
 
