@@ -583,7 +583,7 @@
   resolved "https://registry.yarnpkg.com/@primer/behaviors/-/behaviors-1.2.0.tgz#35952a30d049ec546440af09c2058c47abe63115"
   integrity sha512-SeD00vXuTNFviLdJiehRsV5T7uk39TcZF1yhiyPTVFDNuJC8hrkC9NdCMZyF2DXtH+yaaWGM5/gp4F0KYhRa3g==
 
-"@primer/octicons-react@^17.7.0":
+"@primer/octicons-react@^17.3.0":
   version "17.7.0"
   resolved "https://registry.yarnpkg.com/@primer/octicons-react/-/octicons-react-17.7.0.tgz#50f3ceb2f636154a3e7fa6e355350b75f03bba88"
   integrity sha512-rxJiArra+q7lorhzQH223btMcRR8di9TUei9DhQG18jmVEI+wQTY+MypI5FZqU8UyehBOtcnD4TWx+i4Zwpz5Q==
@@ -593,16 +593,16 @@
   resolved "https://registry.yarnpkg.com/@primer/primitives/-/primitives-7.9.0.tgz#c8a27287488c8308b1715a7d73214629c331544a"
   integrity sha512-ZHHfwB0z0z6nDJp263gyGIClYDy+rl0nwqyi4qhcv3Cxhkmtf+If2KVjr6FQqBBFfi1wQwUzaax2FBvfEMFBnw==
 
-"@primer/react@^0.0.0-202291024741":
-  version "0.0.0-202291024741"
-  resolved "https://registry.yarnpkg.com/@primer/react/-/react-0.0.0-202291024741.tgz#1dab104d77e528aa636d07180bd47753095ec42a"
-  integrity sha512-jQyr4t4l+/uzA2t+8/4k3nVWLegdwJUmLv0GQIgsqRB7X9LsCLlp0xVVeXKqzNQwa09VrCF1b0tJtGteNlRPdg==
+"@primer/react@^35.11.0-rc.5ee73002":
+  version "35.11.0-rc.5ee73002"
+  resolved "https://registry.yarnpkg.com/@primer/react/-/react-35.11.0-rc.5ee73002.tgz#31ebdba943d83a29d251730c29f88462490a30f7"
+  integrity sha512-fmJdjfSsAh7ScGerL1JJOewcmhK9mMSTpDRoHy9kkoXXuHpdHT2pfL9Qp47rSln+oaZxcKQr7FxB3gXGxiKOKw==
   dependencies:
     "@github/combobox-nav" "^2.1.5"
     "@github/markdown-toolbar-element" "^2.1.0"
     "@github/paste-markdown" "^1.4.0"
     "@primer/behaviors" "^1.1.1"
-    "@primer/octicons-react" "^17.7.0"
+    "@primer/octicons-react" "^17.3.0"
     "@primer/primitives" "7.9.0"
     "@react-aria/ssr" "^3.1.0"
     "@styled-system/css" "^5.1.5"
