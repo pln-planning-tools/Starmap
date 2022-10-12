@@ -14,8 +14,11 @@
     "@primer/octicons-react": "^17.7.0",
     "@primer/react": "^35.11.0-rc.5ee73002",
     "@types/lodash": "^4.14.186",
+    "cheerio": "^1.0.0-rc.12",
     "graphology": "^0.25.0",
     "graphology-types": "^0.24.4",
+    "jsdom": "^20.0.1",
+    "linkedom": "^0.14.17",
     "lodash": "^4.17.21",
     "next": "12.3.1",
     "next-transpile-modules": "^9.0.0",
@@ -25,6 +28,8 @@
     "styled-components": "^5.3.6"
   },
   "devDependencies": {
+    "@types/cheerio": "^0.22.31",
+    "@types/jsdom": "^20.0.0",
     "@types/node": "18.8.0",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",

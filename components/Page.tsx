@@ -1,6 +1,6 @@
 import { SearchIcon } from '@primer/octicons-react';
 import { PageLayout, Box, TextInput, IconButton, Text, FormControl, Button, Pagehead } from '@primer/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MarkdownViewer } from '@primer/react/drafts';
 import { getGraph } from '../lib/roadmap';
 
@@ -10,16 +10,33 @@ const getRoadmap = () => {
 
 const Page = () => {
   const [issueUrl, setIssueUrl] = useState('');
+  const [currentIssueUrl, setCurrentIssueUrl] = useState('');
   const [issueUrlSubmitted, setIssueUrlSubmitted] = useState('');
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('handleButtonClick | value ->', event);
-    console.log('stateValue ->', issueUrl);
-    getGraph();
+  function IssueData({ issueUrl }) {
+    const [issueData, setIssueData] = useState(null);
+    const [isLoading, setLoading] = useState(false);
 
-    setIssueUrlSubmitted(issueUrl);
-  };
+    // console.log('IssueData');
+    useEffect(() => {
+      setLoading(true);
+      fetch(`/api/github-issue?url=${new URL(issueUrl).pathname}`)
+        .then((res) => {
+          console.log('inside fetch!');
+          return res.json();
+        })
+        .then((data) => {
+          setIssueData(data);
+          setLoading(false);
+        });
+    }, [issueUrl]);
+
+    if (isLoading) return <p>Loading...</p>;
+    if (!issueData) return <p>No data for url.</p>;
+
+    return <>{`${JSON.stringify(issueData)}`}</>;
+  }
 
   return (
     <PageLayout>
@@ -28,7 +45,16 @@ const Page = () => {
       </PageLayout.Header>
       <PageLayout.Content>
         <Box>
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              try {
+                new URL(currentIssueUrl)?.pathname && setIssueUrl(currentIssueUrl);
+              } catch (error: any) {
+                setError(error);
+              }
+            }}
+          >
             <Box>
               <FormControl id='issue-url'>
                 <FormControl.Label>GitHub Issue URL</FormControl.Label>
@@ -37,7 +63,7 @@ const Page = () => {
                   name='issue-url'
                   autoComplete='url'
                   defaultValue={issueUrl}
-                  onChange={(e) => setIssueUrl(e.target.value)}
+                  onChange={(e) => setCurrentIssueUrl(e.target.value)}
                   block
                 />
                 <Button>Create roadmap from issue</Button>
@@ -46,7 +72,8 @@ const Page = () => {
             </Box>
           </form>
         </Box>
-        <Box p={2}>{issueUrlSubmitted}</Box>
+        <Box mt={5}>{issueUrl}</Box>
+        <Box>{!!issueUrl && <IssueData issueUrl={issueUrl} />}</Box>
         {/* <Box>{getGraph()}</Box> */}
       </PageLayout.Content>
       <PageLayout.Footer></PageLayout.Footer>
