@@ -15,7 +15,7 @@ const IssueData = ({ issueUrl }) => {
   // console.log('IssueData');
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/github-issue?url=${new URL(issueUrl).pathname}`)
+    fetch(`/api/github-issue?depth=1&url=${new URL(issueUrl)}`)
       .then((res) => {
         console.log('inside fetch!');
         return res.json();
@@ -30,7 +30,11 @@ const IssueData = ({ issueUrl }) => {
   if (isLoading) return <p>Loading...</p>;
   if (!issueData) return <p>No data for url.</p>;
 
-  return <>{`${JSON.stringify(issueData)}`}</>;
+  return (
+    <>
+      <code style={{ overflowWrap: 'anywhere' }}>{`${JSON.stringify(issueData)}`}</code>
+    </>
+  );
 };
 
 const Page = () => {
@@ -49,7 +53,7 @@ const Page = () => {
             onSubmit={(e) => {
               e.preventDefault();
               try {
-                new URL(currentIssueUrl)?.pathname && setIssueUrl(currentIssueUrl);
+                new URL(currentIssueUrl) && setIssueUrl(currentIssueUrl);
               } catch (error: any) {
                 setError(error);
               }
@@ -72,8 +76,10 @@ const Page = () => {
             </Box>
           </form>
         </Box>
-        <Box mt={5}>{issueUrl}</Box>
-        <Box>{error || !issueUrl || <IssueData issueUrl={issueUrl} />}</Box>
+        <Box mt={5}>
+          <b>URL:</b> {issueUrl}
+        </Box>
+        <Box mt={2}>{error || !issueUrl || <IssueData issueUrl={issueUrl} />}</Box>
         {/* <Box>{getGraph()}</Box> */}
       </PageLayout.Content>
       <PageLayout.Footer></PageLayout.Footer>
