@@ -11,6 +11,7 @@ const octokit = new Octokit({ auth: process.env.PLN_ADMIN_GITHUB_TOKEN });
 // };
 
 const getIssue = async ({ owner, repo, issue_number }) => {
+  if (!owner || !repo || !issue_number) return;
   const { data } = await octokit.rest.issues.get({
     mediaType: {
       format: 'html',
@@ -24,13 +25,21 @@ const getIssue = async ({ owner, repo, issue_number }) => {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log('API hit: github-issue');
+  console.log(`API hit: github-issue`, req.query);
   const { url }: any = req.query;
   const urlSplit = url.split('/');
   // console.log('urlSplit ->', urlSplit);
   // const [, owner, repo, issues, issue_number] = urlSplit;
-  const issueInfoFromUrl = { owner: urlSplit[1], repo: urlSplit[2], issue_number: urlSplit[4] };
-  const issue = await getIssue(issueInfoFromUrl);
+  const issueInfoFromUrl = { owner: urlSplit[1], repo: urlSplit[2], issue_number: Number(urlSplit[4]) };
+  const issue =
+    !!issueInfoFromUrl.owner &&
+    !!issueInfoFromUrl.repo &&
+    !!issueInfoFromUrl.issue_number &&
+    (await getIssue(issueInfoFromUrl));
   // console.log('issue ->', issue);
-  res.status(200).json({ issue: issue.url, parsedInfo: parseIssue(issue.body_html) });
+  if (!!issue) {
+    res.status(200).json({ issue: issue.url, parsedInfo: parseIssue(issue.body_html) });
+  } else {
+    res.status(200).json({ message: 'not found' });
+  }
 }

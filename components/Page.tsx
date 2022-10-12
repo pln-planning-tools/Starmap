@@ -8,35 +8,35 @@ const getRoadmap = () => {
   console.log('getRoadmap()');
 };
 
+const IssueData = ({ issueUrl }) => {
+  const [issueData, setIssueData] = useState(null);
+  const [isLoading, setLoading] = useState(false);
+
+  // console.log('IssueData');
+  useEffect(() => {
+    setLoading(true);
+    fetch(`/api/github-issue?url=${new URL(issueUrl).pathname}`)
+      .then((res) => {
+        console.log('inside fetch!');
+        return res.json();
+      })
+      .then((data) => {
+        console.log('inside data!', data);
+        setIssueData(data);
+        setLoading(false);
+      });
+  }, [issueUrl]);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (!issueData) return <p>No data for url.</p>;
+
+  return <>{`${JSON.stringify(issueData)}`}</>;
+};
+
 const Page = () => {
   const [issueUrl, setIssueUrl] = useState('');
   const [currentIssueUrl, setCurrentIssueUrl] = useState('');
-  const [issueUrlSubmitted, setIssueUrlSubmitted] = useState('');
   const [error, setError] = useState(null);
-
-  function IssueData({ issueUrl }) {
-    const [issueData, setIssueData] = useState(null);
-    const [isLoading, setLoading] = useState(false);
-
-    // console.log('IssueData');
-    useEffect(() => {
-      setLoading(true);
-      fetch(`/api/github-issue?url=${new URL(issueUrl).pathname}`)
-        .then((res) => {
-          console.log('inside fetch!');
-          return res.json();
-        })
-        .then((data) => {
-          setIssueData(data);
-          setLoading(false);
-        });
-    }, [issueUrl]);
-
-    if (isLoading) return <p>Loading...</p>;
-    if (!issueData) return <p>No data for url.</p>;
-
-    return <>{`${JSON.stringify(issueData)}`}</>;
-  }
 
   return (
     <PageLayout>
@@ -73,7 +73,7 @@ const Page = () => {
           </form>
         </Box>
         <Box mt={5}>{issueUrl}</Box>
-        <Box>{!!issueUrl && <IssueData issueUrl={issueUrl} />}</Box>
+        <Box>{error || !issueUrl || <IssueData issueUrl={issueUrl} />}</Box>
         {/* <Box>{getGraph()}</Box> */}
       </PageLayout.Content>
       <PageLayout.Footer></PageLayout.Footer>
