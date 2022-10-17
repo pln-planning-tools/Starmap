@@ -5,29 +5,29 @@ import { Box, Container, Grid, Input, Text, Link } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 // import Link from 'next/link';
 
-// export const getStaticProps: GetStaticProps = async () => {
-//   const res = await fetch(
-//     `${addHttpsIfNotLocal(
-//       process.env.NEXT_PUBLIC_VERCEL_URL,
-//     )}/api/github-issue?depth=1&url=https://github.com/pln-roadmap/tests/issues/9`,
-//   );
-//   const issueData = await res.json();
+export const getStaticProps: GetStaticProps = async () => {
+  const res = await fetch(
+    `${addHttpsIfNotLocal(
+      process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL,
+    )}/api/github-issue?depth=1&url=https://github.com/pln-roadmap/tests/issues/9`,
+  );
+  const issueData = await res.json();
 
-//   // const transformData = (v) => {
-//   //   return v.lists
-//   //     .flatMap((v) => v.childrenIssues)
-//   //     .map((v) => ({
-//   //       ...v,
-//   //       dueDate: new Date(v.dueDate),
-//   //     }));
-//   // };
+  // const transformData = (v) => {
+  //   return v.lists
+  //     .flatMap((v) => v.childrenIssues)
+  //     .map((v) => ({
+  //       ...v,
+  //       dueDate: new Date(v.dueDate),
+  //     }));
+  // };
 
-//   return {
-//     props: {
-//       issueData,
-//     },
-//   };
-// };
+  return {
+    props: {
+      issueData,
+    },
+  };
+};
 
 // const Item = ({ data }) => {
 //   console.log('data', data);
@@ -107,7 +107,7 @@ import React, { useEffect, useState } from 'react';
 //   );
 // };
 
-const RoadmapApp: NextPage = () => {
+const App: NextPage = (pageProps: InferGetStaticPropsType<typeof getStaticProps>) => {
   // console.dir(pageProps, { depth: Infinity, maxArrayLength: Infinity });
   // const milestones = pageProps?.issueData?.lists?.flatMap((v) => v.childrenIssues);
   // console.dir(milestones, { depth: Infinity, maxArrayLength: Infinity });
@@ -324,4 +324,4 @@ const RoadmapApp: NextPage = () => {
   );
 };
 
-export default RoadmapApp;
+export default App;
