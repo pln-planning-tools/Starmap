@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 export const getStaticProps: GetStaticProps = async () => {
   const res = await fetch(
     `${addHttpsIfNotLocal(
-      process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL,
+      process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL || 'https://staging.pln-roadmap.nikas.page',
     )}/api/github-issue?depth=1&url=https://github.com/pln-roadmap/tests/issues/9`,
   );
   const issueData = await res.json();
@@ -124,7 +124,7 @@ const App: NextPage = (pageProps: InferGetStaticPropsType<typeof getStaticProps>
     setLoading(true);
     fetch(
       `${addHttpsIfNotLocal(
-        process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL,
+        process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL || 'https://staging.pln-roadmap.nikas.page',
       )}/api/github-issue?depth=1&url=${new URL(issueUrl)}`,
     )
       .then((res) => {
