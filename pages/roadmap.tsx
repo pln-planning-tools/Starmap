@@ -122,7 +122,7 @@ const RoadmapApp: NextPage = () => {
   useEffect(() => {
     if (!issueUrl) return;
     setLoading(true);
-    fetch(`/api/github-issue?depth=1&url=${new URL(issueUrl)}`)
+    fetch(`${addHttpsIfNotLocal(process.env.NEXT_PUBLIC_VERCEL_URL)}/api/github-issue?depth=1&url=${new URL(issueUrl)}`)
       .then((res) => {
         console.log('inside fetch!');
         return res.json();
