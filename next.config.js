@@ -4,6 +4,9 @@ const nextConfig = {
   reactStrictMode: true,
   // swcMinify: true,
   poweredByHeader: false,
+  images: {
+    dangerouslyAllowSVG: true,
+  },
   // experimental: {
   //   esmExternals: false,
   // },

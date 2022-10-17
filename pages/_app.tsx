@@ -1,15 +1,19 @@
 import React from 'react';
-import { ThemeProvider, BaseStyles, SSRProvider } from '@primer/react';
+import { ChakraProvider } from '@chakra-ui/react';
+import Head from 'next/head';
 
 function App({ Component, pageProps }) {
   return (
-    <SSRProvider>
-      <ThemeProvider>
-        <BaseStyles>
-          <Component {...pageProps} />
-        </BaseStyles>
-      </ThemeProvider>
-    </SSRProvider>
+    <>
+      <Head>
+        <title>Roadmapping | Nikas</title>
+        <meta name='description' content='Roadmapping tool' />
+        <link rel='icon' href='/favicon.ico' />
+      </Head>
+      <ChakraProvider>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </>
   );
 }
 

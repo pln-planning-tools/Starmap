@@ -74,7 +74,8 @@ const withResolvedChildren = async (response) => {
             .map((v) => v.status == 'fulfilled' && v.value)
             .map((issue) => ({
               ..._.pick(issue, defaultPropertiesFromGithub),
-              config: getConfig(issue?.body_html),
+              // config: getConfig(issue?.body_html),
+              dueDate: getConfig(issue?.body_html)?.eta,
               lists: getLists(issue?.body_html),
             })),
         })),
@@ -85,11 +86,35 @@ const withResolvedChildren = async (response) => {
   return responseResolved;
 };
 
+const withGraph = (response) => {
+  return getGraph(response);
+};
+
+const withFlattened = (response) => {
+  const changeResponse = (res) => ({
+    ..._.pick(response, defaultPropertiesFromGithub),
+    dueDate: response.config?.eta,
+    children: response.lists?.find((v) => v.title?.toLowerCase()?.includes('children'))?.childrenIssues,
+  });
+  return {
+    ..._.pick(response, defaultPropertiesFromGithub),
+    dueDate: response.config?.eta,
+    children: response.lists
+      ?.find((v) => v.title?.toLowerCase()?.includes('children'))
+      ?.childrenIssues?.map((v) => ({
+        ..._.pick(v, defaultPropertiesFromGithub),
+        children: response.lists?.find((v) => v.title?.toLowerCase()?.includes('children'))?.childrenIssues,
+      })),
+  };
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log(`API hit: github-issue`, req.query);
   const { url }: any = req.query;
   const options = {
     depth: Number(req.query?.depth),
+    graph: Boolean(req.query?.graph),
+    flattened: Boolean(req.query?.flattened),
   };
   const { owner, repo, issue_number } = infoFromUrl(url);
 
@@ -98,13 +123,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // console.log('issue ->', issue);
     const response = {
       ..._.pick(issue, defaultPropertiesFromGithub),
-      config: getConfig(issue?.body_html),
+      // config: getConfig(issue?.body_html),
+      dueDate: getConfig(issue?.body_html)?.eta,
       lists: getLists(issue?.body_html),
     };
     // console.log('_.pick ->', _.pick(issue, defaultPropertiesFromGithub));
 
     const handleResponse = async ({ response, options }) => {
       // if (options.depth === 1 && response.lists.length > 0) return await withChildren(response);
+      if (!!options.graph) return withGraph(await withResolvedChildren(response));
+      if (!!options.flattened) return withFlattened(await withResolvedChildren(response));
       if (options.depth === 1 && response.lists.length > 0) return await withResolvedChildren(response);
       if (!!response) return response;
       return {};
