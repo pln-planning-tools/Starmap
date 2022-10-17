@@ -1,7 +1,6 @@
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import Head from 'next/head';
 import { addHttpsIfNotLocal } from '../utils/general';
-import 'gantt-task-react/dist/index.css';
 import { Box, Container, Grid, Input, Text, Link } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 // import Link from 'next/link';
