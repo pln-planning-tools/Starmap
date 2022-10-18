@@ -1,0 +1,60 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(13, minmax(10px, 1fr));
+  grid-gap: 0.5rem;
+}
+
+.subgrid {
+  display: grid;
+  grid-template: inherit;
+  grid-gap: inherit;
+  grid-column: 1 / -1;
+}
+
+.item {
+  height: 100px;
+  font-size: 16px;
+  text-align: center;
+  overflow: auto;
+  overflow-wrap: break-word;
+  background: #a0aec0;
+  border-left: 0.5px solid #ccc;
+  border-right: 0.5px solid #ccc;
+}
+
+.item.itemHeader {
+  background: revert;
+}
+
+.nested > .item:not(.group) {
+  background: #fafafa;
+  padding: 5px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  border-radius: 2px;
+}
+
+.item.group {
+  /* background: #cbd5e0; */
+  background: revert;
+  grid-row: 1 / -1;
+  font-weight: 600;
+}
+
+.groupWrapper {
+  background: #f3e8ff;
+}
+
+.issueDueDate {
+  text-align: 'left';
+  font-size: '14px';
+}
+
+.issueItem {
+  grid-column: span 2;
+}
+
+.timelineBox {
+  padding: 0.25rem;
+  padding-top: 1rem;
+}
