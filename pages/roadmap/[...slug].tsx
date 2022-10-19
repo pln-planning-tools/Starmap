@@ -3,6 +3,8 @@ import { Roadmap } from '../../components/Roadmap';
 import { Box, FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import { RoadmapForm } from '../../components/RoadmapForm';
 import { addHttpsIfNotLocal } from '../../utils/general';
+import { IssueData } from '../../lib/types';
+
 
 // const BASE_URL = 'https://staging.pln-roadmap.nikas.page';
 // const BASE_URL = 'http://localhost:3000';
@@ -21,7 +23,8 @@ export async function getServerSideProps(context) {
       BASE_URL,
     ),
   );
-  const issueData = await res.json();
+  const issueData = await res.json() as IssueData;
+  // console.dir(issueData, { depth: Infinity, maxArrayLength: Infinity });
 
   return {
     props: {
