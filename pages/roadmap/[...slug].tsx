@@ -1,6 +1,6 @@
 import type { InferGetServerSidePropsType } from 'next';
 import { Roadmap } from '../../components/Roadmap';
-import { Box } from '@chakra-ui/react';
+import { Box, FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import { RoadmapForm } from '../../components/RoadmapForm';
 
 // const BASE_URL = 'https://staging.pln-roadmap.nikas.page';
@@ -17,7 +17,7 @@ export async function getServerSideProps(context) {
     ),
   );
   const issueData = await res.json();
-  // console.log('issueData', issueData);
+  // console.dir(issueData, { depth: Infinity, maxArrayLength: Infinity });
 
   return {
     props: {
@@ -32,6 +32,12 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
   return (
     <>
+      <FormControl p={2} textAlign='right'>
+        <FormLabel htmlFor='isDetailedView' display='inline' textAlign='right'>
+          Detailed view:
+        </FormLabel>
+        <Switch id='isDetailedView' textAlign='right' />
+      </FormControl>
       <Box p={5}>
         <RoadmapForm />
         {!!issueData && <Roadmap issueData={issueData} />}

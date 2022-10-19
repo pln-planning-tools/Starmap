@@ -21,6 +21,8 @@
     "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
     "d3": "^7.6.1",
+    "date-fns": "^2.29.3",
+    "dayjs": "^1.11.5",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "framer-motion": "^7.6.1",
     "graphology": "^0.25.0",

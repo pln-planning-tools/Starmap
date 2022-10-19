@@ -1,39 +1,88 @@
-import { Box, Text, Link } from '@chakra-ui/react';
+import { Box, Text, Link, Progress } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
 import { match } from 'path-to-regexp';
 import styles from './Roadmap.module.css';
-
-// https://github.com/pln-roadmap/tests/issues/9
-const urlMatch: any = (url) => {
-  // console.log('urlMatch() | url', url);
-  const matchResult = match('/:owner/:repo/issues/:issue_number(\\d+)', {
-    decode: decodeURIComponent,
-  })(url);
-  // console.log('urlMatch() | matchResult', matchResult);
-  return matchResult;
-};
+import { closestIndexTo, format, formatISO, max, min, toDate } from 'date-fns';
+import * as d3 from 'd3';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import minMax from 'dayjs/plugin/minMax';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import _ from 'lodash';
+import { addOffset, formatDate, toTimestamp, urlMatch } from '../utils/general';
 
 export function Roadmap({ issueData }) {
-  // console.log('inside /components/Roadmap.tsx');
-  // console.log('/components/Roadmap.tsx | issueData:', issueData);
-  const lists = (Array.isArray(issueData?.lists) && issueData?.lists?.length > 0 && issueData?.lists) || [issueData];
   const showGroupRowTitle = true;
-
-  const timelineDates = [
-    { month: 'January', year: '2023' },
-    { month: 'February', year: '2023' },
-    { month: 'March', year: '2023' },
-    { month: 'April', year: '2023' },
-    { month: 'May', year: '2023' },
-    { month: 'June', year: '2023' },
-    { month: 'July', year: '2023' },
-    { month: 'August', year: '2023' },
-    { month: 'September', year: '2023' },
-    { month: 'October', year: '2023' },
-    { month: 'November', year: '2023' },
-    { month: 'December', year: '2023' },
+  const hideMilestonesWithoutDate = true;
+  const lists = (Array.isArray(issueData?.lists) && issueData?.lists?.length > 0 && issueData?.lists) || [issueData];
+  console.log('lists ->', lists);
+  dayjs.extend(customParseFormat);
+  dayjs.extend(utc);
+  dayjs.extend(minMax);
+  dayjs.extend(localizedFormat);
+  const dates =
+    lists
+      .map(
+        (list) =>
+          (!list?.childrenIssues && [formatDate(list.dueDate)]) ||
+          list?.childrenIssues?.map((v) => formatDate(v.dueDate)),
+      )
+      .flat()
+      .filter((v) => !!v) || lists.flatMap((v) => formatDate(v.dueDate));
+  console.log('dates ->', dates);
+  const getRange = (dates: any[]) => {
+    const min = d3.min(dates);
+    const max = d3.max(dates);
+    const count = 9;
+    const ticks = d3.utcTicks(min, max, count);
+    // var x = d3.scaleUtc().domain([-1, 1]).range([min, max]);
+    // var xTicks = x.ticks(5);
+    // console.log('ticks ->', xTicks);
+    const quantiles = [
+      d3.quantile(ticks, 0),
+      d3.quantile(ticks, 0.1),
+      d3.quantile(ticks, 0.2),
+      d3.quantile(ticks, 0.3),
+      d3.quantile(ticks, 0.4),
+      d3.quantile(ticks, 0.5),
+      d3.quantile(ticks, 0.6),
+      d3.quantile(ticks, 0.7),
+      d3.quantile(ticks, 0.8),
+      d3.quantile(ticks, 0.9),
+      d3.quantile(ticks, 1),
+    ];
+    console.log('quantiles ->', quantiles);
+    return ticks;
+  };
+  const getQuantiles = (ticks) => [
+    d3.quantile(ticks, 0),
+    // d3.quantile(ticks, 0.1),
+    d3.quantile(ticks, 0.2),
+    // d3.quantile(ticks, 0.3),
+    d3.quantile(ticks, 0.4),
+    d3.quantile(ticks, 0.5),
+    d3.quantile(ticks, 0.6),
+    // d3.quantile(ticks, 0.7),
+    d3.quantile(ticks, 0.8),
+    d3.quantile(ticks, 0.9),
+    d3.quantile(ticks, 1),
   ];
+  const getClosest = (dueDate, dates) => {
+    const closest = (closestIndexTo(formatDate(dueDate), dates) as any) + 1;
+    return (closest > 1 && closest) || 2;
+  };
+  const timelineTicks = (dates) => {
+    const datesWithOffset = addOffset(dates);
+    const range = getRange(datesWithOffset);
+    return range;
+  };
+  const timelineQuantiles = getQuantiles(timelineTicks(dates));
+  console.log(timelineQuantiles.length);
+
+  // console.log('timelineTicks', timelineTicks(dates));
+  // console.log('getQuantiles', getQuantiles(timelineTicks(dates)));
 
   return (
     <>
@@ -45,13 +94,15 @@ export function Roadmap({ issueData }) {
             </NextLink>
           </Text>
         )}
-        <div className={styles.grid}>
+        <div
+          style={{ gridTemplateColumns: `repeat(${timelineQuantiles.length + 1}, minmax(10px, 1fr))` }}
+          className={styles.grid}
+        >
           <div className={`${styles.item} ${styles.itemHeader}`}></div>
-          {timelineDates.map((timelineDate) => (
+          {timelineQuantiles.map((timelineTick) => (
             <div className={`${styles.item} ${styles.itemHeader}`}>
-              <span>{timelineDate.month}</span>
-              <br />
-              <span>{timelineDate.year}</span>
+              {/* <span>{dayjs(timelineTick).utc().format('YYYY-MM-DD')}</span> */}
+              <span>{dayjs(timelineTick).utc().format('ll')}</span>
             </div>
           ))}
           {!!issueData &&
@@ -74,19 +125,13 @@ export function Roadmap({ issueData }) {
                 </div>
                 {((!!list?.childrenIssues && list?.childrenIssues) || [list]).map((issue) => (
                   <>
-                    <div className={`${styles.item} ${styles.issueItem}`}>
+                    <div
+                      style={{
+                        gridColumn: `${getClosest(issue.dueDate, timelineQuantiles)} / span 2`,
+                      }}
+                      className={`${styles.item} ${styles.issueItem}`}
+                    >
                       <div>
-                        {/* <NextLink
-                          href={{
-                            pathname: '/roadmap/github.com/[owner]/[repo]/issues/[issue_number]',
-                            query: {
-                              owner: urlMatch(new URL(issue.html_url).pathname).params.owner,
-                              repo: urlMatch(new URL(issue.html_url).pathname).params.repo,
-                              issue_number: urlMatch(new URL(issue.html_url).pathname).params.issue_number,
-                            },
-                          }}
-                          // passHref
-                        > */}
                         <NextLink
                           href={`/roadmap/github.com/${urlMatch(new URL(issue.html_url).pathname).params.owner}/${
                             urlMatch(new URL(issue.html_url).pathname).params.repo
@@ -96,8 +141,8 @@ export function Roadmap({ issueData }) {
                           <Link color='blue.500'>{issue.title}</Link>
                         </NextLink>
                       </div>
-
                       <div className={styles.issueDueDate}>{issue.dueDate}</div>
+                      <Progress colorScheme='green' height='26px' value={20} />
                     </div>
                   </>
                 ))}

@@ -3,6 +3,7 @@ import { Octokit } from 'octokit';
 import { getConfig, getLists, parseIssue } from '../../lib/parser';
 import { getGraph } from '../../lib/graph';
 import _ from 'lodash';
+import { getTimeline } from '../../lib/timeline';
 // import Cors from 'cors';
 
 // Initializing the cors middleware
@@ -138,6 +139,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     depth: Number(req.query?.depth),
     graph: Boolean(req.query?.graph),
     flattened: Boolean(req.query?.flattened),
+    timeline: Boolean(req.query?.timeline),
   };
   const { owner, repo, issue_number } = infoFromUrl(url);
 
@@ -156,6 +158,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // if (options.depth === 1 && response.lists.length > 0) return await withChildren(response);
       if (!!options.graph) return withGraph(await withResolvedChildren(response));
       if (!!options.flattened) return withFlattened(await withResolvedChildren(response));
+      if (!!options.timeline && response.lists.length > 0) return getTimeline(await withResolvedChildren(response));
       if (options.depth === 1 && response.lists.length > 0) return await withResolvedChildren(response);
       if (!!response) return response || {};
       return {};

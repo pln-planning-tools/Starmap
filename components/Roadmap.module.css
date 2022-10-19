@@ -13,17 +13,19 @@
 
 .item {
   height: 100px;
-  font-size: 16px;
-  text-align: center;
+  font-size: 15px;
+  text-align: left;
   overflow: auto;
   overflow-wrap: break-word;
   background: #a0aec0;
-  border-left: 0.5px solid #ccc;
-  border-right: 0.5px solid #ccc;
+  height: min-content;
+  /* border-left: 0.5px solid #ccc; */
+  /* border-right: 0.5px solid #ccc; */
 }
 
 .item.itemHeader {
   background: revert;
+  text-align: center;
 }
 
 .nested > .item:not(.group) {
@@ -42,16 +44,26 @@
 }
 
 .groupWrapper {
-  background: #f3e8ff;
+  /* background: #f3e8ff; */
+  /* border: 1px solid #e2e2e2; */
+}
+
+.groupWrapper:nth-child(odd) {
+  background: #e0e7ff
+}
+.groupWrapper:nth-child(even) {
+  background: #f5f3ff;
 }
 
 .issueDueDate {
-  text-align: 'left';
-  font-size: '14px';
+  text-align: left;
+  font-size: 14px;
+  align-self: end;
 }
 
 .issueItem {
   grid-column: span 2;
+  display: grid;
 }
 
 .timelineBox {
