@@ -4,7 +4,8 @@ import { Box, FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import { RoadmapForm } from '../../components/RoadmapForm';
 
 // const BASE_URL = 'https://staging.pln-roadmap.nikas.page';
-const BASE_URL = 'http://localhost:3000';
+// const BASE_URL = 'http://localhost:3000';
+const BASE_URL = process.env.BASE_URL || 'https://staging.pln-roadmap.nikas.page';
 
 export async function getServerSideProps(context) {
   console.log('inside roadmap page | getServerSideProps()');
