@@ -1,9 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
+  // swcMinify: true,
   poweredByHeader: false,
-  // experimental: { images: { layoutRaw: true } },
+  images: {
+    dangerouslyAllowSVG: true,
+  },
+  // experimental: {
+  //   esmExternals: false,
+  // },
 };
 
 module.exports = {
@@ -12,6 +17,10 @@ module.exports = {
   webpack(config, options) {
     config.experiments = config.experiments || {};
     config.experiments.topLevelAwait = true;
+    // config.optimization = {
+    //   providedExports: false,
+    // };
+    // options.nextRuntime = 'edge';
 
     return config;
   },
