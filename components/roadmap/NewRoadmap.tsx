@@ -1,4 +1,5 @@
 import { interpolate, scaleTime } from 'd3';
+import { useRef } from 'react';
 
 import { dayjs } from '../../lib/client/dayjs';
 import { IssueData } from '../../lib/types';
@@ -9,6 +10,8 @@ import TodayLine from './TodayLine';
 import WeekTicksSelector from './WeekTicksSelector';
 
 function NewRoadmap ({issueData}: {issueData: IssueData | false}) {
+  const ref = useRef(null);
+
   console.log(`issueData: `, issueData);
   if (!issueData) return null;
   const {lists} = issueData
@@ -56,10 +59,10 @@ function NewRoadmap ({issueData}: {issueData: IssueData | false}) {
   // console.log(`extent(exampleData, (d) => d.value): `, extent(exampleData, (d) => dayjs(d.value).toDate()));
   let maxW = 1000;
   let maxH = 500;
-  if (typeof window !== "undefined") {
-    maxW = window.innerWidth;
-    maxH = window.innerHeight/2;
-  }
+  // if (typeof window !== "undefined") {
+  //   maxW = window.innerWidth;
+  //   maxH = window.innerHeight/2;
+  // }
   const startDate = dayjs().subtract(3, 'months').toDate()
   const endDate = dayjs().add(3, 'months').toDate()
   const margin = { top: 0, right: 0, bottom: 20, left: 0 };
@@ -80,14 +83,13 @@ function NewRoadmap ({issueData}: {issueData: IssueData | false}) {
     <RoadmapHeader issueData={issueData}/>
     <WeekTicksSelector />
     <svg
+      ref={ref}
       width={'90vw'}
       height={height + margin.top + margin.bottom}
     >
-      <g transform={`translate(${margin.left}, ${margin.top})`}>
-        <AxisTop scale={scaleX} transform={`translate(0, ${margin.top + 50})`} />
-        <TodayLine scale={scaleX} height={height} />
-        {childrenIssues.map((childIssue, index) => (<RoadmapItem index={index} scale={scaleX} childIssue={childIssue} />))}
-      </g>
+      <AxisTop scale={scaleX} transform={`translate(0, ${margin.top + 50})`} />
+      <TodayLine scale={scaleX} height={height} />
+      {childrenIssues.map((childIssue, index) => (<RoadmapItem index={index} scale={scaleX} childIssue={childIssue} />))}
     </svg>
     </>
   );

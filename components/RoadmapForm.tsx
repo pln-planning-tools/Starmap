@@ -1,4 +1,4 @@
-import { Input, Text } from '@chakra-ui/react';
+import { Flex, Input, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { match } from 'path-to-regexp';
 import { useEffect, useState } from 'react';
@@ -41,32 +41,34 @@ export function RoadmapForm() {
 
   return (
     <>
-      <h1>Roadmap</h1>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          try {
-            if (currentIssueUrl == null) {
-              throw new Error('currentIssueUrl is null')
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            try {
+              if (currentIssueUrl == null) {
+                throw new Error('currentIssueUrl is null')
+              }
+              const newUrl = new URL(currentIssueUrl);
+              setIssueUrl(newUrl.toString());
+              setLoading(true);
+            } catch (err: any) {
+              setError(err);
             }
-            const newUrl = new URL(currentIssueUrl);
-            setIssueUrl(newUrl.toString());
-            setLoading(true);
-          } catch (err: any) {
-            setError(err);
-          }
-        }}
-      >
-        <Text mb='8px'>GitHub URL: {issueUrl}</Text>
-        <Input
-          aria-label='Issue URL'
-          name='issue-url'
-          autoComplete='url'
-          onChange={(e) => setCurrentIssueUrl(e.target.value)}
-          placeholder='https://github.com/...'
-          size='sm'
-        />
-      </form>
+          }}
+        >
+            {/* <Text as="span" mb='8px'>GitHub URL: {issueUrl}</Text> */}
+            <Input
+              // maxWidth={'lg'}
+              aria-label='Issue URL'
+              name='issue-url'
+              autoComplete='url'
+              onChange={(e) => setCurrentIssueUrl(e.target.value)}
+              placeholder='Jump to https://github.com/...'
+              size='sm'
+              bg='#BDBFF0'
+            />
+        </form>
+      {/* </Flex> */}
       {isLoading && (
         <>
           <Text>Loading...</Text>

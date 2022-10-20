@@ -5,6 +5,7 @@ import { RoadmapForm } from '../../components/RoadmapForm';
 import { addHttpsIfNotLocal } from '../../utils/general';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { IssueData } from '../../lib/types';
+import PageHeader from '../../components/layout/PageHeader';
 
 
 // const BASE_URL = 'http://localhost:3000';
@@ -39,14 +40,8 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
   return (
     <>
-      <FormControl p={2} textAlign='right'>
-        <FormLabel htmlFor='isDetailedView' display='inline' textAlign='right'>
-          Detailed view:
-        </FormLabel>
-        <Switch id='isDetailedView' textAlign='right' />
-      </FormControl>
+      <PageHeader />
       <Box p={5}>
-        <RoadmapForm />
         <NewRoadmap issueData={issueData} />
         {!!issueData && <Roadmap issueData={issueData} />}
       </Box>

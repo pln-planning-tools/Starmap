@@ -8,6 +8,7 @@ const defaultPropertiesFromGithub = ['html_url', 'title', 'state', 'node_id'];
 const withResolvedChildren = async (response) => {
   const responseResolved = {
     ...response,
+    percent_done: 70,
     lists: (
       await Promise.allSettled(
         response.lists.map(async (list) => ({
