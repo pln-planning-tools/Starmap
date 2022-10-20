@@ -16,10 +16,8 @@ function AxisTop({ scale, transform }: AxisTopProps) {
   useEffect(() => {
     if (ref.current) {
       const axis = axisTop(scale).tickSizeInner(-20)
+        .ticks(timeWeek.every(numWeeks))
         .tickFormat((d) => dayjs(d.toString()).format('YYYY MMM DD'))
-        // .ticks(4)
-
-      console.log(`axis.ticks(): `, axis.ticks());
 
       select(ref.current).call(axis);
     }
