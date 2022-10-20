@@ -1,10 +1,9 @@
 import { interpolate, scaleTime } from 'd3';
-import { Box, Text, Link, Progress } from '@chakra-ui/react';
-import NextLink from 'next/link';
 
 import { dayjs } from '../../lib/client/dayjs';
 import { IssueData } from '../../lib/types';
 import AxisTop from './AxisTop';
+import RoadmapHeader from './RoadmapHeader';
 import RoadmapItem from './RoadmapItem';
 import TodayLine from './TodayLine';
 import WeekTicksSelector from './WeekTicksSelector';
@@ -78,11 +77,7 @@ function NewRoadmap ({issueData}: {issueData: IssueData | false}) {
 
   return (
     <>
-    <Text mb='8px' fontSize={18} fontWeight={600}>
-      <NextLink href={issueData.html_url} passHref>
-        <Link color='blue.500'>{issueData.title}</Link>
-      </NextLink>
-    </Text>
+    <RoadmapHeader issueData={issueData}/>
     <WeekTicksSelector />
     <svg
       width={'90vw'}
