@@ -12,10 +12,6 @@ function RoadmapItem({childIssue, scale, index}: {childIssue: IssueData, scale: 
   const xPadding = 5
   const yPadding = 5
   const etaX = scale(dayjs(childIssue.dueDate).toDate())
-  console.log(`childIssue: `, childIssue);
-  console.log('childIssue.title', childIssue.title)
-  console.log('childIssue.dueDate', childIssue.dueDate)
-  console.log(`childIssue.etaX: `, etaX);
   const ySpacingBetweenItems = 50
   const rectangleHeight = 50
   const yLocation = y + yPadding + ((rectangleHeight + ySpacingBetweenItems) * index)

@@ -24,11 +24,10 @@ const getIssue = async (url: string) => {
       issue_number,
     });
 
-    // console.log(`data: `, data);
-
     return data;
   } catch (err) {
     console.error('error getting github issue: ', err)
+    throw err
   }
 };
 export {getIssue}
