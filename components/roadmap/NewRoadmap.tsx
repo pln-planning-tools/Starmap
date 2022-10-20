@@ -1,5 +1,5 @@
-import { interpolate, scaleTime } from 'd3';
-import { useRef } from 'react';
+import { scaleTime } from 'd3';
+import { useEffect, useRef, useState } from 'react';
 
 import { dayjs } from '../../lib/client/dayjs';
 import { IssueData } from '../../lib/types';
@@ -24,13 +24,14 @@ function NewRoadmap ({issueData, isLocal}: {issueData: IssueData | false, isLoca
 
   const dates = issues.map(issue => issue.dueDate).filter((dateString) => !!dateString);
   const childrenIssues: IssueData[] = issues
+  const [maxW, setMaxW] = useState(1000);
+  const [maxH, setMaxH] = useState(500);
 
-  let maxW = 1000;
-  let maxH = 500;
-  if (typeof window !== "undefined") {
-    maxW = window.innerWidth;
-    maxH = window.innerHeight/2;
-  }
+  useEffect(() => {
+    setMaxW(window.innerWidth);
+    setMaxH(window.innerHeight/2);
+  }, [])
+
   const dayjsDates = dates.map((date) => dayjs(date))
   const startDate = dayjs().subtract(3, 'months')
   const endDate = dayjs().add(3, 'months')
@@ -42,7 +43,6 @@ function NewRoadmap ({issueData, isLocal}: {issueData: IssueData | false, isLoca
   const height = maxH - margin.top - margin.bottom;
 
   const scaleX = scaleTime().domain([earliestEta.subtract(minMaxDiff/2, 'days').toDate(), latestEta.add(minMaxDiff/2, 'days').toDate()]).range([0, width])
-
 
   return (
     <>
