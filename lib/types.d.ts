@@ -14,6 +14,8 @@ interface IssueData {
   state: IssueStates
   title: string
   dueDate?: string
+  parent_html_url: string
+  percent_done: number
 }
 
 export {IssueData, IssueStates}

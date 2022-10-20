@@ -21,6 +21,8 @@ const withResolvedChildren = async (response) => {
               // config: getConfig(issue?.body_html),
               dueDate: getConfig(issue?.body_html)?.eta,
               lists: getLists(issue?.body_html),
+              percent_done: 70,
+              parent_html_url: response.html_url,
             })),
         })),
       )
