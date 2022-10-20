@@ -18,7 +18,6 @@ export async function getServerSideProps(context) {
     ),
   );
   const issueData = await res.json();
-  // console.dir(issueData, { depth: Infinity, maxArrayLength: Infinity });
 
   return {
     props: {
