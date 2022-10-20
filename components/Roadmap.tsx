@@ -10,6 +10,8 @@ import { addOffset, formatDate, toTimestamp, urlMatch } from '../utils/general';
 import { getRange } from '../lib/client/getRange';
 import { getQuantiles } from '../lib/client/getQuantiles';
 import { dayjs } from '../lib/client/dayjs';
+import { timelineTicks } from '../lib/client/timelineTicks';
+import { getClosest } from '../lib/client/dateUtils';
 
 export function Roadmap({ issueData }) {
   const showGroupRowTitle = true;
@@ -28,20 +30,7 @@ export function Roadmap({ issueData }) {
       .filter((v) => !!v) || lists.flatMap((v) => formatDate(v.dueDate));
   console.log('dates ->', dates);
 
-  const getClosest = (dueDate, dates) => {
-    const closest = (closestIndexTo(formatDate(dueDate), dates) as any) + 1;
-    return (closest > 1 && closest) || 2;
-  };
-  const timelineTicks = (dates) => {
-    const datesWithOffset = addOffset(dates);
-    const range = getRange(datesWithOffset);
-    return range;
-  };
   const timelineQuantiles = getQuantiles(timelineTicks(dates));
-  console.log(timelineQuantiles.length);
-
-  // console.log('timelineTicks', timelineTicks(dates));
-  // console.log('getQuantiles', getQuantiles(timelineTicks(dates)));
 
   return (
     <>

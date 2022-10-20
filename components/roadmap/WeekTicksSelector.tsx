@@ -7,7 +7,8 @@ function WeekTicksSelector() {
 
   return (
     <>
-    Select week ticks (current value = {weekTicks}):  <Slider
+    <span>{weekTicks} Weeks per tick: </span>
+    <Slider
         axis="x"
         xmax={10}
         xmin={1}
