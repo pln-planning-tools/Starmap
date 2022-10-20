@@ -6,6 +6,8 @@ const filterDefaultFields = (obj) =>
   _.pick(obj, ['html_url', 'title', 'state', 'node_id', 'body', 'body_html', 'body_text', 'children']);
 const metadataFromIssue = (issue) => ({ dueDate: getConfig(issue?.body_html)?.eta });
 
+const metadataFromBackend = (issue) => ({ completion_rate: 30 });
+
 const getIssue = async ({ platform, owner, repo, issue_number }) => {
   console.log('getIssue:', { owner, repo, issue_number });
   try {
@@ -18,7 +20,7 @@ const getIssue = async ({ platform, owner, repo, issue_number }) => {
       issue_number,
     });
 
-    return { ...metadataFromIssue(data), ...filterDefaultFields(data) };
+    return { ...metadataFromIssue(data), ...metadataFromBackend(data), ...filterDefaultFields(data) };
   } catch (err) {
     console.error('error:', err);
   }
@@ -44,4 +46,4 @@ const getIssueWithDepth = async (issueArray, depth = 0) => {
   return await getIssue(issueArray);
 };
 
-export { getIssue, filterDefaultFields, metadataFromIssue, getIssueWithDepth };
+export { getIssue, filterDefaultFields, metadataFromIssue, metadataFromBackend, getIssueWithDepth };

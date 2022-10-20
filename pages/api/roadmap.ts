@@ -1,6 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getChildren, getConfig } from '../../lib/parser';
-import { getIssue, metadataFromIssue, filterDefaultFields, getIssueWithDepth } from '../../lib/backend/issue';
+import {
+  getIssue,
+  metadataFromIssue,
+  filterDefaultFields,
+  getIssueWithDepth,
+  metadataFromBackend,
+} from '../../lib/backend/issue';
 import { getUrlParams, urlMatch } from '../../utils/general';
 
 const resolveChildren = async (children) => {
@@ -48,6 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const toReturn = {
       ...metadataFromIssue(rootIssue),
+      ...metadataFromBackend(rootIssue),
       ...filterDefaultFields(rootIssue),
       // children: await resolveChildren(getChildren(rootIssue?.body_html)),
       children: await resolveChildrenWithDepth(getChildren(rootIssue?.body_html)),
