@@ -8,7 +8,7 @@ import { addHttpsIfNotLocal } from '../../utils/general';
 // const BASE_URL = 'http://localhost:3000';
 const BASE_URL = addHttpsIfNotLocal(process.env.NEXT_PUBLIC_VERCEL_URL);
 console.log('NEXT_PUBLIC_VERCEL_URL:', process.env.NEXT_PUBLIC_VERCEL_URL);
-console.log('BASE_URL:', process.env.BASE_URL);
+console.log('BASE_URL:', BASE_URL);
 // console.log('BASE_URL:', process.env.BASE_URL);
 
 export async function getServerSideProps(context) {
