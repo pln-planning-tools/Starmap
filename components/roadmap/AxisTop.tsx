@@ -1,6 +1,7 @@
 import { ScaleTime, axisTop, timeWeek, select } from 'd3';
 import dayjs from 'dayjs';
 import { useRef, useEffect } from 'react';
+import { useWeekTicks } from '../../hooks/useWeekTicks';
 
 interface AxisTopProps {
   scale: ScaleTime<number, number>;
@@ -10,18 +11,17 @@ interface AxisTopProps {
 
 function AxisTop({ scale, transform }: AxisTopProps) {
   const ref = useRef<SVGGElement>(null);
+  const numWeeks = useWeekTicks();
 
   useEffect(() => {
     if (ref.current) {
       const axis = axisTop(scale).tickSizeInner(-50)
-        .ticks(timeWeek.every(2))
+        .ticks(timeWeek.every(numWeeks))
         .tickFormat((d) => dayjs(d.toString()).format('YYYY MMM DD'))
 
-      console.log(`axis.tickValues(): `, axis.tickValues());
-        // .tickFormat((d: Date) => dayjs(d).format('YYYY-MM-DD')) //.ticks(5, (d) => d)
       select(ref.current).call(axis);
     }
-  }, [scale]);
+  }, [scale, numWeeks]);
 
   return <g ref={ref} transform={transform} />;
 }

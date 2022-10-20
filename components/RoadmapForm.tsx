@@ -13,7 +13,7 @@ const urlMatch: any = (url) => {
 
 export function RoadmapForm() {
   const router = useRouter();
-  const [currentIssueUrl, setCurrentIssueUrl] = useState<string | null>();
+  const [currentIssueUrl, setCurrentIssueUrl] = useState<string | null>(null);
   const [issueUrl, setIssueUrl] = useState<string | null>();
   const [error, setError] = useState();
   const [isLoading, setLoading] = useState<boolean>();
@@ -46,6 +46,9 @@ export function RoadmapForm() {
         onSubmit={(e) => {
           e.preventDefault();
           try {
+            if (currentIssueUrl == null) {
+              throw new Error('currentIssueUrl is null')
+            }
             const newUrl = new URL(currentIssueUrl);
             setIssueUrl(newUrl.toString());
             setLoading(true);
