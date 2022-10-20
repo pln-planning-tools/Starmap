@@ -4,7 +4,7 @@ import { Box, FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import { RoadmapForm } from '../../components/RoadmapForm';
 import { addHttpsIfNotLocal } from '../../utils/general';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
-import { IssueData } from '../../lib/types';
+import { GithubIssueApiResponse, IssueData } from '../../lib/types';
 import PageHeader from '../../components/layout/PageHeader';
 
 
@@ -24,25 +24,28 @@ export async function getServerSideProps(context) {
       BASE_URL,
     ),
   );
-  const issueData = await res.json() as IssueData;
+  const {error, issueData} = await res.json() as GithubIssueApiResponse;
+  // console.log(`props: `, props);
   // console.dir(issueData, { depth: Infinity, maxArrayLength: Infinity });
 
   return {
     props: {
-      issueData,
-    },
+      error,
+      issueData
+    }
   };
 }
 
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   console.log('inside /roadmap/[...slug].tsx | props');
-  const { issueData } = props;
+  const { issueData, error } = props;
 
   return (
     <>
       <PageHeader />
       <Box p={5}>
-        <NewRoadmap issueData={issueData} />
+        {!!error && <Box color='red.500'>{error}</Box>}
+        {!!issueData && <NewRoadmap issueData={issueData} />}
         {!!issueData && <Roadmap issueData={issueData} />}
       </Box>
     </>

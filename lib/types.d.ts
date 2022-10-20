@@ -18,4 +18,13 @@ interface IssueData {
   percent_done: number
 }
 
-export {IssueData, IssueStates}
+interface GithubIssueApiResponse {
+  issueData: IssueData | null
+  error: string | null
+}
+
+export {
+  GithubIssueApiResponse,
+  IssueData,
+  IssueStates,
+}
