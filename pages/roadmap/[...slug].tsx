@@ -3,10 +3,10 @@ import { Roadmap } from '../../components/Roadmap';
 import { Box, FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import { RoadmapForm } from '../../components/RoadmapForm';
 import { addHttpsIfNotLocal } from '../../utils/general';
+import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { IssueData } from '../../lib/types';
 
 
-// const BASE_URL = 'https://staging.pln-roadmap.nikas.page';
 // const BASE_URL = 'http://localhost:3000';
 const BASE_URL = addHttpsIfNotLocal(process.env.NEXT_PUBLIC_VERCEL_URL);
 console.log('NEXT_PUBLIC_VERCEL_URL:', process.env.NEXT_PUBLIC_VERCEL_URL);
@@ -47,6 +47,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       </FormControl>
       <Box p={5}>
         <RoadmapForm />
+        <NewRoadmap issueData={issueData} />
         {!!issueData && <Roadmap issueData={issueData} />}
       </Box>
     </>

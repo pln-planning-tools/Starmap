@@ -8,10 +8,12 @@ import { toTimestamp } from '../../utils/general';
 import AxisTop from './AxisTop';
 import RoadmapItem from './RoadmapItem';
 import TodayLine from './TodayLine';
+import WeekTicksSelector from './WeekTicksSelector';
 
-function NewRoadmap ({issueData}: {issueData: IssueData}) {
+function NewRoadmap ({issueData}: {issueData: IssueData | false}) {
   console.log(`issueData: `, issueData);
   if (!issueData) return null;
+
   const {lists} = issueData
   const dates: string[] = []
   const etaAndTitles: {eta: string, title: string}[] = []
@@ -44,6 +46,8 @@ function NewRoadmap ({issueData}: {issueData: IssueData}) {
   const scaleX = scaleTime().domain(xDomain).range([0, width])
 
   return (
+    <>
+    <WeekTicksSelector />
     <svg
       width={'90vw'}
       height={height + margin.top + margin.bottom}
@@ -54,6 +58,7 @@ function NewRoadmap ({issueData}: {issueData: IssueData}) {
         {childrenIssues.map((childIssue, index) => (<RoadmapItem index={index} scale={scaleX} childIssue={childIssue} />))}
       </g>
     </svg>
+    </>
   );
 }
 
