@@ -2,10 +2,14 @@ import type { InferGetServerSidePropsType } from 'next';
 import { Roadmap } from '../../components/Roadmap';
 import { Box, FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import { RoadmapForm } from '../../components/RoadmapForm';
+import { addHttpsIfNotLocal } from '../../utils/general';
 
 // const BASE_URL = 'https://staging.pln-roadmap.nikas.page';
 // const BASE_URL = 'http://localhost:3000';
-const BASE_URL = process.env.BASE_URL || 'https://staging.pln-roadmap.nikas.page';
+const BASE_URL = addHttpsIfNotLocal(process.env.NEXT_PUBLIC_VERCEL_URL);
+console.log('NEXT_PUBLIC_VERCEL_URL:', process.env.NEXT_PUBLIC_VERCEL_URL);
+console.log('BASE_URL:', BASE_URL);
+// console.log('BASE_URL:', process.env.BASE_URL);
 
 export async function getServerSideProps(context) {
   console.log('inside roadmap page | getServerSideProps()');
@@ -18,7 +22,6 @@ export async function getServerSideProps(context) {
     ),
   );
   const issueData = await res.json();
-  // console.dir(issueData, { depth: Infinity, maxArrayLength: Infinity });
 
   return {
     props: {
