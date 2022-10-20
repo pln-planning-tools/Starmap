@@ -59,10 +59,10 @@ function NewRoadmap ({issueData}: {issueData: IssueData | false}) {
   // console.log(`extent(exampleData, (d) => d.value): `, extent(exampleData, (d) => dayjs(d.value).toDate()));
   let maxW = 1000;
   let maxH = 500;
-  // if (typeof window !== "undefined") {
-  //   maxW = window.innerWidth;
-  //   maxH = window.innerHeight/2;
-  // }
+  if (typeof window !== "undefined") {
+    maxW = window.innerWidth;
+    maxH = window.innerHeight/2;
+  }
   const startDate = dayjs().subtract(3, 'months').toDate()
   const endDate = dayjs().add(3, 'months').toDate()
   const margin = { top: 0, right: 0, bottom: 20, left: 0 };
