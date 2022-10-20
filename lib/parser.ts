@@ -15,8 +15,6 @@ export const getLists = (issue) => {
     .reduce((a: any, b) => {
       const listItem = Object.create({});
       listItem.title = b.previousElementSibling?.textContent?.trim();
-      // Get the title only if the heading is level 3
-      // listItem.title = b.previousElementSibling?.tagName == 'h3' && b.previousElementSibling?.textContent?.trim();
       listItem.childrenIssues = [...b.querySelectorAll('a[href][data-hovercard-type*="issue"]')]?.map(
         (v: any) => v.href,
       );

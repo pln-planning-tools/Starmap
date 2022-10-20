@@ -6,12 +6,9 @@ import { match } from 'path-to-regexp';
 export const TEN_DAYS_IN_SECONDS = 864000;
 
 export const addHttpsIfNotLocal = (url: any) => {
-  console.log('url', url);
-  // console.log('process.env.IS_LOCAL ->', process.env.IS_LOCAL);
   if (process.env.IS_LOCAL) {
     return url;
   }
-  console.log('after!', url);
   return 'https://' + url;
 };
 
