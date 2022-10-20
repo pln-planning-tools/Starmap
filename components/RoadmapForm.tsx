@@ -1,31 +1,27 @@
-import { Input, Text } from '@chakra-ui/react';
+import { Flex, Input, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { match } from 'path-to-regexp';
 import { useEffect, useState } from 'react';
 
 // https://github.com/pln-roadmap/tests/issues/9
 const urlMatch: any = (url) => {
-  // console.log('urlMatch() | url', url);
   const matchResult = match('/:owner/:repo/issues/:issue_number(\\d+)', {
     decode: decodeURIComponent,
   })(url);
-  // console.log('urlMatch() | matchResult', matchResult);
   return matchResult;
 };
 
 export function RoadmapForm() {
-  // console.log('inside RoadmapForm()');
   const router = useRouter();
-  const [currentIssueUrl, setCurrentIssueUrl] = useState();
-  const [issueUrl, setIssueUrl] = useState();
+  const [currentIssueUrl, setCurrentIssueUrl] = useState<string | null>(null);
+  const [issueUrl, setIssueUrl] = useState<string | null>();
   const [error, setError] = useState();
-  const [isLoading, setLoading] = useState();
-  const getCurrentUrl = () => currentIssueUrl;
+  const [isLoading, setLoading] = useState<boolean>();
 
   useEffect(() => {
     if (router.isReady) {
       if (isLoading === undefined) return;
-      if (isLoading === true) setLoading(false as any);
+      if (isLoading === true) setLoading(false);
     }
   }, [isLoading]);
 
@@ -37,7 +33,7 @@ export function RoadmapForm() {
       // setLoading(true);
       // console.log('/components/RoadmapForm.tsx | inside useEffect() | issueUrl');
       const { owner, repo, issue_number } = urlMatch(new URL(issueUrl).pathname).params;
-      setIssueUrl(null as any);
+      setIssueUrl(null);
       router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}`);
       // setLoading(false);
     }
@@ -45,31 +41,34 @@ export function RoadmapForm() {
 
   return (
     <>
-      <h1>Roadmap</h1>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          try {
-            // @ts-ignore
-            const newUrl = new URL(getCurrentUrl());
-            // @ts-ignore
-            setIssueUrl(newUrl.toString());
-            setLoading(true as any);
-          } catch (err: any) {
-            setError(err);
-          }
-        }}
-      >
-        <Text mb='8px'>GitHub URL: {issueUrl}</Text>
-        <Input
-          aria-label='Issue URL'
-          name='issue-url'
-          autoComplete='url'
-          onChange={(e) => setCurrentIssueUrl(e.target.value as any)}
-          placeholder='https://github.com/...'
-          size='sm'
-        />
-      </form>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            try {
+              if (currentIssueUrl == null) {
+                throw new Error('currentIssueUrl is null')
+              }
+              const newUrl = new URL(currentIssueUrl);
+              setIssueUrl(newUrl.toString());
+              setLoading(true);
+            } catch (err: any) {
+              setError(err);
+            }
+          }}
+        >
+            {/* <Text as="span" mb='8px'>GitHub URL: {issueUrl}</Text> */}
+            <Input
+              // maxWidth={'lg'}
+              aria-label='Issue URL'
+              name='issue-url'
+              autoComplete='url'
+              onChange={(e) => setCurrentIssueUrl(e.target.value)}
+              placeholder='Jump to https://github.com/...'
+              size='sm'
+              bg='#BDBFF0'
+            />
+        </form>
+      {/* </Flex> */}
       {isLoading && (
         <>
           <Text>Loading...</Text>
