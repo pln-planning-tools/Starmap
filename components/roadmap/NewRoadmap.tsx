@@ -1,5 +1,7 @@
+import { Box, Center, Spinner } from '@chakra-ui/react';
 import { scaleTime } from 'd3';
 import { useEffect, useRef, useState } from 'react';
+import { useIsLoading } from '../../hooks/useIsLoading';
 
 import { dayjs } from '../../lib/client/dayjs';
 import { IssueData } from '../../lib/types';
@@ -41,22 +43,31 @@ function NewRoadmap ({issueData, isLocal}: {issueData: IssueData | false, isLoca
   const margin = { top: 0, right: 0, bottom: 20, left: 0 };
   const width = maxW - margin.left - margin.right;
   const height = maxH - margin.top - margin.bottom;
+  const isLoading = useIsLoading()
 
   const scaleX = scaleTime().domain([earliestEta.subtract(minMaxDiff/2, 'days').toDate(), latestEta.add(minMaxDiff/2, 'days').toDate()]).range([0, width])
 
+  if (isLoading) {
+    return (
+      <Center h={maxH} w={maxW}>
+          <Spinner size='xl' />
+      </Center>
+    )
+  }
+
   return (
     <>
-    <RoadmapHeader issueData={issueData}/>
-    {isLocal && <WeekTicksSelector />}
-    <svg
-      ref={ref}
-      width={'90vw'}
-      height={height + margin.top + margin.bottom}
-    >
-      <AxisTop scale={scaleX} transform={`translate(0, ${margin.top + 50})`} />
-      <TodayLine scale={scaleX} height={height} />
-      {childrenIssues.map((childIssue, index) => (<RoadmapItem index={index} scale={scaleX} childIssue={childIssue} />))}
-    </svg>
+      <RoadmapHeader issueData={issueData}/>
+      {isLocal && <WeekTicksSelector />}
+      <svg
+        ref={ref}
+        width={'90vw'}
+        height={height + margin.top + margin.bottom}
+      >
+        <AxisTop scale={scaleX} transform={`translate(0, ${margin.top + 50})`} />
+        <TodayLine scale={scaleX} height={height} />
+        {childrenIssues.map((childIssue, index) => (<RoadmapItem index={index} scale={scaleX} childIssue={childIssue} />))}
+      </svg>
     </>
   );
 }
