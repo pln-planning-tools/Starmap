@@ -25,27 +25,34 @@ function RoadmapItem({childIssue, scale, index}: {childIssue: IssueData, scale: 
     strokeWidth: 2
   }
 
-  const onClickHandler = (e: React.MouseEvent<SVGRectElement, MouseEvent>) => {
-    console.log('roadMapItem onclickHandler', e)
-    console.log('roadMapItem onclickHandler link: ', getLinkForRoadmapChild(childIssue))
-  }
-
-  return <NextLink key={`roadmapItem-${index}`} href={getLinkForRoadmapChild(childIssue)} passHref>
-    <g cursor={'pointer'} onClick={onClickHandler}>
-    <rect
-      x={etaX-rectConfig.width}
-      y={yLocation}
-      width={rectConfig.width}
-      height={rectConfig.height}
-      fill="white"
-      opacity={0.5}
-      strokeWidth={rectConfig.strokeWidth}
-      stroke="black"
-    />
-      <text dominantBaseline="text-before-edge" x={etaX-rectConfig.width+rectConfig.strokeWidth} y={yLocation+yPadding} dy={'.05em'} fontSize={10} textAnchor="start">{childIssue.title}</text>
-      <text dominantBaseline="text-before-edge" x={etaX-rectConfig.strokeWidth} y={yLocation+rectConfig.height-yPadding-10} dy={'.05em'} fontSize={10} textAnchor="end">{childIssue.dueDate}</text>
-    </g>
+  return (
+    <NextLink key={`roadmapItem-${index}`} href={getLinkForRoadmapChild(childIssue)} passHref>
+      <g cursor={'pointer'}>
+        <rect
+          x={etaX-rectConfig.width}
+          y={yLocation}
+          width={rectConfig.width}
+          height={rectConfig.height}
+          fill="white"
+          opacity={0.5}
+          strokeWidth={rectConfig.strokeWidth}
+          stroke="black"
+        />
+        <rect
+          x={etaX-rectConfig.width}
+          y={yLocation}
+          width={rectConfig.width * (childIssue.percent_done / 100)}
+          height={rectConfig.height}
+          fill="green"
+          opacity={0.5}
+          strokeWidth={rectConfig.strokeWidth}
+          stroke="black"
+        />
+        <text dominantBaseline="text-before-edge" x={etaX-rectConfig.width+rectConfig.strokeWidth} y={yLocation+yPadding} dy={'.05em'} fontSize={10} textAnchor="start">{childIssue.title}</text>
+        <text dominantBaseline="text-before-edge" x={etaX-rectConfig.strokeWidth} y={yLocation+rectConfig.height-yPadding-10} dy={'.05em'} fontSize={10} textAnchor="end">{childIssue.dueDate}</text>
+      </g>
     </NextLink>
+  )
 }
 
 export default RoadmapItem
