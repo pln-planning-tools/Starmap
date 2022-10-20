@@ -13,11 +13,25 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import _ from 'lodash';
 import { addOffset, formatDate, toTimestamp, urlMatch } from '../utils/general';
 
+const getUrlPathname = (url) => {
+  try {
+    const urlPathname = new URL(url).pathname;
+    // console.log('urlPathname:', urlPathname);
+    return urlPathname;
+  } catch (error) {
+    console.error('error:', error);
+  }
+};
+
 export function Roadmap({ issueData }) {
-  const showGroupRowTitle = true;
+  // const showGroupRowTitle = !!(issueData.children.length > 1);
+  const showGroupRowTitle = false;
+  console.log('showGroupRowTitle: ', showGroupRowTitle);
   const hideMilestonesWithoutDate = true;
-  const lists = (Array.isArray(issueData?.lists) && issueData?.lists?.length > 0 && issueData?.lists) || [issueData];
-  console.log('lists ->', lists);
+  const lists = (Array.isArray(issueData?.children) && issueData?.children?.length > 0 && issueData?.children) || [
+    issueData,
+  ];
+  // console.log('lists ->', lists);
   dayjs.extend(customParseFormat);
   dayjs.extend(utc);
   dayjs.extend(minMax);
@@ -25,13 +39,11 @@ export function Roadmap({ issueData }) {
   const dates =
     lists
       .map(
-        (list) =>
-          (!list?.childrenIssues && [formatDate(list.dueDate)]) ||
-          list?.childrenIssues?.map((v) => formatDate(v.dueDate)),
+        (list) => (!list?.children && [formatDate(list.dueDate)]) || list?.children?.map((v) => formatDate(v.dueDate)),
       )
       .flat()
       .filter((v) => !!v) || lists.flatMap((v) => formatDate(v.dueDate));
-  console.log('dates ->', dates);
+  // console.log('dates ->', dates);
   const getRange = (dates: any[]) => {
     const min = d3.min(dates);
     const max = d3.max(dates);
@@ -53,7 +65,7 @@ export function Roadmap({ issueData }) {
       d3.quantile(ticks, 0.9),
       d3.quantile(ticks, 1),
     ];
-    console.log('quantiles ->', quantiles);
+    // console.log('quantiles ->', quantiles);
     return ticks;
   };
   const getQuantiles = (ticks) => [
@@ -113,9 +125,9 @@ export function Roadmap({ issueData }) {
                   <div>
                     {!!showGroupRowTitle && (
                       <NextLink
-                        href={`/roadmap/github.com/${urlMatch(new URL(issueData.html_url).pathname).params.owner}/${
-                          urlMatch(new URL(issueData.html_url).pathname).params.repo
-                        }/issues/${urlMatch(new URL(issueData.html_url).pathname).params.issue_number}`}
+                        href={`/roadmap/github.com/${urlMatch(getUrlPathname(issueData.html_url)).params.owner}/${
+                          urlMatch(getUrlPathname(issueData.html_url)).params.repo
+                        }/issues/${urlMatch(getUrlPathname(issueData.html_url)).params.issue_number}`}
                         passHref
                       >
                         <Link color='blue.500'>{list.title}</Link>
@@ -133,9 +145,9 @@ export function Roadmap({ issueData }) {
                     >
                       <div>
                         <NextLink
-                          href={`/roadmap/github.com/${urlMatch(new URL(issue.html_url).pathname).params.owner}/${
-                            urlMatch(new URL(issue.html_url).pathname).params.repo
-                          }/issues/${urlMatch(new URL(issue.html_url).pathname).params.issue_number}`}
+                          href={`/roadmap/github.com/${urlMatch(getUrlPathname(issue.html_url)).params.owner}/${
+                            urlMatch(getUrlPathname(issue.html_url)).params.repo
+                          }/issues/${urlMatch(getUrlPathname(issue.html_url)).params.issue_number}`}
                           passHref
                         >
                           <Link color='blue.500'>{issue.title}</Link>

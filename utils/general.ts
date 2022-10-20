@@ -42,3 +42,34 @@ export const addOffset = (dates) => {
   console.log('dateWithOffset ->', datesWithOffset);
   return datesWithOffset;
 };
+
+export const getUrlParams = (url) => {
+  try {
+    return { ...urlMatch(new URL(url).pathname).params };
+  } catch (err) {
+    // console.error('error:', err);
+  }
+};
+
+export function addParentRecursive(items) {
+  _(items).forEach(function (item) {
+    _(item.children).forEach(function (child) {
+      child.parent = item;
+    });
+    addParentRecursive(item.children);
+  });
+  return items;
+}
+
+export const getCircularReplacer = () => {
+  const seen = new WeakSet();
+  return (key, value) => {
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) {
+        return;
+      }
+      seen.add(value);
+    }
+    return value;
+  };
+};

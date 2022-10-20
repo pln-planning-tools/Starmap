@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getConfig, getLists } from '../../lib/parser';
 import _ from 'lodash';
-import { getIssue } from '../../lib/backend/getIssue';
+import { getIssue } from '../../lib/backend/issue';
 
 const defaultPropertiesFromGithub = ['html_url', 'title', 'state', 'node_id'];
 

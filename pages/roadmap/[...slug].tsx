@@ -4,8 +4,6 @@ import { Box, FormControl, FormLabel, Switch } from '@chakra-ui/react';
 import { RoadmapForm } from '../../components/RoadmapForm';
 import { addHttpsIfNotLocal } from '../../utils/general';
 
-// const BASE_URL = 'https://staging.pln-roadmap.nikas.page';
-// const BASE_URL = 'http://localhost:3000';
 const BASE_URL = addHttpsIfNotLocal(process.env.NEXT_PUBLIC_VERCEL_URL);
 console.log('NEXT_PUBLIC_VERCEL_URL:', process.env.NEXT_PUBLIC_VERCEL_URL);
 console.log('BASE_URL:', BASE_URL);
@@ -15,12 +13,7 @@ export async function getServerSideProps(context) {
   console.log('inside roadmap page | getServerSideProps()');
   // console.dir(context, { depth: Infinity, maxArrayLength: Infinity });
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
-  const res = await fetch(
-    new URL(
-      `/api/github-issue?depth=1&url=${new URL(`${owner}/${repo}/issues/${issue_number}`, 'https://github.com')}`,
-      BASE_URL,
-    ),
-  );
+  const res = await fetch(new URL(`/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`, BASE_URL));
   const issueData = await res.json();
 
   return {
