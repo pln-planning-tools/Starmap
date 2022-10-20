@@ -1,10 +1,9 @@
-import { extent, scaleTime } from 'd3';
+import { interpolate, scaleTime } from 'd3';
+import { Box, Text, Link, Progress } from '@chakra-ui/react';
+import NextLink from 'next/link';
 
 import { dayjs } from '../../lib/client/dayjs';
-import { getQuantiles } from '../../lib/client/getQuantiles';
-import { timelineTicks } from '../../lib/client/timelineTicks';
 import { IssueData } from '../../lib/types';
-import { toTimestamp } from '../../utils/general';
 import AxisTop from './AxisTop';
 import RoadmapItem from './RoadmapItem';
 import TodayLine from './TodayLine';
@@ -13,40 +12,77 @@ import WeekTicksSelector from './WeekTicksSelector';
 function NewRoadmap ({issueData}: {issueData: IssueData | false}) {
   console.log(`issueData: `, issueData);
   if (!issueData) return null;
-
   const {lists} = issueData
+  // const lists = (Array.isArray(issueData?.lists) && issueData?.lists?.length > 0 && issueData?.lists) || [issueData];
+  // const dates =
+  //   lists
+  //     .map(
+  //       (list) =>
+  //         (!list?.childrenIssues && [formatDate(list.dueDate)]) ||
+  //         list?.childrenIssues?.map((v) => formatDate(v.dueDate)),
+  //     )
+  //     .flat()
+  //     .filter((v) => !!v) || lists.flatMap((v) => formatDate(v.dueDate));
+  const childrenIssues2 = lists.flatMap((v) => v.childrenIssues)
+  console.log(`childrenIssues2: `, childrenIssues2);
+
+  const issues: IssueData[] = []
+  // issues.push(issueData)
+  if (lists.length === 0) {
+    console.log('no lists, preventing newRoadMap render')
+    // return null;
+    issues.push(issueData)
+  } else {
+    issues.push(...lists[0].childrenIssues)
+  }
+
   const dates: string[] = []
-  const etaAndTitles: {eta: string, title: string}[] = []
-  const childrenIssues = lists[0].childrenIssues
   lists.forEach((listItem) => {
     console.log(`listItem: `, listItem);
     listItem.childrenIssues.forEach((childIssue) => {
+      // issues.push(childIssue)
       console.log(`childIssue: `, childIssue);
       if (childIssue.dueDate) {
         dates.push(childIssue.dueDate)
-        etaAndTitles.push({eta: childIssue.dueDate, title: childIssue.title})
       }
     })
   })
+  // const childrenIssues: IssueData[] = lists[0].childrenIssues
+  const childrenIssues: IssueData[] = issues
 
-  const timelineQuantiles: number[] = getQuantiles(timelineTicks(dates.map(toTimestamp)));
-  const exampleData = timelineQuantiles.map((quantile) => ({ label: dayjs(quantile).utc().format('ll'), value: quantile}))
+  // const timelineQuantiles: number[] = getQuantiles(timelineTicks(dates.map(toTimestamp)));
+  // const exampleData = timelineQuantiles.map((quantile) => ({ label: dayjs(quantile).utc().format('ll'), value: quantile}))
+  // console.log(`exampleData: `, exampleData);
+  // extent(exampleData, (d) => d.value)
+  // console.log(`extent(exampleData, (d) => d.value): `, extent(exampleData, (d) => dayjs(d.value).toDate()));
   let maxW = 1000;
   let maxH = 500;
   if (typeof window !== "undefined") {
     maxW = window.innerWidth;
     maxH = window.innerHeight/2;
   }
-
+  const startDate = dayjs().subtract(3, 'months').toDate()
+  const endDate = dayjs().add(3, 'months').toDate()
   const margin = { top: 0, right: 0, bottom: 20, left: 0 };
   const width = maxW - margin.left - margin.right;
   const height = maxH - margin.top - margin.bottom;
 
-  const xDomain = extent(exampleData, ({ value }) => value) as [number, number]
-  const scaleX = scaleTime().domain(xDomain).range([0, width])
+  const scaleX = scaleTime().domain([startDate, endDate]).range([0, width])
+  console.log('scaleX.ticks(): ', scaleX.ticks());
+  const dateScale = interpolate(startDate, endDate)
+  // const dateScale2 = scaleX.interpolate(dayjs().unix())
+  const todayX = scaleX(dayjs().toDate())
+  console.log(`todayX: `, todayX);
+  const todayX2 = dateScale(dayjs().unix())
+  console.log(`todayX2: `, todayX2);
 
   return (
     <>
+    <Text mb='8px' fontSize={18} fontWeight={600}>
+      <NextLink href={issueData.html_url} passHref>
+        <Link color='blue.500'>{issueData.title}</Link>
+      </NextLink>
+    </Text>
     <WeekTicksSelector />
     <svg
       width={'90vw'}
