@@ -24,7 +24,7 @@ const getIssue = async (url: string) => {
       issue_number,
     });
 
-    console.log(`data: `, data);
+    // console.log(`data: `, data);
 
     return data;
   } catch (err) {
