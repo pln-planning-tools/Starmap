@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import dayjs from 'dayjs';
 import _ from 'lodash';
-import { match } from 'path-to-regexp';
+import { Match, match } from 'path-to-regexp';
 
 export const TEN_DAYS_IN_SECONDS = 864000;
 
@@ -15,7 +15,7 @@ export const addHttpsIfNotLocal = (url: any) => {
 export const toTimestamp = (date) => (_.isDate(date) && +new Date(date)) || +new Date(date?.split('-'));
 
 // https://github.com/pln-roadmap/tests/issues/9
-export const urlMatch: any = (url) => {
+export const urlMatch: any = (url: string) => {
   const matchResult = match('/:owner/:repo/issues/:issue_number(\\d+)', {
     decode: decodeURIComponent,
   })(url);
