@@ -9,7 +9,7 @@ import RoadmapItem from './RoadmapItem';
 import TodayLine from './TodayLine';
 import WeekTicksSelector from './WeekTicksSelector';
 
-function NewRoadmap ({issueData}: {issueData: IssueData | false}) {
+function NewRoadmap ({issueData, isLocal}: {issueData: IssueData | false, isLocal: boolean}) {
   const ref = useRef(null);
 
   if (!issueData) return null;
@@ -47,7 +47,7 @@ function NewRoadmap ({issueData}: {issueData: IssueData | false}) {
   return (
     <>
     <RoadmapHeader issueData={issueData}/>
-    <WeekTicksSelector />
+    {isLocal && <WeekTicksSelector />}
     <svg
       ref={ref}
       width={'90vw'}

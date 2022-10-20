@@ -1,10 +1,9 @@
 import type { InferGetServerSidePropsType } from 'next';
-import { Roadmap } from '../../components/Roadmap';
-import { Box, FormControl, FormLabel, Switch } from '@chakra-ui/react';
-import { RoadmapForm } from '../../components/RoadmapForm';
+import { Box } from '@chakra-ui/react';
+
 import { addHttpsIfNotLocal } from '../../utils/general';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
-import { GithubIssueApiResponse, IssueData } from '../../lib/types';
+import { GithubIssueApiResponse } from '../../lib/types';
 import PageHeader from '../../components/layout/PageHeader';
 
 
@@ -31,22 +30,23 @@ export async function getServerSideProps(context) {
   return {
     props: {
       error,
-      issueData
+      issueData,
+      isLocal: process.env.IS_LOCAL === 'true'
     }
   };
 }
 
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   console.log('inside /roadmap/[...slug].tsx | props');
-  const { issueData, error } = props;
+  const { issueData, error, isLocal } = props;
 
   return (
     <>
       <PageHeader />
       <Box p={5}>
         {!!error && <Box color='red.500'>{error}</Box>}
-        {!!issueData && <NewRoadmap issueData={issueData} />}
-        {!!issueData && <Roadmap issueData={issueData} />}
+        {!!issueData && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
+        {/* {!!issueData && <Roadmap issueData={issueData} />} */}
       </Box>
     </>
   );
