@@ -4,24 +4,19 @@ import NextLink from 'next/link';
 import { match } from 'path-to-regexp';
 import styles from './Roadmap.module.css';
 import { closestIndexTo, format, formatISO, max, min, toDate } from 'date-fns';
-import * as d3 from 'd3';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import minMax from 'dayjs/plugin/minMax';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
+
 import _ from 'lodash';
 import { addOffset, formatDate, toTimestamp, urlMatch } from '../utils/general';
+import { getRange } from '../lib/client/getRange';
+import { getQuantiles } from '../lib/client/getQuantiles';
+import { dayjs } from '../lib/client/dayjs';
 
 export function Roadmap({ issueData }) {
   const showGroupRowTitle = true;
   const hideMilestonesWithoutDate = true;
   const lists = (Array.isArray(issueData?.lists) && issueData?.lists?.length > 0 && issueData?.lists) || [issueData];
   console.log('lists ->', lists);
-  dayjs.extend(customParseFormat);
-  dayjs.extend(utc);
-  dayjs.extend(minMax);
-  dayjs.extend(localizedFormat);
+
   const dates =
     lists
       .map(
@@ -32,43 +27,7 @@ export function Roadmap({ issueData }) {
       .flat()
       .filter((v) => !!v) || lists.flatMap((v) => formatDate(v.dueDate));
   console.log('dates ->', dates);
-  const getRange = (dates: any[]) => {
-    const min = d3.min(dates);
-    const max = d3.max(dates);
-    const count = 9;
-    const ticks = d3.utcTicks(min, max, count);
-    // var x = d3.scaleUtc().domain([-1, 1]).range([min, max]);
-    // var xTicks = x.ticks(5);
-    // console.log('ticks ->', xTicks);
-    const quantiles = [
-      d3.quantile(ticks, 0),
-      d3.quantile(ticks, 0.1),
-      d3.quantile(ticks, 0.2),
-      d3.quantile(ticks, 0.3),
-      d3.quantile(ticks, 0.4),
-      d3.quantile(ticks, 0.5),
-      d3.quantile(ticks, 0.6),
-      d3.quantile(ticks, 0.7),
-      d3.quantile(ticks, 0.8),
-      d3.quantile(ticks, 0.9),
-      d3.quantile(ticks, 1),
-    ];
-    console.log('quantiles ->', quantiles);
-    return ticks;
-  };
-  const getQuantiles = (ticks) => [
-    d3.quantile(ticks, 0),
-    // d3.quantile(ticks, 0.1),
-    d3.quantile(ticks, 0.2),
-    // d3.quantile(ticks, 0.3),
-    d3.quantile(ticks, 0.4),
-    d3.quantile(ticks, 0.5),
-    d3.quantile(ticks, 0.6),
-    // d3.quantile(ticks, 0.7),
-    d3.quantile(ticks, 0.8),
-    d3.quantile(ticks, 0.9),
-    d3.quantile(ticks, 1),
-  ];
+
   const getClosest = (dueDate, dates) => {
     const closest = (closestIndexTo(formatDate(dueDate), dates) as any) + 1;
     return (closest > 1 && closest) || 2;
@@ -99,16 +58,16 @@ export function Roadmap({ issueData }) {
           className={styles.grid}
         >
           <div className={`${styles.item} ${styles.itemHeader}`}></div>
-          {timelineQuantiles.map((timelineTick) => (
-            <div className={`${styles.item} ${styles.itemHeader}`}>
+          {timelineQuantiles.map((timelineTick, index) => (
+            <div key={index} className={`${styles.item} ${styles.itemHeader}`}>
               {/* <span>{dayjs(timelineTick).utc().format('YYYY-MM-DD')}</span> */}
               <span>{dayjs(timelineTick).utc().format('ll')}</span>
             </div>
           ))}
           {!!issueData &&
             // @ts-ignore
-            lists.map((list) => (
-              <div className={`${styles.nested} ${styles.subgrid} ${styles.groupWrapper}`}>
+            lists.map((list, index) => (
+              <div key={index} className={`${styles.nested} ${styles.subgrid} ${styles.groupWrapper}`}>
                 <div className={`${styles.item} ${styles.group}`}>
                   <div>
                     {!!showGroupRowTitle && (
@@ -123,9 +82,10 @@ export function Roadmap({ issueData }) {
                     )}
                   </div>
                 </div>
-                {((!!list?.childrenIssues && list?.childrenIssues) || [list]).map((issue) => (
+                {((!!list?.childrenIssues && list?.childrenIssues) || [list]).map((issue, index) => (
                   <>
                     <div
+                      key={index}
                       style={{
                         gridColumn: `${getClosest(issue.dueDate, timelineQuantiles)} / span 2`,
                       }}
