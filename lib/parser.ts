@@ -1,25 +1,25 @@
-import { parseHTML } from 'linkedom';
-import { getEtaDate } from '../utils/regexes';
+import { parseHTML } from 'linkedom'
+import { getEtaDate } from '../utils/regexes'
 
 export const getConfig = (issue) => {
-  const { document } = parseHTML(issue);
-  const issueText = [...document.querySelectorAll('*')].map((v) => v.textContent).join('\n');
+  const { document } = parseHTML(issue)
+  const issueText = [...document.querySelectorAll('*')].map((v) => v.textContent).join('\n')
   return {
     eta: getEtaDate(issueText),
-  };
-};
+  }
+}
 
 export const getLists = (issue) => {
-  const { document } = parseHTML(issue);
+  const { document } = parseHTML(issue)
   return [...document.querySelectorAll('ul')]
     .reduce((a: any, b) => {
-      const listItem = Object.create({});
-      listItem.title = b.previousElementSibling?.textContent?.trim();
+      const listItem = Object.create({})
+      listItem.title = b.previousElementSibling?.textContent?.trim()
       listItem.childrenIssues = [...b.querySelectorAll('a[href][data-hovercard-type*="issue"]')]?.map(
         (v: any) => v.href,
-      );
+      )
 
-      return [...a, listItem];
+      return [...a, listItem]
     }, [])
-    .filter((v) => v.childrenIssues.length > 0);
-};
+    .filter((v) => v.childrenIssues.length > 0)
+}

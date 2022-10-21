@@ -1,6 +1,7 @@
 /**
  * Typescript version of https://github.com/bebbi/react-shared-hook/blob/d6cabcb49a7978267c36057ba7efd40ca56aec03/src/index.js
- * @fileoverview
+ *
+ * @file
  */
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 

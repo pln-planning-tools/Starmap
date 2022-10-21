@@ -31,8 +31,8 @@ export async function getServerSideProps(context) {
     props: {
       error,
       issueData,
-      isLocal: process.env.IS_LOCAL === 'true'
-    }
+      isLocal: process.env.IS_LOCAL === 'true',
+    },
   };
 }
 
