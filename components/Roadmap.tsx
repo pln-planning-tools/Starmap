@@ -1,13 +1,9 @@
 import { Box, Text, Link, Progress } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
-import { match } from 'path-to-regexp';
 import styles from './Roadmap.module.css';
-import { closestIndexTo, format, formatISO, max, min, toDate } from 'date-fns';
 
-import _ from 'lodash';
-import { addOffset, formatDate, toTimestamp, urlMatch } from '../utils/general';
-import { getRange } from '../lib/client/getRange';
+import { formatDate, urlMatch } from '../utils/general';
 import { getQuantiles } from '../lib/client/getQuantiles';
 import { dayjs } from '../lib/client/dayjs';
 import { timelineTicks } from '../lib/client/timelineTicks';
@@ -15,7 +11,6 @@ import { getClosest } from '../lib/client/dateUtils';
 
 export function Roadmap({ issueData }) {
   const showGroupRowTitle = true;
-  const hideMilestonesWithoutDate = true;
   const lists = (Array.isArray(issueData?.lists) && issueData?.lists?.length > 0 && issueData?.lists) || [issueData];
   console.log('lists ->', lists);
 

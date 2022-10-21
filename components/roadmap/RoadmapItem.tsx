@@ -17,7 +17,7 @@ function RoadmapItem({childIssue, scale, index}: {childIssue: IssueData, scale: 
   const rectConfig = {
     width: 300,
     height: 80,
-    strokeWidth: 2
+    strokeWidth: 2,
   }
   const minimumY = 90
   const yLocation = Math.max(y + yPadding + ((rectConfig.height + ySpacingBetweenItems) * index+1), minimumY)
