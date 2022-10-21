@@ -15,7 +15,7 @@ function RoadmapItem({
   scale: ScaleTime<number, number>;
   index: number;
 }) {
-  console.log('childIssue:', childIssue);
+  // console.log('childIssue:', childIssue);
   // console.log('scale:', scale);
   console.log('index:', index);
   const x = 50;

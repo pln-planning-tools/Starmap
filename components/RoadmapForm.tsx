@@ -8,10 +8,11 @@ import { useEffect, useState } from 'react';
 import { setIsLoading } from '../hooks/useIsLoading';
 
 // https://github.com/pln-roadmap/tests/issues/9
-const urlMatch: any = (url) => {
+const slugsFromUrl: any = (url) => {
   const matchResult = match('/:owner/:repo/issues/:issue_number(\\d+)', {
     decode: decodeURIComponent,
   })(url);
+
   return matchResult;
 };
 
@@ -25,7 +26,7 @@ export function RoadmapForm() {
     if (router.isReady) {
       if (!issueUrl) return;
 
-      const { owner, repo, issue_number } = urlMatch(new URL(issueUrl).pathname).params;
+      const { owner, repo, issue_number } = slugsFromUrl(new URL(issueUrl).pathname).params;
       setIssueUrl(null);
       router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}`).then(() => setIsLoading(false));
     }
@@ -37,6 +38,7 @@ export function RoadmapForm() {
         onSubmit={(e) => {
           e.preventDefault();
           setIsLoading(true);
+
           try {
             if (currentIssueUrl == null) {
               throw new Error('currentIssueUrl is null');
