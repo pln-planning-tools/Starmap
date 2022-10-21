@@ -4,14 +4,12 @@ import { Box } from '@chakra-ui/react';
 
 import PageHeader from '../../components/layout/PageHeader';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
-import { addHttpsIfNotLocal } from '../../utils/general';
-
-const BASE_URL = addHttpsIfNotLocal(process.env.NEXT_PUBLIC_VERCEL_URL);
+import { API_URL } from '../../config/constants';
 
 export async function getServerSideProps(context) {
   console.log('inside roadmap page | getServerSideProps()');
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
-  const res = await fetch(new URL(`/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`, BASE_URL));
+  const res = await fetch(new URL(`${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}`));
   const response = await res.json();
 
   return {
