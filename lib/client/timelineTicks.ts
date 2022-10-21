@@ -8,4 +8,4 @@ const timelineTicks = (dates) => {
   return range;
 };
 
-export { timelineTicks }
+export { timelineTicks };

@@ -1,6 +1,8 @@
-import { Box } from '@chakra-ui/react';
 import type { NextPage } from 'next';
+
+import { Box } from '@chakra-ui/react';
 import React from 'react';
+
 import { RoadmapForm } from '../components/RoadmapForm';
 
 const App: NextPage = () => {

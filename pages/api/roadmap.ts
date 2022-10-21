@@ -1,8 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getChildren, getConfig } from '../../lib/parser';
-import { getIssue } from '../../lib/backend/issue';
-import { getUrlParams, urlMatch } from '../../utils/general';
+
 import _ from 'lodash';
+
+import { getIssue } from '../../lib/backend/issue';
+import { getChildren, getConfig } from '../../lib/parser';
+import { getUrlParams } from '../../utils/general';
 
 const resolveChildren = async (children) => {
   // console.log('resolveChildren!');

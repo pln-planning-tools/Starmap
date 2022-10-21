@@ -1,8 +1,8 @@
 import { Box, Center, Spinner } from '@chakra-ui/react';
 import { scaleTime } from 'd3';
 import { useEffect, useRef, useState } from 'react';
-import { useIsLoading } from '../../hooks/useIsLoading';
 
+import { useIsLoading } from '../../hooks/useIsLoading';
 import { dayjs } from '../../lib/client/dayjs';
 import { IssueData } from '../../lib/types';
 import AxisTop from './AxisTop';

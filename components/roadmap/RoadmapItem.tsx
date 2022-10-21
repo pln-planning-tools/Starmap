@@ -1,5 +1,6 @@
-import { ScaleTime } from 'd3';
 import NextLink from 'next/link';
+
+import { ScaleTime } from 'd3';
 import dayjs from 'dayjs';
 
 import { getLinkForRoadmapChild } from '../../lib/client/linkUtils';

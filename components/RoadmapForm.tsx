@@ -1,5 +1,6 @@
-import { Input } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+
+import { Input } from '@chakra-ui/react';
 import { match } from 'path-to-regexp';
 import { useEffect, useState } from 'react';
 
@@ -37,7 +38,7 @@ export function RoadmapForm() {
           setIsLoading(true);
           try {
             if (currentIssueUrl == null) {
-              throw new Error('currentIssueUrl is null')
+              throw new Error('currentIssueUrl is null');
             }
             const newUrl = new URL(currentIssueUrl);
             setIssueUrl(newUrl.toString());
@@ -47,17 +48,17 @@ export function RoadmapForm() {
           }
         }}
       >
-          <Input
-            color={'black'}
-            aria-label='Issue URL'
-            name='issue-url'
-            autoComplete='url'
-            onChange={(e) => setCurrentIssueUrl(e.target.value)}
-            placeholder='https://github.com/...'
-            size='sm'
-            bg='white'
-            // TODO: round corners
-          />
+        <Input
+          color={'black'}
+          aria-label='Issue URL'
+          name='issue-url'
+          autoComplete='url'
+          onChange={(e) => setCurrentIssueUrl(e.target.value)}
+          placeholder='https://github.com/...'
+          size='sm'
+          bg='white'
+          // TODO: round corners
+        />
       </form>
     </>
   );
