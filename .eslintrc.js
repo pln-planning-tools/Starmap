@@ -34,5 +34,6 @@ module.exports = {
     'object-curly-newline': 'off',
     'implicit-arrow-linebreak': 'off',
     'jsx-a11y/alt-text': 'off',
+    'arrow-body-style': 'off',
   },
 };
