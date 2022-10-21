@@ -15,7 +15,7 @@ function NewRoadmap({ issueData, isLocal }: { issueData: IssueData | false; isLo
   if (!issueData) return null;
 
   const ref = useRef(null);
-  const dates = issueData.children.map((issue) => issue.dueDate).filter((dateString) => !!dateString);
+  const dates = issueData.children.map((issue) => issue.due_date).filter((dateString) => !!dateString);
   const [maxW, setMaxW] = useState(1000);
   const [maxH, setMaxH] = useState(500);
 

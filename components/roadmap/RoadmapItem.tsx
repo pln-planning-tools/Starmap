@@ -15,13 +15,13 @@ function RoadmapItem({
   index: number;
 }) {
   console.log('childIssue:', childIssue);
-  console.log('scale:', scale);
+  // console.log('scale:', scale);
   console.log('index:', index);
   const x = 50;
   const y = 50;
   const xPadding = 5;
   const yPadding = 5;
-  const etaX = scale(dayjs(childIssue.dueDate).toDate());
+  const etaX = scale(dayjs(childIssue.due_date).toDate());
   const ySpacingBetweenItems = 20;
   const rectangleHeight = 50;
   const rectConfig = {
@@ -86,7 +86,7 @@ function RoadmapItem({
           fontSize={14}
           textAnchor='end'
         >
-          {childIssue.dueDate}
+          {childIssue.due_date}
         </text>
       </g>
     </NextLink>

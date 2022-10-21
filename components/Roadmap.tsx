@@ -36,10 +36,11 @@ export function Roadmap({ issueData }) {
   const dates =
     lists
       .map(
-        (list) => (!list?.children && [formatDate(list.dueDate)]) || list?.children?.map((v) => formatDate(v.dueDate)),
+        (list) =>
+          (!list?.children && [formatDate(list.due_date)]) || list?.children?.map((v) => formatDate(v.due_date)),
       )
       .flat()
-      .filter((v) => !!v) || lists.flatMap((v) => formatDate(v.dueDate));
+      .filter((v) => !!v) || lists.flatMap((v) => formatDate(v.due_date));
   console.log('dates ->', dates);
 
   const timelineQuantiles = getQuantiles(timelineTicks(dates));
@@ -88,7 +89,7 @@ export function Roadmap({ issueData }) {
                     <div
                       key={index}
                       style={{
-                        gridColumn: `${getClosest(issue.dueDate, timelineQuantiles)} / span 2`,
+                        gridColumn: `${getClosest(issue.due_date, timelineQuantiles)} / span 2`,
                       }}
                       className={`${styles.item} ${styles.issueItem}`}
                     >
@@ -102,7 +103,7 @@ export function Roadmap({ issueData }) {
                           <Link color='blue.500'>{issue.title}</Link>
                         </NextLink>
                       </div>
-                      <div className={styles.issueDueDate}>{issue.dueDate}</div>
+                      <div className={styles.due_date}>{issue.due_date}</div>
                       <Progress colorScheme='green' height='26px' value={20} />
                     </div>
                   </>

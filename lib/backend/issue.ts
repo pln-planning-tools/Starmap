@@ -2,14 +2,8 @@ import _ from 'lodash';
 import { getConfig } from '../parser';
 import { octokit } from './octokit';
 
-const filterDefaultFields = (obj) =>
-  _.pick(obj, ['html_url', 'title', 'state', 'node_id', 'body', 'body_html', 'body_text', 'children']);
-const metadataFromIssue = (issue) => ({ dueDate: getConfig(issue?.body_html)?.eta });
-
-const metadataFromBackend = (issue) => ({ completion_rate: 30 });
-
 const getIssue = async ({ platform, owner, repo, issue_number }) => {
-  console.log('getIssue:', { owner, repo, issue_number });
+  // console.log('getIssue:', { owner, repo, issue_number });
   try {
     const { data } = await octokit.rest.issues.get({
       mediaType: {
@@ -20,7 +14,15 @@ const getIssue = async ({ platform, owner, repo, issue_number }) => {
       issue_number,
     });
 
-    return { ...metadataFromIssue(data), ...metadataFromBackend(data), ...filterDefaultFields(data) };
+    return {
+      html_url: data.html_url,
+      title: data.title,
+      state: data.state,
+      node_id: data.node_id,
+      body: data.body,
+      body_html: data.body_html,
+      body_text: data.body_text,
+    };
   } catch (err) {
     console.error('error:', err);
   }
@@ -46,4 +48,4 @@ const getIssueWithDepth = async (issueArray, depth = 0) => {
   return await getIssue(issueArray);
 };
 
-export { getIssue, filterDefaultFields, metadataFromIssue, metadataFromBackend, getIssueWithDepth };
+export { getIssue, getIssueWithDepth };
