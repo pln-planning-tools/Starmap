@@ -20,7 +20,7 @@ interface IssueData {
 
 interface GithubIssueApiResponse {
   issueData: IssueData | null
-  error: string | null
+  error: string | Error | null
 }
 
 export {

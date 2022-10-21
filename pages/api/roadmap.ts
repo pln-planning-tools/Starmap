@@ -8,6 +8,7 @@ import {
   metadataFromBackend,
 } from '../../lib/backend/issue';
 import { getUrlParams, urlMatch } from '../../utils/general';
+import { IssueData } from '../../lib/types';
 
 const resolveChildren = async (children) => {
   console.log('resolveChildren!');
@@ -39,7 +40,7 @@ const resolveChildrenWithDepth = async (children) =>
     ),
   );
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<IssueData>) {
   console.log(`API hit: roadmap`, req.query);
   const { platform = 'github', owner, repo, issue_number } = req.query;
   const options = Object.create({});
@@ -49,7 +50,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(400).json({ message: 'URL query is missing fields' });
   }
   try {
-    const rootIssue = await getIssue({ platform, owner, repo, issue_number });
+    const { error, issueData: rootIssue } = await getIssue({ platform, owner, repo, issue_number });
+    if (error) {
+      throw error
+    }
     const childrenIssues = getChildren(rootIssue?.body_html);
 
     const toReturn = {
