@@ -50,7 +50,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   try {
     const rootIssue = await getIssue({ platform, owner, repo, issue_number });
-    const childrenIssues = getChildren(rootIssue?.body_html);
+    if (!metadataFromIssue(rootIssue).dueDate) {
+      res.status(500).json({ error: 'No due date found in issue body.', issueData: null });
+      return;
+    }
 
     const toReturn = {
       ...metadataFromIssue(rootIssue),
@@ -65,6 +68,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(200).json(toReturn);
   } catch (err) {
     console.error('error:', err);
-    res.status(404).json({ message: 'not found' });
+    res.status(404).json({ error: 'not found', issueData: null });
   }
 }
