@@ -16,6 +16,7 @@ export const getLists = (issue) => {
     .reduce((a: any, b) => {
       const listItem = Object.create({});
       listItem.title = b.previousElementSibling?.textContent?.trim();
+      // listItem.childrenIssues = [...b.querySelectorAll('a[href][data-hovercard-type*="issue"]')]?.map(
       listItem.children = [...b.querySelectorAll('a[href][data-hovercard-type*="issue"]')]?.map(
         (v: any) => v.href,
       );
