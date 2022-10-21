@@ -7,12 +7,15 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   extends: [
+    'ipfs',
     // "next/core-web-vitals",
     // 'eslint:recommended',
     // 'airbnb',
     // 'airbnb-typescript',
-    // 'plugin:@typescript-eslint/recommended',
-    // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:react-hooks/recommended',
+    'plugin:@next/next/recommended',
   ],
   rules: {
     'react/react-in-jsx-scope': 'off',
@@ -34,5 +37,8 @@ module.exports = {
     'object-curly-newline': 'off',
     'implicit-arrow-linebreak': 'off',
     'jsx-a11y/alt-text': 'off',
+    'comma-dangle': ['error', 'always-multiline'],
+    '@typescript-eslint/naming-convention': 'off',
+    '@typescript-eslint/strict-boolean-expressions': 'warn',
   },
-};
+}
