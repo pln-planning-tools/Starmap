@@ -1,7 +1,6 @@
 import * as d3 from 'd3';
-import dayjs from 'dayjs';
 import _ from 'lodash';
-import { Match, match } from 'path-to-regexp';
+import { match } from 'path-to-regexp';
 
 export const TEN_DAYS_IN_SECONDS = 864000;
 

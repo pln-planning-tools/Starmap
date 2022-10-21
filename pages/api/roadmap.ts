@@ -7,7 +7,6 @@ import { getChildren, getConfig } from '../../lib/parser';
 import { getUrlParams } from '../../utils/general';
 
 const resolveChildren = async (children) => {
-  // console.log('resolveChildren!');
   const allSettled = await Promise.allSettled(children.map((child) => getIssue({ ...getUrlParams(child.html_url) })));
   return allSettled.map((v) => v.status == 'fulfilled' && v.value);
 };
@@ -19,7 +18,6 @@ const resolveChildrenWithDepth = async (children) =>
       data.map(async (current) => {
         depth = depth + 1;
         const childrenOfChildren = getChildren(current.body_html);
-        // console.log('childrenOfChildren:', childrenOfChildren);
         return {
           ...current,
           children:
@@ -29,7 +27,6 @@ const resolveChildrenWithDepth = async (children) =>
     ).then((data) =>
       data
         .map((v) => {
-          // console.log('v:', v);
           return v.status == 'fulfilled' && v.value;
         })
         .map((x) => ({ ...x, children: x.children })),
@@ -37,18 +34,13 @@ const resolveChildrenWithDepth = async (children) =>
   );
 
 const addCompletionRate = (data) => {
-  // console.log('data:', data);
   const issueStats = Object.create({});
   issueStats.total = data?.length;
   issueStats.open = data?.filter((v) => v.state == 'open')?.length;
   issueStats.closed = data?.filter((v) => v.state == 'closed')?.length;
   issueStats.completionRate = Number(issueStats.closed / issueStats.total) * 100 || 0;
-  // console.log('issueStats:', issueStats);
 
   return issueStats.completionRate;
-  // return Number(
-  //   Number(response?.children?.filter((v) => v.state == 'open')?.length / response?.children?.length) * 100,
-  // );
 };
 
 const addDueDates = ({ body_html }) => getConfig(body_html)?.eta;
@@ -56,8 +48,6 @@ const addDueDates = ({ body_html }) => getConfig(body_html)?.eta;
 const addToChildren = (data, parent) => {
   if (_.isArray(data) && data.length > 0) {
     return data.map((item) => {
-      // console.log('item.children:', item.children);
-      // console.log('rest:', rest);
       return {
         completion_rate: addCompletionRate(item.children),
         due_date: addDueDates(item),
@@ -95,7 +85,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const toReturn = {
-      // due_date: getConfig(rootIssue?.body_html)?.eta,
       ...rootIssue,
       children: await resolveChildrenWithDepth(getChildren(rootIssue?.body_html)),
     };
