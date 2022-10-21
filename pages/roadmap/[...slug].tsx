@@ -42,7 +42,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
   return (
     <>
-      <PageHeader />
+      {/* <PageHeader /> */}
       <Box p={5}>
         {!!error && <Box color='red.500'>{error}</Box>}
         {!!issueData && <NewRoadmap issueData={issueData} isLocal={isLocal} />}

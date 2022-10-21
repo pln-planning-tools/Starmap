@@ -1,16 +1,12 @@
 import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
-import Head from 'next/head';
+import PageHeader from '../components/layout/PageHeader';
 
 function App({ Component, pageProps }) {
   return (
     <>
-      <Head>
-        <title>Roadmapping | Nikas</title>
-        <meta name='description' content='Roadmapping tool' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
       <ChakraProvider>
+        <PageHeader />
         <Component {...pageProps} />
       </ChakraProvider>
     </>
