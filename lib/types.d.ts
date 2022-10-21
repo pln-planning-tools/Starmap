@@ -1,30 +1,22 @@
 enum IssueStates {
   Open = 'open',
-  Closed = 'closed'
-}
-interface ListItem {
-  childrenIssues: IssueData[]
-  title: string
+  Closed = 'closed',
 }
 
 interface IssueData {
-  html_url: string
-  lists: ListItem[]
-  node_id: string
-  state: IssueStates
-  title: string
-  dueDate?: string
-  parent_html_url: string
-  percent_done: number
+  html_url: string;
+  children: IssueData[IssueData];
+  node_id: string;
+  state: IssueStates;
+  title: string;
+  dueDate?: string;
+  parent_html_url?: string;
+  completion_rate: number;
 }
 
 interface GithubIssueApiResponse {
-  issueData: IssueData | null
-  error: string | null
+  issueData: IssueData | null;
+  error: string | null;
 }
 
-export {
-  GithubIssueApiResponse,
-  IssueData,
-  IssueStates,
-}
+export { GithubIssueApiResponse, IssueData, IssueStates };

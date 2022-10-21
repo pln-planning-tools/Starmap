@@ -3,9 +3,7 @@ import { Box } from '@chakra-ui/react';
 
 import { addHttpsIfNotLocal } from '../../utils/general';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
-import { GithubIssueApiResponse } from '../../lib/types';
 import PageHeader from '../../components/layout/PageHeader';
-
 
 // const BASE_URL = 'http://localhost:3000';
 const BASE_URL = addHttpsIfNotLocal(process.env.NEXT_PUBLIC_VERCEL_URL);
@@ -17,22 +15,16 @@ export async function getServerSideProps(context) {
   console.log('inside roadmap page | getServerSideProps()');
   // console.dir(context, { depth: Infinity, maxArrayLength: Infinity });
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
-  const res = await fetch(
-    new URL(
-      `/api/github-issue?depth=1&url=${new URL(`${owner}/${repo}/issues/${issue_number}`, 'https://github.com')}`,
-      BASE_URL,
-    ),
-  );
-  const {error, issueData} = await res.json() as GithubIssueApiResponse;
-  // console.log(`props: `, props);
-  // console.dir(issueData, { depth: Infinity, maxArrayLength: Infinity });
+  const res = await fetch(new URL(`/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`, BASE_URL));
+  const response = await res.json();
+  // console.log('response:', response);
 
   return {
     props: {
-      error,
-      issueData,
-      isLocal: process.env.IS_LOCAL === 'true'
-    }
+      error: response.error || null,
+      issueData: response.data || null,
+      isLocal: process.env.IS_LOCAL === 'true',
+    },
   };
 }
 
@@ -44,7 +36,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
     <>
       <PageHeader />
       <Box p={5}>
-        {!!error && <Box color='red.500'>{error}</Box>}
+        {!!error && <Box color='red.500'>{error.message}</Box>}
         {!!issueData && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
         {/* {!!issueData && <Roadmap issueData={issueData} />} */}
       </Box>
