@@ -5,9 +5,6 @@ const getRange = (dates: any[]) => {
   const max = d3.max(dates);
   const count = 9;
   const ticks = d3.utcTicks(min, max, count);
-  // var x = d3.scaleUtc().domain([-1, 1]).range([min, max]);
-  // var xTicks = x.ticks(5);
-  // console.log('ticks ->', xTicks);
   const quantiles = [
     d3.quantile(ticks, 0),
     d3.quantile(ticks, 0.1),
@@ -21,7 +18,6 @@ const getRange = (dates: any[]) => {
     d3.quantile(ticks, 0.9),
     d3.quantile(ticks, 1),
   ];
-  console.log('quantiles ->', quantiles);
   return ticks;
 };
 
