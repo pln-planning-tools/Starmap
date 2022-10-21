@@ -16,12 +16,13 @@ export async function getServerSideProps(context) {
   // console.dir(context, { depth: Infinity, maxArrayLength: Infinity });
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
   const res = await fetch(new URL(`/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`, BASE_URL));
-  const issueData = await res.json();
+  const response = await res.json();
+  // console.log('response:', response);
 
   return {
     props: {
-      error: null,
-      issueData,
+      error: response.error || null,
+      issueData: response.data || null,
       isLocal: process.env.IS_LOCAL === 'true',
     },
   };
@@ -35,7 +36,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
     <>
       <PageHeader />
       <Box p={5}>
-        {!!error && <Box color='red.500'>{error}</Box>}
+        {!!error && <Box color='red.500'>{error.message}</Box>}
         {!!issueData && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
         {/* {!!issueData && <Roadmap issueData={issueData} />} */}
       </Box>
