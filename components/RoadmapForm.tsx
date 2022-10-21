@@ -48,13 +48,15 @@ export function RoadmapForm() {
         }}
       >
           <Input
+            color={'black'}
             aria-label='Issue URL'
             name='issue-url'
             autoComplete='url'
             onChange={(e) => setCurrentIssueUrl(e.target.value)}
-            placeholder='Jump to https://github.com/...'
+            placeholder='https://github.com/...'
             size='sm'
-            bg='#BDBFF0'
+            bg='white'
+            // TODO: round corners
           />
       </form>
     </>

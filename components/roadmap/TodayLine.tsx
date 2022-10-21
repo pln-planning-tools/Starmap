@@ -7,7 +7,13 @@ function TodayLine({scale, height}: {scale: ScaleTime<number, number>, height: n
   const weekTicks = useWeekTicks();
   const todayX = scale(dayjs().toDate())
 
-  return <line x1={todayX} x2={todayX} y1={0} y2={height} strokeWidth={2} stroke={'gray'} />;
+  return (
+    <g>
+      <text dominantBaseline="text-before-edge" x={todayX-20} y={0} dy={'.05em'} fontSize={16} textAnchor="center" color="blue">Today</text>
+
+      <line x1={todayX} x2={todayX} y1={20} y2={height} strokeWidth={2} stroke={'blue'} strokeDasharray="10" />
+    </g>
+  )
 }
 
 export default TodayLine

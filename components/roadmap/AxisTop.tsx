@@ -15,9 +15,11 @@ function AxisTop({ scale, transform }: AxisTopProps) {
 
   useEffect(() => {
     if (ref.current) {
-      const axis = axisTop(scale).tickSizeInner(-20)
+      const axis = axisTop(scale)
+        .tickSizeInner(-20)
         .ticks(timeWeek.every(numWeeks))
         .tickFormat((d) => dayjs(d.toString()).format('YYYY MMM DD'))
+        // change size of ticks text
 
       select(ref.current).call(axis);
     }
