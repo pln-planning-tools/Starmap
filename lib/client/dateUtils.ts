@@ -7,6 +7,4 @@ const getClosest = (dueDate, dates) => {
   return (closest > 1 && closest) || 2;
 };
 
-export {
-  getClosest
-}
+export { getClosest };
