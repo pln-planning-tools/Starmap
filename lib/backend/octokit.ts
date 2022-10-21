@@ -3,7 +3,6 @@ import { throttling } from '@octokit/plugin-throttling';
 import { Octokit } from '@octokit/rest';
 
 const auth = process.env.PLN_ADMIN_GITHUB_TOKEN;
-// console.log(`auth: `, auth);
 if (!auth) {
   throw new Error('PLN_ADMIN_GITHUB_TOKEN environmental variable not set. It is required.');
 }

@@ -1,6 +1,6 @@
 enum IssueStates {
-  Open = 'open',
   Closed = 'closed',
+  Open = 'open',
 }
 
 interface IssueData {
