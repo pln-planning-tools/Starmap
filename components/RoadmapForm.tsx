@@ -25,7 +25,9 @@ export function RoadmapForm() {
 
       const { owner, repo, issue_number } = urlMatch(new URL(issueUrl).pathname).params;
       setIssueUrl(null);
-      router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}`).then(() => setIsLoading(false));
+      router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}`)
+        .catch((err) => {console.error('Error updating router state:', err)})
+        .finally(() => setIsLoading(false))
     }
   }, [router, issueUrl]);
 

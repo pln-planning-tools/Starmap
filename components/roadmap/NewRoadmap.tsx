@@ -13,6 +13,14 @@ import WeekTicksSelector from './WeekTicksSelector';
 
 function NewRoadmap ({issueData, isLocal}: {issueData: IssueData | false, isLocal: boolean}) {
   const ref = useRef(null);
+  const [maxW, setMaxW] = useState(1000);
+  const [maxH, setMaxH] = useState(500);
+  const isLoading = useIsLoading()
+
+  useEffect(() => {
+    setMaxW(window.innerWidth);
+    setMaxH(window.innerHeight/2);
+  }, [])
 
   if (!issueData) return null;
   const {lists} = issueData
@@ -26,13 +34,6 @@ function NewRoadmap ({issueData, isLocal}: {issueData: IssueData | false, isLoca
 
   const dates = issues.map(issue => issue.dueDate).filter((dateString) => !!dateString);
   const childrenIssues: IssueData[] = issues
-  const [maxW, setMaxW] = useState(1000);
-  const [maxH, setMaxH] = useState(500);
-
-  useEffect(() => {
-    setMaxW(window.innerWidth);
-    setMaxH(window.innerHeight/2);
-  }, [])
 
   const dayjsDates = dates.map((date) => dayjs(date))
   const startDate = dayjs().subtract(3, 'months')
@@ -43,7 +44,6 @@ function NewRoadmap ({issueData, isLocal}: {issueData: IssueData | false, isLoca
   const margin = { top: 0, right: 0, bottom: 20, left: 0 };
   const width = maxW - margin.left - margin.right;
   const height = maxH - margin.top - margin.bottom;
-  const isLoading = useIsLoading()
 
   const scaleX = scaleTime().domain([earliestEta.subtract(minMaxDiff/4, 'days').toDate(), latestEta.add(minMaxDiff/6, 'days').toDate()]).range([0, width])
 

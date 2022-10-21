@@ -13,6 +13,7 @@ const useSharedHook = <T>(hook: typeof useState, state: T): UseSharedHookReturnT
   const client = () => {
     const [clientState, setter] = hook(state)
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       listeners.add(setter)
       return () => {
