@@ -4,19 +4,19 @@ enum IssueStates {
 }
 
 interface IssueData {
-  html_url: string;
   children: IssueData[IssueData];
+  completion_rate: number;
+  due_date?: string;
+  html_url: string;
   node_id: string;
+  parent: IssueData[IssueData];
   state: IssueStates;
   title: string;
-  dueDate?: string;
-  parent_html_url?: string;
-  completion_rate: number;
 }
 
 interface GithubIssueApiResponse {
-  issueData: IssueData | null;
   error: string | null;
+  issueData: IssueData | null;
 }
 
 export { GithubIssueApiResponse, IssueData, IssueStates };
