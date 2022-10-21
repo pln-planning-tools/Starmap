@@ -1,9 +1,10 @@
 import type { InferGetServerSidePropsType } from 'next';
+
 import { Box } from '@chakra-ui/react';
 
-import { addHttpsIfNotLocal } from '../../utils/general';
-import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import PageHeader from '../../components/layout/PageHeader';
+import NewRoadmap from '../../components/roadmap/NewRoadmap';
+import { addHttpsIfNotLocal } from '../../utils/general';
 
 // const BASE_URL = 'http://localhost:3000';
 const BASE_URL = addHttpsIfNotLocal(process.env.NEXT_PUBLIC_VERCEL_URL);
