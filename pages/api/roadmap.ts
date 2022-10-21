@@ -4,10 +4,10 @@ import _ from 'lodash';
 
 import { getIssue } from '../../lib/backend/issue';
 import { getChildren, getConfig } from '../../lib/parser';
-import { getUrlParams } from '../../utils/general';
+import { paramsFromUrl } from '../../utils/general';
 
 const resolveChildren = async (children) => {
-  const allSettled = await Promise.allSettled(children.map((child) => getIssue({ ...getUrlParams(child.html_url) })));
+  const allSettled = await Promise.allSettled(children.map((child) => getIssue({ ...paramsFromUrl(child.html_url) })));
   return allSettled.map((v) => v.status == 'fulfilled' && v.value);
 };
 
