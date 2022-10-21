@@ -38,14 +38,14 @@ function NewRoadmap ({issueData, isLocal}: {issueData: IssueData | false, isLoca
   const startDate = dayjs().subtract(3, 'months')
   const endDate = dayjs().add(3, 'months')
   const earliestEta = dayjs.min(dayjsDates) ?? startDate;
-  const latestEta = dayjs.max(dayjsDates) ?? endDate;
-  const minMaxDiff = Math.max(latestEta.diff(earliestEta, 'days'), 30)
+  const latestEta = dayjs.max(dayjsDates.concat(dayjs())) ?? endDate;
+  const minMaxDiff = Math.max(latestEta.diff(earliestEta, 'days'), 10)
   const margin = { top: 0, right: 0, bottom: 20, left: 0 };
   const width = maxW - margin.left - margin.right;
   const height = maxH - margin.top - margin.bottom;
   const isLoading = useIsLoading()
 
-  const scaleX = scaleTime().domain([earliestEta.subtract(minMaxDiff/2, 'days').toDate(), latestEta.add(minMaxDiff/2, 'days').toDate()]).range([0, width])
+  const scaleX = scaleTime().domain([earliestEta.subtract(minMaxDiff/4, 'days').toDate(), latestEta.add(minMaxDiff/6, 'days').toDate()]).range([0, width])
 
   if (isLoading) {
     return (
@@ -58,12 +58,13 @@ function NewRoadmap ({issueData, isLocal}: {issueData: IssueData | false, isLoca
   return (
     <>
       <RoadmapHeader issueData={issueData}/>
-      {isLocal && <WeekTicksSelector />}
+      {/* {isLocal && <WeekTicksSelector />} */}
       <svg
         ref={ref}
-        width={'90vw'}
+        width={'100vw'}
         height={height + margin.top + margin.bottom}
       >
+        <rect x={0} y={50} width={maxW} height={maxH} fill={'#F8FCFF'}></rect>
         <AxisTop scale={scaleX} transform={`translate(0, ${margin.top + 50})`} />
         <TodayLine scale={scaleX} height={height} />
         {childrenIssues.map((childIssue, index) => (<RoadmapItem index={index} scale={scaleX} childIssue={childIssue} />))}
