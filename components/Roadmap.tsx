@@ -83,7 +83,7 @@ export function Roadmap({ issueData }) {
                     )}
                   </div>
                 </div>
-                {((!!list?.childrenIssues && list?.childrenIssues) || [list]).map((issue, index) => (
+                {((!!list?.children && list?.children) || [list]).map((issue, index) => (
                   <>
                     <div
                       key={index}
