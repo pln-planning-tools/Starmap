@@ -1,4 +1,5 @@
 import { parseHTML } from 'linkedom';
+
 import { getEtaDate } from '../utils/regexes';
 
 export const getConfig = (issue) => {

@@ -49,7 +49,7 @@
 }
 
 .groupWrapper:nth-child(odd) {
-  background: #e0e7ff
+  background: #e0e7ff;
 }
 .groupWrapper:nth-child(even) {
   background: #f5f3ff;

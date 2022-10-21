@@ -1,6 +1,6 @@
-import { Octokit } from '@octokit/rest';
 import { retry } from '@octokit/plugin-retry';
 import { throttling } from '@octokit/plugin-throttling';
+import { Octokit } from '@octokit/rest';
 
 const auth = process.env.PLN_ADMIN_GITHUB_TOKEN;
 // console.log(`auth: `, auth);

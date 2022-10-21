@@ -1,17 +1,19 @@
-import { Box, Text, Link, Progress } from '@chakra-ui/react';
-import React from 'react';
 import NextLink from 'next/link';
-import { match } from 'path-to-regexp';
-import styles from './Roadmap.module.css';
-import { closestIndexTo, format, formatISO, max, min, toDate } from 'date-fns';
 
+import { Box, Link, Progress, Text } from '@chakra-ui/react';
+import { closestIndexTo, format, formatISO, max, min, toDate } from 'date-fns';
 import _ from 'lodash';
-import { addOffset, formatDate, toTimestamp, urlMatch } from '../utils/general';
-import { getRange } from '../lib/client/getRange';
-import { getQuantiles } from '../lib/client/getQuantiles';
-import { dayjs } from '../lib/client/dayjs';
-import { timelineTicks } from '../lib/client/timelineTicks';
+import { match } from 'path-to-regexp';
+import React from 'react';
+
 import { getClosest } from '../lib/client/dateUtils';
+import { dayjs } from '../lib/client/dayjs';
+import { getQuantiles } from '../lib/client/getQuantiles';
+import { getRange } from '../lib/client/getRange';
+import { timelineTicks } from '../lib/client/timelineTicks';
+
+import { addOffset, formatDate, toTimestamp, urlMatch } from '../utils/general';
+import styles from './Roadmap.module.css';
 
 const getUrlPathname = (url) => {
   try {

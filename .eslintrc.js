@@ -13,6 +13,7 @@ module.exports = {
     // 'airbnb-typescript',
     // 'plugin:@typescript-eslint/recommended',
     // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'prettier',
   ],
   rules: {
     'react/react-in-jsx-scope': 'off',
