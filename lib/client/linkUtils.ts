@@ -1,8 +1,8 @@
-import { urlMatch } from '../../utils/general';
+import { slugsFromUrl } from '../../utils/general';
 import { IssueData } from '../types';
 
 function getLinkForRoadmapChild(issueData: IssueData): string {
-  const urlM = urlMatch(new URL(issueData.html_url).pathname) as {
+  const urlM = slugsFromUrl(new URL(issueData.html_url).pathname) as {
     params: { owner: string; repo: string; issue_number: string };
   };
   // const { id, type } = roadmapChild;

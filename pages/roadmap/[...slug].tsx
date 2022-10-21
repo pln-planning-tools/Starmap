@@ -9,6 +9,7 @@ import { API_URL } from '../../config/constants';
 export async function getServerSideProps(context) {
   console.log('inside roadmap page | getServerSideProps()');
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
+  console.log('API_URL:', API_URL);
   const res = await fetch(new URL(`${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}`));
   const response = await res.json();
 

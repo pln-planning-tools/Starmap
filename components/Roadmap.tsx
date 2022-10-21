@@ -1,6 +1,7 @@
 import NextLink from 'next/link';
 
 import { Box, Link, Progress, Text } from '@chakra-ui/react';
+
 import { closestIndexTo, format, formatISO, max, min, toDate } from 'date-fns';
 import _ from 'lodash';
 import { match } from 'path-to-regexp';
@@ -12,7 +13,7 @@ import { getQuantiles } from '../lib/client/getQuantiles';
 import { getRange } from '../lib/client/getRange';
 import { timelineTicks } from '../lib/client/timelineTicks';
 
-import { addOffset, formatDate, toTimestamp, urlMatch } from '../utils/general';
+import { addOffset, formatDate, slugsFromUrl, toTimestamp } from '../utils/general';
 import styles from './Roadmap.module.css';
 
 const getUrlPathname = (url) => {
@@ -76,9 +77,9 @@ export function Roadmap({ issueData }) {
                   <div>
                     {!!showGroupRowTitle && (
                       <NextLink
-                        href={`/roadmap/github.com/${urlMatch(getUrlPathname(issueData.html_url)).params.owner}/${
-                          urlMatch(getUrlPathname(issueData.html_url)).params.repo
-                        }/issues/${urlMatch(getUrlPathname(issueData.html_url)).params.issue_number}`}
+                        href={`/roadmap/github.com/${slugsFromUrl(getUrlPathname(issueData.html_url)).params.owner}/${
+                          slugsFromUrl(getUrlPathname(issueData.html_url)).params.repo
+                        }/issues/${slugsFromUrl(getUrlPathname(issueData.html_url)).params.issue_number}`}
                         passHref
                       >
                         <Link color='blue.500'>{list.title}</Link>
@@ -97,9 +98,9 @@ export function Roadmap({ issueData }) {
                     >
                       <div>
                         <NextLink
-                          href={`/roadmap/github.com/${urlMatch(getUrlPathname(issue.html_url)).params.owner}/${
-                            urlMatch(getUrlPathname(issue.html_url)).params.repo
-                          }/issues/${urlMatch(getUrlPathname(issue.html_url)).params.issue_number}`}
+                          href={`/roadmap/github.com/${slugsFromUrl(getUrlPathname(issue.html_url)).params.owner}/${
+                            slugsFromUrl(getUrlPathname(issue.html_url)).params.repo
+                          }/issues/${slugsFromUrl(getUrlPathname(issue.html_url)).params.issue_number}`}
                           passHref
                         >
                           <Link color='blue.500'>{issue.title}</Link>
