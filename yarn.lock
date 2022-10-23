@@ -1748,7 +1748,7 @@
 
 "@octokit/types@^8.0.0":
   version "8.0.0"
-  resolved "https://registry.npmjs.org/@octokit/types/-/types-8.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/@octokit/types/-/types-8.0.0.tgz#93f0b865786c4153f0f6924da067fe0bb7426a9f"
   integrity sha512-65/TPpOJP1i3K4lBJMnWqPUJ6zuOtzhtagDvydAWbEXpbFYA0oMKKyLb95NFZZP0lSh/4b6K+DQlzvYQJQQePg==
   dependencies:
     "@octokit/openapi-types" "^14.0.0"

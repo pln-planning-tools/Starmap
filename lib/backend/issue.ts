@@ -22,6 +22,7 @@ const getIssue = async ({ platform, owner, repo, issue_number }) => {
     };
   } catch (err) {
     console.error('error:', err);
+    return null;
   }
 };
 

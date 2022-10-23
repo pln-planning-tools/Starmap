@@ -4,9 +4,13 @@ enum IssueStates {
 }
 
 interface IssueData {
+  body_html: string;
+  body_text: string;
+  body: string;
   children: IssueData[IssueData];
   completion_rate: number;
   due_date?: string;
+  group: string;
   html_url: string;
   node_id: string;
   parent: IssueData[IssueData];
@@ -14,9 +18,14 @@ interface IssueData {
   title: string;
 }
 
-interface GithubIssueApiResponse {
-  error: string | null;
-  issueData: IssueData | null;
+interface RoadmapApiResponse {
+  data?: IssueData;
+  error?: { code: string; message: string };
 }
 
-export { GithubIssueApiResponse, IssueData, IssueStates };
+interface ParserGetChildrenResponse {
+  html_url: string;
+  group: string;
+}
+
+export { RoadmapApiResponse, IssueData, IssueStates, ParserGetChildrenResponse };
