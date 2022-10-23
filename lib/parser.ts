@@ -1,8 +1,9 @@
 import { parseHTML } from 'linkedom';
 
 import { getEtaDate } from '../utils/regexes';
+import { IssueData, ParserGetChildrenResponse } from './types';
 
-export const getConfig = (issue) => {
+export const getConfig = (issue: IssueData['body_html']) => {
   const { document } = parseHTML(issue);
   const issueText = [...document.querySelectorAll('*')].map((v) => v.textContent).join('\n');
   return {
@@ -10,21 +11,24 @@ export const getConfig = (issue) => {
   };
 };
 
-export const getChildren = (issue) => {
+export const getChildren = (issue: string): ParserGetChildrenResponse[] => {
   const { document } = parseHTML(issue);
   const ulLists = [...document.querySelectorAll('ul')];
-  const firstUlList = ulLists.slice(0, 1);
-  const children = firstUlList
+  const children = ulLists
     .reduce((a: any, b) => {
-      const hrefs = [...b.querySelectorAll('a[href][data-hovercard-type*="issue"]')]?.map((v: any) => v.href);
+      const listTitle = b.previousElementSibling?.textContent?.trim();
+      const hrefSelector = [...b.querySelectorAll('a[href][data-hovercard-type*="issue"]')];
+      const listHrefs = hrefSelector?.map((v: any) => v.href);
 
-      return [...a, hrefs];
+      return [...a, { group: listTitle, hrefs: listHrefs }];
     }, [])
     .flat()
-    .map((v) => ({
-      html_url: v,
-    }));
-  const childrenDepth = children.filter((v) => v.children?.length > 0)?.length;
+    .map((item) => {
+      return item.hrefs.map((href) => {
+        return { html_url: href, group: item.group };
+      });
+    })
+    .flat();
 
   return [...children];
 };
