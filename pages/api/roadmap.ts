@@ -56,7 +56,7 @@ const addCompletionRate = (data) => {
   issueStats.total = data.length;
   issueStats.open = data.filter((v) => v.state == 'open').length;
   issueStats.closed = data.filter((v) => v.state == 'closed').length;
-  issueStats.completionRate = Number(issueStats.closed / issueStats.total) * 100 || 0;
+  issueStats.completionRate = Number(Number(issueStats.closed / issueStats.total) * 100 || 0).toFixed(2);
 
   return issueStats.completionRate;
 };
