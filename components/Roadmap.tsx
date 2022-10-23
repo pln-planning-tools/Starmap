@@ -26,8 +26,9 @@ const getUrlPathname = (url) => {
   }
 };
 
-export function Roadmap({ issueData }) {
+export function Roadmap({ issueData, groupBy }) {
   // const showGroupRowTitle = !!(issueData.children.length > 1);
+  console.log('issueData:', issueData);
   const showGroupRowTitle = false;
   console.log('showGroupRowTitle: ', showGroupRowTitle);
   const hideMilestonesWithoutDate = true;
@@ -48,6 +49,7 @@ export function Roadmap({ issueData }) {
 
   const timelineQuantiles = getQuantiles(timelineTicks(dates));
 
+  // console.log('issueData:', issueData);
   return (
     <>
       <Box className={styles.timelineBox}>
@@ -71,48 +73,54 @@ export function Roadmap({ issueData }) {
           ))}
           {!!issueData &&
             // @ts-ignore
-            lists.map((list, index) => (
-              <div key={index} className={`${styles.nested} ${styles.subgrid} ${styles.groupWrapper}`}>
-                <div className={`${styles.item} ${styles.group}`}>
-                  <div>
-                    {!!showGroupRowTitle && (
-                      <NextLink
-                        href={`/roadmap/github.com/${slugsFromUrl(getUrlPathname(issueData.html_url)).params.owner}/${
-                          slugsFromUrl(getUrlPathname(issueData.html_url)).params.repo
-                        }/issues/${slugsFromUrl(getUrlPathname(issueData.html_url)).params.issue_number}`}
-                        passHref
-                      >
-                        <Link color='blue.500'>{list.title}</Link>
-                      </NextLink>
-                    )}
-                  </div>
-                </div>
-                {((!!list?.children && list?.children) || [list]).map((issue, index) => (
-                  <>
-                    <div
-                      key={index}
-                      style={{
-                        gridColumn: `${getClosest(issue.due_date, timelineQuantiles)} / span 2`,
-                      }}
-                      className={`${styles.item} ${styles.issueItem}`}
-                    >
-                      <div>
+            lists.map((list, index) => {
+              // console.log('list:', list);
+              return (
+                <div key={index} className={`${styles.nested} ${styles.subgrid} ${styles.groupWrapper}`}>
+                  <div className={`${styles.item} ${styles.group}`}>
+                    <div>
+                      {!!showGroupRowTitle && (
                         <NextLink
-                          href={`/roadmap/github.com/${slugsFromUrl(getUrlPathname(issue.html_url)).params.owner}/${
-                            slugsFromUrl(getUrlPathname(issue.html_url)).params.repo
-                          }/issues/${slugsFromUrl(getUrlPathname(issue.html_url)).params.issue_number}`}
+                          href={`/roadmap/github.com/${slugsFromUrl(getUrlPathname(issueData.html_url)).params.owner}/${
+                            slugsFromUrl(getUrlPathname(issueData.html_url)).params.repo
+                          }/issues/${slugsFromUrl(getUrlPathname(issueData.html_url)).params.issue_number}`}
                           passHref
                         >
-                          <Link color='blue.500'>{issue.title}</Link>
+                          <Link color='blue.500'>{list.title}</Link>
                         </NextLink>
-                      </div>
-                      <div className={styles.due_date}>{issue.due_date}</div>
-                      <Progress colorScheme='green' height='26px' value={20} />
+                      )}
                     </div>
-                  </>
-                ))}
-              </div>
-            ))}
+                  </div>
+                  {((!!list.children && list.children.length > 0 && list.children) || [list]).map((issue, index) => {
+                    // console.log('issue:', issue);
+                    return (
+                      <>
+                        <div
+                          key={index}
+                          style={{
+                            gridColumn: `${getClosest(issue.due_date, timelineQuantiles)} / span 2`,
+                          }}
+                          className={`${styles.item} ${styles.issueItem}`}
+                        >
+                          <div>
+                            <NextLink
+                              href={`/roadmap/github.com/${slugsFromUrl(getUrlPathname(issue.html_url)).params.owner}/${
+                                slugsFromUrl(getUrlPathname(issue.html_url)).params.repo
+                              }/issues/${slugsFromUrl(getUrlPathname(issue.html_url)).params.issue_number}`}
+                              passHref
+                            >
+                              <Link color='blue.500'>{issue.title}</Link>
+                            </NextLink>
+                          </div>
+                          <div className={styles.due_date}>{issue.due_date}</div>
+                          <Progress colorScheme='green' height='26px' value={20} />
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+              );
+            })}
         </div>
       </Box>
     </>
