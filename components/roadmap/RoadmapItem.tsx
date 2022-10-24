@@ -33,7 +33,8 @@ function RoadmapItem({
     height: 80,
     strokeWidth: 2,
   };
-  const minimumY = 90;
+  const minimumY = 20;
+  // TODO: sgtpooki: increase distance of first item from top axis
   const yLocation = Math.max(y + yPadding + ((rectConfig.height + ySpacingBetweenItems) * index + 1), minimumY);
   const textPadding = 10;
   const rxSize = 10;
