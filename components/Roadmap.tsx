@@ -64,14 +64,15 @@ function GroupItem({ showGroupRowTitle, issueData, group }) {
     <div className={`${styles.item} ${styles.group}`}>
       <div>
         {!!showGroupRowTitle && (
-          <NextLink
-            href={`/roadmap/github.com/${slugsFromUrl(getUrlPathname(issueData.html_url)).params.owner}/${
-              slugsFromUrl(getUrlPathname(issueData.html_url)).params.repo
-            }/issues/${slugsFromUrl(getUrlPathname(issueData.html_url)).params.issue_number}`}
-            passHref
-          >
-            <Link color='blue.500'>{group.groupName}</Link>
-          </NextLink>
+          // <NextLink
+          //   href={`/roadmap/github.com/${slugsFromUrl(getUrlPathname(issueData.html_url)).params.owner}/${
+          //     slugsFromUrl(getUrlPathname(issueData.html_url)).params.repo
+          //   }/issues/${slugsFromUrl(getUrlPathname(issueData.html_url)).params.issue_number}`}
+          //   passHref
+          // >
+          //   <Link color='blue.500'>{group.groupName}</Link>
+          // </NextLink>
+          <Text>{group.groupName}</Text>
         )}
       </div>
     </div>
@@ -95,7 +96,7 @@ function GridRow({
         // background: `linear-gradient(to right, #e9c8ff ${Number(milestone.completion_rate.toString()).toFixed(
         //   0,
         // )}%, white ${100 - milestone.completion_rate}%)`,
-        background: `linear-gradient(90deg, #ddcaff ${parseInt(
+        background: `linear-gradient(90deg, rgba(166, 255, 168, 0.4) ${parseInt(
           milestone.completion_rate.toString(0),
         )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(0))}%)`,
       }}
@@ -113,7 +114,7 @@ function GridRow({
           </Link>
         </NextLink>
       </div>
-      <div className={styles.due_date}>{milestone.due_date}</div>
+      <div className={styles.milestoneDate}>{milestone.due_date}</div>
       {/* <Progress colorScheme='green' height='26px' value={milestone.completion_rate} /> */}
       {/* <progress value='70' max='100'></progress> */}
       {/* <span className={styles.progress} /> */}
@@ -124,19 +125,22 @@ function GridRow({
 function Grid({ children, ticks }) {
   return (
     <div
-      style={{ gridTemplateColumns: `repeat(${ticks.length + 1}, minmax(10px, 1fr))`, marginTop: '15px' }}
+      // style={{ gridTemplateColumns: `repeat(${ticks.length + 1}, minmax(10px, 1fr))`, marginTop: '15px' }}
+      style={{ gridTemplateColumns: `repeat(${ticks.length}, minmax(10px, 1fr))`, marginTop: '15px' }}
       className={styles.grid}
     >
+      <div className={styles.todayMarkerWrapper}>
+        <div className={styles.todayMarker} style={{ gridColumn: '1/-1' }} />
+        <div className={styles.todayMarkerText}>Today</div>
+      </div>
       {children}
     </div>
   );
 }
 
-function GroupWrapper({ children, index, cssName = '' }) {
+function GroupWrapper({ children, cssName = '' }) {
   return (
-    <div key={index} className={`${styles.nested} ${styles.subgrid} ${styles.groupWrapper} ${styles[cssName]}`}>
-      {children}
-    </div>
+    <div className={`${styles.nested} ${styles.subgrid} ${styles.groupWrapper} ${styles[cssName]}`}>{children}</div>
   );
 }
 
@@ -178,13 +182,13 @@ export function Roadmap({ issueData, groupBy }: { issueData: IssueData; groupBy:
       <Box className={styles.timelineBox}>
         {!!issueData && <Header issueData={issueData} />}
         <Grid ticks={quarterTicks}>
-          <FirstHeaderItem />
+          {/* <FirstHeaderItem /> */}
           {quarterTicks.map((tick, index) => (
             <GridHeader ticks={tick} index={index} />
           ))}
-          <GroupWrapper cssName='timelineHeaderLineWrapper' index={1}>
+          <GroupWrapper cssName='timelineHeaderLineWrapper'>
             <GridItem style={{ gridRow: '2/span 1' }} className={styles.timelineHeaderLine} />
-            <div></div>
+            {/* <div></div> */}
             <div className={styles.timelineTick}></div>
             <div className={styles.timelineTick}></div>
             <div className={styles.timelineTick}></div>
@@ -196,7 +200,7 @@ export function Roadmap({ issueData, groupBy }: { issueData: IssueData; groupBy:
               // console.log('group:', group);
 
               return (
-                <GroupWrapper index={index}>
+                <GroupWrapper>
                   <GroupItem showGroupRowTitle={showGroupRowTitle} issueData={issueData} group={group} />
                   {!!group.items &&
                     _.sortBy(group.items, ['title']).map((item, index) => {
