@@ -68,18 +68,23 @@
   margin-top: 20px;
 }
 
-.groupWrapper:nth-child(odd) {
+.groupWrapper:nth-child(odd):not(.timelineHeaderLineWrapper) {
   background: rgba(215, 228, 253, 0.5);
 }
-.groupWrapper:nth-child(odd) p {
+.groupWrapper:nth-child(odd):not(.timelineHeaderLineWrapper) p {
   color: rgba(43, 99, 186, 1);
 }
 
-.groupWrapper:nth-child(even) {
+.groupWrapper:nth-child(even):not(.timelineHeaderLineWrapper) {
   background: rgba(229, 217, 253, 0.5);
 }
-.groupWrapper:nth-child(even) p {
+.groupWrapper:nth-child(even):not(.timelineHeaderLineWrapper) p {
   color: rgba(142, 84, 202, 1);
+}
+
+.simpleView {
+  background-color: revert !important;
+  color: revert !important;
 }
 
 .issueDueDate {
