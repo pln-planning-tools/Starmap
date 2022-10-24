@@ -5,6 +5,8 @@ import dayjs from 'dayjs';
 
 import { getLinkForRoadmapChild } from '../../lib/client/linkUtils';
 import { IssueData } from '../../lib/types';
+import { useMaxHeight, setMaxHeight } from '../../hooks/useMaxHeight';
+import { useEffect } from 'react';
 
 function RoadmapItem({
   childIssue,
@@ -17,6 +19,7 @@ function RoadmapItem({
 }) {
   // console.log('childIssue:', childIssue);
   // console.log('scale:', scale);
+  const maxSvgHeight = useMaxHeight();
   console.log('index:', index);
   const x = 50;
   const y = 50;
@@ -35,7 +38,11 @@ function RoadmapItem({
   const textPadding = 10;
   const rxSize = 10;
 
-  const randomIntFromInterval = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
+  // const randomIntFromInterval = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
+  useEffect(() => {
+    setMaxHeight(Math.max(rectConfig.height + yLocation, maxSvgHeight))
+  }, [maxSvgHeight, rectConfig.height, yLocation])
+
   // TODO: Add on hover to show clickability
   return (
     <NextLink key={`roadmapItem-${index}`} href={getLinkForRoadmapChild(childIssue)} passHref>

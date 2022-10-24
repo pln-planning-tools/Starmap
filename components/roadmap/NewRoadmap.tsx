@@ -4,6 +4,7 @@ import { scaleTime } from 'd3';
 import { useEffect, useRef, useState } from 'react';
 
 import { useIsLoading } from '../../hooks/useIsLoading';
+import { useMaxHeight, setMaxHeight } from '../../hooks/useMaxHeight';
 import { dayjs } from '../../lib/client/dayjs';
 import { IssueData } from '../../lib/types';
 import AxisTop from './AxisTop';
@@ -18,11 +19,11 @@ function NewRoadmap({ issueData, isLocal }: { issueData: IssueData; isLocal: boo
   const ref = useRef(null);
   const dates = issueData.children.map((issue) => issue.due_date).filter((dateString) => !!dateString);
   const [maxW, setMaxW] = useState(1000);
-  const [maxH, setMaxH] = useState(500);
+  const maxH = useMaxHeight();
 
   useEffect(() => {
     setMaxW(window.innerWidth);
-    setMaxH(window.innerHeight / 2);
+    setMaxHeight(window.innerHeight / 2);
   }, []);
 
   const dayjsDates = dates.map((date) => dayjs(date));
