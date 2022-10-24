@@ -92,7 +92,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const options = Object.create({});
   options.depth = Number(req.query.depth);
   // Set filter_group to a specific word to only return children under the specified word heading.
-  options.filter_group = req.query.group_by || 'children';
+  options.filter_group = req.query.filter_group || 'children';
 
   if (!platform || !owner || !repo || !issue_number) {
     res.status(400).json({ error: { code: '400', message: 'URL query is missing fields' } });
@@ -100,6 +100,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
   try {
     const rootIssue = await getIssue({ platform, owner, repo, issue_number });
+    // console.log('rootIssue:', rootIssue);
     // We should probably check for children due dates instead of the root issue
     // if (!getConfig(rootIssue?.body_html)?.eta) {
     //   // res.status(500).json({ error: { code: '500', message: 'No due date found in issue body.' } });
