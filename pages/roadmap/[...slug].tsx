@@ -6,15 +6,17 @@ import { Roadmap } from '../../components/Roadmap';
 import PageHeader from '../../components/layout/PageHeader';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { API_URL } from '../../config/constants';
+import { RoadmapApiResponse } from '../../lib/types';
 
 export async function getServerSideProps(context) {
   console.log('inside roadmap page | getServerSideProps()');
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
   const { group_by } = context.query;
+  const { mode } = context.query;
   const res = await fetch(
     new URL(`${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&group_by=${group_by}`),
   );
-  const response = await res.json();
+  const response: RoadmapApiResponse = await res.json();
 
   return {
     props: {
@@ -22,6 +24,7 @@ export async function getServerSideProps(context) {
       issueData: response.data || null,
       isLocal: process.env.IS_LOCAL === 'true',
       groupBy: group_by || null,
+      mode: mode || null,
     },
   };
 }
@@ -35,8 +38,11 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       <PageHeader />
       <Box p={5}>
         {!!error && <Box color='red.500'>{error.message}</Box>}
-        {!!issueData && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
-        {/* {!!issueData && <Roadmap issueData={issueData} groupBy={props.groupBy} />} */}
+        {props.mode === 'd3' && issueData !== null && !!issueData && (
+          <NewRoadmap issueData={issueData} isLocal={isLocal} />
+        )}
+        {props.mode === 'grid' ||
+          (!props.mode && !!issueData && <Roadmap issueData={issueData} groupBy={props.groupBy} />)}
       </Box>
     </>
   );
