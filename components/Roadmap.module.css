@@ -26,14 +26,25 @@
 .item.itemHeader {
   background: revert;
   text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.item.itemHeader::after {
+  content: '';
+  background: red;
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
 }
 
 .nested > .item:not(.group) {
   background: #fafafa;
   padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
   margin-top: 4px;
   margin-bottom: 4px;
-  border-radius: 2px;
+  border-radius: 8px;
 }
 
 .item.group {
@@ -41,6 +52,8 @@
   background: revert;
   grid-row: 1 / -1;
   font-weight: 600;
+  grid-column: 1 / span 2;
+  grid-column-end: none;
 }
 
 .groupWrapper {
@@ -49,10 +62,10 @@
 }
 
 .groupWrapper:nth-child(odd) {
-  background: #e0e7ff;
+  /* background: #e0e7ff; */
 }
 .groupWrapper:nth-child(even) {
-  background: #f5f3ff;
+  /* background: #f5f3ff; */
 }
 
 .issueDueDate {
@@ -64,9 +77,47 @@
 .issueItem {
   grid-column: span 2;
   display: grid;
+  border: 1px solid #a0aec0;
+  border-radius: 4px;
+  padding: 10px;
 }
 
 .timelineBox {
   padding: 0.25rem;
-  padding-top: 1rem;
+  /* padding-top: 1rem; */
+}
+
+.progress {
+  /* background-color: linear-gradient(to right, #e9c8ff 50%, white 50%); */
+}
+
+.milestoneTitleWrapper {
+  padding-bottom: 10px;
+}
+
+.milestoneTitle {
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+.milestoneDate {
+  font-size: 14px;
+  justify-self: right;
+}
+
+.timelineTick {
+  background: #d5d5d5;
+  width: 2px;
+  height: 20px;
+  justify-self: center;
+}
+
+.timelineHeaderLine {
+  /* justify-self: center; */
+}
+
+.timelineHeaderLineWrapper {
+  background: revert !important;
+  border-top: 1px solid;
+  gap: 0px;
 }

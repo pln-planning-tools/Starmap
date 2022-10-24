@@ -28,4 +28,6 @@ interface ParserGetChildrenResponse {
   group: string;
 }
 
+interface RoadmapProps {}
+
 export { RoadmapApiResponse, IssueData, IssueStates, ParserGetChildrenResponse };

@@ -23,8 +23,11 @@ export const formatDate = (date) => {
 };
 
 export const addOffset = (dates) => {
-  const offsetMin = +d3.timeMonth.offset(dates[d3.minIndex(dates)], -OFFSET_MIN_MONTHS);
-  const offsetMax = +d3.timeMonth.offset(dates[d3.maxIndex(dates)], +OFFSET_MAX_MONTHS);
+  const minIndex = d3.minIndex(dates);
+  const maxIndex = d3.maxIndex(dates);
+  const offsetMin = d3.timeMonth.offset(dates[minIndex], -OFFSET_MIN_MONTHS);
+  console.log('offsetMin:', offsetMin);
+  const offsetMax = +d3.timeMonth.offset(dates[maxIndex], +OFFSET_MAX_MONTHS);
   const datesWithOffset = dates.concat([offsetMin, offsetMax]);
 
   return datesWithOffset;
