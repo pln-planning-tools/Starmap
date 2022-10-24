@@ -60,6 +60,10 @@ function FirstHeaderItem() {
 }
 
 function GroupItem({ showGroupRowTitle, issueData, group }) {
+  let detailedViewClass = 'detailedView';
+  if (!showGroupRowTitle) {
+    detailedViewClass = '';
+  }
   return (
     <div className={`${styles.item} ${styles.group}`}>
       <div>
@@ -138,9 +142,17 @@ function Grid({ children, ticks }) {
   );
 }
 
-function GroupWrapper({ children, cssName = '' }) {
+function GroupWrapper({ children, cssName = '', showGroupRowTitle = false }) {
+  let viewModeClass = 'simpleView';
+  if (!!showGroupRowTitle) {
+    viewModeClass = 'detailedView';
+  }
   return (
-    <div className={`${styles.nested} ${styles.subgrid} ${styles.groupWrapper} ${styles[cssName]}`}>{children}</div>
+    <div
+      className={`${styles.nested} ${styles.subgrid} ${styles.groupWrapper} ${styles[viewModeClass]} ${styles[cssName]}`}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -152,9 +164,10 @@ export function Roadmap({ issueData, groupBy }: { issueData: IssueData; groupBy:
     group(issueData.children as IssueData[], (d) => d.group),
     ([key, value]) => ({ groupName: key, items: value }),
   );
+  const showGroupRowTitle = !!(groupedIssueData.length > 1);
   console.log('groupedIssueData:', groupedIssueData);
+  // console.log('groupedIssueData.length:', groupedIssueData.length);
   // console.dir(groupedIssueData, { maxArrayLength: Infinity, depth: Infinity });
-  const showGroupRowTitle = true;
   console.log('showGroupRowTitle: ', showGroupRowTitle);
   const hideMilestonesWithoutDate = true;
 
@@ -186,6 +199,7 @@ export function Roadmap({ issueData, groupBy }: { issueData: IssueData; groupBy:
           {quarterTicks.map((tick, index) => (
             <GridHeader ticks={tick} index={index} />
           ))}
+          {/* <GroupWrapper cssName='timelineHeaderLineWrapper'> */}
           <GroupWrapper cssName='timelineHeaderLineWrapper'>
             <GridItem style={{ gridRow: '2/span 1' }} className={styles.timelineHeaderLine} />
             {/* <div></div> */}
@@ -200,7 +214,7 @@ export function Roadmap({ issueData, groupBy }: { issueData: IssueData; groupBy:
               // console.log('group:', group);
 
               return (
-                <GroupWrapper>
+                <GroupWrapper showGroupRowTitle={showGroupRowTitle}>
                   <GroupItem showGroupRowTitle={showGroupRowTitle} issueData={issueData} group={group} />
                   {!!group.items &&
                     _.sortBy(group.items, ['title']).map((item, index) => {
