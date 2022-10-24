@@ -1,4 +1,5 @@
 import { Box, Center, Spinner } from '@chakra-ui/react';
+
 import { scaleTime } from 'd3';
 import { useEffect, useRef, useState } from 'react';
 
@@ -11,7 +12,7 @@ import RoadmapItem from './RoadmapItem';
 import TodayLine from './TodayLine';
 import WeekTicksSelector from './WeekTicksSelector';
 
-function NewRoadmap({ issueData, isLocal }: { issueData: IssueData | false; isLocal: boolean }) {
+function NewRoadmap({ issueData, isLocal }: { issueData: IssueData; isLocal: boolean }) {
   if (!issueData) return null;
 
   const ref = useRef(null);

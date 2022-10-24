@@ -5,7 +5,7 @@ import { RoadmapForm } from '../RoadmapForm';
 function PageHeader() {
   return (
     <Flex direction={'row'} bg='#BDD8F0'>
-      <Box p={6} textAlign={'center'} alignContent='center' verticalAlign='center' paddingRight={'15px'}>
+      <Box p={6} textAlign={'center'} alignContent='center' verticalAlign='center' paddingRight={'20px'}>
         <Text fontSize={'xl'} as='span'>
           Planetarium
         </Text>
@@ -22,14 +22,14 @@ function PageHeader() {
         <RoadmapForm />
       </Box>
       <Spacer />
-      <Box pt={6} color='black' textAlign={'center'} alignContent='center' verticalAlign='center' pr={10}>
+      {/* <Box pt={6} color='black' textAlign={'center'} alignContent='center' verticalAlign='center' pr={10}>
         <FormControl>
           <FormLabel htmlFor='isDetailedView' display='inline' textAlign='right'>
             Detailed view:
           </FormLabel>
           <Switch id='isDetailedView' textAlign='right' />
         </FormControl>
-      </Box>
+      </Box> */}
     </Flex>
   );
 }
