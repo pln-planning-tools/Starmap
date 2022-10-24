@@ -42,7 +42,7 @@
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
-  margin-top: 4px;
+  /* margin-top: 4px; */
   margin-bottom: 4px;
   border-radius: 8px;
 }
@@ -54,18 +54,32 @@
   font-weight: 600;
   grid-column: 1 / span 2;
   grid-column-end: none;
+  background: white;
 }
 
 .groupWrapper {
   /* background: #f3e8ff; */
   /* border: 1px solid #e2e2e2; */
+  /* padding-top: 20px; */
+  border-radius: 2px;
+}
+
+.groupWrapper:not(.timelineHeaderLineWrapper) {
+  margin-top: 20px;
 }
 
 .groupWrapper:nth-child(odd) {
-  /* background: #e0e7ff; */
+  background: rgba(215, 228, 253, 0.5);
 }
+.groupWrapper:nth-child(odd) p {
+  color: rgba(43, 99, 186, 1);
+}
+
 .groupWrapper:nth-child(even) {
-  /* background: #f5f3ff; */
+  background: rgba(229, 217, 253, 0.5);
+}
+.groupWrapper:nth-child(even) p {
+  color: rgba(142, 84, 202, 1);
 }
 
 .issueDueDate {
@@ -93,11 +107,17 @@
 
 .milestoneTitleWrapper {
   padding-bottom: 10px;
+  overflow: auto;
 }
 
 .milestoneTitle {
-  font-size: 20px;
+  font-size: 16px;
   white-space: nowrap;
+  font-weight: 600;
+}
+
+a.milestoneTitle {
+  color: rgba(7, 119, 225, 1);
 }
 
 .milestoneDate {
@@ -120,4 +140,55 @@
   background: revert !important;
   border-top: 1px solid;
   gap: 0px;
+}
+
+.todayMarker {
+  /* padding: 0.3em 0.5em 0.3em 0.5em;
+  margin: 0;
+  position: absolute;
+  top: -3.25em;
+  background-color: #4a6792;
+  color: white; */
+  /* background: red; */
+  /* width: 2px; */
+  /* height: 20px; */
+  /* grid-column: 1/-1; */
+  /* grid-row: 1/-1; */
+  top: 23%;
+  position: absolute;
+  left: 60%;
+  height: 100%;
+  border: 1px rgba(0, 50, 255, 1);
+  border-style: dashed;
+  z-index: 3;
+  position: fixed;
+}
+
+.todayMarker::before {
+  /* content: 'test'; */
+  white-space: nowrap;
+}
+
+.todayMarkerWrapper {
+  /* grid-column: 1/-1; */
+  /* grid-row: 1/-1; */
+  /* top: 11%; */
+  position: absolute;
+  /* position: absolute; */
+  left: 59%;
+  /* border: 1px rgba(0, 0, 255, 0.3); */
+  /* border-style: dashed; */
+  /* z-index: 3; */
+}
+
+.todayMarkerText {
+  font-size: 14px;
+}
+
+.todayMarker.todayLine {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  border-left: thin solid #4a6792;
+  height: 0;
 }
