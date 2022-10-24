@@ -11,10 +11,10 @@ import { RoadmapApiResponse } from '../../lib/types';
 export async function getServerSideProps(context) {
   console.log('inside roadmap page | getServerSideProps()');
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
-  const { group_by } = context.query;
+  const { filter_group } = context.query;
   const { mode } = context.query;
   const res = await fetch(
-    new URL(`${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&group_by=${group_by}`),
+    new URL(`${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&filter_group=${filter_group}`),
   );
   const response: RoadmapApiResponse = await res.json();
 
@@ -23,7 +23,7 @@ export async function getServerSideProps(context) {
       error: response.error || null,
       issueData: response.data || null,
       isLocal: process.env.IS_LOCAL === 'true',
-      groupBy: group_by || null,
+      groupBy: filter_group || null,
       mode: mode || null,
     },
   };
