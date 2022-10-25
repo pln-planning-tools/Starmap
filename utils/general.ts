@@ -2,6 +2,8 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 import { match } from 'path-to-regexp';
 
+import { dayjs } from '../lib/client/dayjs';
+
 import { OFFSET_MAX_MONTHS, OFFSET_MIN_MONTHS } from '../config/constants';
 
 export const toTimestamp = (date) => (_.isDate(date) && +new Date(date)) || +new Date(date?.split('-'));
@@ -40,3 +42,6 @@ export const paramsFromUrl = (url) => {
     // console.error('error:', err);
   }
 };
+
+export const formatDateDayJs = (date): Date => dayjs(date).utc().toDate();
+export const formatDateArrayDayJs = (dates): Date[] => dates.map((date) => formatDateDayJs(date));

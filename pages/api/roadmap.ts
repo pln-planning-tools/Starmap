@@ -77,7 +77,7 @@ const addToChildren = (data, parent) => {
         body: item.body,
         body_html: item.body_html,
         body_text: item.body_text,
-        parent: { html_url: parent.html_url },
+        parent: { html_url: parent.html_url, title: parent.title },
         children: addToChildren(item.children, item),
       };
     });
