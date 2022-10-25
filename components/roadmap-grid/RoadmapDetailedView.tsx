@@ -43,9 +43,20 @@ export function RoadmapDetailed({ issueData }: { issueData: IssueData }) {
     group(issueDataLevelOne as IssueData[], (d) => d.group),
     ([key, value]) => ({ groupName: key, items: value }),
   );
+  const issueDataLevelOneIfNoChildren = newIssueData.map((v) => ({ ...v, children: { ...v }, group: v.title }));
+  const issueDataLevelOneIfNoChildrenGrouped = Array.from(
+    group(issueDataLevelOneIfNoChildren as IssueData[], (d) => d.group),
+    ([key, value]) => ({ groupName: key, items: value }),
+  );
+  // console.log('issueDataLevelOneIfNoChildren:', issueDataLevelOneIfNoChildren);
+  // console.log('issueDataLevelOneIfNoChildrenGrouped:', issueDataLevelOneIfNoChildrenGrouped);
   // console.log('issueDataLevelOne:', issueDataLevelOne);
   // console.log('issueDataLevelOneGrouped:', issueDataLevelOneGrouped);
   // console.dir(issueDataLevelOneGrouped, { maxArrayLength: Infinity, depth: Infinity });
+
+  const issueGrouped =
+    (!!issueDataLevelOneGrouped && issueDataLevelOneGrouped.length > 0 && issueDataLevelOneGrouped) ||
+    issueDataLevelOneIfNoChildrenGrouped;
 
   return (
     <>
@@ -58,7 +69,7 @@ export function RoadmapDetailed({ issueData }: { issueData: IssueData }) {
 
           <Headerline />
 
-          {_.reverse(Array.from(_.sortBy(issueDataLevelOneGrouped, ['groupName']))).map((group, index) => {
+          {_.reverse(Array.from(_.sortBy(issueGrouped, ['groupName']))).map((group, index) => {
             return (
               <GroupWrapper key={index} showGroupRowTitle={showGroupRowTitle}>
                 <GroupItem showGroupRowTitle={showGroupRowTitle} issueData={issueData} group={group} />
