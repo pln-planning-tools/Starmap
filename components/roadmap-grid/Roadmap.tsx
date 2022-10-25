@@ -8,17 +8,16 @@ import _ from 'lodash';
 import { match } from 'path-to-regexp';
 import React from 'react';
 
-import { getClosest } from '../lib/client/dateUtils';
-import { dayjs } from '../lib/client/dayjs';
-import { getQuantiles } from '../lib/client/getQuantiles';
-import { getRange } from '../lib/client/getRange';
-import { timelineTicks } from '../lib/client/timelineTicks';
-import { IssueData } from '../lib/types';
-
-import { addOffset, slugsFromUrl, toTimestamp } from '../utils/general';
+import { getClosest } from '../../lib/client/dateUtils';
+import { dayjs } from '../../lib/client/dayjs';
+import { getQuantiles } from '../../lib/client/getQuantiles';
+import { getRange } from '../../lib/client/getRange';
+import { timelineTicks } from '../../lib/client/timelineTicks';
+import { IssueData } from '../../lib/types';
+import { addOffset, slugsFromUrl, toTimestamp } from '../../utils/general';
+import PageHeader from '../layout/PageHeader';
+import RoadmapHeader from '../roadmap/RoadmapHeader';
 import styles from './Roadmap.module.css';
-import PageHeader from './layout/PageHeader';
-import RoadmapHeader from './roadmap/RoadmapHeader';
 
 const getUrlPathname = (url) => {
   try {
@@ -126,6 +125,15 @@ function GridRow({
   );
 }
 
+function TodayMarker() {
+  return (
+    <div className={styles.todayMarkerWrapper}>
+      <div className={styles.todayMarker} style={{ gridColumn: '1/-1' }} />
+      <div className={styles.todayMarkerText}>Today</div>
+    </div>
+  );
+}
+
 function Grid({ children, ticks }) {
   return (
     <div
@@ -133,10 +141,7 @@ function Grid({ children, ticks }) {
       style={{ gridTemplateColumns: `repeat(${ticks.length}, minmax(10px, 1fr))`, marginTop: '15px' }}
       className={styles.grid}
     >
-      <div className={styles.todayMarkerWrapper}>
-        <div className={styles.todayMarker} style={{ gridColumn: '1/-1' }} />
-        <div className={styles.todayMarkerText}>Today</div>
-      </div>
+      <TodayMarker />
       {children}
     </div>
   );
@@ -160,17 +165,39 @@ export function Roadmap({ issueData, groupBy }: { issueData: IssueData; groupBy:
   // const showGroupRowTitle = !!(issueData.children.length > 1);
   // console.log('issueData:', issueData);
   // const groupedIssueData = _.groupBy(issueData.children as IssueData[], 'group');
+  const detailedView = true;
+  // let groupedIssueData;
   const groupedIssueData = Array.from(
     group(issueData.children as IssueData[], (d) => d.group),
     ([key, value]) => ({ groupName: key, items: value }),
   );
-  const showGroupRowTitle = !!(groupedIssueData.length > 1);
   console.log('groupedIssueData:', groupedIssueData);
-  // console.log('groupedIssueData.length:', groupedIssueData.length);
-  // console.dir(groupedIssueData, { maxArrayLength: Infinity, depth: Infinity });
-  console.log('showGroupRowTitle: ', showGroupRowTitle);
-  const hideMilestonesWithoutDate = true;
 
+  // const groupedIssueDataDetailedView = group(issueData.children as IssueData[], (d) =>
+  //   d.children.map((v) => v.parent.title),
+  // );
+  const groupedIssueDataDetailedView = issueData.children.map((v) => ({
+    groupName: v.title,
+    items: v.children,
+  }));
+  console.log('groupedIssueDataDetailedView:', groupedIssueDataDetailedView);
+
+  // console.log('issueData:', issueData);
+
+  // const issuesDetailed = issueData.children.map((v) => ({ ...v, group: v.children.map((x) => x.parent.title)[0] }));
+  // console.log('issuesDetailed:', issuesDetailed);
+
+  // if (!!detailedView) {
+  //   groupedIssueData = Array.from(
+  //     group(issueData.children as IssueData[], (d) => d.children.map((v) => v.group)),
+  //     ([key, value]) => ({ groupName: key, items: value }),
+  //   );
+  //   const groupedIssueDataWithThemes = group(issueData.children as IssueData[], (d) => d.parent.title);
+  // }
+  const showGroupRowTitle = !!(groupedIssueData.length > 1);
+  const groupedIssueDataItems = groupedIssueData.map((v) => v.items);
+
+  const hideMilestonesWithoutDate = true;
   const formatDate = (date): Date => dayjs(date).utc().toDate();
   const formatDateArray = (dates): Date[] => dates.map((date) => formatDate(date));
   const dates = formatDateArray(groupedIssueData.map((v) => v.items.map((v) => v.due_date)).flat());
@@ -181,13 +208,13 @@ export function Roadmap({ issueData, groupBy }: { issueData: IssueData; groupBy:
   // const quantiles = getQuantiles(ticks);
   // const quantiles = getQuantiles(dates);
   const quarterTicks = formatDateArray([
-    '2022-01-01T00:00:00.000Z', // Q1 2022
-    '2022-04-01T00:00:00.000Z', // Q2 2022
-    '2022-07-01T00:00:00.000Z', // Q3 2022
-    '2022-10-01T00:00:00.000Z', // Q4 2022
-    '2023-01-01T00:00:00.000Z', // Q1 2023
+    '2022-07-01T00:00:00.000Z', // Q1 2022 / 2022-01-01
+    '2022-10-01T00:00:00.000Z', // Q2 2022 / 2022-04-01
+    '2023-01-01T00:00:00.000Z', // Q3 2022 / 2022-07-01
+    '2023-04-01T00:00:00.000Z', // Q4 2022 / 2022-10-01
+    '2023-07-01T00:00:00.000Z', // Q1 2023 / 2023-01-01
   ]);
-  console.log('quarterTicks:', quarterTicks);
+  // console.log('quarterTicks:', quarterTicks);
 
   // console.log('issueData:', issueData);
   return (
