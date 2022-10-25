@@ -26,7 +26,7 @@ const quarterTicks = formatDateArrayDayJs([
 export function RoadmapSimple({ issueData }: { issueData: IssueData }) {
   const showGroupRowTitle = false;
 
-  console.log('issueData:', issueData);
+  // console.log('issueData:', issueData);
 
   const issueDataLevelOne = issueData.children.map((v) => v.children.flat()).flat();
   const issueDataLevelOneGrouped = Array.from(

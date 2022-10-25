@@ -8,9 +8,11 @@ import { IssueData } from '../../lib/types';
 export default function Header({ issueData }: { issueData: IssueData }) {
   const router = useRouter();
 
-  console.log('router:', router.query);
+  // console.log('router.query:', router.query);
 
-  const view = (router.query.view === 'simple' && 'detail') || 'simple';
+  // const view = (router.query.view === 'simple' && 'detail') || (!router.query.view && 'detail') || 'simple';
+
+  const changeToView = router.query.view === 'detail' ? 'simple' : 'detail';
 
   return (
     <>
@@ -23,11 +25,11 @@ export default function Header({ issueData }: { issueData: IssueData }) {
           onClick={() => {
             router.push({
               pathname: '/roadmap/[...slug]',
-              query: { view, slug: router.query.slug },
+              query: { view: changeToView, slug: router.query.slug },
             });
           }}
         >
-          Switch to {view} view
+          Switch to {changeToView} view
         </Link>
       </Text>
       <br />
