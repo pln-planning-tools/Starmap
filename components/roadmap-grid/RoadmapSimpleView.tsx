@@ -28,25 +28,10 @@ export function RoadmapSimple({ issueData }: { issueData: IssueData }) {
 
   // console.log('issueData:', issueData);
 
-  const issueDataLevelOne = issueData.children.map((v) => v.children.flat()).flat();
-  const issueDataLevelOneGrouped = Array.from(
-    group(issueDataLevelOne as IssueData[], (d) => d.group),
+  const issueGrouped = Array.from(
+    group(issueData.children as IssueData[], (d) => d.group),
     ([key, value]) => ({ groupName: key, items: value }),
   );
-  const issueDataLevelOneIfNoChildren = issueData.children.map((v) => ({ ...v, children: { ...v }, group: v.title }));
-  const issueDataLevelOneIfNoChildrenGrouped = Array.from(
-    group(issueDataLevelOneIfNoChildren as IssueData[], (d) => d.group),
-    ([key, value]) => ({ groupName: key, items: value }),
-  );
-  // console.log('issueDataLevelOneIfNoChildren:', issueDataLevelOneIfNoChildren);
-  // console.log('issueDataLevelOneIfNoChildrenGrouped:', issueDataLevelOneIfNoChildrenGrouped);
-  // console.log('issueDataLevelOne:', issueDataLevelOne);
-  // console.log('issueDataLevelOneGrouped:', issueDataLevelOneGrouped);
-  // console.dir(issueDataLevelOneGrouped, { maxArrayLength: Infinity, depth: Infinity });
-
-  const issueGrouped =
-    (!!issueDataLevelOneGrouped && issueDataLevelOneGrouped.length > 0 && issueDataLevelOneGrouped) ||
-    issueDataLevelOneIfNoChildrenGrouped;
 
   return (
     <>
