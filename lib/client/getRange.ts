@@ -1,23 +1,24 @@
-import * as d3 from 'd3';
+import { scaleTime, timeMonth, utcTicks } from 'd3';
+import dayjs from 'dayjs';
 
-const getRange = (dates: any[]) => {
-  const min = d3.min(dates);
-  const max = d3.max(dates);
-  const count = 9;
-  const ticks = d3.utcTicks(min, max, count);
-  const quantiles = [
-    d3.quantile(ticks, 0),
-    d3.quantile(ticks, 0.1),
-    d3.quantile(ticks, 0.2),
-    d3.quantile(ticks, 0.3),
-    d3.quantile(ticks, 0.4),
-    d3.quantile(ticks, 0.5),
-    d3.quantile(ticks, 0.6),
-    d3.quantile(ticks, 0.7),
-    d3.quantile(ticks, 0.8),
-    d3.quantile(ticks, 0.9),
-    d3.quantile(ticks, 1),
-  ];
+const getRange = (dates: Date[]) => {
+  const count = 10;
+  // const datesInTimestamp = dates.map((date) => date.getTime());
+  const min = dayjs.min(dates.map((v) => dayjs.utc(v))).toDate();
+  // console.log('min:', min.getTime());
+  const max = dayjs.max(dates.map((v) => dayjs.utc(v))).toDate();
+  // console.log('max:', max.getTime());
+  const ticks = utcTicks(min, max, count);
+  // console.log('ticks:', ticks);
+
+  var x = scaleTime().domain([min, max]).range([0, 10]);
+  // console.log('date:', new Date('2022-12-31'));
+  // console.log('x:', x(new Date('2022-12-31')));
+  // console.log('x:', Math.round(x(new Date('2022-12-31'))));
+
+  const newRange = timeMonth.range(min, max);
+  console.log('newRange:', newRange);
+
   return ticks;
 };
 

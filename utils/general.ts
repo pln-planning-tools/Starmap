@@ -24,12 +24,12 @@ export const formatDate = (date) => {
   }
 };
 
-export const addOffset = (dates) => {
+export const addOffset = (dates: Date[], { offsetStart, offsetEnd }: { offsetStart: number; offsetEnd: number }) => {
   const minIndex = d3.minIndex(dates);
   const maxIndex = d3.maxIndex(dates);
-  const offsetMin = d3.timeMonth.offset(dates[minIndex], -OFFSET_MIN_MONTHS);
-  console.log('offsetMin:', offsetMin);
-  const offsetMax = +d3.timeMonth.offset(dates[maxIndex], +OFFSET_MAX_MONTHS);
+  const offsetMin = d3.timeMonth.offset(dates[minIndex], -Number(offsetStart));
+  // console.log('offsetMin:', offsetMin);
+  const offsetMax = d3.timeMonth.offset(dates[maxIndex], +Number(offsetEnd));
   const datesWithOffset = dates.concat([offsetMin, offsetMax]);
 
   return datesWithOffset;
@@ -43,5 +43,5 @@ export const paramsFromUrl = (url) => {
   }
 };
 
-export const formatDateDayJs = (date): Date => dayjs(date).utc().toDate();
-export const formatDateArrayDayJs = (dates): Date[] => dates.map((date) => formatDateDayJs(date));
+export const formatDateDayJs = (date: string): Date => dayjs(date).utc().toDate();
+export const formatDateArrayDayJs = (dates: string[]): Date[] => dates.map((date) => formatDateDayJs(date));

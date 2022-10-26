@@ -9,7 +9,7 @@ interface IssueData {
   body: string;
   children: IssueData[IssueData];
   completion_rate: number;
-  due_date?: string;
+  due_date: string;
   group: string;
   html_url: string;
   node_id: string;
