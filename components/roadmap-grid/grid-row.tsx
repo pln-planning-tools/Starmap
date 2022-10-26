@@ -23,10 +23,10 @@ export function GridRow({
     totalTimelineTicks: timelineTicks.length,
   });
   const span = 4;
-  console.log('milestone.due_date:', milestone.due_date);
-  console.log('closest:', closest);
-  console.log('timelineTicks:', timelineTicks);
-  console.log();
+  // console.log('milestone.due_date:', milestone.due_date);
+  // console.log('closest:', closest);
+  // console.log('timelineTicks:', timelineTicks);
+  // console.log();
 
   return (
     <div

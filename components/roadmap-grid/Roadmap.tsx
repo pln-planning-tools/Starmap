@@ -171,7 +171,7 @@ export function Roadmap({ issueData, groupBy }: { issueData: IssueData; groupBy:
     group(issueData.children as IssueData[], (d) => d.group),
     ([key, value]) => ({ groupName: key, items: value }),
   );
-  console.log('groupedIssueData:', groupedIssueData);
+  // console.log('groupedIssueData:', groupedIssueData);
 
   // const groupedIssueDataDetailedView = group(issueData.children as IssueData[], (d) =>
   //   d.children.map((v) => v.parent.title),
@@ -180,7 +180,7 @@ export function Roadmap({ issueData, groupBy }: { issueData: IssueData; groupBy:
     groupName: v.title,
     items: v.children,
   }));
-  console.log('groupedIssueDataDetailedView:', groupedIssueDataDetailedView);
+  // console.log('groupedIssueDataDetailedView:', groupedIssueDataDetailedView);
 
   // console.log('issueData:', issueData);
 
