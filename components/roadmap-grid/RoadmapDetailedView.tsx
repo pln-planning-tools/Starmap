@@ -74,7 +74,7 @@ export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData;
   const dates = formatDateArrayDayJs(issuesGrouped.map((v) => v.items.map((v) => v.due_date)).flat()).sort((a, b) => {
     return a.getTime() - b.getTime();
   });
-  const datesWithOffset = addOffset(dates, { offsetStart: 5, offsetEnd: 3 }).sort((a, b) => {
+  const datesWithOffset = addOffset(dates, { offsetStart: 6, offsetEnd: 3 }).sort((a, b) => {
     return a.getTime() - b.getTime();
   });
   console.log('dates:', dates);

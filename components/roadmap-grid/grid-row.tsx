@@ -37,7 +37,7 @@ export function GridRow({
         // background: `linear-gradient(to right, #e9c8ff ${Number(milestone.completion_rate.toString()).toFixed(
         //   0,
         // )}%, white ${100 - milestone.completion_rate}%)`,
-        background: `linear-gradient(90deg, rgba(166, 255, 168, 0.4) ${parseInt(
+        background: `linear-gradient(90deg, rgba(166, 178, 255, 0.4) ${parseInt(
           milestone.completion_rate.toString(2),
         )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(2))}%)`,
       }}
