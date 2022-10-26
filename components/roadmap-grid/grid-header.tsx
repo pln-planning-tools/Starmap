@@ -3,7 +3,7 @@ import styles from './Roadmap.module.css';
 
 export function GridHeader({ ticks, index }) {
   // console.log('ticks:', ticks);
-  console.log('index:', index);
+  // console.log('index:', index);
 
   return (
     <>

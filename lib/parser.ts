@@ -1,6 +1,6 @@
 import { parseHTML } from 'linkedom';
 
-import { getEtaDate } from '../utils/regexes';
+import { getEtaDate, isValidChildren } from '../utils/regexes';
 import { IssueData, ParserGetChildrenResponse } from './types';
 
 export const getConfig = (issue: IssueData['body_html']) => {
@@ -14,7 +14,15 @@ export const getConfig = (issue: IssueData['body_html']) => {
 export const getChildren = (issue: string): ParserGetChildrenResponse[] => {
   const { document } = parseHTML(issue);
   const ulLists = [...document.querySelectorAll('ul')];
-  const children = ulLists
+  const filterListByTitle = (ulLists) =>
+    ulLists.filter((list) => {
+      const title = list.previousElementSibling?.textContent?.trim();
+      // console.log('title:', title);
+      // console.log('isValidChildren:', isValidChildren(title));
+      return !!isValidChildren(title);
+    });
+
+  const children = filterListByTitle(ulLists)
     .reduce((a: any, b) => {
       const listTitle = b.previousElementSibling?.textContent?.trim();
       const hrefSelector = [...b.querySelectorAll('a[href][data-hovercard-type*="issue"]')];
@@ -29,6 +37,8 @@ export const getChildren = (issue: string): ParserGetChildrenResponse[] => {
       });
     })
     .flat();
+
+  // console.log('children:', children);
 
   return [...children];
 };

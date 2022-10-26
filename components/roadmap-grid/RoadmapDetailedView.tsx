@@ -77,8 +77,8 @@ export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData;
   const datesWithOffset = addOffset(dates, { offsetStart: 6, offsetEnd: 3 }).sort((a, b) => {
     return a.getTime() - b.getTime();
   });
-  console.log('dates:', dates);
-  console.log('datesWithOffset:', datesWithOffset);
+  // console.log('dates:', dates);
+  // console.log('datesWithOffset:', datesWithOffset);
 
   // const range = getRange(datesWithOffset);
   // console.log('range:', range);
@@ -88,7 +88,7 @@ export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData;
 
   const ticks = getTicks(datesWithOffset, 19);
   const ticksHeader = getTicks(datesWithOffset, 4);
-  console.log('ticks:', ticks);
+  // console.log('ticks:', ticks);
 
   return (
     <>

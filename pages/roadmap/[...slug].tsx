@@ -39,9 +39,13 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       <PageHeader />
       <Box p={5}>
         {!!error && <Box color='red.500'>{error.message}</Box>}
-        {mode === 'd3' && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
-        {mode === 'grid' && view === 'detail' && <RoadmapDetailed viewMode={view} issueData={issueData} />}
-        {mode === 'grid' && view === 'simple' && <RoadmapDetailed viewMode={view} issueData={issueData} />}
+        {!!issueData && mode === 'd3' && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
+        {!!issueData && mode === 'grid' && view === 'detail' && (
+          <RoadmapDetailed viewMode={view} issueData={issueData} />
+        )}
+        {!!issueData && mode === 'grid' && view === 'simple' && (
+          <RoadmapDetailed viewMode={view} issueData={issueData} />
+        )}
       </Box>
     </>
   );
