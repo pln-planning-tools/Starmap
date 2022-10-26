@@ -111,13 +111,14 @@
 }
 
 .milestoneTitleWrapper {
-  padding-bottom: 10px;
-  overflow: auto;
+  padding-bottom: 25px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .milestoneTitle {
-  font-size: 16px;
-  white-space: nowrap;
+  font-size: 14px;
+  /* white-space: nowrap; */
   font-weight: 600;
 }
 
@@ -126,7 +127,7 @@ a.milestoneTitle {
 }
 
 .milestoneDate {
-  font-size: 14px;
+  font-size: 13px;
   justify-self: right;
 }
 
