@@ -65,6 +65,7 @@
   /* border: 1px solid #e2e2e2; */
   /* padding-top: 20px; */
   border-radius: 2px;
+  grid-auto-flow: dense;
 }
 
 .groupWrapper:not(.timelineHeaderLineWrapper) {
