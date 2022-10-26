@@ -2,26 +2,38 @@ import NextLink from 'next/link';
 
 import { Link } from '@chakra-ui/react';
 
-import { getClosest } from '../../lib/client/dateUtils';
+import { dayjs } from '../../lib/client/dayjs';
+import { getClosest } from '../../lib/client/getClosest';
 import { IssueData } from '../../lib/types';
-import { paramsFromUrl, slugsFromUrl } from '../../utils/general';
+import { formatDateDayJs, paramsFromUrl } from '../../utils/general';
 import styles from './Roadmap.module.css';
 
 export function GridRow({
   milestone,
   index,
-  timelineQuantiles,
+  timelineTicks,
 }: {
   milestone: IssueData;
   index: number;
-  timelineQuantiles: Date[];
+  timelineTicks: Date[];
 }) {
-  // console.log('milestone:', milestone);
+  const closest = getClosest({
+    currentDate: dayjs.utc(milestone.due_date).toDate(),
+    dates: timelineTicks,
+    totalTimelineTicks: timelineTicks.length,
+  });
+  const span = 4;
+  console.log('milestone.due_date:', milestone.due_date);
+  console.log('closest:', closest);
+  console.log('timelineTicks:', timelineTicks);
+  console.log();
+
   return (
     <div
       key={index}
       style={{
-        gridColumn: `${getClosest(milestone.due_date, timelineQuantiles)} / span 1`,
+        gridColumnStart: `span ${span}`,
+        gridColumnEnd: `${closest === span ? closest + 1 : closest}`,
         // background: `linear-gradient(to right, #e9c8ff ${Number(milestone.completion_rate.toString()).toFixed(
         //   0,
         // )}%, white ${100 - milestone.completion_rate}%)`,

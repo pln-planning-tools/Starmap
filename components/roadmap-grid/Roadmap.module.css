@@ -1,7 +1,9 @@
 .grid {
   display: grid;
-  grid-template-columns: repeat(13, minmax(10px, 1fr));
+  /* grid-template-columns: repeat(13, minmax(10px, 1fr)); */
   grid-gap: 0.5rem;
+  grid-template-columns: repeat(10, minmax(10px, 1fr));
+  margin-top: 15px;
 }
 
 .subgrid {
@@ -28,14 +30,15 @@
   text-align: center;
   font-size: 16px;
   font-weight: 600;
+  grid-column-end: span 4;
 }
 
-.item.itemHeader::after {
+/* .item.itemHeader::after {
   content: '';
   background: red;
   grid-column: 1 / -1;
   grid-row: 1 / -1;
-}
+} */
 
 .nested > .item:not(.group) {
   background: #fafafa;
@@ -94,11 +97,12 @@
 }
 
 .issueItem {
-  grid-column: span 2;
+  /* grid-column: span 3; */
   display: grid;
   border: 1px solid #a0aec0;
   border-radius: 4px;
   padding: 10px;
+  /* grid-column-start: span 2; */
 }
 
 .timelineBox {
@@ -136,6 +140,7 @@ a.milestoneTitle {
   width: 2px;
   height: 20px;
   justify-self: center;
+  grid-column-end: span 4;
 }
 
 .timelineHeaderLine {
@@ -197,4 +202,10 @@ a.milestoneTitle {
   left: 50%;
   border-left: thin solid #4a6792;
   height: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .issueItem {
+    grid-column-start: span 6 !important;
+  }
 }
