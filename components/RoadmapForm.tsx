@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 
 import { setIsLoading } from '../hooks/useIsLoading';
 
-// https://github.com/pln-roadmap/tests/issues/9
 const slugsFromUrl: any = (url) => {
   const matchResult = match('/:owner/:repo/issues/:issue_number(\\d+)', {
     decode: decodeURIComponent,
@@ -60,7 +59,6 @@ export function RoadmapForm() {
           placeholder='https://github.com/...'
           size='sm'
           bg='white'
-          // TODO: round corners
         />
       </form>
     </>
