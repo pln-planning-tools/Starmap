@@ -17,8 +17,7 @@ export const getChildren = (issue: string): ParserGetChildrenResponse[] => {
   const filterListByTitle = (ulLists) =>
     ulLists.filter((list) => {
       const title = list.previousElementSibling?.textContent?.trim();
-      // console.log('title:', title);
-      // console.log('isValidChildren:', isValidChildren(title));
+
       return !!isValidChildren(title);
     });
 
@@ -37,8 +36,6 @@ export const getChildren = (issue: string): ParserGetChildrenResponse[] => {
       });
     })
     .flat();
-
-  // console.log('children:', children);
 
   return [...children];
 };

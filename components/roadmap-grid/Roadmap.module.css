@@ -1,6 +1,5 @@
 .grid {
   display: grid;
-  /* grid-template-columns: repeat(13, minmax(10px, 1fr)); */
   grid-gap: 0.5rem;
   grid-template-columns: repeat(10, minmax(10px, 1fr));
   margin-top: 15px;
@@ -21,8 +20,6 @@
   overflow-wrap: break-word;
   background: #a0aec0;
   height: min-content;
-  /* border-left: 0.5px solid #ccc; */
-  /* border-right: 0.5px solid #ccc; */
 }
 
 .item.itemHeader {
@@ -33,25 +30,16 @@
   grid-column-end: span 4;
 }
 
-/* .item.itemHeader::after {
-  content: '';
-  background: red;
-  grid-column: 1 / -1;
-  grid-row: 1 / -1;
-} */
-
 .nested > .item:not(.group) {
   background: #fafafa;
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
-  /* margin-top: 4px; */
   margin-bottom: 4px;
   border-radius: 8px;
 }
 
 .item.group {
-  /* background: #cbd5e0; */
   background: revert;
   grid-row: 1 / -1;
   font-weight: 600;
@@ -61,9 +49,6 @@
 }
 
 .groupWrapper {
-  /* background: #f3e8ff; */
-  /* border: 1px solid #e2e2e2; */
-  /* padding-top: 20px; */
   border-radius: 2px;
   grid-auto-flow: dense;
 }
@@ -98,21 +83,17 @@
 }
 
 .issueItem {
-  /* grid-column: span 3; */
   display: grid;
   border: 1px solid #a0aec0;
   border-radius: 4px;
   padding: 10px;
-  /* grid-column-start: span 2; */
 }
 
 .timelineBox {
   padding: 0.25rem;
-  /* padding-top: 1rem; */
 }
 
 .progress {
-  /* background-color: linear-gradient(to right, #e9c8ff 50%, white 50%); */
 }
 
 .milestoneTitleWrapper {
@@ -123,7 +104,6 @@
 
 .milestoneTitle {
   font-size: 14px;
-  /* white-space: nowrap; */
   font-weight: 600;
 }
 
@@ -145,7 +125,6 @@ a.milestoneTitle {
 }
 
 .timelineHeaderLine {
-  /* justify-self: center; */
 }
 
 .timelineHeaderLineWrapper {
@@ -155,17 +134,6 @@ a.milestoneTitle {
 }
 
 .todayMarker {
-  /* padding: 0.3em 0.5em 0.3em 0.5em;
-  margin: 0;
-  position: absolute;
-  top: -3.25em;
-  background-color: #4a6792;
-  color: white; */
-  /* background: red; */
-  /* width: 2px; */
-  /* height: 20px; */
-  /* grid-column: 1/-1; */
-  /* grid-row: 1/-1; */
   top: 23%;
   position: absolute;
   left: 60%;
@@ -177,20 +145,12 @@ a.milestoneTitle {
 }
 
 .todayMarker::before {
-  /* content: 'test'; */
   white-space: nowrap;
 }
 
 .todayMarkerWrapper {
-  /* grid-column: 1/-1; */
-  /* grid-row: 1/-1; */
-  /* top: 11%; */
   position: absolute;
-  /* position: absolute; */
   left: 59%;
-  /* border: 1px rgba(0, 0, 255, 0.3); */
-  /* border-style: dashed; */
-  /* z-index: 3; */
 }
 
 .todayMarkerText {
