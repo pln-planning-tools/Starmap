@@ -7,20 +7,32 @@ interface IssueData {
   body_html: string;
   body_text: string;
   body: string;
-  children: IssueData[IssueData];
+  children: IssueData[];
   completion_rate: number;
   due_date: string;
   group: string;
   html_url: string;
   node_id: string;
-  parent: IssueData[IssueData];
+  parent: IssueData;
   state: IssueStates;
   title: string;
+}
+
+interface IssueDataGrouped {
+  groupName: string;
+  items: IssueData[];
 }
 
 interface RoadmapApiResponse {
   data?: IssueData;
   error?: { code: string; message: string };
+}
+
+interface RoadmapApiQueryParameters {
+  platform?: string;
+  owner: string;
+  repo: string;
+  issue_number: number;
 }
 
 interface ParserGetChildrenResponse {
@@ -30,4 +42,11 @@ interface ParserGetChildrenResponse {
 
 interface RoadmapProps {}
 
-export { RoadmapApiResponse, IssueData, IssueStates, ParserGetChildrenResponse };
+export {
+  RoadmapApiQueryParameters,
+  RoadmapApiResponse,
+  IssueData,
+  IssueStates,
+  ParserGetChildrenResponse,
+  IssueDataGrouped,
+};

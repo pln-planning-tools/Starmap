@@ -1,6 +1,7 @@
+import { RoadmapApiQueryParameters } from '../types';
 import { octokit } from './octokit';
 
-const getIssue = async ({ platform, owner, repo, issue_number }) => {
+const getIssue = async ({ platform, owner, repo, issue_number }: RoadmapApiQueryParameters) => {
   try {
     const { data } = await octokit.rest.issues.get({
       mediaType: {
@@ -22,7 +23,7 @@ const getIssue = async ({ platform, owner, repo, issue_number }) => {
     };
   } catch (err) {
     console.error('error:', err);
-    return null;
+    return;
   }
 };
 

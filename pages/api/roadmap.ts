@@ -1,33 +1,41 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import _, { result } from 'lodash';
+import _ from 'lodash';
 
 import { getIssue } from '../../lib/backend/issue';
 import { getChildren, getConfig } from '../../lib/parser';
-import { IssueData, ParserGetChildrenResponse, RoadmapApiResponse } from '../../lib/types';
+import { IssueData, ParserGetChildrenResponse, RoadmapApiQueryParameters, RoadmapApiResponse } from '../../lib/types';
 import { paramsFromUrl } from '../../utils/general';
 
-const resolveChildren = (children: any[]): Promise<IssueData[]> => {
+const resolveChildren = (children: ParserGetChildrenResponse[]): Promise<IssueData[]> => {
   const resultArray: any = [];
   let count = 0;
 
   return new Promise((resolve, reject) => {
-    if (!_.isArray(children)) reject('not array');
-    if (_.isArray(children) && children.length === 0) reject('empty array');
+    if (!_.isArray(children)) reject('resolveChildren(children): `children` is not an array.');
+    if (_.isArray(children) && children.length === 0)
+      reject('resolveChildren(children): `children` is an empty array.');
 
     children.forEach((current) => {
-      getIssue({ ...paramsFromUrl(current.html_url) }).then((issueData) => {
+      const params = paramsFromUrl(current.html_url) as RoadmapApiQueryParameters;
+      const { platform, owner, repo, issue_number } = params;
+      getIssue({ platform, owner, repo, issue_number }).then((issueData) => {
         resultArray.push({ ...issueData, group: current.group });
         count += 1;
         if (count === children.length) {
           resolve(resultArray);
+          return;
         }
       });
     });
   });
 };
 
-const resolveChildrenWithDepth = async (children: ParserGetChildrenResponse[]) => {
+// Resolve children from root issue recursively calling resolveChildren for each.
+const resolveChildrenWithDepth = async (children: ParserGetChildrenResponse[]): Promise<IssueData | undefined> => {
+  if (_.isEmpty(children)) {
+    return;
+  }
   return resolveChildren(children).then((issues) => {
     const resultArray: any = [];
     let count = 0;
@@ -63,7 +71,7 @@ const addCompletionRate = (data) => {
 
 const addDueDates = ({ body_html }) => getConfig(body_html).eta;
 
-const addToChildren = (data, parent) => {
+const addItemsToChildren = (data, parent) => {
   if (_.isArray(data) && data.length > 0) {
     return data.map((item) => {
       return {
@@ -78,7 +86,7 @@ const addToChildren = (data, parent) => {
         body_html: item.body_html,
         body_text: item.body_text,
         parent: { html_url: parent.html_url, title: parent.title },
-        children: addToChildren(item.children, item),
+        children: addItemsToChildren(item.children, item),
       };
     });
   }
@@ -89,33 +97,53 @@ const addToChildren = (data, parent) => {
 export default async function handler(req: NextApiRequest, res: NextApiResponse<RoadmapApiResponse>) {
   console.log(`API hit: roadmap`, req.query);
   const { platform = 'github', owner, repo, issue_number } = req.query;
+  const reqQueryParams: RoadmapApiQueryParameters = Object.create({
+    platform: req.query.platform || 'github',
+    owner: req.query.owner,
+    repo: req.query.repo,
+    issue_number: req.query.issue_number,
+  });
   const options = Object.create({});
   options.depth = Number(req.query.depth);
   // Set filter_group to a specific word to only return children under the specified word heading.
   options.filter_group = req.query.filter_group || 'children';
 
   if (!platform || !owner || !repo || !issue_number) {
-    res.status(400).json({ error: { code: '400', message: 'URL query is missing fields' } });
+    res
+      .status(400)
+      .json({ error: { code: '400', message: 'Some required fields are missing from the URL query string' } });
     return;
   }
   try {
-    const rootIssue = await getIssue({ platform, owner, repo, issue_number });
-    // console.log('rootIssue:', rootIssue);
-    // We should probably check for children due dates instead of the root issue
+    const rootIssue = await getIssue(reqQueryParams);
+    if (!rootIssue) {
+      res.status(500).json({ error: { code: '500', message: 'No issue found.' } });
+      return;
+    }
+
+    // We should probably check for due dates of milestones instead of the root roadmap
     // if (!getConfig(rootIssue?.body_html)?.eta) {
     //   // res.status(500).json({ error: { code: '500', message: 'No due date found in issue body.' } });
     //   // return;
     // }
 
-    const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue.body_html)) || null;
+    const childrenFromBodyHtml = rootIssue.body_html && getChildren(rootIssue.body_html);
+    // console.log('rootIssue:', rootIssue);
+    // console.log('childrenFromBodyHtml:', childrenFromBodyHtml);
     const toReturn = {
       ...rootIssue,
       children: (!!childrenFromBodyHtml && (await resolveChildrenWithDepth(childrenFromBodyHtml))) || [],
     };
+    const toReturnEnriched = addItemsToChildren([{ children: [toReturn] }], {})[0].children[0];
+    const defaultResponse = Object.create({
+      parent: {},
+      children: [],
+    });
 
-    res.status(200).json({ data: { ...addToChildren([{ children: [toReturn] }], {})[0].children[0], parent: {} } });
+    res.status(200).json({ data: { ...defaultResponse, ...toReturnEnriched } });
   } catch (err) {
     console.error('error:', err);
-    res.status(404).json({ error: { code: '404', message: 'not found' } });
+
+    res.status(500).json({ error: { code: '500', message: 'API error' } });
   }
 }

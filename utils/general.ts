@@ -6,13 +6,6 @@ import { dayjs } from '../lib/client/dayjs';
 
 export const toTimestamp = (date) => (_.isDate(date) && +new Date(date)) || +new Date(date?.split('-'));
 
-export const slugsFromUrl: any = (url: string) => {
-  const matchResult = match('/:owner/:repo/issues/:issue_number(\\d+)', {
-    decode: decodeURIComponent,
-  })(url);
-  return matchResult;
-};
-
 export const formatDate = (date) => {
   if (_.isDate(date)) {
     return +new Date(date);
@@ -31,13 +24,27 @@ export const addOffset = (dates: Date[], { offsetStart, offsetEnd }: { offsetSta
   return datesWithOffset;
 };
 
-export const paramsFromUrl = (url) => {
+//#region -> URL-RELATED
+export const slugsFromUrl = (url: string) => {
+  const matchResult = match('/:owner/:repo/issues/:issue_number(\\d+)', {
+    decode: decodeURIComponent,
+  })(url);
+
+  return { ...matchResult };
+};
+
+export const paramsFromUrl = (url: string | URL) => {
   try {
-    return { ...slugsFromUrl(new URL(url).pathname).params };
+    const pathname = new URL(url).pathname;
+    const params = slugsFromUrl(pathname).params;
+
+    return params;
   } catch (err) {
-    console.error('paramsFromUrl error:', err);
+    console.error('error on paramsFromUrl():', err);
+    return;
   }
 };
+//#endregion
 
 export const formatDateDayJs = (date: string): Date => dayjs(date).utc().toDate();
 export const formatDateArrayDayJs = (dates: string[]): Date[] => dates.map((date) => formatDateDayJs(date));

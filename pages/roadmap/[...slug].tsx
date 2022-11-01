@@ -33,6 +33,7 @@ export async function getServerSideProps(context) {
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   console.log('inside /roadmap/[...slug].tsx');
   const { issueData, error, isLocal, view, mode } = props;
+  // console.log('issueData:', issueData);
 
   return (
     <>
