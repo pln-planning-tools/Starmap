@@ -20,10 +20,26 @@ Encodings are how to encode certain data that MapLight will render into an issue
 For any encoding, MapLight will only take the first such occurrence in the body.
 
 #### ETA
-- Every milestone **must** have an ETA - "Estimated Time of Arrival". This is the date the Milestone will be fully achieved. The ETA is stored in the Body of the issue as follows:
+- Every milestone **must** have an ETA - "Estimated Time of Arrival". This is the timeframe in which the Milestone will be fully achieved. The ETA is stored in the Body of the issue. There are three accepted formats:
 
+*Option 1 - Quarter*
+```
+eta: YYYYQN
+
+example:
+eta: 2023Q1
+```
+*Option 2 - Month*
+```
+eta: YYYY-MM
+
+example: 2023-02
+```
+*Option 3 - Specific Date*
 ```
 eta: YYYY-MM-DD
+
+example: 2023-02-01
 ```
 - Must occur at the beginning of a new line
 - Date must be in ordered specified; we support ".", "-", and "/" as delimiters.
