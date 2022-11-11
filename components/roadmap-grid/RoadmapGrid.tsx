@@ -31,7 +31,7 @@ const groupData = (data: IssueData[]): IssueDataGrouped[] =>
     ([key, value]) => ({ groupName: key, items: value }),
   );
 
-export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData; viewMode: string }) {
+export function RoadmapGrid({ issueData, viewMode }: { issueData: IssueData; viewMode: string }) {
   let issue: IssueData;
   if (issueData.children.length === 0) {
     issue = { ...issueData, children: [{ ...issueData }] };
@@ -51,7 +51,7 @@ export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData;
     children: [{ ...data }],
     group: data.title,
   }));
-  console.log('issueDataLevelOneIfNoChildren:', issueDataLevelOneIfNoChildren);
+  // console.log('issueDataLevelOneIfNoChildren:', issueDataLevelOneIfNoChildren);
   const issueDataLevelOneIfNoChildrenGrouped = groupData(issueDataLevelOneIfNoChildren);
 
   let issuesGrouped;
