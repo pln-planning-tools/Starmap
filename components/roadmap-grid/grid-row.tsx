@@ -8,6 +8,12 @@ import { IssueData } from '../../lib/types';
 import { paramsFromUrl } from '../../utils/general';
 import styles from './Roadmap.module.css';
 
+type MilestoneUrlParams = {
+  owner: string;
+  repo: string;
+  issue_number: number;
+};
+
 export function GridRow({
   milestone,
   index,
@@ -23,6 +29,9 @@ export function GridRow({
     totalTimelineTicks: timelineTicks.length,
   });
   const span = 4;
+  const urlParams = paramsFromUrl(milestone.html_url);
+  const { owner, repo, issue_number } = urlParams as MilestoneUrlParams;
+  const allParamsValid = !!owner && !!repo && !!issue_number;
 
   return (
     <div
@@ -37,16 +46,13 @@ export function GridRow({
       className={`${styles.item} ${styles.issueItem}`}
     >
       <div className={styles.milestoneTitleWrapper}>
-        <NextLink
-          href={`/roadmap/github.com/${paramsFromUrl(milestone.html_url).owner}/${
-            paramsFromUrl(milestone.html_url).repo
-          }/issues/${paramsFromUrl(milestone.html_url).issue_number}`}
-          passHref
-        >
-          <Link color='blue.500' className={styles.milestoneTitle}>
-            {milestone.title}
-          </Link>
-        </NextLink>
+        {(!allParamsValid && milestone.title) || (
+          <NextLink href={`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}`} passHref>
+            <Link color='blue.500' className={styles.milestoneTitle}>
+              {milestone.title}
+            </Link>
+          </NextLink>
+        )}
       </div>
       <div className={styles.milestoneDate}>{milestone.due_date}</div>
     </div>
