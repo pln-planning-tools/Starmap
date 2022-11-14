@@ -1,0 +1,8 @@
+.UserGuide-container {
+  padding: 0 9rem;
+}
+
+.UserGuide-article {
+  max-width: 70rem;
+  min-width: 390px;
+}
