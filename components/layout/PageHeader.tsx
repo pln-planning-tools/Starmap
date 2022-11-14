@@ -8,7 +8,7 @@ import styles from './PageHeader.module.css';
 function PageHeader() {
   return (
     <Flex direction={'row'} bg={theme.light.header.background.color} pl="120px" pr="120px">
-      <Box p={6} textAlign={'center'} alignContent='center' verticalAlign='center'>
+      <Box pt={6} pb={6} textAlign={'center'} alignContent='center' verticalAlign='center'>
         <Center>
           <SvgStarMapsLogo width={45} height={45} className={styles.StarMapsLogo} />
           <Text fontSize={'24px'} as='span' color={theme.light.header.text.color}>Star</Text>
