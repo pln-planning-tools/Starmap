@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer, Text, Image, Center, Link } from '@chakra-ui/react';
+import { Box, Flex, Spacer, Text, Center, Link } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
 import { RoadmapForm } from '../RoadmapForm';
@@ -22,25 +22,17 @@ function PageHeader() {
       </Box>
       <Spacer />
       <Center>
-      <Box
-        minW='33vw'
-        maxW='45vw'
-        color='white'
-        textAlign={'center'}
-        alignContent='center'
-        verticalAlign='center'
-      >
-        <RoadmapForm />
-      </Box>
-        </Center>
-      {/* <Box pt={6} color='black' textAlign={'center'} alignContent='center' verticalAlign='center' pr={10}>
-        <FormControl>
-          <FormLabel htmlFor='isDetailedView' display='inline' textAlign='right'>
-            Detailed view:
-          </FormLabel>
-          <Switch id='isDetailedView' textAlign='right' />
-        </FormControl>
-      </Box> */}
+        <Box
+          minW='33vw'
+          maxW='45vw'
+          color='white'
+          textAlign={'center'}
+          alignContent='center'
+          verticalAlign='center'
+        >
+          <RoadmapForm />
+        </Box>
+      </Center>
     </Flex>
   );
 }

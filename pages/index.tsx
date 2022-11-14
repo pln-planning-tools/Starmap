@@ -7,8 +7,8 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 import { Center } from '@chakra-ui/react'
-import styles from './LandingPage.module.css'
 
+import styles from './LandingPage.module.css'
 import PageHeader from '../components/layout/PageHeader';
 
 interface SSProps {
@@ -30,7 +30,7 @@ const App: NextPage<SSProps> = ({markdown}: SSProps) => {
   return (
     <>
       <PageHeader />
-      <Center className={styles['UserGuide-container']}>
+      <Center pr="120px" pl="120px">
         <article className={styles['UserGuide-article']}>
           <ReactMarkdown components={ChakraUIRenderer()} children={markdown} remarkPlugins={[remarkGfm]} />
         </article>
