@@ -4,7 +4,7 @@ import { Link, Text, Flex, Spacer, Center } from '@chakra-ui/react';
 import NextLink from 'next/link'
 
 import themes from '../theme/constants';
-import GitHubSvgIcon from '../icons/iconmonstr-github.svg';
+import GitHubSvgIcon from '../icons/GitHubLogo.svg';
 import { IssueData } from '../../lib/types';
 
 export default function Header({ issueData }: { issueData: IssueData }) {
