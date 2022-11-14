@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
-
 import { Input } from '@chakra-ui/react';
-
 import { match } from 'path-to-regexp';
 import { useEffect, useState } from 'react';
 
 import { setIsLoading } from '../hooks/useIsLoading';
+import styles from './RoadmapForm.module.css'
+import theme from './theme/constants'
 
 const slugsFromUrl: any = (url) => {
   const matchResult = match('/:owner/:repo/issues/:issue_number(\\d+)', {
@@ -51,14 +51,17 @@ export function RoadmapForm() {
         }}
       >
         <Input
-          color={'black'}
+          className={styles.urlInput}
+          color={theme.light.header.input.text.color}
           aria-label='Issue URL'
           name='issue-url'
           autoComplete='url'
           onChange={(e) => setCurrentIssueUrl(e.target.value)}
           placeholder='https://github.com/...'
           size='sm'
-          bg='white'
+          bg={theme.light.header.input.background.color}
+          borderColor={theme.light.header.input.border.color}
+          borderRadius={theme.light.header.input.border.radius}
         />
       </form>
     </>
