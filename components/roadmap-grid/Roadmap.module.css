@@ -170,3 +170,7 @@ a.milestoneTitle {
     grid-column-start: span 6 !important;
   }
 }
+
+.wrapperLink {
+  cursor: pointer;
+}
