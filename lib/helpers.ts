@@ -1,7 +1,4 @@
-import dayjs from 'dayjs';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-
-dayjs.extend(quarterOfYear);
+import { dayjs } from './client/dayjs';
 
 /**
  * Date parser based on: https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#eta
