@@ -1,11 +1,13 @@
 import NextLink from 'next/link';
-import { Tooltip } from '@chakra-ui/react';
+import { Tooltip, Flex, Spacer, Text } from '@chakra-ui/react';
 
 import { dayjs } from '../../lib/client/dayjs';
 import { getClosest } from '../../lib/client/getClosest';
 import { IssueData } from '../../lib/types';
 import { paramsFromUrl } from '../../utils/general';
 import styles from './Roadmap.module.css';
+import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
+import getDateAsQuarter from '../../lib/client/getDateAsQuarter';
 
 export function GridRow({
   milestone,
@@ -38,8 +40,19 @@ export function GridRow({
         }}
         className={`${styles.item} ${styles.issueItem} ${styles.wrapperLink}`}
       >
-        <div className={styles.milestoneTitleWrapper}>{milestone.title}</div>
-        <div className={styles.milestoneDate}>{milestone.due_date}</div>
+        <Flex direction="row" position="relative">
+          <Tooltip hasArrow label='Open in StarMaps'>
+            <Flex direction="column">
+              <Text as="b" className={styles.milestoneTitleWrapper}>{milestone.title}</Text>
+              <div className={styles.milestoneDate}>{getDateAsQuarter(milestone.due_date)}</div>
+            </Flex>
+          </Tooltip>
+          <Spacer />
+          <SvgGitHubLogoWithTooltip githubUrl={milestone.html_url}/>
+          {/* <Tooltip label="Hey, I'm here!" aria-label='A tooltip'>
+            <SvgGitHubLogo alt="GitHub Logo" color={themes.light.text.color} width='24px' height='24px' />
+          </Tooltip> */}
+        </Flex>
       </div>
     </NextLink>
   );
