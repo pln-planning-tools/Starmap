@@ -1,0 +1,13 @@
+.urlInput {
+  box-sizing: border-box;
+
+  align-items: center;
+  padding: 12px 24px;
+  gap: 12px;
+
+  border-radius: 5px;
+}
+
+.urlInput::placeholder {
+  color: #FFFFFF;
+}
