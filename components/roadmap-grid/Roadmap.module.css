@@ -61,14 +61,14 @@
   background: rgba(215, 228, 253, 0.5);
 }
 .groupWrapper:nth-child(odd):not(.timelineHeaderLineWrapper) p {
-  color: rgba(43, 99, 186, 1);
+  color: rgba(215, 228, 253, 0.5);
 }
 
 .groupWrapper:nth-child(even):not(.timelineHeaderLineWrapper) {
-  background: rgba(229, 217, 253, 0.5);
+  background: rgba(215, 228, 253, 0.5);
 }
 .groupWrapper:nth-child(even):not(.timelineHeaderLineWrapper) p {
-  color: rgba(142, 84, 202, 1);
+  color: rgba(215, 228, 253, 0.5);
 }
 
 .simpleView {
