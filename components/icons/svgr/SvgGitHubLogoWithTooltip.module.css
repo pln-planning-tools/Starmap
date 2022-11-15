@@ -1,0 +1,6 @@
+.githubIcon-withTooltip {
+  position: relative;
+  top: 0.2rem;
+  right: -0.2rem;
+  cursor: pointer;
+}
