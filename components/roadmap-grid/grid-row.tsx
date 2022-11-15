@@ -23,7 +23,7 @@ export function GridRow({
     dates: timelineTicks,
     totalTimelineTicks: timelineTicks.length,
   });
-  const span = 4;
+  const span = 5;
 
   const urlParams = paramsFromUrl(milestone.html_url)
   const childLink = `/roadmap/github.com/${urlParams.owner}/${urlParams.repo}/issues/${urlParams.issue_number}`
