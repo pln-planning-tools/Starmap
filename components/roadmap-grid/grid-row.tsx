@@ -1,4 +1,5 @@
 import NextLink from 'next/link';
+import { Tooltip } from '@chakra-ui/react';
 
 import { dayjs } from '../../lib/client/dayjs';
 import { getClosest } from '../../lib/client/getClosest';
