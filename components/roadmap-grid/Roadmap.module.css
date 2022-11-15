@@ -37,6 +37,7 @@
   padding-right: 10px;
   margin-bottom: 4px;
   border-radius: 8px;
+  /* min-height: 6rem; */
 }
 
 .item.group {
@@ -101,6 +102,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: 0.2rem;
+  max-width: 20rem;
 }
 
 .milestoneTitle {
@@ -115,6 +117,8 @@ a.milestoneTitle {
 .milestoneDate {
   font-size: 13px;
   justify-self: right;
+  /* position: relative;
+  bottom: 1rempx; */
 }
 
 .timelineTick {
