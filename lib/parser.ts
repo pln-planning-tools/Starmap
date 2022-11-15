@@ -1,6 +1,6 @@
 import { parseHTML } from 'linkedom';
 
-import { getEtaDate, isValidChildren } from '../utils/regexes';
+import { getEtaDate, isValidChildren } from './helpers';
 import { IssueData, ParserGetChildrenResponse } from './types';
 
 export const getConfig = (issue: IssueData['body_html']) => {
