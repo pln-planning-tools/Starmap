@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
-import { Input } from '@chakra-ui/react';
+import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons'
 import { match } from 'path-to-regexp';
 import { useEffect, useState } from 'react';
 
@@ -50,19 +51,25 @@ export function RoadmapForm() {
           }
         }}
       >
-        <Input
-          className={styles.urlInput}
-          color={theme.light.header.input.text.color}
-          aria-label='Issue URL'
-          name='issue-url'
-          autoComplete='url'
-          onChange={(e) => setCurrentIssueUrl(e.target.value)}
-          placeholder='https://github.com/...'
-          size='sm'
-          bg={theme.light.header.input.background.color}
-          borderColor={theme.light.header.input.border.color}
-          borderRadius={theme.light.header.input.border.radius}
-        />
+
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents='none'
+            children={<SearchIcon color='#FFFFFF' />}
+          />
+          <Input
+            className={styles.urlInput}
+            color={theme.light.header.input.text.color}
+            aria-label='Issue URL'
+            name='issue-url'
+            autoComplete='url'
+            onChange={(e) => setCurrentIssueUrl(e.target.value)}
+            placeholder='https://github.com/...'
+            bg={theme.light.header.input.background.color}
+            borderColor={theme.light.header.input.border.color}
+            borderRadius={theme.light.header.input.border.radius}
+          />
+        </InputGroup>
       </form>
     </>
   );
