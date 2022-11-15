@@ -41,17 +41,12 @@ export function GridRow({
         className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink}`}
       >
         <Flex direction="row" position="relative">
-          <Tooltip hasArrow label='Open in StarMaps'>
-            <Flex direction="column">
-              <Text as="b" className={styles.milestoneTitleWrapper}>{milestone.title}</Text>
-              <div className={styles.milestoneDate}>{getDateAsQuarter(milestone.due_date)}</div>
-            </Flex>
-          </Tooltip>
+          <Flex direction="column">
+            <Text as="b" className={styles.milestoneTitleWrapper}>{milestone.title}</Text>
+            <div className={styles.milestoneDate}>{getDateAsQuarter(milestone.due_date)}</div>
+          </Flex>
           <Spacer />
           <SvgGitHubLogoWithTooltip githubUrl={milestone.html_url}/>
-          {/* <Tooltip label="Hey, I'm here!" aria-label='A tooltip'>
-            <SvgGitHubLogo alt="GitHub Logo" color={themes.light.text.color} width='24px' height='24px' />
-          </Tooltip> */}
         </Flex>
       </div>
   );
