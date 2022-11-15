@@ -5,7 +5,7 @@ import styles from './Roadmap.module.css';
 export function GridHeader({ ticks, index }) {
   const date = dayjs(ticks).utc();
   const quarterNum = date.quarter();
-  const year = date.year().toString().slice(2);
+  const year = date.format('YY');
 
   return (
     <>
