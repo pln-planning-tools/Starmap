@@ -16,7 +16,8 @@ export const getEtaDate = (data: string): string => {
   const dateString = data.match(etaRegex)?.groups?.dateString;
 
   if (!dateString) {
-    throw new Error('No ETA date found');
+    console.debug('No ETA date found');
+    return '';
   }
 
   const year = parseInt(dateString.slice(0, 4));
