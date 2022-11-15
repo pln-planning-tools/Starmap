@@ -30,7 +30,7 @@ const App: NextPage<SSProps> = ({markdown}: SSProps) => {
   return (
     <>
       <PageHeader />
-      <Center pr="120px" pl="120px">
+      <Center>
         <article className={styles['UserGuide-article']}>
           <ReactMarkdown components={ChakraUIRenderer()} children={markdown} remarkPlugins={[remarkGfm]} />
         </article>
