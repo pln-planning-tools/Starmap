@@ -5,6 +5,8 @@
  * @returns {string} etaDate
  */
 export const getEtaDate = (data: string): string => {
+  // how this works: https://www.debuggex.com/r/x-U2AnhTwWbSCXCD
+
   const etaRegex = /^eta\s*:\s*(?<dateString>\d{4}(Q[1-4]|\-\d{2}(\-\d{2})?))/im;
   const dateString = data.match(etaRegex)?.groups?.dateString.toLowerCase();
 
@@ -14,10 +16,6 @@ export const getEtaDate = (data: string): string => {
   }
 
   const year = parseInt(dateString.slice(0, 4));
-  if (year < 2000) {
-    console.debug('Invalid year');
-    return '';
-  }
 
   let day = 0;
   let month;
