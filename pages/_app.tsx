@@ -8,7 +8,7 @@ function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Planetarium</title>
+        <title>StarMaps</title>
         <meta name='description' content='Roadmapping tool' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
