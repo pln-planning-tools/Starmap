@@ -1,14 +1,20 @@
-import { Box, Flex, FormControl, FormLabel, Heading, Spacer, Switch, Text } from '@chakra-ui/react';
+import { Box, Flex, Spacer, Text, Link } from '@chakra-ui/react';
+import NextLink from 'next/link';
 
 import { RoadmapForm } from '../RoadmapForm';
+import styles from './PageHeader.module.css'
 
 function PageHeader() {
   return (
     <Flex direction={'row'} bg='#BDD8F0'>
-      <Box p={6} textAlign={'center'} alignContent='center' verticalAlign='center' paddingRight={'20px'}>
-        <Text fontSize={'xl'} as='span'>
-          Planetarium
-        </Text>
+      <Box className={styles.Logo} p={6} textAlign={'center'} alignContent='center' verticalAlign='center' paddingRight={'20px'}>
+        <NextLink href="/" passHref>
+          <Link>
+            <Text fontSize={'xl'} as='span' className={styles['Logo-text']}>
+              Starmaps
+            </Text>
+          </Link>
+        </NextLink>
       </Box>
       <Box
         minW='33vw'
