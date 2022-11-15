@@ -1,3 +1,8 @@
+import dayjs from 'dayjs';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+
+dayjs.extend(quarterOfYear);
+
 /**
  * Date parser based on: https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#eta
  *
@@ -7,33 +12,30 @@
 export const getEtaDate = (data: string): string => {
   // how this works: https://www.debuggex.com/r/x-U2AnhTwWbSCXCD
 
-  const etaRegex = /^eta\s*:\s*(?<dateString>\d{4}(Q[1-4]|\-\d{2}(\-\d{2})?))/im;
-  const dateString = data.match(etaRegex)?.groups?.dateString.toLowerCase();
+  const etaRegex = /^eta\s*:\s*(?<dateString>\d{4}(Q[1-4]|\-\d{2}(\-\d{2})?))/m;
+  const dateString = data.match(etaRegex)?.groups?.dateString;
 
   if (!dateString) {
     throw new Error('No ETA date found');
   }
 
   const year = parseInt(dateString.slice(0, 4));
+  let etaDate = dayjs().year(year);
 
-  let day = 0;
-  let month;
-  // check for quarter
-  if (dateString[4] === 'q') {
-    const quarter = parseInt(dateString[5]);
-    if (quarter < 5 && quarter > 0) {
-      month = quarter * 3;
-    }
+  if (dateString[4] === 'Q') {
+    etaDate = etaDate
+      .quarter(parseInt(dateString[5]))
+      .endOf('quarter');
   } else {
-    month = parseInt(dateString.slice(5, 7));
-    if (dateString.length === 10) {
-      day = parseInt(dateString.slice(8, 10));
-      month -= 1; // months are 0-indexed
+    etaDate = etaDate.month(parseInt(dateString.slice(5, 7)) - 1);
+    if (dateString.length === 7) {
+      etaDate = etaDate.endOf('month');
+    } else {
+      etaDate = etaDate.date(parseInt(dateString.slice(8, 10)));
     }
   }
 
-  const date = new Date(year, month, day);
-  return date.toISOString().slice(0, 10);
+  return etaDate.format('YYYY-MM-DD');
 };
 
 export const isValidChildren = (v) => /^children[:]?$/im.test(v);
