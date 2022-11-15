@@ -27,10 +27,10 @@ export function GridRow({
 
   const urlParams = paramsFromUrl(milestone.html_url)
   const childLink = `/roadmap/github.com/${urlParams.owner}/${urlParams.repo}/issues/${urlParams.issue_number}`
+  const clickable = milestone.children.length > 0;
 
-  return (
-    <NextLink key={index} href={childLink} passHref>
-      <div
+  const rowItem = (
+    <div
         style={{
           gridColumnStart: `span ${span}`,
           gridColumnEnd: `${closest === span ? closest + 1 : closest}`,
@@ -38,7 +38,7 @@ export function GridRow({
             milestone.completion_rate.toString(2),
           )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(2))}%)`,
         }}
-        className={`${styles.item} ${styles.issueItem} ${styles.wrapperLink}`}
+        className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink}`}
       >
         <Flex direction="row" position="relative">
           <Tooltip hasArrow label='Open in StarMaps'>
@@ -54,6 +54,15 @@ export function GridRow({
           </Tooltip> */}
         </Flex>
       </div>
-    </NextLink>
   );
+
+  if (clickable) {
+    return (
+      <NextLink key={index} href={childLink} passHref>
+        {rowItem}
+      </NextLink>
+    );
+  }
+
+  return rowItem;
 }

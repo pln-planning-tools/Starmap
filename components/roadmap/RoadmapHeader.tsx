@@ -1,9 +1,7 @@
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
-import { Box, Link, Progress, Text } from '@chakra-ui/react';
+import { Link, Text } from '@chakra-ui/react';
 
-import { getLinkForRoadmapChild } from '../../lib/client/linkUtils';
 import { IssueData } from '../../lib/types';
 
 interface RoadmapHeaderProps {
