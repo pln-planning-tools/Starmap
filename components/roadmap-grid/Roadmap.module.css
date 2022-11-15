@@ -173,4 +173,9 @@ a.milestoneTitle {
 
 .wrapperLink {
   cursor: pointer;
+  border-width: 2px;
+}
+
+.wrapperLink:hover {
+  border: 2px solid #1FA5FF;
 }

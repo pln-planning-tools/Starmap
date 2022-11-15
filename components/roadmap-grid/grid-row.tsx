@@ -31,24 +31,26 @@ export function GridRow({
 
   const rowItem = (
     <div
-        style={{
-          gridColumnStart: `span ${span}`,
-          gridColumnEnd: `${closest === span ? closest + 1 : closest}`,
-          background: `linear-gradient(90deg, rgba(166, 178, 255, 0.4) ${parseInt(
-            milestone.completion_rate.toString(2),
-          )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(2))}%)`,
-        }}
-        className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink}`}
-      >
-        <Flex direction="row" position="relative">
-          <Flex direction="column">
-            <Text as="b" className={styles.milestoneTitleWrapper}>{milestone.title}</Text>
-            <div className={styles.milestoneDate}>{getDateAsQuarter(milestone.due_date)}</div>
-          </Flex>
-          <Spacer />
-          <SvgGitHubLogoWithTooltip githubUrl={milestone.html_url}/>
+      key={index}
+      style={{
+        gridColumnStart: `span ${span}`,
+        gridColumnEnd: `${closest === span ? closest + 1 : closest}`,
+        background: `linear-gradient(90deg, rgba(166, 178, 255, 0.4) ${parseInt(
+          milestone.completion_rate.toString(2),
+        )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(2))}%)`,
+      }}
+      className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink}`}
+      
+    >
+      <Flex direction="row" position="relative">
+        <Flex direction="column">
+          <Text as="b" className={styles.milestoneTitleWrapper}>{milestone.title}</Text>
+          <div className={styles.milestoneDate}>{getDateAsQuarter(milestone.due_date)}</div>
         </Flex>
-      </div>
+        <Spacer />
+        <SvgGitHubLogoWithTooltip githubUrl={milestone.html_url}/>
+      </Flex>
+    </div>
   );
 
   if (clickable) {
