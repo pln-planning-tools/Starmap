@@ -16,6 +16,6 @@
     "incremental": true,
     "noImplicitAny": false
   },
-  "include": ["next-env.d.ts", ".eslintrc.js", "**/*.ts", "**/*.tsx", "next.config.js", "jest.config.js"],
+  "include": ["next-env.d.ts", ".eslintrc.js", "**/*.ts", "**/*.tsx", "*.config.js"],
   "exclude": ["node_modules"]
 }
