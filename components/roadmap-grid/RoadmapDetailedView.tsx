@@ -5,8 +5,8 @@ import _ from 'lodash';
 import React from 'react';
 
 import { getTicks } from '../../lib/client/getTicks';
-import { IssueData } from '../../lib/types';
-import { addOffset, formatDateArrayDayJs } from '../../utils/general';
+import { DetailedViewGroup, IssueData } from '../../lib/types';
+import { addOffset, formatDateArrayDayJs, getInternalLinkForIssue } from '../../utils/general';
 import styles from './Roadmap.module.css';
 import { Grid } from './grid';
 import { GridHeader } from './grid-header';
@@ -18,7 +18,6 @@ import { Headerline } from './headerline';
 
 export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData; viewMode: string }) {
   const showGroupRowTitle = viewMode === 'detail';
-  console.log('viewMode:', viewMode);
 
   const newIssueData = issueData.children.map((v) => ({
     ...v,
@@ -26,18 +25,28 @@ export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData;
     children: v.children.map((x) => ({ ...x, group: x.parent.title })),
   }));
 
-  const issueDataLevelOne = newIssueData.map((v) => v.children.flat()).flat();
-  const issueDataLevelOneGrouped = Array.from(
-    group(issueDataLevelOne as IssueData[], (d) => d.group),
-    ([key, value]) => ({ groupName: key, items: value }),
-  );
-  const issueDataLevelOneIfNoChildren = newIssueData.map((v) => ({ ...v, children: { ...v }, group: v.title }));
-  const issueDataLevelOneIfNoChildrenGrouped = Array.from(
-    group(issueDataLevelOneIfNoChildren as IssueData[], (d) => d.group),
-    ([key, value]) => ({ groupName: key, items: value }),
+  const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
+
+  const issueDataLevelOneGrouped: DetailedViewGroup[] = Array.from(
+    group(issueDataLevelOne, (d) => d.group),
+    ([key, value]) => ({
+      groupName: key,
+      items: value,
+      url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+    }),
   );
 
-  let issuesGrouped;
+  const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, children: [v], group: v.title }));
+  const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = Array.from(
+    group(issueDataLevelOneIfNoChildren, (d) => d.group),
+    ([key, value]) => ({
+      groupName: key,
+      items: value,
+      url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+    }),
+  );
+
+  let issuesGrouped: DetailedViewGroup[];
   if (viewMode === 'detail') {
     issuesGrouped =
       (!!issueDataLevelOneGrouped && issueDataLevelOneGrouped.length > 0 && issueDataLevelOneGrouped) ||
@@ -45,7 +54,11 @@ export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData;
   } else {
     issuesGrouped = Array.from(
       group(issueData.children as IssueData[], (d) => d.group),
-      ([key, value]) => ({ groupName: key, items: value }),
+      ([key, value]) => ({
+        groupName: key,
+        items: value,
+        url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+      }),
     );
   }
 
