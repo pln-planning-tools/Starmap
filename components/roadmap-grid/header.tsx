@@ -12,6 +12,13 @@ export default function Header({ issueData }: { issueData: IssueData }) {
 
   const changeToView = router.query.view === 'detail' ? 'simple' : 'detail';
 
+  // console.log(issueData.html_url)
+  console.log(`issueData.html_url: `, issueData.html_url);
+  if (issueData.html_url == null || typeof issueData.html_url !== 'string') {
+    console.log('error with issueData', issueData)
+    return null;
+  }
+
   return (
     <>
       <Text mb='8px' fontSize={14}>
@@ -34,7 +41,7 @@ export default function Header({ issueData }: { issueData: IssueData }) {
         <Spacer />
         <Center>
           <NextLink style={{display: 'span'}} passHref href={issueData.html_url}>
-            <Link target="_blank" rel="noopener noreferrer">
+            <Link  href="/" target="_blank" rel="noopener noreferrer">
               <Center>
                 <Text as='span' fontSize={15} fontWeight={400} color={themes.light.text.color} pr="0.5rem">View in GitHub</Text>
                 <Image src={GitHubSvgIcon} alt="GitHub Logo" color={themes.light.text.color} width={24} height={24} />

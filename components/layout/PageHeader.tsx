@@ -5,11 +5,14 @@ import { RoadmapForm } from '../RoadmapForm';
 import theme from '../theme/constants'
 import SvgStarMapsLogo from '../icons/svgr/StarMapsLogo'
 import styles from './PageHeader.module.css';
+import { ErrorBoundary } from '../errors/ErrorBoundary';
 
 function PageHeader() {
   return (
     <Flex direction={'row'} bg={theme.light.header.background.color} pl="120px" pr="120px">
       <Box pt={6} pb={6} className={styles.Logo} textAlign={'center'} alignContent='center' verticalAlign='center'>
+
+      <ErrorBoundary>
         <NextLink href="/" passHref>
           <Link>
             <Center>
@@ -19,6 +22,7 @@ function PageHeader() {
             </Center>
           </Link>
         </NextLink>
+      </ErrorBoundary>
       </Box>
       <Spacer />
       <Center>

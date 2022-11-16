@@ -2,6 +2,7 @@ import { Link, Text } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
 import { StarMapsError } from '../../lib/types';
+import { ErrorBoundary } from './ErrorBoundary';
 
 export interface ErrorLineItemProps {
   error: StarMapsError;
@@ -13,12 +14,15 @@ export function ErrorLineItem({error}: ErrorLineItemProps) {
     return null;
   }
   return <div>
-    <NextLink style={{display: 'span'}} passHref href={error.url}>
-      <Link target="_blank" rel="noopener noreferrer">
-        <Text>{error.url}</Text>
-      </Link>
-    </NextLink>
-    <div>{error.message}</div>
+
+    <ErrorBoundary>
+      <NextLink style={{display: 'span'}} passHref href={error.url}>
+        <Link target="_blank" rel="noopener noreferrer">
+          <Text>{error.url}</Text>
+        </Link>
+      </NextLink>
+      <div>{error.message}</div>
+    </ErrorBoundary>
   </div>;
 }
 

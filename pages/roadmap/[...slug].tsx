@@ -10,6 +10,7 @@ import { API_URL } from '../../config/constants';
 import { IssueData, RoadmapApiResponse, ServerSidePropsResult, StarMapsError } from '../../lib/types';
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 import { RoadmapMode } from '../../lib/enums';
+import { ErrorBoundary } from '../../components/errors/ErrorBoundary';
 
 export async function getServerSideProps(context): Promise<ServerSidePropsResult> {
   console.log('inside roadmap page | getServerSideProps()');
@@ -39,18 +40,25 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
   return (
     <>
-      <PageHeader />
-      <ErrorNotificationDisplay errors={errors} />
-      <Box pt={5} pr="120px" pl="120px">
-        {!!error && <Box color='red.500'>{error.message}</Box>}
-        {!!issueData && mode === 'd3' && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
-        {!!issueData && mode === 'grid' && view === 'detail' && (
-          <RoadmapDetailed viewMode={view} issueData={issueData} />
-        )}
-        {!!issueData && mode === 'grid' && view === 'simple' && (
-          <RoadmapDetailed viewMode={view} issueData={issueData} />
-        )}
-      </Box>
+      <ErrorBoundary>
+        <PageHeader />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <ErrorNotificationDisplay errors={errors} />
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <Box pt={5} pr="120px" pl="120px">
+          {!!error && <Box color='red.500'>{error.message}</Box>}
+          {!!issueData && mode === 'd3' && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
+          {!!issueData && mode === 'grid' && view === 'detail' && (
+            <RoadmapDetailed viewMode={view} issueData={issueData} />
+          )}
+          {!!issueData && mode === 'grid' && view === 'simple' && (
+            <RoadmapDetailed viewMode={view} issueData={issueData} />
+          )}
+        </Box>
+      </ErrorBoundary>
     </>
   );
 }
