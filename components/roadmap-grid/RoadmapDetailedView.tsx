@@ -15,9 +15,12 @@ import { GroupItem } from './group-item';
 import { GroupWrapper } from './group-wrapper';
 import Header from './header';
 import { Headerline } from './headerline';
+import { useViewMode } from '../../hooks/useViewMode';
+import { ViewMode } from '../../lib/enums';
 
-export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData; viewMode: string }) {
-  const showGroupRowTitle = viewMode === 'detail';
+export function RoadmapDetailed({ issueData }: { issueData: IssueData; }) {
+  const viewMode = useViewMode();
+  const showGroupRowTitle = viewMode === ViewMode.Detail;
 
   const newIssueData = issueData.children.map((v) => ({
     ...v,
@@ -47,7 +50,7 @@ export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData;
   );
 
   let issuesGrouped: DetailedViewGroup[];
-  if (viewMode === 'detail') {
+  if (viewMode === ViewMode.Detail) {
     issuesGrouped =
       (!!issueDataLevelOneGrouped && issueDataLevelOneGrouped.length > 0 && issueDataLevelOneGrouped) ||
       issueDataLevelOneIfNoChildrenGrouped;

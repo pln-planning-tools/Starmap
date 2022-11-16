@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { Link, Text, Flex, Spacer, Center } from '@chakra-ui/react';
 import NextLink from 'next/link'
@@ -6,11 +5,13 @@ import NextLink from 'next/link'
 import themes from '../theme/constants';
 import GitHubSvgIcon from '../icons/GitHubLogo.svg';
 import { IssueData } from '../../lib/types';
+import { setViewMode, useViewMode } from '../../hooks/useViewMode';
+import { ViewMode } from '../../lib/enums';
 
 export default function Header({ issueData }: { issueData: IssueData }) {
-  const router = useRouter();
+  const viewMode = useViewMode();
 
-  const changeToView = router.query.view === 'detail' ? 'simple' : 'detail';
+  const changeToView = viewMode === ViewMode.Detail ? ViewMode.Simple : ViewMode.Detail;
 
   return (
     <>
@@ -18,10 +19,7 @@ export default function Header({ issueData }: { issueData: IssueData }) {
         <Link
           color='blue.500'
           onClick={() => {
-            router.push({
-              pathname: '/roadmap/[...slug]',
-              query: { view: changeToView, slug: router.query.slug },
-            });
+            setViewMode(changeToView);
           }}
         >
           Switch to {changeToView} view

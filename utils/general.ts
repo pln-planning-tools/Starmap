@@ -41,7 +41,6 @@ export const paramsFromUrl = (url: string) => {
 };
 
 export const getInternalLinkForIssue = (issue?: IssueData): string => {
-  console.log(`getInternalLinkForIssue.issue: `, issue);
   if (issue == null) {
     return '#'
   }
