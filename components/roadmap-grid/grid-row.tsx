@@ -47,7 +47,7 @@ export function GridRow({
           <div className={styles.milestoneDate}>{getDateAsQuarter(milestone.due_date)}</div>
         </Flex>
         <Spacer />
-        <SvgGitHubLogoWithTooltip githubUrl={milestone.html_url}/>
+        <SvgGitHubLogoWithTooltip githuburl={milestone.html_url}/>
       </Flex>
     </div>
   );
