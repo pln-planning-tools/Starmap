@@ -21,6 +21,7 @@ interface IssueData {
 interface RoadmapApiResponse {
   data?: IssueData;
   error?: { code: string; message: string };
+  errors?: StarMapsError[];
 }
 
 interface ParserGetChildrenResponse {
@@ -29,5 +30,25 @@ interface ParserGetChildrenResponse {
 }
 
 interface RoadmapProps {}
+
+export interface StarMapsError {
+  /**
+   * The GitHub html_url for the issue with the error.
+   */
+  url: string;
+  /**
+   * The URL to the relevant section in the User Guide.md
+   * Link to overall user-guide if error is not relevant to a specific section
+   */
+  userGuideUrl: string;
+  /**
+   * Friendly error title
+   */
+  title: string;
+  /**
+   * Descriptive error message
+   */
+  message: string;
+}
 
 export { RoadmapApiResponse, IssueData, IssueStates, ParserGetChildrenResponse };

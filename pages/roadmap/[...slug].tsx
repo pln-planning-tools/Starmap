@@ -20,6 +20,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
+      errors: response.errors ?? [],
       error: response.error || null,
       issueData: (response.data as IssueData) || null,
       isLocal: process.env.IS_LOCAL === 'true',
@@ -32,11 +33,12 @@ export async function getServerSideProps(context) {
 
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   console.log('inside /roadmap/[...slug].tsx');
-  const { issueData, error, isLocal, view, mode } = props;
+  const { issueData, error, errors, isLocal, view, mode } = props;
 
   return (
     <>
       <PageHeader />
+      <ErrorNotificationDisplay errors={errors} />
       <Box pt={5} pr="120px" pl="120px">
         {!!error && <Box color='red.500'>{error.message}</Box>}
         {!!issueData && mode === 'd3' && <NewRoadmap issueData={issueData} isLocal={isLocal} />}

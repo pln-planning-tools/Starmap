@@ -6,6 +6,7 @@ import { getIssue } from '../../lib/backend/issue';
 import { getChildren, getConfig } from '../../lib/parser';
 import { IssueData, ParserGetChildrenResponse, RoadmapApiResponse } from '../../lib/types';
 import { paramsFromUrl } from '../../utils/general';
+import { errorManager } from '../../lib/backend/errorManager';
 
 const resolveChildren = (children: any[]): Promise<IssueData[]> => {
   const resultArray: any = [];
