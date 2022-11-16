@@ -69,7 +69,8 @@ export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData;
           ))}
 
           <Headerline />
-
+        </Grid>
+        <Grid ticksLength={ticks.length} scroll={true}>
           {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {
             return (
               <GroupWrapper key={index} showGroupRowTitle={showGroupRowTitle}>

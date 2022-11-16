@@ -5,6 +5,18 @@
   margin-top: 15px;
 }
 
+.scrollable {
+  extend: grid;
+  height: calc(100vh - 300px);
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollable::-webkit-scrollbar {
+  display: none;
+}
+
 .subgrid {
   display: grid;
   grid-template: inherit;
