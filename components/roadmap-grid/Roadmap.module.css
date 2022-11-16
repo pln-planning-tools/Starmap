@@ -59,6 +59,7 @@
   grid-column: 1 / span 2;
   grid-column-end: none;
   background: white;
+  color: #3182ce;
 }
 
 .groupWrapper {
