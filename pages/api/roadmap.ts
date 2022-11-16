@@ -62,14 +62,12 @@ const addCompletionRate = (data) => {
   return issueStats.completionRate;
 };
 
-const addDueDates = ({ body_html }) => getConfig(body_html).eta;
-
 const addToChildren = (data, parent) => {
   if (_.isArray(data) && data.length > 0) {
     return data.map((item) => {
       return {
         completion_rate: addCompletionRate(item.children),
-        due_date: addDueDates(item),
+        due_date: getConfig(item).eta,
         html_url: item.html_url,
         group: item.group,
         title: item.title,
@@ -101,12 +99,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
   try {
     const rootIssue = await getIssue({ platform, owner, repo, issue_number });
-    // console.log('rootIssue:', rootIssue);
-    // We should probably check for children due dates instead of the root issue
-    // if (!getConfig(rootIssue?.body_html)?.eta) {
-    //   // res.status(500).json({ error: { code: '500', message: 'No due date found in issue body.' } });
-    //   // return;
-    // }
 
     const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue.body_html)) || null;
     const toReturn = {
@@ -114,7 +106,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       children: (!!childrenFromBodyHtml && (await resolveChildrenWithDepth(childrenFromBodyHtml))) || [],
     };
 
-    res.status(200).json({ data: { ...addToChildren([{ children: [toReturn] }], {})[0].children[0], parent: {} } });
+    res.status(200).json({
+      errors: errorManager.flushErrors(),
+      data: {
+        ...addToChildren([{ children: [toReturn] }], {})[0].children[0],
+        parent: {},
+      }
+    });
   } catch (err) {
     console.error('error:', err);
     res.status(404).json({ error: { code: '404', message: 'not found' } });

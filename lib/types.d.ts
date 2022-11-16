@@ -51,4 +51,20 @@ export interface StarMapsError {
   message: string;
 }
 
+export interface ServerSidePropsResult {
+  props: {
+    // roadmap: RoadmapApiResponse,
+    issueData: IssueData | null,
+    errors: StarMapsError[],
+    isLocal: boolean,
+    /**
+     * Used via the filter_group query parameter to filter the roadmap by a specific group.
+     */
+    groupBy: string | null,
+    error?: { code: string, message: string } | null;
+    mode: RoadmapMode;
+    view: string;
+  }
+}
+
 export { RoadmapApiResponse, IssueData, IssueStates, ParserGetChildrenResponse };

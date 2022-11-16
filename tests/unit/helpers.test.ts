@@ -22,7 +22,7 @@ describe('getEtaDate', () => {
 
   it('should throw error when date is malformed.', () => {
     // invalid dates
-    expect(getEtaDate('eta: 14-11-2022')).toBe(''); // dd-mm-yyyy
-    expect(getEtaDate('eta: ')).toBe(''); // empty
+    expect(getEtaDate('eta: 14-11-2022')).toBe(null); // dd-mm-yyyy
+    expect(getEtaDate('eta: ')).toBe(null); // empty
   });
 });

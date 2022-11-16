@@ -7,9 +7,11 @@ import { Roadmap } from '../../components/roadmap-grid/Roadmap';
 import { RoadmapDetailed } from '../../components/roadmap-grid/RoadmapDetailedView';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { API_URL } from '../../config/constants';
-import { IssueData, RoadmapApiResponse } from '../../lib/types';
+import { IssueData, RoadmapApiResponse, ServerSidePropsResult, StarMapsError } from '../../lib/types';
+import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
+import { RoadmapMode } from '../../lib/enums';
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context): Promise<ServerSidePropsResult> {
   console.log('inside roadmap page | getServerSideProps()');
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
   const { filter_group, mode, view } = context.query;
