@@ -33,7 +33,6 @@
     "framer-motion": "^7.6.1",
     "jsdom": "^20.0.1",
     "linkedom": "^0.14.17",
-    "localstorage-ponyfill": "^1.0.2",
     "lodash": "^4.17.21",
     "next": "^12.3.1",
     "next-transpile-modules": "^9.0.0",

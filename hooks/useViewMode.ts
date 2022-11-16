@@ -1,25 +1,55 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { createLocalStorage } from 'localstorage-ponyfill';
 
 import useSharedHook from '../lib/client/createSharedHook';
 import { ViewMode } from '../lib/enums';
 
 const LOCAL_STORAGE_CACHE_KEY = 'useViewModeCache'
 const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?: S) => {
-  const localStorage = createLocalStorage();
+
   const [state, setState] = useState(initialState);
+  /**
+   * We should only access localStorage inside useEffect because otherwise nextjs
+   * will try to use it on the server and it will fail.
+   */
+  const [localStorageValue, setLocalStorageValue] = useState<S | null>(null);
 
+  /**
+   * Update localStorageValue to equal what is in localStorage
+   */
   useEffect(() => {
-    const cachedValue = localStorage.getItem(LOCAL_STORAGE_CACHE_KEY);
-    const actualCachedValue: S | null = cachedValue ? JSON.parse(cachedValue) : null;
-    if (actualCachedValue != null && actualCachedValue !== state) {
-      setState(actualCachedValue);
+    if (localStorage != null) {
+      const cachedValue = localStorage.getItem(LOCAL_STORAGE_CACHE_KEY);
+      const actualCachedValue: S | null = cachedValue ? JSON.parse(cachedValue) : null;
+      setLocalStorageValue(actualCachedValue);
     }
+  }, [setLocalStorageValue])
 
-  }, [state, setState, localStorage]);
+  /**
+   * Update the saved localStorage value to equal the current localStorage State
+   * value if the values are in sync.
+   */
+  useEffect(() => {
 
+    if (localStorage != null && state === localStorageValue) {
+      localStorage.setItem(LOCAL_STORAGE_CACHE_KEY, JSON.stringify(localStorageValue));
+    }
+  }, [state, localStorageValue])
+
+  /**
+   * Update the actual viewMode value if it is different from what is in localStorage
+   */
+  useEffect(() => {
+    if (localStorageValue != null && localStorageValue !== state) {
+      setState(localStorageValue);
+    }
+  }, [state, setState, localStorageValue]);
+
+  /**
+   * Update both the actual viewMode value and the localStorage value
+   * @param {S} newState - the new value to set
+   */
   const setCachedState = (newState: S) => {
-    localStorage.setItem(LOCAL_STORAGE_CACHE_KEY, JSON.stringify(newState));
+    setLocalStorageValue(newState);
     setState(newState);
   };
 
