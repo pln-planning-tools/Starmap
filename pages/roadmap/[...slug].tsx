@@ -3,7 +3,6 @@ import type { InferGetServerSidePropsType } from 'next';
 import { Box } from '@chakra-ui/react';
 
 import PageHeader from '../../components/layout/PageHeader';
-import { Roadmap } from '../../components/roadmap-grid/Roadmap';
 import { RoadmapDetailed } from '../../components/roadmap-grid/RoadmapDetailedView';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { API_URL } from '../../config/constants';
