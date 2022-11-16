@@ -1,10 +1,10 @@
 import NextLink from 'next/link';
-import { Tooltip, Flex, Spacer, Text } from '@chakra-ui/react';
+import { Flex, Spacer, Text } from '@chakra-ui/react';
 
 import { dayjs } from '../../lib/client/dayjs';
 import { getClosest } from '../../lib/client/getClosest';
 import { IssueData } from '../../lib/types';
-import { paramsFromUrl } from '../../utils/general';
+import { getInternalLinkForIssue } from '../../utils/general';
 import styles from './Roadmap.module.css';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
 import getDateAsQuarter from '../../lib/client/getDateAsQuarter';
@@ -25,8 +25,7 @@ export function GridRow({
   });
   const span = 5;
 
-  const urlParams = paramsFromUrl(milestone.html_url)
-  const childLink = `/roadmap/github.com/${urlParams.owner}/${urlParams.repo}/issues/${urlParams.issue_number}`
+  const childLink = getInternalLinkForIssue(milestone);
   const clickable = milestone.children.length > 0;
 
   const rowItem = (
@@ -40,7 +39,7 @@ export function GridRow({
         )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(2))}%)`,
       }}
       className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink}`}
-      
+
     >
       <Flex direction="row" position="relative">
         <Flex direction="column">
@@ -48,7 +47,7 @@ export function GridRow({
           <div className={styles.milestoneDate}>{getDateAsQuarter(milestone.due_date)}</div>
         </Flex>
         <Spacer />
-        <SvgGitHubLogoWithTooltip githubUrl={milestone.html_url}/>
+        <SvgGitHubLogoWithTooltip githuburl={milestone.html_url}/>
       </Flex>
     </div>
   );

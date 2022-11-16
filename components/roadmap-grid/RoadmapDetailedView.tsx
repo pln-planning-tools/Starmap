@@ -5,8 +5,8 @@ import _ from 'lodash';
 import React from 'react';
 
 import { getTicks } from '../../lib/client/getTicks';
-import { IssueData } from '../../lib/types';
-import { addOffset, formatDateArrayDayJs } from '../../utils/general';
+import { DetailedViewGroup, IssueData } from '../../lib/types';
+import { addOffset, formatDateArrayDayJs, getInternalLinkForIssue } from '../../utils/general';
 import styles from './Roadmap.module.css';
 import { Grid } from './grid';
 import { GridHeader } from './grid-header';
@@ -15,10 +15,12 @@ import { GroupItem } from './group-item';
 import { GroupWrapper } from './group-wrapper';
 import Header from './header';
 import { Headerline } from './headerline';
+import { useViewMode } from '../../hooks/useViewMode';
+import { ViewMode } from '../../lib/enums';
 
-export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData; viewMode: string }) {
-  const showGroupRowTitle = viewMode === 'detail';
-  console.log('viewMode:', viewMode);
+export function RoadmapDetailed({ issueData }: { issueData: IssueData; }) {
+  const viewMode = useViewMode();
+  const showGroupRowTitle = viewMode === ViewMode.Detail;
 
   const newIssueData = issueData.children.map((v) => ({
     ...v,
@@ -26,26 +28,40 @@ export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData;
     children: v.children.map((x) => ({ ...x, group: x.parent.title })),
   }));
 
-  const issueDataLevelOne = newIssueData.map((v) => v.children.flat()).flat();
-  const issueDataLevelOneGrouped = Array.from(
-    group(issueDataLevelOne as IssueData[], (d) => d.group),
-    ([key, value]) => ({ groupName: key, items: value }),
-  );
-  const issueDataLevelOneIfNoChildren = newIssueData.map((v) => ({ ...v, children: { ...v }, group: v.title }));
-  const issueDataLevelOneIfNoChildrenGrouped = Array.from(
-    group(issueDataLevelOneIfNoChildren as IssueData[], (d) => d.group),
-    ([key, value]) => ({ groupName: key, items: value }),
+  const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
+
+  const issueDataLevelOneGrouped: DetailedViewGroup[] = Array.from(
+    group(issueDataLevelOne, (d) => d.group),
+    ([key, value]) => ({
+      groupName: key,
+      items: value,
+      url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+    }),
   );
 
-  let issuesGrouped;
-  if (viewMode === 'detail') {
+  const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, children: [v], group: v.title }));
+  const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = Array.from(
+    group(issueDataLevelOneIfNoChildren, (d) => d.group),
+    ([key, value]) => ({
+      groupName: key,
+      items: value,
+      url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+    }),
+  );
+
+  let issuesGrouped: DetailedViewGroup[];
+  if (viewMode === ViewMode.Detail) {
     issuesGrouped =
       (!!issueDataLevelOneGrouped && issueDataLevelOneGrouped.length > 0 && issueDataLevelOneGrouped) ||
       issueDataLevelOneIfNoChildrenGrouped;
   } else {
     issuesGrouped = Array.from(
       group(issueData.children as IssueData[], (d) => d.group),
-      ([key, value]) => ({ groupName: key, items: value }),
+      ([key, value]) => ({
+        groupName: key,
+        items: value,
+        url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+      }),
     );
   }
 
@@ -73,8 +89,8 @@ export function RoadmapDetailed({ issueData, viewMode }: { issueData: IssueData;
         <Grid ticksLength={ticks.length} scroll={true}>
           {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {
             return (
-              <GroupWrapper key={index} showGroupRowTitle={showGroupRowTitle}>
-                <GroupItem showGroupRowTitle={showGroupRowTitle} issueData={issueData} group={group} />
+              <GroupWrapper key={index}>
+                <GroupItem issueData={issueData} group={group} />
                 {!!group.items &&
                   _.sortBy(group.items, ['title']).map((item, index) => {
                     return <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} />;

@@ -3,7 +3,6 @@ import type { InferGetServerSidePropsType } from 'next';
 import { Box } from '@chakra-ui/react';
 
 import PageHeader from '../../components/layout/PageHeader';
-import { Roadmap } from '../../components/roadmap-grid/Roadmap';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { API_URL } from '../../config/constants';
 import { RoadmapApiResponse } from '../../lib/types';
@@ -41,8 +40,8 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         {props.mode === 'd3' && issueData !== null && !!issueData && (
           <NewRoadmap issueData={issueData} isLocal={isLocal} />
         )}
-        {props.mode === 'grid' ||
-          (!props.mode && !!issueData && <Roadmap issueData={issueData} groupBy={props.groupBy} />)}
+        {/* {props.mode === 'grid' ||
+          (!props.mode && !!issueData && <Roadmap issueData={issueData} groupBy={props.groupBy} />)} */}
       </Box>
     </>
   );
