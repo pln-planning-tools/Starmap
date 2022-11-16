@@ -88,8 +88,8 @@ export function RoadmapDetailed({ issueData }: { issueData: IssueData; }) {
 
           {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {
             return (
-              <GroupWrapper key={index} showGroupRowTitle={showGroupRowTitle}>
-                <GroupItem showGroupRowTitle={showGroupRowTitle} issueData={issueData} group={group} />
+              <GroupWrapper key={index}>
+                <GroupItem issueData={issueData} group={group} />
                 {!!group.items &&
                   _.sortBy(group.items, ['title']).map((item, index) => {
                     return <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} />;
