@@ -49,6 +49,7 @@
   padding-right: 10px;
   margin-bottom: 4px;
   border-radius: 8px;
+  /* min-height: 6rem; */
 }
 
 .item.group {
@@ -72,15 +73,9 @@
 .groupWrapper:nth-child(odd):not(.timelineHeaderLineWrapper) {
   background: rgba(215, 228, 253, 0.5);
 }
-.groupWrapper:nth-child(odd):not(.timelineHeaderLineWrapper) p {
-  color: rgba(43, 99, 186, 1);
-}
 
 .groupWrapper:nth-child(even):not(.timelineHeaderLineWrapper) {
-  background: rgba(229, 217, 253, 0.5);
-}
-.groupWrapper:nth-child(even):not(.timelineHeaderLineWrapper) p {
-  color: rgba(142, 84, 202, 1);
+  background: rgba(215, 228, 253, 0.5);
 }
 
 .simpleView {
@@ -113,6 +108,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: 0.2rem;
+  max-width: 20rem;
 }
 
 .milestoneTitle {
@@ -127,6 +123,8 @@ a.milestoneTitle {
 .milestoneDate {
   font-size: 13px;
   justify-self: right;
+  /* position: relative;
+  bottom: 1rempx; */
 }
 
 .timelineTick {
