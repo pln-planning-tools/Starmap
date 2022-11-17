@@ -38,26 +38,33 @@ export function RoadmapForm() {
   }, [currentIssueUrl, getValidUrlFromInput, setCurrentIssueUrl])
 
   useEffect(() => {
-    if (router.isReady) {
-      if (!issueUrl) return;
-      try {
-        const { owner, repo, issue_number } = paramsFromUrl(issueUrl);
-        setIssueUrl(null);
-        if (window.location.pathname.includes(`github.com/${owner}/${repo}/issues/${issue_number}`)) {
-          setTimeout(() => {
-            /**
-             * Clear the error after a few seconds.
-             */
-            setError(null);
-          }, 5000);
-          throw new Error('Already viewing this issue');
+    const asyncFn = async () => {
+      if (router.isReady) {
+        if (!issueUrl) return;
+        try {
+          const params = paramsFromUrl(issueUrl);
+          if (params) {
+            const { owner, repo, issue_number } = params;
+            setIssueUrl(null);
+            if (window.location.pathname.includes(`github.com/${owner}/${repo}/issues/${issue_number}`)) {
+              setTimeout(() => {
+                /**
+                 * Clear the error after a few seconds.
+                 */
+                setError(null);
+              }, 5000);
+              throw new Error('Already viewing this issue');
+            }
+            await router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}`);
+            setIsLoading(false);
+          }
+        } catch (err) {
+          setError(err as Error);
+          setIsLoading(false);
         }
-        router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}`).then(() => setIsLoading(false));
-      } catch (err){
-        setError(err as Error);
-        setIsLoading(false);
       }
-    }
+    };
+    asyncFn();
   }, [router, issueUrl, setCurrentIssueUrl]);
 
   const formSubmit = (e) => {
