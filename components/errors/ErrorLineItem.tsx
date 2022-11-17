@@ -10,29 +10,22 @@ export interface ErrorLineItemProps {
   error: StarMapsIssueErrorsGrouped;
 }
 export function ErrorLineItem({error}: ErrorLineItemProps) {
-  console.log(`error: `, error);
-  if (error.url == null || typeof error.url !== 'string') {
-    console.log(`error.url == null: `, error.url == null);
+  if (error.issueUrl == null || typeof error.issueUrl !== 'string') {
     return null;
   }
-  return <div>
-
+  return (
     <ErrorBoundary>
       <Wrap className={styles.errorIssueLineItem}>
-            <Center className={`${styles.errorIssueLinkText} ${styles.errorIssueLinkWrapper}`}>
-        {/* <WrapItem className={styles.errorIssueLinkWrapper}> */}
-          {/* <Center> */}
-              <NextLink passHref href={error.url}>
-                <Center>
+        <Center className={`${styles.errorIssueLinkText} ${styles.errorIssueLinkWrapper}`}>
+          <Center>
+            <NextLink passHref href={error.issueUrl}>
 
-                <Link target="_blank" rel="noopener noreferrer">
-                  {error.url}
-                </Link>
-                </Center>
+              <Link target="_blank" rel="noopener noreferrer">
+                {error.issueTitle}
+              </Link>
             </NextLink>
-          {/* </Center> */}
-        {/* </WrapItem> */}
-            </Center>
+          </Center>
+        </Center>
         <Spacer />
         <WrapItem className={styles.errorIssueDescriptionWrapper}>
           <Center>
@@ -41,6 +34,6 @@ export function ErrorLineItem({error}: ErrorLineItemProps) {
         </WrapItem>
       </Wrap>
     </ErrorBoundary>
-  </div>;
+  );
 }
 

@@ -9,18 +9,21 @@ export const getConfig = (issue: IssueData) => {
 
   const { document } = parseHTML(issueBodyHtml);
   const issueText = [...document.querySelectorAll('*')].map((v) => v.textContent).join('\n');
-  const eta = getEtaDate(issueText);
-
-  if (eta == null) {
+  let eta: string | null = null;
+  try {
+    eta = getEtaDate(issueText)
+  } catch (e) {
     if (issue.html_url != null) {
       errorManager.addError({
-        url: issue.html_url,
+        issueUrl: issue.html_url,
+        issueTitle: issue.title,
         userGuideUrl: 'https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#eta',
         title: 'ETA not found',
         message: 'ETA not found in issue body',
       });
     }
   }
+
   return {
     eta: eta == null ? '' : eta,
   };

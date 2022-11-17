@@ -26,7 +26,7 @@ export function ErrorNotificationHeader({isExpanded, toggle}: ErrorNotificationH
       <Flex>
         <Center>
           <WarningTwoIcon color="#F39106" ml="1rem" mr="1rem" width={iconWandH} height={iconWandH} />
-          <Text fontSize="30">Issues not rendered from GitHub</Text>
+          <Text fontSize="30">Issues with roadmap</Text>
         </Center>
         <Spacer />
         {icon}

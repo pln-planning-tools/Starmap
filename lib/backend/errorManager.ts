@@ -8,7 +8,7 @@ export class ErrorManager {
   }
 
   private processStarMapsErrors(): StarMapsIssueErrorsGrouped[] {
-    const groupedErrors = groupBy(this.errors, 'url');
+    const groupedErrors = groupBy(this.errors, 'issueUrl');
     const processedErrors: StarMapsIssueErrorsGrouped[] = [];
     for (const [url, errorsForUrl] of Object.entries(groupedErrors)) {
       const urlErrors: StarMapsIssueError[] = []
@@ -22,7 +22,8 @@ export class ErrorManager {
 
       });
       processedErrors.push({
-        url,
+        issueUrl: url,
+        issueTitle: errorsForUrl[0].issueTitle,
         errors: urlErrors,
       });
     }

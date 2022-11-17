@@ -37,7 +37,11 @@ export interface StarMapsError {
   /**
    * The GitHub html_url for the issue with the error.
    */
-  url: string;
+  issueUrl: string;
+  /**
+   * The title of the github issue
+   */
+  issueTitle: string;
   /**
    * The URL to the relevant section in the User Guide.md
    * Link to overall user-guide if error is not relevant to a specific section
@@ -58,7 +62,14 @@ export interface StarMapsError {
 export type StarMapsIssueError = Pick<StarMapsError, 'userGuideUrl'|'title'|'message'>
 
 export interface StarMapsIssueErrorsGrouped {
-  url: string;
+  /**
+   * The GitHub html_url for the issue with the error.
+   */
+  issueUrl: string;
+  /**
+   * The title of the github issue
+   */
+  issueTitle: string;
   errors: StarMapsIssueError[];
 }
 

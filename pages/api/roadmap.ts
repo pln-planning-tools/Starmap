@@ -47,7 +47,9 @@ const resolveChildrenWithDepth = async (children: ParserGetChildrenResponse[]) =
       });
     }).then((data) => {
       return data;
-    });
+    }).catch((e) => {
+      return [];
+    })
   });
 };
 
@@ -103,6 +105,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
   try {
     const rootIssue = await getIssue({ platform, owner, repo, issue_number });
+    if (rootIssue && !rootIssue?.labels?.includes('starmaps')) {
+      errorManager.addError({
+        issueUrl: rootIssue.html_url,
+        issueTitle: rootIssue.title,
+        message: 'Missing label `starmaps`',
+        title: 'Missing Label',
+        userGuideUrl: 'https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#label-requirement',
+      })
+    }
 
     const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue.body_html)) || null;
     const toReturn = {

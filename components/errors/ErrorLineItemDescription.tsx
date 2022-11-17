@@ -5,19 +5,15 @@ import styles from './ErrorLineItemDescription.module.css';
 
 export function ErrorLineItemDescription({error}: {error: StarMapsIssueErrorsGrouped}) {
   return (
-    <>
+    <Box>
       <Text as="b" className={styles.errorIssueDescriptionLabel}>Description:&nbsp;</Text>
-      <br />
       {/* <Flex direction="column" verticalAlign="bottom"> */}
         {error.errors.map((errItem, index) => {
           return (
-            <>
-              <Text key={index} className={styles.errorIssueDescriptionText}>&nbsp;{errItem.message}; </Text>
-              <br />
-            </>
+            <Text key={index} className={styles.errorIssueDescriptionText}>&nbsp;{errItem.message}; </Text>
           );
         })}
       {/* </Flex> */}
-    </>
+    </Box>
   )
 }

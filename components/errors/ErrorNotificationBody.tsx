@@ -13,8 +13,6 @@ export function ErrorNotificationBody({isExpanded, errors}: ErrorNotificationBod
   if (!isExpanded) {
     return null;
   }
-  const errorsByUrl = groupBy(errors, 'url');
-  console.log(`errorsByUrl: `, errorsByUrl);
   return <Box className={styles.errorNotificationBody}>
     {errors.map((error, index) => <ErrorLineItem key={index} error={error} />)}
   </Box>;
