@@ -19,7 +19,7 @@ export function GridRow({
   timelineTicks: Date[];
 }) {
   const closestDateIdx = getClosest({
-    currentDate: dayjs.utc(milestone.due_date).toDate(),
+    currentDate: dayjs.utc(milestone.due_date).endOf('quarter').toDate(),
     dates: timelineTicks,
     totalTimelineTicks: timelineTicks.length,
   });
