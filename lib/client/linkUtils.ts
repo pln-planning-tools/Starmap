@@ -1,4 +1,4 @@
-import { slugsFromUrl } from '../../utils/general';
+import { slugsFromUrl } from '../general';
 import { IssueData } from '../types';
 
 function getLinkForRoadmapChild(issueData: IssueData): string {

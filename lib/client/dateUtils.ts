@@ -1,6 +1,6 @@
 import { closestIndexTo } from 'date-fns';
 
-import { formatDateDayJs } from '../../utils/general';
+import { formatDateDayJs } from '../general';
 
 const getClosest = (dueDate: number | string | Date, dates: number[] | Date[]): number => {
   const closest = closestIndexTo(formatDateDayJs(dueDate as any), dates);

@@ -2,8 +2,8 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 import { match } from 'path-to-regexp';
 
-import { dayjs } from '../lib/client/dayjs';
-import { IssueData } from '../lib/types';
+import { dayjs } from './client/dayjs';
+import { IssueData } from './types';
 
 export const toTimestamp = (date) => (_.isDate(date) && +new Date(date)) || +new Date(date?.split('-'));
 
