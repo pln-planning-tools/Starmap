@@ -14,7 +14,6 @@ export const getEtaDate = (data: string): string | null => {
 
   if (!dateString) {
     throw new Error('No ETA date found');
-    // return null;
   }
 
   const year = parseInt(dateString.slice(0, 4));

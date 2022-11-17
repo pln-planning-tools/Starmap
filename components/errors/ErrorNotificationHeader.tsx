@@ -8,7 +8,7 @@ export interface ErrorNotificationHeaderProps {
 export function ErrorNotificationHeader({isExpanded, toggle}: ErrorNotificationHeaderProps) {
 
   const ariaLabel = isExpanded ? 'Collapse' : 'Expand';
-  const iconWandH = 10;
+  const iconWandH = 8;
   const icon = isExpanded
     ? <ChevronDownIcon width={iconWandH} height={iconWandH} cursor="pointer" onClick={toggle} />
     : <ChevronUpIcon width={iconWandH} height={iconWandH} cursor="pointer" onClick={toggle} />;
@@ -26,7 +26,7 @@ export function ErrorNotificationHeader({isExpanded, toggle}: ErrorNotificationH
       <Flex>
         <Center>
           <WarningTwoIcon color="#F39106" ml="1rem" mr="1rem" width={iconWandH} height={iconWandH} />
-          <Text fontSize="30">Issues with roadmap</Text>
+          <Text fontSize="20">Issues with roadmap</Text>
         </Center>
         <Spacer />
         {icon}

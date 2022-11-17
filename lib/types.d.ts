@@ -77,7 +77,7 @@ export interface StarMapsIssueErrorsGrouped {
 export interface ServerSidePropsResult {
   props: {
     issueData: IssueData | null,
-    errors: StarMapsError[],
+    errors: StarMapsIssueErrorsGrouped[],
     error: { code: string; message: string } | null,
     isLocal: boolean,
     /**
