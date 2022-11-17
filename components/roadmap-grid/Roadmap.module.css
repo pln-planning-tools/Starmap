@@ -59,6 +59,7 @@
   grid-column: 1 / span 2;
   grid-column-end: none;
   background: white;
+  color: #3182ce;
 }
 
 .groupWrapper {
@@ -72,10 +73,12 @@
 
 .groupWrapper:nth-child(odd):not(.timelineHeaderLineWrapper) {
   background: rgba(215, 228, 253, 0.5);
+  padding-bottom: 0.5rem;
 }
 
 .groupWrapper:nth-child(even):not(.timelineHeaderLineWrapper) {
   background: rgba(215, 228, 253, 0.5);
+  padding-bottom: 0.5rem;
 }
 
 .simpleView {

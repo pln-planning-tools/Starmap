@@ -31,14 +31,14 @@ export default function Header({ issueData }: { issueData: IssueData }) {
         </Link>
       </Text>
       <Flex direction={'row'}>
-        <Text as='span' mb='8px' fontSize={40} fontWeight={600}>
+        <Text as='span' mb='8px' fontSize={40} fontWeight={600} pr="5rem">
           {issueData.title}
         </Text>
         <Spacer />
         <Center>
           <NextLink style={{display: 'span'}} passHref href={issueData.html_url}>
-            <Link  href="/" target="_blank" rel="noopener noreferrer">
-              <Center>
+            <Link target="_blank" rel="noopener noreferrer">
+              <Center minWidth="9rem">
                 <Text as='span' fontSize={15} fontWeight={400} color={themes.light.text.color} pr="0.5rem">View in GitHub</Text>
                 <Image src={GitHubSvgIcon} alt="GitHub Logo" color={themes.light.text.color} width={24} height={24} />
               </Center>
