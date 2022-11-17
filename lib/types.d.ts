@@ -104,4 +104,10 @@ export interface GroupItemProps {
   group: DetailedViewGroup;
 }
 
+export interface UrlMatchSlugs {
+  owner: string;
+  repo: string;
+  issue_number: string;
+};
+
 export { IssueData, IssueStates, ParserGetChildrenResponse };
