@@ -9,15 +9,24 @@ export interface GithubIssueData {
   node_id: string;
   title: string;
   state: IssueStates;
+  root_issue?: boolean;
 }
 
-export interface IssueData extends GithubIssueData {
+export interface GithubIssueDataWithGroup extends GithubIssueData {
+  group: string;
+}
+
+export interface GithubIssueDataWithChildren extends GithubIssueData {
+  children: GithubIssueDataWithGroupAndChildren[] | ParserGetChildrenResponse[];
+}
+
+export interface GithubIssueDataWithGroupAndChildren extends GithubIssueDataWithGroup, GithubIssueDataWithChildren {}
+
+export interface IssueData extends GithubIssueDataWithGroupAndChildren {
   children: IssueData[];
   completion_rate: number;
   due_date: string;
-  group: string;
   parent: IssueData;
-  root_issue?: boolean;
 }
 
 export interface RoadmapApiResponseSuccess {
