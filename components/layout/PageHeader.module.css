@@ -6,3 +6,18 @@
 .Logo {
   cursor: pointer;
 }
+
+.pageHeaderInput {
+  width: 500px;
+  color: #FFFFFF;
+  text-align: center;
+  align-content: center;
+  vertical-align: center;
+}
+
+
+@media screen and (max-width: 1000px) {
+  .pageHeaderInput {
+    max-width: 45vw;
+  }
+}

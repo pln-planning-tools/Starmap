@@ -23,12 +23,7 @@ function PageHeader() {
       <Spacer />
       <Center>
         <Box
-          minW='33vw'
-          maxW='45vw'
-          color='white'
-          textAlign={'center'}
-          alignContent='center'
-          verticalAlign='center'
+          className={styles.pageHeaderInput}
         >
           <RoadmapForm />
         </Box>
