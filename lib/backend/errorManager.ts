@@ -9,7 +9,7 @@ export class ErrorManager {
     this.errors.push(error);
   }
   flushErrors() {
-    const errors = this.errors.concat();
+    const errors = [...this.errors];
     this.clearErrors();
     return errors;
   }

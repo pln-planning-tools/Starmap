@@ -110,12 +110,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       children: (!!childrenFromBodyHtml && (await resolveChildrenWithDepth(childrenFromBodyHtml))) || [],
     };
 
+    const data = {
+      ...addToChildren([{ children: [toReturn] }], {})[0].children[0],
+      parent: {},
+    }
+    const errors = errorManager.flushErrors();
+
     res.status(200).json({
-      errors: errorManager.flushErrors(),
-      data: {
-        ...addToChildren([{ children: [toReturn] }], {})[0].children[0],
-        parent: {},
-      }
+      errors,
+      data,
     } as RoadmapApiResponseSuccess);
   } catch (err) {
     console.error('error:', err);
