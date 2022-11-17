@@ -2,12 +2,12 @@ import { Box, Button, Center, Collapse, IconButton } from '@chakra-ui/react';
 import {ChevronDownIcon} from '@chakra-ui/icons'
 import { useState } from 'react';
 
-import { StarMapsError } from '../../lib/types';
+import { StarMapsIssueErrorsGrouped } from '../../lib/types';
 import { ErrorNotificationHeader } from './ErrorNotificationHeader';
 import { ErrorNotificationBody } from './ErrorNotificationBody';
 
 export interface ErrorNotificationDisplayProps {
-  errors: StarMapsError[]
+  errors: StarMapsIssueErrorsGrouped[]
 }
 export function ErrorNotificationDisplay ({errors}: ErrorNotificationDisplayProps) {
   const [isExpanded, setIsExpanded] = useState(false);
