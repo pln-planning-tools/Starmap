@@ -20,7 +20,7 @@
 .subgrid {
   display: grid;
   grid-template: inherit;
-  grid-gap: inherit;
+  gap: inherit;
   grid-column: 1 / -1;
 }
 

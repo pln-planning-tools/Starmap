@@ -7,6 +7,7 @@ import { getChildren, getConfig } from '../../lib/parser';
 import { IssueData, ParserGetChildrenResponse, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess } from '../../lib/types';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import { errorManager } from '../../lib/backend/errorManager';
+import { checkForLabel } from '../../lib/backend/checkForLabel';
 
 const resolveChildren = (children: any[]): Promise<IssueData[]> => {
   const resultArray: any = [];
@@ -18,7 +19,12 @@ const resolveChildren = (children: any[]): Promise<IssueData[]> => {
 
     children.forEach((current) => {
       getIssue(paramsFromUrl(current.html_url)).then((issueData) => {
-        resultArray.push({ ...issueData, group: current.group });
+        checkForLabel(issueData);
+        resultArray.push({
+          ...issueData,
+          labels: issueData?.labels,
+          group: current.group,
+        });
         count += 1;
         if (count === children.length) {
           resolve(resultArray);
@@ -38,6 +44,7 @@ const resolveChildrenWithDepth = async (children: ParserGetChildrenResponse[]) =
         const childrenParsed = getChildren(issueData.body_html);
         resultArray.push({
           ...issueData,
+          labels: issueData.labels,
           children: (childrenParsed.length > 0 && (await resolveChildren(childrenParsed))) || childrenParsed,
         });
         count += 1;
@@ -69,6 +76,7 @@ const addToChildren = (data, parent) => {
   if (_.isArray(data) && data.length > 0) {
     return data.map((item) => {
       return {
+        labels: item.labels,
         completion_rate: addCompletionRate(item),
         due_date: getConfig(item).eta,
         html_url: item.html_url,
@@ -105,15 +113,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
   try {
     const rootIssue = await getIssue({ owner, repo, issue_number });
-    if (rootIssue && !rootIssue?.labels?.includes('starmaps')) {
-      errorManager.addError({
-        issueUrl: rootIssue.html_url,
-        issueTitle: rootIssue.title,
-        message: 'Missing label `starmaps`',
-        title: 'Missing Label',
-        userGuideUrl: 'https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#label-requirement',
-      })
-    }
+    checkForLabel(rootIssue)
 
     const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue.body_html)) || null;
     let children: Awaited<ReturnType<typeof resolveChildrenWithDepth>> = [];

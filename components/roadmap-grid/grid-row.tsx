@@ -35,6 +35,10 @@ export function GridRow({
   if (milestone.root_issue !== true && !dayjs(milestone.due_date).isValid()) {
     return null;
   }
+
+  if (!(milestone as any).labels?.includes('starmaps')) {
+    return null;
+  }
   const rowItem = (
     <div
       key={index}
