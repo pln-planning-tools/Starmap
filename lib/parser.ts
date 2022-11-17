@@ -13,7 +13,7 @@ export const getConfig = (issue: IssueData) => {
   try {
     eta = getEtaDate(issueText)
   } catch (e) {
-    if (issue.html_url != null) {
+    if (issue.html_url != null && issue.root_issue !== true) {
       errorManager.addError({
         issueUrl: issue.html_url,
         issueTitle: issue.title,

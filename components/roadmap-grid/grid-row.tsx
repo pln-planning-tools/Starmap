@@ -29,6 +29,12 @@ export function GridRow({
   const childLink = getInternalLinkForIssue(milestone);
   const clickable = milestone.children.length > 0;
 
+  /**
+   * Do not render milestone items if their ETAs are invalid.
+   */
+  if (milestone.root_issue !== true && !dayjs(milestone.due_date).isValid()) {
+    return null;
+  }
   const rowItem = (
     <div
       key={index}
