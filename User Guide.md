@@ -1,5 +1,7 @@
 # StarMaps User Guide
-StarMaps is a tool used to generate graphical representations of roadmaps which are stored as issues in GitHub. For the purposes of StarMaps, a Roadmap is an issue that contains a set of date-bound project Milestone issues for the project.
+StarMaps is a tool used to generate graphical representations of roadmaps which are stored as issues in GitHub. For the purposes of StarMaps, a Roadmap is an issue that contains a set of date-bound project Milestone issues for the project. 
+
+For additional context around roadmapping within the PLN, it is recommended that you watch the [roadmapping presentation](https://drive.google.com/file/d/130ujRG5R9TXt9UcsIGl6S343X1ispxVC/view?usp=sharing) from EngRes Summit in October 2022. The introduction of this tool is at the 18min mark but the preceding conversation around roadmapping offers additional context, such as the requirement for inter-team and user-rocused roadmaps that would allow for different levels of granularity. Such roadmaps will externalize planning, share progress against milestones, and flag dependencies in a public manner. 
 
 ## Using Starmaps.app
 - Paste the full URL for the related GitHub roadmap issue into the search bar in the StarMaps navigation bar and press enter to search and view the StarMaps rendering of the roadmap for the related GitHub issue.
