@@ -11,3 +11,7 @@
 .urlInput::placeholder {
   color: #FFFFFF;
 }
+
+.formSubmitButton:hover {
+  background: rgba(141, 141, 141, 0.8);
+}
