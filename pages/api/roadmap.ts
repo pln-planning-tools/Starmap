@@ -26,9 +26,6 @@ async function resolveChildren (children: ParserGetChildrenResponse[]): Promise<
 
   return Promise.all(children.map(async (child): Promise<GithubIssueDataWithGroup> => {
     const urlParams = paramsFromUrl(child.html_url);
-    if (!urlParams) {
-      throw new Error('Could not parse URL');
-    }
     const issueData = await getIssue(urlParams);
     checkForLabel(issueData);
     return {
