@@ -14,6 +14,7 @@ interface IssueData {
   state: IssueStates;
   title: string;
   root_issue?: boolean;
+  labels: string[];
 }
 
 export interface RoadmapApiResponseSuccess {
