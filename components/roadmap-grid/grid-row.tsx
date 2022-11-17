@@ -35,7 +35,7 @@ export function GridRow({
       style={{
         gridColumnStart: `span ${span}`,
         gridColumnEnd: `${closest === span ? closest : closest - 1}`,
-        background: `linear-gradient(90deg, rgba(166, 178, 255, 0.4) ${parseInt(
+        background: `linear-gradient(90deg, rgba(125, 224, 135, 0.6) ${parseInt(
           milestone.completion_rate.toString(2),
         )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(2))}%)`,
       }}
