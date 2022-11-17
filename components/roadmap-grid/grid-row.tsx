@@ -18,12 +18,13 @@ export function GridRow({
   index: number;
   timelineTicks: Date[];
 }) {
-  const closest = getClosest({
+  const closestDateIdx = getClosest({
     currentDate: dayjs.utc(milestone.due_date).toDate(),
     dates: timelineTicks,
     totalTimelineTicks: timelineTicks.length,
   });
-  const span = 5;
+  const span = 4;
+  const closest = span * (closestDateIdx - 1);
 
   const childLink = getInternalLinkForIssue(milestone);
   const clickable = milestone.children.length > 0;
@@ -33,7 +34,7 @@ export function GridRow({
       key={index}
       style={{
         gridColumnStart: `span ${span}`,
-        gridColumnEnd: `${closest === span ? closest + 1 : closest}`,
+        gridColumnEnd: `${closest === span ? closest : closest - 1}`,
         background: `linear-gradient(90deg, rgba(166, 178, 255, 0.4) ${parseInt(
           milestone.completion_rate.toString(2),
         )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(2))}%)`,

@@ -93,7 +93,7 @@ export function RoadmapDetailed({ issueData }: { issueData: IssueData; }) {
                 <GroupItem issueData={issueData} group={group} />
                 {!!group.items &&
                   _.sortBy(group.items, ['title']).map((item, index) => {
-                    return <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} />;
+                    return <GridRow key={index} milestone={item} index={index} timelineTicks={ticksHeader} />;
                   })}
               </GroupWrapper>
             );
