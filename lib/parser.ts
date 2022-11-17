@@ -2,9 +2,9 @@ import { parseHTML } from 'linkedom';
 import { errorManager } from './backend/errorManager';
 
 import { getEtaDate, isValidChildren } from './helpers';
-import { IssueData, ParserGetChildrenResponse, StarMapsError } from './types';
+import { GithubIssueData, ParserGetChildrenResponse } from './types';
 
-export const getConfig = (issue: IssueData) => {
+export const getConfig = (issue: GithubIssueData) => {
   const { body_html: issueBodyHtml } = issue;
 
   const { document } = parseHTML(issueBodyHtml);
@@ -25,7 +25,7 @@ export const getConfig = (issue: IssueData) => {
   }
 
   return {
-    eta: eta == null ? '' : eta,
+    eta: eta ?? '',
   };
 };
 
