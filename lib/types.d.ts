@@ -17,11 +17,11 @@ interface IssueData {
 
 export interface RoadmapApiResponseSuccess {
   data: IssueData;
-  errors?: StarMapsError[];
+  errors?: StarMapsIssueErrorsGrouped[];
 }
 export interface RoadmapApiResponseFailure {
   error?: { code: string; message: string };
-  errors?: StarMapsError[];
+  errors?: StarMapsIssueErrorsGrouped[];
 }
 
 export type RoadmapApiResponse = RoadmapApiResponseSuccess | RoadmapApiResponseFailure;
@@ -52,10 +52,19 @@ export interface StarMapsError {
    */
   message: string;
 }
+/**
+ * This type is used when grouping multiple {StarMapsError} into a single error.
+ */
+export type StarMapsIssueError = Pick<StarMapsError, 'userGuideUrl'|'title'|'message'>
+
+export interface StarMapsIssueErrorsGrouped {
+  url: string;
+  errors: StarMapsIssueError[];
+}
+
 
 export interface ServerSidePropsResult {
   props: {
-    // roadmap: RoadmapApiResponse,
     issueData: IssueData | null,
     errors: StarMapsError[],
     error: { code: string; message: string } | null,
@@ -84,4 +93,4 @@ export interface GroupItemProps {
   group: DetailedViewGroup;
 }
 
-export { RoadmapApiResponse, IssueData, IssueStates, ParserGetChildrenResponse };
+export { IssueData, IssueStates, ParserGetChildrenResponse };

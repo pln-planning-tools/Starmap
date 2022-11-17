@@ -1,6 +1,9 @@
 import { Box } from '@chakra-ui/react';
+import { groupBy } from 'lodash';
+
 import { StarMapsError } from '../../lib/types';
 import { ErrorLineItem } from './ErrorLineItem';
+import styles from './ErrorNotificationBody.module.css';
 
 interface ErrorNotificationBodyProps {
   isExpanded: boolean;
@@ -10,7 +13,9 @@ export function ErrorNotificationBody({isExpanded, errors}: ErrorNotificationBod
   if (!isExpanded) {
     return null;
   }
-  return <Box>
+  const errorsByUrl = groupBy(errors, 'url');
+  console.log(`errorsByUrl: `, errorsByUrl);
+  return <Box className={styles.errorNotificationBody}>
     {errors.map((error, index) => <ErrorLineItem key={index} error={error} />)}
   </Box>;
 }

@@ -113,11 +113,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const data = {
       ...addToChildren([{ children: [toReturn] }], {})[0].children[0],
       parent: {},
-    }
-    const errors = errorManager.flushErrors();
+    };
 
     res.status(200).json({
-      errors,
+      errors: errorManager.flushErrors(),
       data,
     } as RoadmapApiResponseSuccess);
   } catch (err) {
