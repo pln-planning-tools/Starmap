@@ -6,7 +6,7 @@ import React from 'react';
 
 import { getTicks } from '../../lib/client/getTicks';
 import { DetailedViewGroup, IssueData } from '../../lib/types';
-import { addOffset, formatDateArrayDayJs, getInternalLinkForIssue } from '../../utils/general';
+import { addOffset, formatDateArrayDayJs, getInternalLinkForIssue } from '../../lib/general';
 import styles from './Roadmap.module.css';
 import { Grid } from './grid';
 import { GridHeader } from './grid-header';

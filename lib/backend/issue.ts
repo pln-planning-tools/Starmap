@@ -1,6 +1,6 @@
 import { octokit } from './octokit';
 
-const getIssue = async ({ platform, owner, repo, issue_number }) => {
+const getIssue = async ({ owner, repo, issue_number }) => {
   try {
     const { data } = await octokit.rest.issues.get({
       mediaType: {

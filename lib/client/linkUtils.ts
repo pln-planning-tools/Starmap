@@ -1,13 +1,11 @@
-import { slugsFromUrl } from '../../utils/general';
+import { paramsFromUrl } from '../paramsFromUrl';
 import { IssueData } from '../types';
 
 function getLinkForRoadmapChild(issueData: IssueData): string {
-  const urlM = slugsFromUrl(new URL(issueData.html_url).pathname) as {
-    params: { owner: string; repo: string; issue_number: string };
-  };
+  const urlM = paramsFromUrl(issueData.html_url)
   // const { id, type } = roadmapChild;
   // const link = `${window.location.origin}/roadmap/${type}/${id}`;
-  return `/roadmap/github.com/${urlM.params.owner}/${urlM.params.repo}/issues/${urlM.params.issue_number}`;
+  return `/roadmap/github.com/${urlM.owner}/${urlM.repo}/issues/${urlM.issue_number}`;
 }
 
 export { getLinkForRoadmapChild };

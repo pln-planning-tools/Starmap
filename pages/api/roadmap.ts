@@ -5,7 +5,7 @@ import _, { result } from 'lodash';
 import { getIssue } from '../../lib/backend/issue';
 import { getChildren, getConfig } from '../../lib/parser';
 import { IssueData, ParserGetChildrenResponse, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess } from '../../lib/types';
-import { paramsFromUrl } from '../../utils/general';
+import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import { errorManager } from '../../lib/backend/errorManager';
 
 const resolveChildren = (children: any[]): Promise<IssueData[]> => {
@@ -17,7 +17,7 @@ const resolveChildren = (children: any[]): Promise<IssueData[]> => {
     if (_.isArray(children) && children.length === 0) reject('empty array');
 
     children.forEach((current) => {
-      getIssue({ ...paramsFromUrl(current.html_url) }).then((issueData) => {
+      getIssue(paramsFromUrl(current.html_url)).then((issueData) => {
         resultArray.push({ ...issueData, group: current.group });
         count += 1;
         if (count === children.length) {
@@ -104,7 +104,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return;
   }
   try {
-    const rootIssue = await getIssue({ platform, owner, repo, issue_number });
+    const rootIssue = await getIssue({ owner, repo, issue_number });
     if (rootIssue && !rootIssue?.labels?.includes('starmaps')) {
       errorManager.addError({
         issueUrl: rootIssue.html_url,

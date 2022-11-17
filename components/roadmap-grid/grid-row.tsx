@@ -4,7 +4,7 @@ import { Flex, Spacer, Text } from '@chakra-ui/react';
 import { dayjs } from '../../lib/client/dayjs';
 import { getClosest } from '../../lib/client/getClosest';
 import { IssueData } from '../../lib/types';
-import { getInternalLinkForIssue } from '../../utils/general';
+import { getInternalLinkForIssue } from '../../lib/general';
 import styles from './Roadmap.module.css';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
 import getDateAsQuarter from '../../lib/client/getDateAsQuarter';
