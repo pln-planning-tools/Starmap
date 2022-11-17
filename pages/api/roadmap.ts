@@ -121,10 +121,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       data,
     } as RoadmapApiResponseSuccess);
   } catch (err) {
-    console.error('error:', err);
+    const message = (err as Error)?.message ?? 'not found';
     res.status(404).json({
       errors: errorManager.flushErrors(),
-      error: { code: '404', message: 'not found' }
+      error: { code: '404', message }
     } as RoadmapApiResponseFailure);
   }
 }
