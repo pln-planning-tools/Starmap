@@ -1,4 +1,5 @@
 import { Text } from '@chakra-ui/react';
+import { isEmpty } from 'lodash';
 import NextLink from 'next/link';
 import { useViewMode } from '../../hooks/useViewMode';
 import { ViewMode } from '../../lib/enums';
@@ -17,7 +18,7 @@ export function GroupItem({issueData, group }: GroupItemProps) {
 
   if (viewMode === ViewMode.Detail) {
     detailedViewClass = 'detailedView';
-    if (group.url !== '') {
+    if (isEmpty(group.url)) {
       groupNameElement = <Text color="black">{group.groupName}</Text>
     } else {
       groupNameElement = <NextLink href={group.url}>{group.groupName}</NextLink>
