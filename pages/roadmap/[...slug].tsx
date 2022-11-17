@@ -6,7 +6,7 @@ import PageHeader from '../../components/layout/PageHeader';
 import { RoadmapDetailed } from '../../components/roadmap-grid/RoadmapDetailedView';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { API_URL } from '../../config/constants';
-import { IssueData, RoadmapApiResponse, ServerSidePropsResult } from '../../lib/types';
+import { IssueData, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, ServerSidePropsResult } from '../../lib/types';
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 
 export async function getServerSideProps(context): Promise<ServerSidePropsResult> {
@@ -20,8 +20,8 @@ export async function getServerSideProps(context): Promise<ServerSidePropsResult
   return {
     props: {
       errors: response.errors ?? [],
-      error: response.error || null,
-      issueData: (response.data as IssueData) || null,
+      error: (response as RoadmapApiResponseFailure).error || null,
+      issueData: ((response as RoadmapApiResponseSuccess).data as IssueData) || null,
       isLocal: process.env.IS_LOCAL === 'true',
       groupBy: filter_group || null,
       mode: mode || 'grid',

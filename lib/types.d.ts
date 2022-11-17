@@ -58,6 +58,7 @@ export interface ServerSidePropsResult {
     // roadmap: RoadmapApiResponse,
     issueData: IssueData | null,
     errors: StarMapsError[],
+    error: { code: string; message: string } | null,
     isLocal: boolean,
     /**
      * Used via the filter_group query parameter to filter the roadmap by a specific group.
