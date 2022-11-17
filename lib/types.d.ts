@@ -13,6 +13,7 @@ interface IssueData {
   parent: IssueData;
   state: IssueStates;
   title: string;
+  root_issue?: boolean;
 }
 
 export interface RoadmapApiResponseSuccess {
