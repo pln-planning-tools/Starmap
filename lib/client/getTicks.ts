@@ -6,7 +6,10 @@ import { getQuantiles } from './getQuantiles';
 
 const getTicks = (dates: Date[], totalTicks) => {
   const count = totalTicks;
-  const utcDates = dates.map((date) => dayjs(date).utc()).filter((date) => date.isValid());
+  let utcDates = dates.map((date) => dayjs(date).utc()).filter((date) => date.isValid());
+  if (utcDates.length === 0) {
+    utcDates = [dayjs().subtract(1, 'month').utc(), dayjs().add(1, 'month').utc()];
+  }
   let min = dayjs.min(utcDates);
   let max = dayjs.max(utcDates);
 
