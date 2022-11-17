@@ -51,7 +51,7 @@ export function GridRow({
       <Flex direction="row" position="relative">
         <Flex direction="column">
           <Text as="b" className={styles.milestoneTitleWrapper}>{milestone.title}</Text>
-          <div className={styles.milestoneDate}>{getDateAsQuarter(milestone.due_date)}</div>
+          <div className={styles.milestoneDate}>{milestone.due_date}</div>
         </Flex>
         <Spacer />
         <SvgGitHubLogoWithTooltip githuburl={milestone.html_url}/>
