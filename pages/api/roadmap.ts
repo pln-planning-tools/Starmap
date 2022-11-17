@@ -104,7 +104,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return;
   }
   try {
-    const rootIssue = await getIssue({ platform, owner, repo, issue_number });
+    const rootIssue = await getIssue({ owner, repo, issue_number });
     if (rootIssue && !rootIssue?.labels?.includes('starmaps')) {
       errorManager.addError({
         issueUrl: rootIssue.html_url,
