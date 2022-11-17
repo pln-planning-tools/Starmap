@@ -16,7 +16,7 @@ export const SvgGitHubLogoWithTooltip = (props) => {
      * prevent roadmap card from handling the click event
      */
     event.stopPropagation()
-    window.open(props.githubUrl, '_blank', 'noopener,noreferrer')
+    window.open(props.githuburl, '_blank', 'noopener,noreferrer')
   }
   return (
     <div onClick={onClickHandler}>

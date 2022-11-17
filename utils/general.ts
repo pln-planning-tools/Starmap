@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { match } from 'path-to-regexp';
 
 import { dayjs } from '../lib/client/dayjs';
+import { IssueData } from '../lib/types';
 
 export const toTimestamp = (date) => (_.isDate(date) && +new Date(date)) || +new Date(date?.split('-'));
 
@@ -31,13 +32,21 @@ export const addOffset = (dates: Date[], { offsetStart, offsetEnd }: { offsetSta
   return datesWithOffset;
 };
 
-export const paramsFromUrl = (url) => {
+export const paramsFromUrl = (url: string) => {
   try {
     return { ...slugsFromUrl(new URL(url).pathname).params };
   } catch (err) {
     console.error('paramsFromUrl error:', err);
   }
 };
+
+export const getInternalLinkForIssue = (issue?: IssueData): string => {
+  if (issue == null) {
+    return '#'
+  }
+  const urlParams = paramsFromUrl(issue.html_url);
+  return `/roadmap/github.com/${urlParams.owner}/${urlParams.repo}/issues/${urlParams.issue_number}`
+}
 
 export const formatDateDayJs = (date: string): Date => dayjs(date).utc().toDate();
 export const formatDateArrayDayJs = (dates: string[]): Date[] => dates.map((date) => formatDateDayJs(date));

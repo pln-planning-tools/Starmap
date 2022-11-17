@@ -51,12 +51,13 @@ const resolveChildrenWithDepth = async (children: ParserGetChildrenResponse[]) =
   });
 };
 
-const addCompletionRate = (data) => {
-  if (!_.isArray(data)) return 0;
+const addCompletionRate = ({ children, state }) => {
+  if (state === 'closed') return 100;
+  if (!_.isArray(children)) return 0;
   const issueStats = Object.create({});
-  issueStats.total = data.length;
-  issueStats.open = data.filter((v) => v.state == 'open').length;
-  issueStats.closed = data.filter((v) => v.state == 'closed').length;
+  issueStats.total = children.length;
+  issueStats.open = children.filter((v) => v.state == 'open').length;
+  issueStats.closed = children.filter((v) => v.state == 'closed').length;
   issueStats.completionRate = Number(Number(issueStats.closed / issueStats.total) * 100 || 0).toFixed(2);
 
   return issueStats.completionRate;
@@ -66,7 +67,7 @@ const addToChildren = (data, parent) => {
   if (_.isArray(data) && data.length > 0) {
     return data.map((item) => {
       return {
-        completion_rate: addCompletionRate(item.children),
+        completion_rate: addCompletionRate(item),
         due_date: getConfig(item).eta,
         html_url: item.html_url,
         group: item.group,

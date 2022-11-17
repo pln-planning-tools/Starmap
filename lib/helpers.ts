@@ -9,7 +9,7 @@ import { dayjs } from './client/dayjs';
 export const getEtaDate = (data: string): string | null => {
   // how this works: https://www.debuggex.com/r/x-U2AnhTwWbSCXCD
 
-  const etaRegex = /^eta\s*:\s*(?<dateString>\d{4}(Q[1-4]|\-\d{2}(\-\d{2})?))/m;
+  const etaRegex = /^eta\s*:\s*(?<dateString>\d{4}(Q[1-4]|\-\d{2}(\-\d{2})?))/im;
   const dateString = data.match(etaRegex)?.groups?.dateString;
 
   if (!dateString) {
