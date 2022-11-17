@@ -32,12 +32,14 @@ export function GridRow({
   /**
    * Do not render milestone items if their ETAs are invalid.
    */
-  if (milestone.root_issue !== true && !dayjs(milestone.due_date).isValid()) {
-    return null;
-  }
+  if (milestone.root_issue !== true) {
+    if (!dayjs(milestone.due_date).isValid()) {
+      return null;
+    }
 
-  if (!(milestone as any).labels?.includes('starmaps')) {
-    return null;
+    if (!milestone.labels.includes('starmaps')) {
+      return null;
+    }
   }
   const rowItem = (
     <div

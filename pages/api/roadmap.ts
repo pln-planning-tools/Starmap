@@ -22,7 +22,7 @@ const resolveChildren = (children: any[]): Promise<IssueData[]> => {
         checkForLabel(issueData);
         resultArray.push({
           ...issueData,
-          labels: issueData?.labels,
+          labels: issueData?.labels ?? [],
           group: current.group,
         });
         count += 1;
@@ -44,7 +44,7 @@ const resolveChildrenWithDepth = async (children: ParserGetChildrenResponse[]) =
         const childrenParsed = getChildren(issueData.body_html);
         resultArray.push({
           ...issueData,
-          labels: issueData.labels,
+          labels: issueData.labels ?? [],
           children: (childrenParsed.length > 0 && (await resolveChildren(childrenParsed))) || childrenParsed,
         });
         count += 1;
@@ -76,7 +76,7 @@ const addToChildren = (data, parent) => {
   if (_.isArray(data) && data.length > 0) {
     return data.map((item) => {
       return {
-        labels: item.labels,
+        labels: item.labels ?? [],
         completion_rate: addCompletionRate(item),
         due_date: getConfig(item).eta,
         html_url: item.html_url,
