@@ -13,8 +13,6 @@ export default function Header({ issueData }: { issueData: IssueData }) {
 
   const changeToView = viewMode === ViewMode.Detail ? ViewMode.Simple : ViewMode.Detail;
 
-  // console.log(issueData.html_url)
-  console.log(`issueData.html_url: `, issueData.html_url);
   if (issueData.html_url == null || typeof issueData.html_url !== 'string') {
     console.log('error with issueData', issueData)
     return null;

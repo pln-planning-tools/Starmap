@@ -11,11 +11,8 @@ export const getConfig = (issue: IssueData) => {
   const issueText = [...document.querySelectorAll('*')].map((v) => v.textContent).join('\n');
   const eta = getEtaDate(issueText);
 
-
   if (eta == null) {
-    if (issueBodyHtml != null) {
-      // console.log(`issue.html_url == null: `, issue.html_url == null);
-      // console.log(issue);
+    if (issue.html_url != null) {
       errorManager.addError({
         url: issue.html_url,
         userGuideUrl: 'https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#eta',
