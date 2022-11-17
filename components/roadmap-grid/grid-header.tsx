@@ -1,4 +1,6 @@
+import { useDateGranularity } from '../../hooks/useDateGranularity';
 import { dayjs } from '../../lib/client/dayjs';
+import { DateGranularityState } from '../../lib/enums';
 import { ErrorBoundary } from '../errors/ErrorBoundary';
 
 import styles from './Roadmap.module.css';
@@ -9,15 +11,27 @@ import styles from './Roadmap.module.css';
  * @returns
  */
 export function GridHeader({ ticks, index }) {
+  const dateGranularity = useDateGranularity();
   const date = dayjs(ticks).utc();
-  const quarterNum = date.quarter();
-  const year = date.format('YY');
+
+  let label = '';
+  switch (dateGranularity) {
+    case DateGranularityState.Weeks:
+    case DateGranularityState.Quarters:
+      const quarterNum = date.quarter();
+      const year = date.format('YYYY');
+      label = `Q${quarterNum}Q ${year}`;
+    case DateGranularityState.Months:
+    default:
+      label = date.format('MMMM YYYY');
+      break;
+  }
 
   return (
 
     <ErrorBoundary>
       <div key={index} className={`${styles.item} ${styles.itemHeader}`}>
-        <span>{`Q${quarterNum} '${year}`}</span>
+        <span>{label}</span>
       </div>
     </ErrorBoundary>
   );

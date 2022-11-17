@@ -118,6 +118,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue.body_html)) || null;
     const toReturn = {
       ...rootIssue,
+      root_issue: true,
       children: (!!childrenFromBodyHtml && (await resolveChildrenWithDepth(childrenFromBodyHtml))) || [],
     };
 

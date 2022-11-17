@@ -29,6 +29,12 @@ export function GridRow({
   const childLink = getInternalLinkForIssue(milestone);
   const clickable = milestone.children.length > 0;
 
+  /**
+   * Do not render milestone items if their ETAs are invalid.
+   */
+  if (milestone.root_issue !== true && !dayjs(milestone.due_date).isValid()) {
+    return null;
+  }
   const rowItem = (
     <div
       key={index}
@@ -45,7 +51,7 @@ export function GridRow({
       <Flex direction="row" position="relative">
         <Flex direction="column">
           <Text as="b" className={styles.milestoneTitleWrapper}>{milestone.title}</Text>
-          <div className={styles.milestoneDate}>{getDateAsQuarter(milestone.due_date)}</div>
+          <div className={styles.milestoneDate}>{milestone.due_date}</div>
         </Flex>
         <Spacer />
         <SvgGitHubLogoWithTooltip githuburl={milestone.html_url}/>
