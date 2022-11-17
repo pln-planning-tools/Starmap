@@ -13,6 +13,11 @@ export default function Header({ issueData }: { issueData: IssueData }) {
 
   const changeToView = viewMode === ViewMode.Detail ? ViewMode.Simple : ViewMode.Detail;
 
+  if (issueData.html_url == null || typeof issueData.html_url !== 'string') {
+    console.log('error with issueData', issueData)
+    return null;
+  }
+
   return (
     <>
       <Text mb='8px' fontSize={14}>

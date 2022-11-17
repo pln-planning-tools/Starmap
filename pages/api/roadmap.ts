@@ -4,8 +4,9 @@ import _, { result } from 'lodash';
 
 import { getIssue } from '../../lib/backend/issue';
 import { getChildren, getConfig } from '../../lib/parser';
-import { IssueData, ParserGetChildrenResponse, RoadmapApiResponse } from '../../lib/types';
+import { IssueData, ParserGetChildrenResponse, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess } from '../../lib/types';
 import { paramsFromUrl } from '../../utils/general';
+import { errorManager } from '../../lib/backend/errorManager';
 
 const resolveChildren = (children: any[]): Promise<IssueData[]> => {
   const resultArray: any = [];
@@ -46,7 +47,9 @@ const resolveChildrenWithDepth = async (children: ParserGetChildrenResponse[]) =
       });
     }).then((data) => {
       return data;
-    });
+    }).catch((e) => {
+      return [];
+    })
   });
 };
 
@@ -62,14 +65,12 @@ const addCompletionRate = ({ children, state }) => {
   return issueStats.completionRate;
 };
 
-const addDueDates = ({ body_html }) => getConfig(body_html).eta;
-
 const addToChildren = (data, parent) => {
   if (_.isArray(data) && data.length > 0) {
     return data.map((item) => {
       return {
         completion_rate: addCompletionRate(item),
-        due_date: addDueDates(item),
+        due_date: getConfig(item).eta,
         html_url: item.html_url,
         group: item.group,
         title: item.title,
@@ -96,17 +97,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   options.filter_group = req.query.filter_group || 'children';
 
   if (!platform || !owner || !repo || !issue_number) {
-    res.status(400).json({ error: { code: '400', message: 'URL query is missing fields' } });
+    res.status(400).json({
+      errors: errorManager.flushErrors(),
+      error: { code: '400', message: 'URL query is missing fields' }
+    } as RoadmapApiResponseFailure);
     return;
   }
   try {
     const rootIssue = await getIssue({ platform, owner, repo, issue_number });
-    // console.log('rootIssue:', rootIssue);
-    // We should probably check for children due dates instead of the root issue
-    // if (!getConfig(rootIssue?.body_html)?.eta) {
-    //   // res.status(500).json({ error: { code: '500', message: 'No due date found in issue body.' } });
-    //   // return;
-    // }
+    if (rootIssue && !rootIssue?.labels?.includes('starmaps')) {
+      errorManager.addError({
+        issueUrl: rootIssue.html_url,
+        issueTitle: rootIssue.title,
+        message: 'Missing label `starmaps`',
+        title: 'Missing Label',
+        userGuideUrl: 'https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#label-requirement',
+      })
+    }
 
     const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue.body_html)) || null;
     const toReturn = {
@@ -114,9 +121,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       children: (!!childrenFromBodyHtml && (await resolveChildrenWithDepth(childrenFromBodyHtml))) || [],
     };
 
-    res.status(200).json({ data: { ...addToChildren([{ children: [toReturn] }], {})[0].children[0], parent: {} } });
+    const data = {
+      ...addToChildren([{ children: [toReturn] }], {})[0].children[0],
+      parent: {},
+    };
+
+    res.status(200).json({
+      errors: errorManager.flushErrors(),
+      data,
+    } as RoadmapApiResponseSuccess);
   } catch (err) {
-    console.error('error:', err);
-    res.status(404).json({ error: { code: '404', message: 'not found' } });
+    const message = (err as Error)?.message ?? 'not found';
+    res.status(404).json({
+      errors: errorManager.flushErrors(),
+      error: { code: '404', message }
+    } as RoadmapApiResponseFailure);
   }
 }

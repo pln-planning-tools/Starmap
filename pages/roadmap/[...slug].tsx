@@ -6,9 +6,10 @@ import PageHeader from '../../components/layout/PageHeader';
 import { RoadmapDetailed } from '../../components/roadmap-grid/RoadmapDetailedView';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { API_URL } from '../../config/constants';
-import { IssueData, RoadmapApiResponse } from '../../lib/types';
+import { IssueData, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, ServerSidePropsResult } from '../../lib/types';
+import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps(context): Promise<ServerSidePropsResult> {
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
   const { filter_group, mode } = context.query;
   const res = await fetch(
@@ -18,8 +19,9 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      error: response.error || null,
-      issueData: (response.data as IssueData) || null,
+      errors: response.errors ?? [],
+      error: (response as RoadmapApiResponseFailure).error || null,
+      issueData: ((response as RoadmapApiResponseSuccess).data as IssueData) || null,
       isLocal: process.env.IS_LOCAL === 'true',
       groupBy: filter_group || null,
       mode: mode || 'grid',
@@ -28,11 +30,12 @@ export async function getServerSideProps(context) {
 }
 
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { issueData, error, isLocal, mode } = props;
+  const { issueData, error, errors, isLocal, mode } = props;
 
   return (
     <>
       <PageHeader />
+      <ErrorNotificationDisplay errors={errors} />
       <Box pt={5} pr="120px" pl="120px">
         {!!error && <Box color='red.500'>{error.message}</Box>}
         {!!issueData && mode === 'd3' && <NewRoadmap issueData={issueData} isLocal={isLocal} />}

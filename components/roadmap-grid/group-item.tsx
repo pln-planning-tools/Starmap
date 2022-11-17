@@ -1,9 +1,9 @@
 import { Text } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import NextLink from 'next/link';
+
 import { useViewMode } from '../../hooks/useViewMode';
 import { ViewMode } from '../../lib/enums';
-
 import { GroupItemProps } from '../../lib/types';
 import styles from './Roadmap.module.css';
 
