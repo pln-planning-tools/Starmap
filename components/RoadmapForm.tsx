@@ -26,9 +26,10 @@ export function RoadmapForm() {
   const currentIssueUrl = useCurrentIssueUrl();
   const [issueUrl, setIssueUrl] = useState<string | null>();
   const [error, setError] = useState<Error | null>(null);
+  const [isInputBlanked, setIsInputBlanked] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isEmpty(currentIssueUrl) && window.location.pathname.length > 1) {
+    if (!isInputBlanked && isEmpty(currentIssueUrl) && window.location.pathname.length > 1) {
       try {
         const urlObj = getValidUrlFromInput(window.location.pathname.replace('/roadmap', ''));
         setCurrentIssueUrl(urlObj.toString());
@@ -75,6 +76,10 @@ export function RoadmapForm() {
   if (isLoading) {
     inputRightElement = <Spinner />
   }
+  const onChangeHandler = (e) => {
+    setIsInputBlanked(true);
+    setCurrentIssueUrl(e.target.value ?? '')
+  };
   return (
     <form onSubmit={formSubmit}>
       <FormControl isInvalid={error != null}>
@@ -91,7 +96,7 @@ export function RoadmapForm() {
             aria-label='Issue URL'
             name='issue-url'
             autoComplete='url'
-            onChange={(e) => setCurrentIssueUrl(e.target.value)}
+            onChange={onChangeHandler}
             placeholder='https://github.com/...'
             bg={theme.light.header.input.background.color}
             borderColor={theme.light.header.input.border.color}
