@@ -43,6 +43,15 @@ export function RoadmapForm() {
       try {
         const { owner, repo, issue_number } = paramsFromUrl(issueUrl);
         setIssueUrl(null);
+        if (window.location.pathname.includes(`github.com/${owner}/${repo}/issues/${issue_number}`)) {
+          setTimeout(() => {
+            /**
+             * Clear the error after a few seconds.
+             */
+            setError(null);
+          }, 5000);
+          throw new Error('Already viewing this issue');
+        }
         router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}`).then(() => setIsLoading(false));
       } catch (err){
         setError(err as Error);
