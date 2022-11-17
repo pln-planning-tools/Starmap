@@ -1,14 +1,19 @@
 import { utcTicks } from 'd3';
-import dayjs from 'dayjs';
+
+import { dayjs } from './dayjs';
 import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { getQuantiles } from './getQuantiles';
 
 const getTicks = (dates: Date[], totalTicks) => {
   const count = totalTicks;
-  const utcDates = dates.map((date) => dayjs(date).utc());
+  const utcDates = dates.map((date) => dayjs(date).utc()).filter((date) => date.isValid());
   let min = dayjs.min(utcDates);
   let max = dayjs.max(utcDates);
+
   let incrementMax = false;
+  /**
+   * TODO: Need to update this to support date granularity
+   */
   while (max.diff(min, 'months') < (3 * DEFAULT_TICK_COUNT)) {
     if (incrementMax) {
       max = max.add(1, 'quarter');
