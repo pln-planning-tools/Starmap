@@ -4,7 +4,7 @@ import _, { result } from 'lodash';
 
 import { getIssue } from '../../lib/backend/issue';
 import { getChildren, getConfig } from '../../lib/parser';
-import { IssueData, ParserGetChildrenResponse, RoadmapApiResponse } from '../../lib/types';
+import { IssueData, ParserGetChildrenResponse, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess } from '../../lib/types';
 import { paramsFromUrl } from '../../utils/general';
 import { errorManager } from '../../lib/backend/errorManager';
 
@@ -95,7 +95,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   options.filter_group = req.query.filter_group || 'children';
 
   if (!platform || !owner || !repo || !issue_number) {
-    res.status(400).json({ error: { code: '400', message: 'URL query is missing fields' } });
+    res.status(400).json({
+      errors: errorManager.flushErrors(),
+      error: { code: '400', message: 'URL query is missing fields' }
+    } as RoadmapApiResponseFailure);
     return;
   }
   try {
@@ -113,9 +116,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         ...addToChildren([{ children: [toReturn] }], {})[0].children[0],
         parent: {},
       }
-    });
+    } as RoadmapApiResponseSuccess);
   } catch (err) {
     console.error('error:', err);
-    res.status(404).json({ error: { code: '404', message: 'not found' } });
+    res.status(404).json({
+      errors: errorManager.flushErrors(),
+      error: { code: '404', message: 'not found' }
+    } as RoadmapApiResponseFailure);
   }
 }

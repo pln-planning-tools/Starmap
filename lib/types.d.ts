@@ -15,11 +15,16 @@ interface IssueData {
   title: string;
 }
 
-interface RoadmapApiResponse {
-  data?: IssueData;
+export interface RoadmapApiResponseSuccess {
+  data: IssueData;
+  errors?: StarMapsError[];
+}
+export interface RoadmapApiResponseFailure {
   error?: { code: string; message: string };
   errors?: StarMapsError[];
 }
+
+export type RoadmapApiResponse = RoadmapApiResponseSuccess | RoadmapApiResponseFailure;
 
 interface ParserGetChildrenResponse {
   html_url: string;

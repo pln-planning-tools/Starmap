@@ -36,7 +36,6 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
     <>
       <PageHeader />
       <ErrorNotificationDisplay errors={errors} />
-
       <Box pt={5} pr="120px" pl="120px">
         {!!error && <Box color='red.500'>{error.message}</Box>}
         {!!issueData && mode === 'd3' && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
