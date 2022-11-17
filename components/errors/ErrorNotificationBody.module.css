@@ -1,0 +1,47 @@
+.errorNotificationBody {
+  border: 1px solid #DDE8EC;
+  border-radius: 0 0 8px 8px;
+  padding: 10px 80px;
+
+}
+
+.errorLineItemWrapper {
+  display: grid;
+  grid-template: inherit;
+  grid-gap: inherit;
+  grid-column: 1 / -1;
+}
+
+.errorLineItemWrapper:nth-child(odd) {
+  background-color: #F8FBFF;
+}
+
+.errorIssueLineItem {
+  /* margin: 1rem 5rem 1rem 5rem; */
+  /* padding: 5px; */
+  /* border: 1px solid #DDE8EC; */
+  /* border-radius: 8px; */
+}
+
+/**
+  * Stripe the background color of the .errorIssueLineItem
+  */
+.errorIssueLineItem:nth-child(even) {
+  background-color: #F8FBFF;
+}
+
+.errorIssueLinkWrapper {
+  /* background: gray; */
+  /* text-align: center;
+  vertical-align: center;
+  align-items: center; */
+}
+.errorIssueLinkText {
+  color: #4987BD;
+}
+
+.errorIssueDescriptionWrapper {
+  padding: 10px 0;
+  /* text-align: center;
+  vertical-align: center; */
+}

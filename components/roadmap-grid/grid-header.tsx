@@ -1,6 +1,7 @@
 import { useDateGranularity } from '../../hooks/useDateGranularity';
 import { dayjs } from '../../lib/client/dayjs';
 import { DateGranularityState } from '../../lib/enums';
+import { ErrorBoundary } from '../errors/ErrorBoundary';
 
 import styles from './Roadmap.module.css';
 
@@ -27,10 +28,11 @@ export function GridHeader({ ticks, index }) {
   }
 
   return (
-    <>
+
+    <ErrorBoundary>
       <div key={index} className={`${styles.item} ${styles.itemHeader}`}>
         <span>{label}</span>
       </div>
-    </>
+    </ErrorBoundary>
   );
 }

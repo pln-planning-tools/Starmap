@@ -19,6 +19,7 @@ const getIssue = async ({ platform, owner, repo, issue_number }) => {
       body: data.body,
       body_html: data.body_html,
       body_text: data.body_text,
+      labels: data.labels.map((label) => typeof label !== 'string' ? label.name : label),
     };
   } catch (err) {
     console.error('error:', err);
