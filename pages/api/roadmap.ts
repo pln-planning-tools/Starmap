@@ -13,8 +13,8 @@ const resolveChildren = (children: any[]): Promise<IssueData[]> => {
   let count = 0;
 
   return new Promise((resolve, reject) => {
-    if (!_.isArray(children)) reject('not array');
-    if (_.isArray(children) && children.length === 0) reject('empty array');
+    if (!_.isArray(children)) reject('Children is not an array. Is this a root issue?');
+    if (_.isArray(children) && children.length === 0) reject('Children array is empty. Is this a root issue?');
 
     children.forEach((current) => {
       getIssue(paramsFromUrl(current.html_url)).then((issueData) => {
@@ -116,10 +116,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     }
 
     const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue.body_html)) || null;
+    let children: Awaited<ReturnType<typeof resolveChildrenWithDepth>> = [];
+    try {
+      if (childrenFromBodyHtml != null) {
+        children = await resolveChildrenWithDepth(childrenFromBodyHtml)
+      }
+    } catch (err) {
+      console.error(err);
+      if (rootIssue != null) {
+        errorManager.addError({
+          issueUrl: rootIssue.html_url,
+          issueTitle: rootIssue.title,
+          message: err as string,
+          title: 'Error resolving children',
+          userGuideUrl: 'https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#children'
+        });
+      }
+    }
     const toReturn = {
       ...rootIssue,
       root_issue: true,
-      children: (!!childrenFromBodyHtml && (await resolveChildrenWithDepth(childrenFromBodyHtml))) || [],
+      children
     };
 
     const data = {
@@ -132,10 +149,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       data,
     } as RoadmapApiResponseSuccess);
   } catch (err) {
-    const message = (err as Error)?.message ?? 'not found';
+    const message = (err as Error)?.message ?? err;
     res.status(404).json({
       errors: errorManager.flushErrors(),
-      error: { code: '404', message }
+      error: { code: '404', message: `An Unknown error has occurred and was not captured by the errorManager: ${message}` }
     } as RoadmapApiResponseFailure);
   }
 }
