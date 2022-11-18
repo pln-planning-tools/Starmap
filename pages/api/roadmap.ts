@@ -37,7 +37,7 @@ async function resolveChildrenWithDepth(children: ParserGetChildrenResponse[]): 
     const issues = await resolveChildren(children);
     return await Promise.all(issues.map(async (issueData): Promise<GithubIssueDataWithGroupAndChildren> => {
       const childrenParsed = getChildren(issueData.body_html);
-      const childrenResolved = await resolveChildrenWithDepth(childrenParsed);
+      const childrenResolved = await resolveChildren(childrenParsed);
 
       return {
         ...issueData,
