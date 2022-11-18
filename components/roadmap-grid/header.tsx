@@ -5,14 +5,8 @@ import NextLink from 'next/link'
 import themes from '../theme/constants';
 import GitHubSvgIcon from '../icons/GitHubLogo.svg';
 import { IssueData } from '../../lib/types';
-import { setViewMode, useViewMode } from '../../hooks/useViewMode';
-import { ViewMode } from '../../lib/enums';
 
 export default function Header({ issueData }: { issueData: IssueData }) {
-  const viewMode = useViewMode();
-
-  const changeToView = viewMode === ViewMode.Detail ? ViewMode.Simple : ViewMode.Detail;
-
   if (issueData.html_url == null || typeof issueData.html_url !== 'string') {
     console.log('error with issueData', issueData)
     return null;
