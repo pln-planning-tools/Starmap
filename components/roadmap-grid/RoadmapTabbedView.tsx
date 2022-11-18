@@ -7,6 +7,7 @@ import {
   Tabs
 } from '@chakra-ui/react';
 import React from 'react';
+import { setViewMode } from '../../hooks/useViewMode';
 import { ViewMode } from '../../lib/enums';
 import { IssueData } from '../../lib/types';
 import Header from './header';
@@ -14,23 +15,34 @@ import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 
 export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
-  const tabs: Record<string, ViewMode> = {
+  // Defining what tabs to show and in what order
+  const tabs = ['Overview', 'Detailed View'] as const;
+
+  // Mapping the views to the tabs
+  const tabViewMap: Record<typeof tabs[number], ViewMode> = {
     'Overview': ViewMode.Simple,
     'Detailed View': ViewMode.Detail,
+  };
+
+  const handleTabChange = (index: number) => {
+    setViewMode(tabViewMap[tabs[index]]);
   }
 
-  const renderTab = (title: string) => (
-    <Tab _selected={{
-      fontWeight: 'bold',
-      textUnderlineOffset: '16px',
-      textDecorationLine: 'underline',
-      textDecorationThickness: '2px',
-    }}>&nbsp;&nbsp;{ title }&nbsp;&nbsp;</Tab>
+  const renderTab = (title: string, index: number) => (
+    <Tab
+      key={index}
+      _selected={{
+        fontWeight: 'bold',
+        textUnderlineOffset: '16px',
+        textDecorationLine: 'underline',
+        textDecorationThickness: '2px',
+      }}
+    >&nbsp;&nbsp;{title}&nbsp;&nbsp;</Tab>
   );
 
-  const renderTabPanel = (viewMode: ViewMode) => (
-    <TabPanel>
-      <RoadmapDetailed issueData={issueData} viewMode={viewMode} />
+  const renderTabPanel = (_title: string, index: number) => (
+    <TabPanel key={index}>
+      <RoadmapDetailed issueData={issueData} />
     </TabPanel>
   );
 
@@ -38,12 +50,12 @@ export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
     <>
       <Box className={styles.timelineBox}>
         <Header issueData={issueData} />
-        <Tabs variant='unstyled' isLazy>
+        <Tabs variant='unstyled' onChange={handleTabChange} isLazy>
           <TabList>
-            {Object.keys(tabs).map(renderTab)}
+            {tabs.map(renderTab)}
           </TabList>
           <TabPanels>
-            {Object.values(tabs).map(renderTabPanel)}
+            {tabs.map(renderTabPanel)}
           </TabPanels>
         </Tabs>
       </Box>

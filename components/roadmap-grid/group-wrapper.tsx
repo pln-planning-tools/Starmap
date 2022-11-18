@@ -1,7 +1,9 @@
+import { getViewMode } from '../../hooks/useViewMode';
 import { ViewMode } from '../../lib/enums';
 import styles from './Roadmap.module.css';
 
-export function GroupWrapper({ children, viewMode, cssName = '' }) {
+export function GroupWrapper({ children, cssName = '' }) {
+  const viewMode = getViewMode();
   let viewModeClass = 'simpleView';
   if (viewMode === ViewMode.Detail) {
     viewModeClass = 'detailedView';

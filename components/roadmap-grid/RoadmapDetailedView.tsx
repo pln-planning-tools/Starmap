@@ -5,6 +5,8 @@ import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
 import { addOffset, formatDateArrayDayJs, getInternalLinkForIssue } from '../../lib/general';
 import { DetailedViewGroup, IssueData } from '../../lib/types';
+
+import { getViewMode } from '../../hooks/useViewMode';
 import styles from './Roadmap.module.css';
 import { Grid } from './grid';
 import { GridHeader } from './grid-header';
@@ -14,12 +16,11 @@ import { GroupWrapper } from './group-wrapper';
 import { Headerline } from './headerline';
 
 export function RoadmapDetailed({
-  issueData,
-  viewMode
+  issueData
 }: {
   issueData: IssueData;
-  viewMode: ViewMode;
 }) {
+  const viewMode = getViewMode();
   const newIssueData = issueData.children.map((v) => ({
     ...v,
     group: v.parent.title,
@@ -86,8 +87,8 @@ export function RoadmapDetailed({
         <Grid ticksLength={ticks.length} scroll={true}>
           {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {
             return (
-              <GroupWrapper key={index} viewMode={viewMode}>
-                <GroupItem group={group} viewMode={viewMode} />
+              <GroupWrapper key={index} >
+                <GroupItem group={group} />
                 {!!group.items &&
                   _.sortBy(group.items, ['title']).map((item, index) => {
                     return <GridRow key={index} milestone={item} index={index} timelineTicks={ticksHeader} />;
