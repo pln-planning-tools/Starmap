@@ -114,7 +114,7 @@ export interface GroupItemProps {
    * The root node issue data; The GitHub issue URL provided in RoadmapForm, or
    * currently rendered root issue.
    */
-  issueData: IssueData;
+  viewMode: ViewMode;
   group: DetailedViewGroup;
 }
 
