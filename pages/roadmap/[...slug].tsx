@@ -3,7 +3,7 @@ import type { InferGetServerSidePropsType } from 'next';
 import { Box } from '@chakra-ui/react';
 
 import PageHeader from '../../components/layout/PageHeader';
-import { RoadmapDetailed } from '../../components/roadmap-grid/RoadmapDetailedView';
+import { RoadmapTabbedView } from '../../components/roadmap-grid/RoadmapTabbedView';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { API_URL } from '../../config/constants';
 import { IssueData, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, ServerSidePropsResult } from '../../lib/types';
@@ -40,7 +40,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         {!!error && <Box color='red.500'>{error.message}</Box>}
         {!!issueData && mode === 'd3' && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
         {!!issueData && mode === 'grid' && (
-          <RoadmapDetailed issueData={issueData} />
+          <RoadmapTabbedView issueData={issueData} />
         )}
       </Box>
     </>
