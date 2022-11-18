@@ -1,27 +1,25 @@
 import { Box } from '@chakra-ui/react';
-
 import { group } from 'd3';
 import _ from 'lodash';
-import React from 'react';
-
 import { getTicks } from '../../lib/client/getTicks';
-import { DetailedViewGroup, IssueData } from '../../lib/types';
+import { ViewMode } from '../../lib/enums';
 import { addOffset, formatDateArrayDayJs, getInternalLinkForIssue } from '../../lib/general';
+import { DetailedViewGroup, IssueData } from '../../lib/types';
 import styles from './Roadmap.module.css';
 import { Grid } from './grid';
 import { GridHeader } from './grid-header';
 import { GridRow } from './grid-row';
 import { GroupItem } from './group-item';
 import { GroupWrapper } from './group-wrapper';
-import Header from './header';
 import { Headerline } from './headerline';
-import { useViewMode } from '../../hooks/useViewMode';
-import { ViewMode } from '../../lib/enums';
 
-export function RoadmapDetailed({ issueData }: { issueData: IssueData; }) {
-  const viewMode = useViewMode();
-  const showGroupRowTitle = viewMode === ViewMode.Detail;
-
+export function RoadmapDetailed({
+  issueData,
+  viewMode
+}: {
+  issueData: IssueData;
+  viewMode: ViewMode;
+}) {
   const newIssueData = issueData.children.map((v) => ({
     ...v,
     group: v.parent.title,
@@ -78,7 +76,6 @@ export function RoadmapDetailed({ issueData }: { issueData: IssueData; }) {
   return (
     <>
       <Box className={styles.timelineBox}>
-        <Header issueData={issueData} />
         <Grid ticksLength={ticks.length}>
           {ticksHeader.map((tick, index) => (
             <GridHeader key={index} ticks={tick} index={index} />
@@ -89,8 +86,8 @@ export function RoadmapDetailed({ issueData }: { issueData: IssueData; }) {
         <Grid ticksLength={ticks.length} scroll={true}>
           {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {
             return (
-              <GroupWrapper key={index}>
-                <GroupItem issueData={issueData} group={group} />
+              <GroupWrapper key={index} viewMode={viewMode}>
+                <GroupItem group={group} viewMode={viewMode} />
                 {!!group.items &&
                   _.sortBy(group.items, ['title']).map((item, index) => {
                     return <GridRow key={index} milestone={item} index={index} timelineTicks={ticksHeader} />;
