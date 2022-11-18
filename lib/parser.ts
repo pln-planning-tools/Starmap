@@ -2,9 +2,9 @@ import { parseHTML } from 'linkedom';
 import { errorManager } from './backend/errorManager';
 
 import { getEtaDate, isValidChildren } from './helpers';
-import { IssueData, ParserGetChildrenResponse, StarMapsError } from './types';
+import { GithubIssueData, ParserGetChildrenResponse } from './types';
 
-export const getConfig = (issue: IssueData) => {
+export const getDueDate = (issue: GithubIssueData) => {
   const { body_html: issueBodyHtml } = issue;
 
   const { document } = parseHTML(issueBodyHtml);
@@ -15,17 +15,16 @@ export const getConfig = (issue: IssueData) => {
   } catch (e) {
     if (issue.html_url != null && issue.root_issue !== true) {
       errorManager.addError({
-        issueUrl: issue.html_url,
-        issueTitle: issue.title,
-        userGuideUrl: 'https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#eta',
-        title: 'ETA not found',
-        message: 'ETA not found in issue body',
+        issue,
+        userGuideSection: '#eta',
+        errorTitle: 'ETA not found',
+        errorMessage: 'ETA not found in issue body',
       });
     }
   }
 
   return {
-    eta: eta == null ? '' : eta,
+    eta: eta ?? '',
   };
 };
 

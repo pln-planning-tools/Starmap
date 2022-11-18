@@ -8,12 +8,11 @@ import { errorManager } from './errorManager';
 export function checkForLabel(issue) {
   const labels = issue?.labels || [];
   if (issue && !labels.includes('starmaps')) {
-      errorManager.addError({
-        issueUrl: issue.html_url,
-        issueTitle: issue.title,
-        message: 'Missing label `starmaps`',
-        title: 'Missing Label',
-        userGuideUrl: 'https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#label-requirement',
-      })
-    }
+    errorManager.addError({
+      issue,
+      userGuideSection: '#label-requirement',
+      errorTitle: 'Missing Label',
+      errorMessage: 'Missing label `starmaps`',
+    });
+  }
 }

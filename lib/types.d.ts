@@ -1,20 +1,32 @@
-import type {RoadmapMode} from './enums'
+import type { RoadmapMode, IssueStates } from './enums'
 
-interface IssueData {
+export interface GithubIssueData {
   body_html: string;
   body_text: string;
   body: string;
+  html_url: string;
+  labels: string[];
+  node_id: string;
+  title: string;
+  state: IssueStates;
+  root_issue?: boolean;
+}
+
+export interface GithubIssueDataWithGroup extends GithubIssueData {
+  group: string;
+}
+
+export interface GithubIssueDataWithChildren extends GithubIssueData {
+  children: GithubIssueDataWithGroupAndChildren[];
+}
+
+export interface GithubIssueDataWithGroupAndChildren extends GithubIssueDataWithGroup, GithubIssueDataWithChildren {}
+
+export interface IssueData extends GithubIssueDataWithGroupAndChildren {
   children: IssueData[];
   completion_rate: number;
   due_date: string;
-  group: string;
-  html_url: string;
-  node_id: string;
   parent: IssueData;
-  state: IssueStates;
-  title: string;
-  root_issue?: boolean;
-  labels: string[];
 }
 
 export interface RoadmapApiResponseSuccess {
@@ -28,7 +40,7 @@ export interface RoadmapApiResponseFailure {
 
 export type RoadmapApiResponse = RoadmapApiResponseSuccess | RoadmapApiResponseFailure;
 
-interface ParserGetChildrenResponse {
+export interface ParserGetChildrenResponse {
   html_url: string;
   group: string;
 }
@@ -111,5 +123,3 @@ export interface UrlMatchSlugs {
   repo: string;
   issue_number: string;
 };
-
-export { IssueData, IssueStates, ParserGetChildrenResponse };
