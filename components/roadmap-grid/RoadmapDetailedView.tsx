@@ -6,7 +6,7 @@ import { ViewMode } from '../../lib/enums';
 import { addOffset, formatDateArrayDayJs, getInternalLinkForIssue } from '../../lib/general';
 import { DetailedViewGroup, IssueData } from '../../lib/types';
 
-import { getViewMode } from '../../hooks/useViewMode';
+import { useViewMode } from '../../hooks/useViewMode';
 import styles from './Roadmap.module.css';
 import { Grid } from './grid';
 import { GridHeader } from './grid-header';
@@ -20,7 +20,7 @@ export function RoadmapDetailed({
 }: {
   issueData: IssueData;
 }) {
-  const viewMode = getViewMode();
+  const viewMode = useViewMode();
   const newIssueData = issueData.children.map((v) => ({
     ...v,
     group: v.parent.title,

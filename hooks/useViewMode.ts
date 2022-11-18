@@ -59,6 +59,6 @@ const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?
   return [state, setCachedState] as [S | undefined, Dispatch<SetStateAction<S | undefined>>];
 }
 
-const [getViewMode, setViewMode] = useSharedHook(customStateFunction, ViewMode.Simple);
+const [useViewMode, setViewMode] = useSharedHook(customStateFunction, ViewMode.Simple);
 
-export { getViewMode, setViewMode };
+export { useViewMode, setViewMode };

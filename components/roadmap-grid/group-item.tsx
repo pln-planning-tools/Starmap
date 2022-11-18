@@ -1,7 +1,7 @@
 import { Text } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import NextLink from 'next/link';
-import { getViewMode } from '../../hooks/useViewMode';
+import { useViewMode } from '../../hooks/useViewMode';
 
 import { ViewMode } from '../../lib/enums';
 import { GroupItemProps } from '../../lib/types';
@@ -12,7 +12,7 @@ import styles from './Roadmap.module.css';
  * @returns {JSX.Element}
  */
 export function GroupItem({ group }: GroupItemProps) {
-  const viewMode = getViewMode();
+  const viewMode = useViewMode();
   let groupNameElement: JSX.Element | null = null;
 
   if (viewMode === ViewMode.Detail) {
