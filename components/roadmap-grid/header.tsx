@@ -20,16 +20,6 @@ export default function Header({ issueData }: { issueData: IssueData }) {
 
   return (
     <>
-      <Text mb='8px' fontSize={14}>
-        <Link
-          color='blue.500'
-          onClick={() => {
-            setViewMode(changeToView);
-          }}
-        >
-          Switch to {changeToView} view
-        </Link>
-      </Text>
       <Flex direction={'row'}>
         <Text as='span' mb='8px' fontSize={40} fontWeight={600} pr="5rem">
           {issueData.title}
