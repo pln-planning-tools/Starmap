@@ -1,5 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import type {
+import { checkForLabel } from '../../lib/backend/checkForLabel';
+import { errorManager } from '../../lib/backend/errorManager';
+import { getChildren, getDueDate } from '../../lib/parser';
+import { getIssue } from '../../lib/backend/issue';
+import {
   GithubIssueDataWithGroup,
   GithubIssueDataWithGroupAndChildren,
   IssueData,
@@ -7,21 +10,14 @@ import type {
   RoadmapApiResponse,
   RoadmapApiResponseFailure,
   RoadmapApiResponseSuccess
-} from '../../lib/types';
-
-import { getIssue } from '../../lib/backend/issue';
-import { getChildren, getDueDate } from '../../lib/parser';
+  } from '../../lib/types';
+import { IssueStates } from '../../lib/enums';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
-import { errorManager } from '../../lib/backend/errorManager';
-import { checkForLabel } from '../../lib/backend/checkForLabel';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 async function resolveChildren (children: ParserGetChildrenResponse[]): Promise<GithubIssueDataWithGroup[]> {
   if (!Array.isArray(children)) {
     throw new Error('Children is not an array. Is this a root issue?');
-  }
-
-  if (children.length === 0) {
-    throw new Error('Children array is empty. Is this a root issue?');
   }
 
   return Promise.all(children.map(async (child): Promise<GithubIssueDataWithGroup> => {
@@ -41,10 +37,12 @@ async function resolveChildrenWithDepth(children: ParserGetChildrenResponse[]): 
     const issues = await resolveChildren(children);
     return await Promise.all(issues.map(async (issueData): Promise<GithubIssueDataWithGroupAndChildren> => {
       const childrenParsed = getChildren(issueData.body_html);
+      const childrenResolved = await resolveChildrenWithDepth(childrenParsed);
+
       return {
         ...issueData,
         labels: issueData.labels ?? [],
-        children: (childrenParsed.length > 0 && (await resolveChildren(childrenParsed))) || childrenParsed,
+        children: await resolveChildrenWithDepth(childrenResolved),
       }
     }));
   } catch (err) {
@@ -54,7 +52,7 @@ async function resolveChildrenWithDepth(children: ParserGetChildrenResponse[]): 
 };
 
 function calculateCompletionRate ({ children, state }): number {
-  if (state === 'closed') return 100;
+  if (state === IssueStates.CLOSED) return 100;
   if (!Array.isArray(children)) return 0;
   const issueStats = Object.create({});
   issueStats.total = children.length;
@@ -66,11 +64,11 @@ function calculateCompletionRate ({ children, state }): number {
 };
 
 function addToChildren(
-  data: GithubIssueDataWithGroupAndChildren[] | ParserGetChildrenResponse[],
-  parent: IssueData
+  data: GithubIssueDataWithGroupAndChildren[],
+  parent: IssueData | GithubIssueDataWithGroupAndChildren
 ): IssueData[] {
-  if (Array.isArray(data) && data.length > 0) {
-    return data.map((item): IssueData => ({
+  if (Array.isArray(data)) {
+    return data.map((item: GithubIssueDataWithGroupAndChildren): IssueData => ({
       labels: item.labels ?? [],
       completion_rate: calculateCompletionRate(item),
       due_date: getDueDate(item).eta,
@@ -82,7 +80,7 @@ function addToChildren(
       body: item.body,
       body_html: item.body_html,
       body_text: item.body_text,
-      parent,
+      parent: parent as IssueData,
       children: addToChildren(item.children, item),
     }));
   }
