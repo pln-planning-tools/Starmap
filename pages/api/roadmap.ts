@@ -10,7 +10,7 @@ import type {
 } from '../../lib/types';
 
 import { getIssue } from '../../lib/backend/issue';
-import { getChildren, getConfig } from '../../lib/parser';
+import { getChildren, getDueDate } from '../../lib/parser';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import { errorManager } from '../../lib/backend/errorManager';
 import { checkForLabel } from '../../lib/backend/checkForLabel';
@@ -73,7 +73,7 @@ function addToChildren(
     return data.map((item): IssueData => ({
       labels: item.labels ?? [],
       completion_rate: calculateCompletionRate(item),
-      due_date: getConfig(item).eta,
+      due_date: getDueDate(item).eta,
       html_url: item.html_url,
       group: item.group,
       title: item.title,

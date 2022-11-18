@@ -4,7 +4,7 @@ import { errorManager } from './backend/errorManager';
 import { getEtaDate, isValidChildren } from './helpers';
 import { GithubIssueData, ParserGetChildrenResponse } from './types';
 
-export const getConfig = (issue: GithubIssueData) => {
+export const getDueDate = (issue: GithubIssueData) => {
   const { body_html: issueBodyHtml } = issue;
 
   const { document } = parseHTML(issueBodyHtml);
