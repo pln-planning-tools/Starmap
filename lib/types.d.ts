@@ -1,4 +1,4 @@
-import type {RoadmapMode} from './enums'
+import type { RoadmapMode, IssueStates } from './enums'
 
 export interface GithubIssueData {
   body_html: string;
@@ -17,7 +17,7 @@ export interface GithubIssueDataWithGroup extends GithubIssueData {
 }
 
 export interface GithubIssueDataWithChildren extends GithubIssueData {
-  children: GithubIssueDataWithGroupAndChildren[] | ParserGetChildrenResponse[];
+  children: GithubIssueDataWithGroupAndChildren[];
 }
 
 export interface GithubIssueDataWithGroupAndChildren extends GithubIssueDataWithGroup, GithubIssueDataWithChildren {}

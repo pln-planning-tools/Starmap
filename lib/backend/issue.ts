@@ -1,3 +1,4 @@
+import { IssueStates } from '../enums';
 import { GithubIssueData } from '../types';
 import { octokit } from './octokit';
 
@@ -15,7 +16,7 @@ export async function getIssue ({ owner, repo, issue_number }): Promise<GithubIs
     return {
       html_url: data.html_url,
       title: data.title,
-      state: data.state,
+      state: IssueStates[data.state],
       node_id: data.node_id,
       body: data.body || '',
       body_html: data.body_html || '',

@@ -13,3 +13,8 @@ export enum DateGranularityState {
   Weeks = 'weeks',
   Quarters = 'quarters',
 }
+
+export enum IssueStates {
+  OPEN = 'open',
+  CLOSED = 'closed',
+}
