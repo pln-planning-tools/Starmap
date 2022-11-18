@@ -15,11 +15,10 @@ export const getDueDate = (issue: GithubIssueData) => {
   } catch (e) {
     if (issue.html_url != null && issue.root_issue !== true) {
       errorManager.addError({
-        issueUrl: issue.html_url,
-        issueTitle: issue.title,
-        userGuideUrl: 'https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#eta',
-        title: 'ETA not found',
-        message: 'ETA not found in issue body',
+        issue,
+        userGuideSection: '#eta',
+        errorTitle: 'ETA not found',
+        errorMessage: 'ETA not found in issue body',
       });
     }
   }

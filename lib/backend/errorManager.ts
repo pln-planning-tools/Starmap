@@ -1,5 +1,10 @@
+import {
+  GithubIssueData,
+  StarMapsError,
+  StarMapsIssueError,
+  StarMapsIssueErrorsGrouped
+} from '../types';
 import { groupBy } from 'lodash';
-import { StarMapsError, StarMapsIssueError, StarMapsIssueErrorsGrouped } from '../types';
 
 export class ErrorManager {
   errors: StarMapsError[];
@@ -31,14 +36,33 @@ export class ErrorManager {
     return processedErrors;
   }
 
-  addError(error: StarMapsError) {
-    this.errors.push(error);
+  addError({
+    issue,
+    errorTitle,
+    errorMessage,
+    userGuideSection
+  }: {
+    issue: GithubIssueData;
+    errorTitle: string;
+    errorMessage: string;
+    userGuideSection: string;
+  }): void {
+    const { html_url, title } = issue;
+    this.errors.push({
+      issueUrl: html_url,
+      issueTitle: title,
+      userGuideUrl: `https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md${userGuideSection}`,
+      title: errorTitle,
+      message: errorMessage
+    });
   }
+
   flushErrors() {
     const errors = this.processStarMapsErrors();
     this.clearErrors();
     return errors;
   }
+
   clearErrors() {
     this.errors = [];
   }

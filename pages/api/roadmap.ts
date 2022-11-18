@@ -116,16 +116,18 @@ export default async function handler(
     try {
       if (childrenFromBodyHtml != null) {
         children = await resolveChildrenWithDepth(childrenFromBodyHtml)
+        if (children.length === 0) {
+          throw new Error('No children found, is this a root issue?');
+        }
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
       if (rootIssue != null) {
         errorManager.addError({
-          issueUrl: rootIssue.html_url,
-          issueTitle: rootIssue.title,
-          message: err as string,
-          title: 'Error resolving children',
-          userGuideUrl: 'https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#children'
+          issue: rootIssue,
+          userGuideSection: '#children',
+          errorTitle: 'Error resolving children',
+          errorMessage: err.message,
         });
       }
     }
