@@ -6,8 +6,8 @@ import {
   TabPanels,
   Tabs
 } from '@chakra-ui/react';
-import React from 'react';
-import { setViewMode } from '../../hooks/useViewMode';
+import React, { useEffect } from 'react';
+import { setViewMode, useViewMode } from '../../hooks/useViewMode';
 import { ViewMode } from '../../lib/enums';
 import { IssueData } from '../../lib/types';
 import Header from './header';
@@ -15,6 +15,7 @@ import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 
 export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
+  const viewMode = useViewMode();
   // Defining what tabs to show and in what order
   const tabs = ['Overview', 'Detailed View'] as const;
 
@@ -23,9 +24,18 @@ export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
     'Overview': ViewMode.Simple,
     'Detailed View': ViewMode.Detail,
   };
+  const tabViewMapInverse: Record<ViewMode, number> = {
+    [ViewMode.Simple]: 0,
+    [ViewMode.Detail]: 1,
+  };
+  const [tabIndex, setTabIndex] = React.useState(tabViewMapInverse[viewMode]);
+
+  useEffect(() => {
+      setViewMode(tabViewMap[tabs[tabIndex]]);
+  }, [viewMode, tabIndex])
 
   const handleTabChange = (index: number) => {
-    setViewMode(tabViewMap[tabs[index]]);
+    setTabIndex(index)
   }
 
   const renderTab = (title: string, index: number) => (
@@ -50,7 +60,7 @@ export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
     <>
       <Box className={styles.timelineBox}>
         <Header issueData={issueData} />
-        <Tabs variant='unstyled' onChange={handleTabChange} isLazy>
+        <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndex} isLazy>
           <TabList>
             {tabs.map(renderTab)}
           </TabList>
