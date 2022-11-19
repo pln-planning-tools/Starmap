@@ -5,14 +5,8 @@ import NextLink from 'next/link'
 import themes from '../theme/constants';
 import GitHubSvgIcon from '../icons/GitHubLogo.svg';
 import { IssueData } from '../../lib/types';
-import { setViewMode, useViewMode } from '../../hooks/useViewMode';
-import { ViewMode } from '../../lib/enums';
 
 export default function Header({ issueData }: { issueData: IssueData }) {
-  const viewMode = useViewMode();
-
-  const changeToView = viewMode === ViewMode.Detail ? ViewMode.Simple : ViewMode.Detail;
-
   if (issueData.html_url == null || typeof issueData.html_url !== 'string') {
     console.log('error with issueData', issueData)
     return null;
@@ -20,16 +14,6 @@ export default function Header({ issueData }: { issueData: IssueData }) {
 
   return (
     <>
-      <Text mb='8px' fontSize={14}>
-        <Link
-          color='blue.500'
-          onClick={() => {
-            setViewMode(changeToView);
-          }}
-        >
-          Switch to {changeToView} view
-        </Link>
-      </Text>
       <Flex direction={'row'}>
         <Text as='span' mb='8px' fontSize={40} fontWeight={600} pr="5rem">
           {issueData.title}
