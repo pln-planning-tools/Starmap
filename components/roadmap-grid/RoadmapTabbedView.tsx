@@ -28,11 +28,11 @@ export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
     [ViewMode.Simple]: 0,
     [ViewMode.Detail]: 1,
   };
-  const [tabIndex, setTabIndex] = React.useState(tabViewMapInverse[viewMode]);
+
+  const tabIndex = tabViewMapInverse[viewMode]
 
   const handleTabChange = (index: number) => {
-    setViewMode(tabViewMap[tabs[tabIndex]]);
-    setTabIndex(index)
+    setViewMode(tabViewMap[tabs[index]]);
   }
 
   const renderTab = (title: string, index: number) => (
@@ -57,7 +57,7 @@ export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
     <>
       <Box className={styles.timelineBox}>
         <Header issueData={issueData} />
-        <Tabs variant='unstyled' onChange={handleTabChange} index={tabViewMapInverse[viewMode]} isLazy>
+        <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndex} isLazy>
           <TabList>
             {tabs.map(renderTab)}
           </TabList>
