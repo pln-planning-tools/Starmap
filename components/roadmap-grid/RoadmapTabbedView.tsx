@@ -6,7 +6,6 @@ import {
   TabPanels,
   Tabs
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
 import { setViewMode, useViewMode } from '../../hooks/useViewMode';
 import { ViewMode } from '../../lib/enums';
 import { IssueData } from '../../lib/types';
