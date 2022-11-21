@@ -89,7 +89,7 @@ export function RoadmapDetailed({
   return (
     <>
       <NumSlider msg="how many header ticks" value={numHeaderTicks} min={5} max={60} setValue={setNumHeaderTicks}/>
-      <NumSlider msg="how many grid columns" value={numGridCols} min={20} max={60} setValue={setNumGridCols}/>
+      <NumSlider msg="how many grid columns" value={numGridCols} min={20} max={60} step={numHeaderTicks} setValue={setNumGridCols}/>
 
       <Box className={styles.timelineBox}>
         <Grid ticksLength={numGridCols}>
