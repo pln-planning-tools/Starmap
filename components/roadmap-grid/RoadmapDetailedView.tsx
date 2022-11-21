@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { group } from 'd3';
+import { group, scaleTime } from 'd3';
 import _ from 'lodash';
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
@@ -14,12 +14,17 @@ import { GridRow } from './grid-row';
 import { GroupItem } from './group-item';
 import { GroupWrapper } from './group-wrapper';
 import { Headerline } from './headerline';
+import { useState } from 'react';
+import NumSlider from '../inputs/NumSlider';
+import { setGlobalTimeScale, useGlobalTimeScale } from '../../hooks/useGlobalTimeScale';
+import { dayjs } from '../../lib/client/dayjs';
 
 export function RoadmapDetailed({
   issueData
 }: {
   issueData: IssueData;
 }) {
+
   const viewMode = useViewMode();
   const newIssueData = issueData.children.map((v) => ({
     ...v,
@@ -71,20 +76,31 @@ export function RoadmapDetailed({
     return a.getTime() - b.getTime();
   });
 
-  const ticks = getTicks(datesWithOffset, 19);
-  const ticksHeader = getTicks(datesWithOffset, 4);
+  const [numHeaderTicks, setNumHeaderTicks] = useState(5);
+  const [numGridCols, setNumGridCols] = useState((numHeaderTicks * 5));
+  const datesWithOffsetDayjs = datesWithOffset.map((v) => dayjs(v));
+  const totalTimelineTicks = (numHeaderTicks * 5)
+  const globalScale = scaleTime().domain([dayjs.min(datesWithOffsetDayjs), dayjs.max(datesWithOffsetDayjs)]).range([0, numGridCols]);
+  setGlobalTimeScale(globalScale);
+
+  // const ticks = getTicks(datesWithOffset, totalTimelineTicks - 1);
+  const ticksHeader = getTicks(datesWithOffset, numHeaderTicks - 1);
 
   return (
     <>
+      <NumSlider msg="how many header ticks" value={numHeaderTicks} min={5} max={60} setValue={setNumHeaderTicks}/>
+      <NumSlider msg="how many grid columns" value={numGridCols} min={20} max={60} setValue={setNumGridCols}/>
+
       <Box className={styles.timelineBox}>
-        <Grid ticksLength={ticks.length}>
+        <Grid ticksLength={numGridCols}>
           {ticksHeader.map((tick, index) => (
+
             <GridHeader key={index} ticks={tick} index={index} />
           ))}
 
           <Headerline />
         </Grid>
-        <Grid ticksLength={ticks.length} scroll={true}>
+        <Grid ticksLength={numGridCols} scroll={true}>
           {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {
             return (
               <GroupWrapper key={index} >

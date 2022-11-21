@@ -8,6 +8,8 @@ import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { API_URL } from '../../config/constants';
 import { IssueData, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, ServerSidePropsResult } from '../../lib/types';
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
+import NumSlider from '../../components/inputs/NumSlider';
+import { useState } from 'react';
 
 export async function getServerSideProps(context): Promise<ServerSidePropsResult> {
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
