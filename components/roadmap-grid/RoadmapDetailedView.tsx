@@ -107,7 +107,7 @@ export function RoadmapDetailed({
                 <GroupItem group={group} />
                 {!!group.items &&
                   _.sortBy(group.items, ['title']).map((item, index) => {
-                    return <GridRow key={index} milestone={item} index={index} timelineTicks={ticksHeader} />;
+                    return <GridRow key={index} milestone={item} index={index} timelineTicks={ticksHeader} numGridCols={numGridCols} />;
                   })}
               </GroupWrapper>
             );

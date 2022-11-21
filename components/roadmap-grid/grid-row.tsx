@@ -13,17 +13,19 @@ export function GridRow({
   milestone,
   index,
   timelineTicks,
+  numGridCols,
 }: {
   milestone: IssueData;
   index: number;
   timelineTicks: Date[];
+  numGridCols: number;
 }) {
   const closestDateIdx = getClosest({
     currentDate: dayjs.utc(milestone.due_date).endOf('quarter').toDate(),
     dates: timelineTicks,
     totalTimelineTicks: timelineTicks.length,
   });
-  const span = 4;
+  const span = numGridCols / timelineTicks.length;
   const closest = span * (closestDateIdx - 1);
 
   const childLink = getInternalLinkForIssue(milestone);
@@ -41,12 +43,18 @@ export function GridRow({
       return null;
     }
   }
+  const gridColumnEnd = closest === span ? closest : closest - 1
+
+  if (span > gridColumnEnd) {
+    console.error('Span size is greater than gridColumnEnd', milestone)
+  }
+
   const rowItem = (
     <div
       key={index}
       style={{
         gridColumnStart: `span ${span}`,
-        gridColumnEnd: `${closest === span ? closest : closest - 1}`,
+        gridColumnEnd: `${gridColumnEnd}`,
         background: `linear-gradient(90deg, rgba(125, 224, 135, 0.6) ${parseInt(
           milestone.completion_rate.toString(2),
         )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(2))}%)`,

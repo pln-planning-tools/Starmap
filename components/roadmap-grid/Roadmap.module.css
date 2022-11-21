@@ -3,6 +3,7 @@
   grid-gap: 0.5rem;
   grid-template-columns: repeat(10, minmax(10px, 1fr));
   margin-top: 15px;
+  overflow-x: hidden;
 }
 
 .scrollable {
