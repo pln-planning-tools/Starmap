@@ -7,6 +7,7 @@ import {
   Tabs
 } from '@chakra-ui/react';
 import { setViewMode, useViewMode } from '../../hooks/useViewMode';
+import { DEFAULT_INITIAL_VIEW_MODE } from '../../lib/defaults';
 import { ViewMode } from '../../lib/enums';
 import { IssueData } from '../../lib/types';
 import Header from './header';
@@ -14,7 +15,7 @@ import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 
 export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
-  const viewMode = useViewMode() || ViewMode.Simple;
+  const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
   // Defining what tabs to show and in what order
   const tabs = ['Overview', 'Detailed View'] as const;
 

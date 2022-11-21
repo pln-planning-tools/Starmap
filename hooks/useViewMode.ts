@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import useSharedHook from '../lib/client/createSharedHook';
+import { DEFAULT_INITIAL_VIEW_MODE } from '../lib/defaults';
 import { ViewMode } from '../lib/enums';
 
 const LOCAL_STORAGE_CACHE_KEY = 'useViewModeCache'
-const DEFAULT_INITIAL_VIEW_MODE = ViewMode.Simple;
 
 const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?: S) => {
   const [state, setState] = useState(initialState);
