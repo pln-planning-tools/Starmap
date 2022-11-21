@@ -1,6 +1,7 @@
 
 .todayMarkerWrapper {
   position: absolute;
+  height: 50em;
 }
 
 .todayMarker {
@@ -9,7 +10,8 @@
   border: 1px #4a6792;
   border-style: dashed;
   z-index: 3;
-  position: fixed;
+  position: relative;
+  width: 1px;
 }
 
 .todayMarker::before {
