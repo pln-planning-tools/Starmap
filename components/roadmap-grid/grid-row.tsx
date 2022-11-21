@@ -2,11 +2,11 @@ import NextLink from 'next/link';
 import { Flex, Spacer, Text } from '@chakra-ui/react';
 
 import { dayjs } from '../../lib/client/dayjs';
-import { getClosest } from '../../lib/client/getClosest';
 import { IssueData } from '../../lib/types';
 import { getInternalLinkForIssue } from '../../lib/general';
 import styles from './Roadmap.module.css';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
+import { TimeScaler } from '../../lib/client/TimeScaler';
 
 export function GridRow({
   milestone,
@@ -14,18 +14,16 @@ export function GridRow({
   timelineTicks,
   numGridCols,
   numHeaderItems,
+  timeScaler
 }: {
   milestone: IssueData;
   index: number;
   timelineTicks: Date[];
   numGridCols: number;
   numHeaderItems: number;
+  timeScaler: TimeScaler;
 }) {
-  const closestDateIdx = getClosest({
-    currentDate: dayjs.utc(milestone.due_date).toDate(),
-    dates: timelineTicks,
-    totalTimelineTicks: numGridCols,
-  });
+  const closestDateIdx = Math.round(timeScaler.getColumn(dayjs.utc(milestone.due_date).toDate()));
   const span = Math.max(4, numGridCols / timelineTicks.length);
   const closest = span * (closestDateIdx - 1);
 
@@ -60,7 +58,7 @@ export function GridRow({
       key={index}
       style={{
         gridColumnStart: `span ${numGridCols / numHeaderItems}`,
-        gridColumnEnd: `${closestDateIdx - 1}`,
+        gridColumnEnd: `${closestDateIdx}`,
         background: `linear-gradient(90deg, rgba(125, 224, 135, 0.6) ${parseInt(
           milestone.completion_rate.toString(2),
         )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(2))}%)`,

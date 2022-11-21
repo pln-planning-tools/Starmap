@@ -93,9 +93,9 @@ export function RoadmapDetailed({
   });
 
   const [numHeaderTicks, setNumHeaderTicks] = useState(5);
-  const [numGridCols, setNumGridCols] = useState((numHeaderTicks * 12));
+  const [numGridCols, setNumGridCols] = useState(45);
 
-  globalTimeScaler.setScale(dates, numGridCols);
+  globalTimeScaler.setScale(dates, numGridCols * 1.09);
 
   const ticks = getTicks(dates, numGridCols - 1);
   const ticksHeader = getTicks(dates, numHeaderTicks - 1);
@@ -109,7 +109,7 @@ export function RoadmapDetailed({
         <Grid ticksLength={numGridCols}>
           {ticksHeader.map((tick, index) => (
 
-            <GridHeader key={index} ticks={tick} index={index} numGridCols={numGridCols} />
+            <GridHeader key={index} tick={tick} index={index} numHeaderTicks={numHeaderTicks} numGridCols={numGridCols} timeScaler={globalTimeScaler}/>
           ))}
 
           <Headerline numGridCols={numGridCols} ticksRatio={3}/>
@@ -121,7 +121,7 @@ export function RoadmapDetailed({
                 <GroupItem group={group} />
                 {!!group.items &&
                   _.sortBy(group.items, ['title']).map((item, index) => {
-                    return <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks}/>;
+                    return <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks}/>;
                   })}
               </GroupWrapper>
             );

@@ -23,8 +23,8 @@
   position:absolute;
   z-index: 6;
   font-weight: 900;
-  background-color: rgba(215, 228, 253, 0.5);
-  top: -20px;
+  background-color: rgba(215, 228, 253, 0.4);
+  top: -30px;
   padding: 0.5rem;
 }
 
