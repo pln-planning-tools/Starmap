@@ -7,20 +7,15 @@ const LOCAL_STORAGE_CACHE_KEY = 'useViewModeCache'
 const DEFAULT_INITIAL_VIEW_MODE = ViewMode.Simple;
 
 const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?: S) => {
-
   const [state, setState] = useState(initialState);
-
-  const parseValueFromStorage = (persistedValue: string | null) => {
-    const actualPersistedValue = JSON.parse(persistedValue ?? '""');
-    return actualPersistedValue;
-  };
 
   /**
    * Update the saved localStorage value to equal the current localStorage State
    * value if the values are in sync.
    */
   useEffect(() => {
-    const actualPersistedValue = parseValueFromStorage(localStorage?.getItem(LOCAL_STORAGE_CACHE_KEY));
+    const persistedValue = localStorage?.getItem(LOCAL_STORAGE_CACHE_KEY);
+    const actualPersistedValue = JSON.parse(persistedValue ?? '""');
     if (!state) {
       const initialStateFromStorage = actualPersistedValue === '' ? DEFAULT_INITIAL_VIEW_MODE : actualPersistedValue;
       setState(initialStateFromStorage);
@@ -35,7 +30,8 @@ const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?
    * Update the actual viewMode value if it is different from what is in localStorage
    */
   useEffect(() => {
-    const actualPersistedValue = parseValueFromStorage(localStorage?.getItem(LOCAL_STORAGE_CACHE_KEY));
+    const persistedValue = localStorage?.getItem(LOCAL_STORAGE_CACHE_KEY);
+    const actualPersistedValue = JSON.parse(persistedValue ?? '""');
     if (actualPersistedValue !== state) {
       setState(actualPersistedValue);
     }
