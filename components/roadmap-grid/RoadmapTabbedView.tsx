@@ -6,6 +6,8 @@ import {
   TabPanels,
   Tabs
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+
 import { setViewMode, useViewMode } from '../../hooks/useViewMode';
 import { DEFAULT_INITIAL_VIEW_MODE } from '../../lib/defaults';
 import { ViewMode } from '../../lib/enums';
@@ -16,6 +18,7 @@ import { RoadmapDetailed } from './RoadmapDetailedView';
 
 export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
+  const router = useRouter();
   // Defining what tabs to show and in what order
   const tabs = ['Overview', 'Detailed View'] as const;
 
@@ -35,6 +38,9 @@ export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
 
   const handleTabChange = (index: number) => {
     setViewMode(tabViewMap[tabs[index]]);
+    router.push({
+      hash: tabViewMap[tabs[index]],
+    }, undefined, { shallow: true });
   }
 
   const renderTab = (title: string, index: number) => (
