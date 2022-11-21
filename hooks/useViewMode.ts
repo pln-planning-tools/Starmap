@@ -45,7 +45,7 @@ const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?
    */
   useEffect(() => {
     if (localStorageValue != null && state !== localStorageValue) {
-      console.log(`setting state to ${localStorageValue}`)
+      console.log(`setting state to`, { localStorageValue, state }),
       setState(localStorageValue);
     }
   }, [state, setState, localStorageValue]);
