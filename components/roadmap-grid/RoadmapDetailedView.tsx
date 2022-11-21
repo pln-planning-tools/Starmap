@@ -83,7 +83,7 @@ export function RoadmapDetailed({
   const globalScale = scaleTime().domain([dayjs.min(datesWithOffsetDayjs), dayjs.max(datesWithOffsetDayjs)]).range([0, numGridCols]);
   setGlobalTimeScale(globalScale);
 
-  // const ticks = getTicks(datesWithOffset, totalTimelineTicks - 1);
+  const ticks = getTicks(datesWithOffset, totalTimelineTicks - 1);
   const ticksHeader = getTicks(datesWithOffset, numHeaderTicks - 1);
 
   return (
@@ -107,7 +107,7 @@ export function RoadmapDetailed({
                 <GroupItem group={group} />
                 {!!group.items &&
                   _.sortBy(group.items, ['title']).map((item, index) => {
-                    return <GridRow key={index} milestone={item} index={index} timelineTicks={ticksHeader} numGridCols={numGridCols} />;
+                    return <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks}/>;
                   })}
               </GroupWrapper>
             );
