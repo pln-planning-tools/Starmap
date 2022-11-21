@@ -39,6 +39,7 @@ const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?
    */
   useEffect(() => {
     if (localStorageValue != null && state !== localStorageValue) {
+      console.log(`setting state to ${localStorageValue}`)
       setState(localStorageValue);
     }
   }, [state, setState, localStorageValue]);
@@ -48,7 +49,6 @@ const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?
    * @param {S} newState - the new value to set
    */
   const setCachedState = (newState: S) => {
-    setState(newState);
     setLocalStorageValue(newState);
   };
 
