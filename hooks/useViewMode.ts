@@ -29,7 +29,6 @@ const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?
    * value if the values are in sync.
    */
   useEffect(() => {
-
     if (localStorage != null && state === localStorageValue) {
       localStorage.setItem(LOCAL_STORAGE_CACHE_KEY, JSON.stringify(localStorageValue));
     }
@@ -39,7 +38,7 @@ const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?
    * Update the actual viewMode value if it is different from what is in localStorage
    */
   useEffect(() => {
-    if (localStorageValue != null && localStorageValue !== state) {
+    if (localStorageValue != null && state !== localStorageValue) {
       setState(localStorageValue);
     }
   }, [state, setState, localStorageValue]);
@@ -49,6 +48,7 @@ const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?
    * @param {S} newState - the new value to set
    */
   const setCachedState = (newState: S) => {
+    setState(newState);
     setLocalStorageValue(newState);
   };
 
