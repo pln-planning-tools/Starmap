@@ -50,7 +50,6 @@ const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?
    */
   const setCachedState = (newState: S) => {
     setLocalStorageValue(newState);
-    setState(newState);
   };
 
   if (typeof initialState === 'undefined') {
