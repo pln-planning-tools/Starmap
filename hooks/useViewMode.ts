@@ -13,13 +13,18 @@ const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?
    */
   const [localStorageValue, setLocalStorageValue] = useState<S | null>(null);
 
+  const getCurrentValueFromStorage = () => {
+    const cachedValue = localStorage?.getItem(LOCAL_STORAGE_CACHE_KEY);
+    const actualCachedValue = JSON.parse(cachedValue ?? '""');
+    return actualCachedValue;
+  }
+
   /**
    * Update localStorageValue to equal what is in localStorage
    */
   useEffect(() => {
-    if (localStorage != null) {
-      const cachedValue = localStorage.getItem(LOCAL_STORAGE_CACHE_KEY);
-      const actualCachedValue = cachedValue != null ? JSON.parse(cachedValue) : null;
+    const actualCachedValue = getCurrentValueFromStorage();
+    if (actualCachedValue !== '' && localStorageValue !== actualCachedValue) {
       setLocalStorageValue(actualCachedValue);
     }
   }, [setLocalStorageValue])
@@ -29,8 +34,9 @@ const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?
    * value if the values are in sync.
    */
   useEffect(() => {
-    if (localStorage != null && state === localStorageValue) {
-      localStorage.setItem(LOCAL_STORAGE_CACHE_KEY, JSON.stringify(localStorageValue));
+    const actualCachedValue = getCurrentValueFromStorage();
+    if (actualCachedValue !== state && state === localStorageValue) {
+      localStorage?.setItem(LOCAL_STORAGE_CACHE_KEY, JSON.stringify(localStorageValue));
     }
   }, [state, localStorageValue])
 
