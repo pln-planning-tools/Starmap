@@ -14,7 +14,7 @@ import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 
 export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
-  const viewMode = useViewMode();
+  const viewMode = useViewMode() || ViewMode.Simple;
   // Defining what tabs to show and in what order
   const tabs = ['Overview', 'Detailed View'] as const;
 
