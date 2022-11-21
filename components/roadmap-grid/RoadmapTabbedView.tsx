@@ -6,7 +6,6 @@ import {
   TabPanels,
   Tabs
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import { setViewMode, useViewMode } from '../../hooks/useViewMode';
 import { ViewMode } from '../../lib/enums';
 import { IssueData } from '../../lib/types';
@@ -24,17 +23,17 @@ export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
     'Overview': ViewMode.Simple,
     'Detailed View': ViewMode.Detail,
   };
-  const tabViewMapInverse: Record<ViewMode, number> = {
-    [ViewMode.Simple]: 0,
-    [ViewMode.Detail]: 1,
-  };
+
+  // Mapping the tabs to the views
+  const tabViewMapInverse: Record<ViewMode, number> = tabs.reduce((acc, tab, index) => {
+    acc[tabViewMap[tab]] = index;
+    return acc;
+  }, {} as Record<ViewMode, number>);
 
   const tabIndexFromViewMode = tabViewMapInverse[viewMode]
-  const [_tabIndex, setTabIndex] = useState(tabIndexFromViewMode);
 
   const handleTabChange = (index: number) => {
     setViewMode(tabViewMap[tabs[index]]);
-    setTabIndex(index)
   }
 
   const renderTab = (title: string, index: number) => (
