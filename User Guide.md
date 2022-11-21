@@ -59,7 +59,7 @@ eta: YYYY-MM-DD
 example: 2023-02-01
 ```
 - ETA must occur at the beginning of a new line
-- Date must be in ordered specified; we support ".", "-", and "/" as delimiters.
+- Date must be either in ISO 8601 or in the mentioned querterly format.
 - **Note:** If you are linking to an existing GitHub issue as a milestone, you must edit the issue to include both an ETA and the starmaps label. See the next section for more details on label requirements.
 
 #### Label Requirement
