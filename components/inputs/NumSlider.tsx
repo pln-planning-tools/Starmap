@@ -15,7 +15,7 @@ function NumSlider({value, min, max, setValue, msg}: NumSelectorProps) {
   return (
     <>
       <span>{message}</span>
-      <Slider axis='x' xmax={max} xmin={min} x={value} onChange={({ x }) => setValue(x)} />
+      <Slider axis='x' xmax={max} xmin={min} x={value} onChange={({ x }) => setValue(x)} />({value})
     </>
   );
 }
