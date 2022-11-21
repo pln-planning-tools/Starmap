@@ -9,7 +9,7 @@
   height: 60em;
   /* TODO: Waiting to match the rest of the figma styles */
   /* border: 2px solid #1FA5FF; */
-  border: 1px dashed #4a6792;
+  border: 1px dashed #F39106;
   z-index: 3;
   position: relative;
   width: 1px;
@@ -25,7 +25,7 @@
   position:absolute;
   /* TODO: Waiting to match the rest of the figma styles */
   /* color: #F39106; */
-  color: #1FA5FF;
+  color: #F39106;
   z-index: 6;
   font-weight: 900;
   top: -5rem;
