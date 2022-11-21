@@ -18,7 +18,7 @@ export function TodayMarker() {
         left: `${percentLeft}%`,
     }}>
       {isLineVisible ? <div className={styles.todayMarker} /> : null}
-      <Center cursor="pointer" onClick={() => setIsLineVisible(!isLineVisible)}><div className={styles.todayMarkerText}>Today</div></Center>
+      <Center cursor="pointer" onClick={() => setIsLineVisible(!isLineVisible)}><div className={styles.todayMarkerText}>TODAY</div></Center>
     </div>
   );
 }

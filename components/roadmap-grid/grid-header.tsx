@@ -29,7 +29,7 @@ export function GridHeader({ tick, index, numGridCols, timeScaler, numHeaderTick
       label = `Q${quarterNum}Q ${year}`;
     case DateGranularityState.Months:
     default:
-      label = date.format('DD MMMM YYYY');
+      label = date.format('DD MMM YYYY');
       break;
   }
 
