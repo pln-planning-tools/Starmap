@@ -8,10 +8,15 @@ import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { API_URL } from '../../config/constants';
 import { IssueData, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, ServerSidePropsResult } from '../../lib/types';
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
+import { ViewMode } from '../../lib/enums';
+import { setViewMode } from '../../hooks/useViewMode';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export async function getServerSideProps(context): Promise<ServerSidePropsResult> {
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
-  const { filter_group, mode } = context.query;
+  const { filter_group, mode, view } = context.query;
+
   const res = await fetch(
     new URL(`${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&filter_group=${filter_group}`),
   );
@@ -31,6 +36,13 @@ export async function getServerSideProps(context): Promise<ServerSidePropsResult
 
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { issueData, error, errors, isLocal, mode } = props;
+
+  const router = useRouter();
+  const urlPath = router.asPath
+  useEffect(() => {
+    const hashString = urlPath.split('#')[1] as ViewMode ?? ViewMode.Simple;
+    setViewMode(hashString);
+  }, [urlPath])
 
   return (
     <>
