@@ -1,7 +1,5 @@
 import Slider from 'react-input-slider';
 
-import { setWeekTicks, useWeekTicks } from '../../hooks/useWeekTicks';
-
 interface NumSelectorProps {
   value: number;
   min: number;
