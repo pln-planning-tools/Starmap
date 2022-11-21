@@ -1,0 +1,35 @@
+
+.todayMarkerWrapper {
+  position: absolute;
+}
+
+.todayMarker {
+  position: relative;
+  height: 100%;
+  border: 1px #4a6792;
+  border-style: dashed;
+  z-index: 3;
+  position: fixed;
+}
+
+.todayMarker::before {
+  white-space: nowrap;
+}
+
+.todayMarkerText {
+  font-size: 14px;
+  position:absolute;
+  z-index: 6;
+  font-weight: 900;
+  background-color: rgba(215, 228, 253, 0.5);
+  top: -20px;
+  padding: 0.5rem;
+}
+
+.todayMarker.todayLine {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  border-left: thin solid #4a6792;
+  height: 0;
+}

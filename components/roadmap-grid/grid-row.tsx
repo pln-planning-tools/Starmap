@@ -7,7 +7,6 @@ import { IssueData } from '../../lib/types';
 import { getInternalLinkForIssue } from '../../lib/general';
 import styles from './Roadmap.module.css';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
-import getDateAsQuarter from '../../lib/client/getDateAsQuarter';
 
 export function GridRow({
   milestone,
@@ -48,7 +47,12 @@ export function GridRow({
   const gridColumnEnd = closest === span ? closest : closest - 1
 
   if (span > gridColumnEnd) {
+    // TODO: Handle this error
     console.error('Span size is greater than gridColumnEnd', milestone)
+  }
+  if (closestDateIdx > numGridCols) {
+    // TODO: Handle this error
+    console.error('closestDateIdx is greater than numGridCols', milestone)
   }
 
   const rowItem = (

@@ -49,6 +49,7 @@
   padding-right: 10px;
   margin-bottom: 4px;
   border-radius: 8px;
+  z-index: 5;
   /* min-height: 6rem; */
 }
 
@@ -144,38 +145,6 @@ a.milestoneTitle {
   background: revert !important;
   border-top: 1px solid;
   gap: 0px;
-}
-
-.todayMarker {
-  top: 23%;
-  position: absolute;
-  left: 60%;
-  height: 100%;
-  border: 1px rgba(0, 50, 255, 1);
-  border-style: dashed;
-  z-index: 3;
-  position: fixed;
-}
-
-.todayMarker::before {
-  white-space: nowrap;
-}
-
-.todayMarkerWrapper {
-  position: absolute;
-  left: 59%;
-}
-
-.todayMarkerText {
-  font-size: 14px;
-}
-
-.todayMarker.todayLine {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  border-left: thin solid #4a6792;
-  height: 0;
 }
 
 @media screen and (max-width: 600px) {
