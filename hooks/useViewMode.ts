@@ -19,7 +19,7 @@ const customStateFunction: typeof useState = <S = typeof ViewMode>(initialState?
   useEffect(() => {
     if (localStorage != null) {
       const cachedValue = localStorage.getItem(LOCAL_STORAGE_CACHE_KEY);
-      const actualCachedValue = cachedValue != null ? JSON.parse(cachedValue) : null;
+      const actualCachedValue: S | null = cachedValue ? JSON.parse(cachedValue) : null;
       setLocalStorageValue(actualCachedValue);
     }
   }, [setLocalStorageValue])
