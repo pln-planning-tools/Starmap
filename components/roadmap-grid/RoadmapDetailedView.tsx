@@ -93,7 +93,7 @@ export function RoadmapDetailed({
   });
 
   const [numHeaderTicks, setNumHeaderTicks] = useState(5);
-  const [numGridCols, setNumGridCols] = useState((numHeaderTicks * 5));
+  const [numGridCols, setNumGridCols] = useState((numHeaderTicks * 12));
 
   globalTimeScaler.setScale(dates, numGridCols);
 
@@ -112,7 +112,7 @@ export function RoadmapDetailed({
             <GridHeader key={index} ticks={tick} index={index} numGridCols={numGridCols} />
           ))}
 
-          <Headerline numGridCols={numGridCols}/>
+          <Headerline numGridCols={numGridCols} ticksRatio={3}/>
         </Grid>
         <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={true} >
           {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {

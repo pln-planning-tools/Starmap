@@ -60,7 +60,7 @@ export function GridRow({
       key={index}
       style={{
         gridColumnStart: `span ${numGridCols / numHeaderItems}`,
-        gridColumnEnd: `${closestDateIdx}`,
+        gridColumnEnd: `${closestDateIdx - 1}`,
         background: `linear-gradient(90deg, rgba(125, 224, 135, 0.6) ${parseInt(
           milestone.completion_rate.toString(2),
         )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(2))}%)`,
