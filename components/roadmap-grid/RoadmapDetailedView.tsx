@@ -95,10 +95,10 @@ export function RoadmapDetailed({
         <Grid ticksLength={numGridCols}>
           {ticksHeader.map((tick, index) => (
 
-            <GridHeader key={index} ticks={tick} index={index} />
+            <GridHeader key={index} ticks={tick} index={index} numGridCols={numGridCols} />
           ))}
 
-          <Headerline />
+          <Headerline numGridCols={numGridCols}/>
         </Grid>
         <Grid ticksLength={numGridCols} scroll={true}>
           {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {

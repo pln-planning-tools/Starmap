@@ -10,7 +10,7 @@ import styles from './Roadmap.module.css';
  * @param param0
  * @returns
  */
-export function GridHeader({ ticks, index }) {
+export function GridHeader({ ticks, index, numGridCols }) {
   const dateGranularity = useDateGranularity();
   const date = dayjs(ticks).utc();
 
@@ -30,7 +30,9 @@ export function GridHeader({ ticks, index }) {
   return (
 
     <ErrorBoundary>
-      <div key={index} className={`${styles.item} ${styles.itemHeader}`}>
+      <div key={index} className={`${styles.item} ${styles.itemHeader}`} style={{
+        gridColumnEnd: `span ${numGridCols / 5}`,
+      }}>
         <span>{label}</span>
       </div>
     </ErrorBoundary>
