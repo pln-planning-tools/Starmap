@@ -1,8 +1,10 @@
 .grid {
   display: grid;
   grid-gap: 0.5rem;
+  grid-column-gap: 0;
   grid-template-columns: repeat(10, minmax(10px, 1fr));
   margin-top: 15px;
+  overflow-x: hidden;
 }
 
 .scrollable {
@@ -39,7 +41,9 @@
   text-align: center;
   font-size: 16px;
   font-weight: 600;
-  grid-column-end: span 4;
+  position: relative;
+  /** must align with .timelineTick left positioning. This is done in order to handle the centering of the text and grid ticks*/
+  left: -1rem;
 }
 
 .nested > .item:not(.group) {
@@ -49,6 +53,7 @@
   padding-right: 10px;
   margin-bottom: 4px;
   border-radius: 8px;
+  z-index: 5;
   /* min-height: 6rem; */
 }
 
@@ -132,10 +137,10 @@ a.milestoneTitle {
 
 .timelineTick {
   background: #d5d5d5;
-  width: 2px;
-  height: 20px;
   justify-self: center;
-  grid-column-end: span 4;
+  position:relative;
+  /** must align with .itemHeader left positioning. This is done in order to handle the centering of the text and grid ticks*/
+  left: -1rem;
 }
 
 .timelineHeaderLine {
@@ -145,38 +150,6 @@ a.milestoneTitle {
   background: revert !important;
   border-top: 1px solid;
   gap: 0px;
-}
-
-.todayMarker {
-  top: 23%;
-  position: absolute;
-  left: 60%;
-  height: 100%;
-  border: 1px rgba(0, 50, 255, 1);
-  border-style: dashed;
-  z-index: 3;
-  position: fixed;
-}
-
-.todayMarker::before {
-  white-space: nowrap;
-}
-
-.todayMarkerWrapper {
-  position: absolute;
-  left: 59%;
-}
-
-.todayMarkerText {
-  font-size: 14px;
-}
-
-.todayMarker.todayLine {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  border-left: thin solid #4a6792;
-  height: 0;
 }
 
 @media screen and (max-width: 600px) {
