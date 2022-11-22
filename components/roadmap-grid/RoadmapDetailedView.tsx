@@ -3,7 +3,7 @@ import { group } from 'd3';
 import _ from 'lodash';
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
-import { formatDateArrayDayJs, getInternalLinkForIssue } from '../../lib/general';
+import { getInternalLinkForIssue } from '../../lib/general';
 import { DetailedViewGroup, IssueData } from '../../lib/types';
 
 import { useViewMode } from '../../hooks/useViewMode';
@@ -25,6 +25,9 @@ export function RoadmapDetailed({
 }: {
   issueData: IssueData;
 }) {
+  /**
+   * Don't commit setting this to true.. just a simple toggle so we can debug things.
+   */
   const [isDevMode, setIsDevMode] = useState(false);
   const viewMode = useViewMode();
   const newIssueData = issueData.children.map((v) => ({
@@ -71,12 +74,29 @@ export function RoadmapDetailed({
   }
 
   const today = dayjs();
-  let dates = formatDateArrayDayJs(issuesGrouped.map((v) => v.items.map((v) => v.due_date)).flat())
-    .concat([today.toDate()]).filter((v) => dayjs(v).isValid())
-  let minDate = dayjs.min([...dates.map(dayjs), today.subtract(1, 'month')])
-  let maxDate = dayjs.max([...dates.map(dayjs), today.add(1, 'month')])
+  /**
+   * Collect all due dates from all issues, as DayJS dates.
+   */
+  const dayjsDates = issuesGrouped
+    .flatMap((group) => group.items.map((item) => dayjs(item.due_date).utc()))
+    .filter((d) => d.isValid());
+
+  /**
+   * Add today
+   */
+  dayjsDates.push(today);
+
+  /**
+   * TODO: We need to modify today.subtract and today.add based on the current DateGranularityState
+   */
+  let minDate = dayjs.min([...dayjsDates, today.subtract(1, 'month')])
+  let maxDate = dayjs.max([...dayjsDates, today.add(1, 'month')])
   let incrementMax = false
 
+  /**
+   * This is a hack to make sure that the first and last ticks are always visible.
+   * TODO: Perform in constant time based on current DateGranularity
+   */
   while (maxDate.diff(minDate, 'months') < (3 * DEFAULT_TICK_COUNT)) {
     if (incrementMax) {
       maxDate = maxDate.add(1, 'quarter');
@@ -85,18 +105,42 @@ export function RoadmapDetailed({
     }
     incrementMax = !incrementMax;
   }
-  dates.push(minDate.toDate())
-  dates.push(maxDate.toDate())
 
-  dates = dates.sort((a, b) => {
-    return a.getTime() - b.getTime();
-  });
+  /**
+   * Add minDate and maxDate so that the grid is not cut off.
+   */
+  dayjsDates.push(minDate)
+  dayjsDates.push(maxDate)
 
+  /**
+   * Ensure that the dates are
+   *  * converted back to JS Date objects.
+   *  * sorted - d3 timescale requires it to function properly
+   */
+  const dates = dayjsDates
+    .map((date) => date.toDate())
+    .sort((a, b) => {
+      return a.getTime() - b.getTime();
+    });
+
+  /**
+   * Magic numbers that just seem to work are:
+   *  * 5 for number of header ticks
+   *    * we actually want 5 visible ticks.
+   *
+   *  * 45 for number of grid columns
+   *    * It usually works best if grid columns is easily divisble by the number of header ticks)
+   *
+   *  * 1.09 for a multiple of the number of grid columns
+   *    * otherwise the timeScale we get back doesn't map to gridColumns well.
+   */
   const [numHeaderTicks, setNumHeaderTicks] = useState(5);
   const [numGridCols, setNumGridCols] = useState(45);
-
   globalTimeScaler.setScale(dates, numGridCols * 1.09);
 
+  /**
+   * Current getTicks function returns 1 less than the number of ticks we want.
+   */
   const ticks = getTicks(dates, numGridCols - 1);
   const ticksHeader = getTicks(dates, numHeaderTicks - 1);
 
