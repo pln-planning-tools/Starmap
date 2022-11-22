@@ -13,6 +13,7 @@ import { setViewMode } from '../../hooks/useViewMode';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
+
 export async function getServerSideProps(context): Promise<ServerSidePropsResult> {
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
   const { filter_group, mode, view } = context.query;
