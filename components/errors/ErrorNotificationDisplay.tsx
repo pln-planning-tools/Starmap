@@ -10,7 +10,7 @@ export interface ErrorNotificationDisplayProps {
   errors: StarMapsIssueErrorsGrouped[]
 }
 export function ErrorNotificationDisplay ({errors}: ErrorNotificationDisplayProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   if (errors == null || errors.length === 0) {
     return null;
   }
