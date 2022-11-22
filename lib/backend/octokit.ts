@@ -39,38 +39,26 @@ function getValidAuthToken(): string {
 
 function getOctokit() {
   const currentAuthToken = getValidAuthToken();
+  const getRateLimitHandler = (msg) => (retryAfter, options, octokit, retryCount) => {
+    octokit.log.warn(`${msg} ${options.method} ${options.url}`);
+
+    if (retryAfter / 60 > maxRetryAfterMinutes) {
+      authTokens.set(currentAuthToken, false);
+      throw new Error(`RetryAfter is over ${maxRetryAfterMinutes} minutes. Aborting.`);
+    }
+    if (retryCount < 2) {
+      // retry 2 times
+      octokit.log.warn(`Retrying after ${retryAfter} seconds!`);
+      return true;
+    } else {
+      throw new Error('Request quota exceeded after two retries.')
+    }
+  }
   return new RetryableOctokit({
     auth: currentAuthToken,
     throttle: {
-      onRateLimit: (retryAfter, options, octokit, retryCount) => {
-        octokit.log.warn(`Request quota exhausted for request ${options.method} ${options.url}`);
-
-        if (retryAfter / 60 > maxRetryAfterMinutes) {
-          authTokens.set(currentAuthToken, false);
-          throw new Error(`RetryAfter is over ${maxRetryAfterMinutes} minutes. Aborting.`);
-        }
-        if (retryCount < 2) {
-          // retry 2 times
-          octokit.log.warn(`Retrying after ${retryAfter} seconds!`);
-          return true;
-        } else {
-          throw new Error('Request quota exceeded after two retries.')
-        }
-      },
-      onSecondaryRateLimit: (retryAfter, options, octokit, retryCount) => {
-        octokit.log.warn(`SecondaryRateLimit detected for request ${options.method} ${options.url}`);
-
-        if (retryAfter / 60 > maxRetryAfterMinutes) {
-          throw new Error(`RetryAfter is over ${maxRetryAfterMinutes} minutes. Aborting.`);
-        }
-        if (retryCount < 2) {
-          // retry 2 times
-          octokit.log.warn(`Retrying after ${retryAfter} seconds!`);
-          return true;
-        } else {
-          throw new Error('Request quota exceeded after two retries.')
-        }
-      },
+      onRateLimit: getRateLimitHandler('Request quota exhausted for request'),
+      onSecondaryRateLimit: getRateLimitHandler('SecondaryRateLimit detected for request'),
     },
   });
 }
