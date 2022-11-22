@@ -26,7 +26,7 @@ export async function resolveChildren (children: ParserGetChildrenResponse[]): P
       }
     }
 
-    return Promise.all(validChildren);
+    return await Promise.all(validChildren);
   } catch (reason) {
     throw new Error(`Error resolving children: ${reason}`);
   }
