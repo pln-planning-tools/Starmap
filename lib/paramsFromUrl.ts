@@ -12,8 +12,8 @@ export function paramsFromUrl (urlString: string): UrlMatchSlugs {
     if (matchResult !== false && matchResult.params != null) {
       return { ...matchResult.params };
     }
-    throw new Error('Could not parse URL');
+    throw new Error(`Could not parse URL: ${urlString}`);
   } catch {
-    throw new Error('Unsupported URL');
+    throw new Error(`Unsupported URL: ${urlString}`);
   }
 };
