@@ -1,13 +1,26 @@
 import { IssueStates } from '../enums';
 
-export function calculateCompletionRate ({ children, state }): number {
-  if (state === IssueStates.CLOSED) return 100;
-  if (!Array.isArray(children)) return 0;
-  const issueStats = Object.create({});
-  issueStats.total = children.length;
-  issueStats.open = children.filter(({state}) => state === IssueStates.OPEN).length;
-  issueStats.closed = children.filter(({state}) => state === IssueStates.CLOSED).length;
-  issueStats.completionRate = Number(Number(issueStats.closed / issueStats.total) * 100 || 0).toFixed(2);
+export interface CalculateCompletionRateOptions {
+  state: IssueStates;
+  children: { state: IssueStates }[];
+}
 
-  return issueStats.completionRate;
+export function calculateCompletionRate ({ children, state }: CalculateCompletionRateOptions): number {
+  children = Array.isArray(children) ? children : [];
+  /**
+   * The total count is all children plus the parent.
+   */
+  const total = children.length + 1;
+  let open = 0;
+  let closed = 0;
+  children.concat([{ state }]).forEach(({state}) => {
+     if (state === IssueStates.OPEN) {
+      open++;
+     } else if (state === IssueStates.CLOSED) {
+      closed++;
+     }
+  });
+  const completionRate = Number((closed / total) * 100 || 0).toFixed(2);
+
+  return Number(completionRate);
 };
