@@ -1,6 +1,6 @@
 import { checkForLabel } from '../../lib/backend/checkForLabel';
 import { errorManager } from '../../lib/backend/errorManager';
-import { getChildren, getDueDate } from '../../lib/parser';
+import { getChildren } from '../../lib/parser';
 import { getIssue } from '../../lib/backend/issue';
 import {
   GithubIssueDataWithGroupAndChildren,
@@ -9,46 +9,10 @@ import {
   RoadmapApiResponseFailure,
   RoadmapApiResponseSuccess
   } from '../../lib/types';
-import { IssueStates } from '../../lib/enums';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { resolveChildrenWithDepth } from '../../lib/backend/resolveChildrenWithDepth';
+import { addToChildren } from '../../lib/backend/addToChildren';
 
-function calculateCompletionRate ({ children, state }): number {
-  if (state === IssueStates.CLOSED) return 100;
-  if (!Array.isArray(children)) return 0;
-  const issueStats = Object.create({});
-  issueStats.total = children.length;
-  issueStats.open = children.filter(({state}) => state === IssueStates.OPEN).length;
-  issueStats.closed = children.filter(({state}) => state === IssueStates.CLOSED).length;
-  issueStats.completionRate = Number(Number(issueStats.closed / issueStats.total) * 100 || 0).toFixed(2);
-
-  return issueStats.completionRate;
-};
-
-function addToChildren(
-  data: GithubIssueDataWithGroupAndChildren[],
-  parent: IssueData | GithubIssueDataWithGroupAndChildren
-): IssueData[] {
-  if (Array.isArray(data)) {
-    return data.map((item: GithubIssueDataWithGroupAndChildren): IssueData => ({
-      labels: item.labels ?? [],
-      completion_rate: calculateCompletionRate(item),
-      due_date: getDueDate(item).eta,
-      html_url: item.html_url,
-      group: item.group,
-      title: item.title,
-      state: item.state,
-      node_id: item.node_id,
-      body: item.body,
-      body_html: item.body_html,
-      body_text: item.body_text,
-      parent: parent as IssueData,
-      children: addToChildren(item.children, item),
-    }));
-  }
-
-  return [];
-};
 
 export default async function handler(
   req: NextApiRequest,
