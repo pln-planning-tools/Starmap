@@ -10,7 +10,7 @@ import { dayjs } from './dayjs';
  * @returns
  */
 const getQuantilesNew = (ticks: Date[], totalTicks: number): Date[] => {
-  const newTicks = ticks.map(dayjs.utc);
+  const newTicks = ticks.map((v) => dayjs.utc(v));
   const tickIncrement = Number(1 / totalTicks);
   const scaleDate = scaleTime()
     .domain([dayjs.min(newTicks).toDate(), dayjs.max(newTicks).toDate()])
