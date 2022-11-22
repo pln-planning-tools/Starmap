@@ -22,12 +22,13 @@ export function GridHeader({ tick, index, numGridCols, timeScaler, numHeaderTick
 
   let label = '';
   switch (dateGranularity) {
-    case DateGranularityState.Weeks:
     case DateGranularityState.Quarters:
       const quarterNum = date.quarter();
       const year = date.format('YYYY');
-      label = `Q${quarterNum}Q ${year}`;
+      label = `Q${quarterNum} ${year}`;
+      break;
     case DateGranularityState.Months:
+    case DateGranularityState.Weeks:
     default:
       label = date.format('DD MMM YYYY');
       break;

@@ -1,4 +1,4 @@
-import type { RoadmapMode, IssueStates } from './enums'
+import type { RoadmapMode, IssueStates, DateGranularityState } from './enums'
 
 export interface GithubIssueData {
   body_html: string;
@@ -100,6 +100,7 @@ export interface ServerSidePropsResult {
     groupBy: string | null,
     error?: { code: string, message: string } | null;
     mode: RoadmapMode;
+    dateGranularity: DateGranularityState;
   }
 }
 
@@ -118,3 +119,9 @@ export interface UrlMatchSlugs {
   repo: string;
   issue_number: string;
 };
+
+export interface QueryParameters {
+  filter_group: string;
+  mode: RoadmapMode;
+  timeUnit: DateGranularityState;
+}
