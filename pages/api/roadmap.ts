@@ -3,77 +3,15 @@ import { errorManager } from '../../lib/backend/errorManager';
 import { getChildren, getDueDate } from '../../lib/parser';
 import { getIssue } from '../../lib/backend/issue';
 import {
-  GithubIssueDataWithGroup,
   GithubIssueDataWithGroupAndChildren,
   IssueData,
-  ParserGetChildrenResponse,
   RoadmapApiResponse,
   RoadmapApiResponseFailure,
   RoadmapApiResponseSuccess
   } from '../../lib/types';
 import { IssueStates } from '../../lib/enums';
-import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import type { NextApiRequest, NextApiResponse } from 'next';
-
-async function convertParsedChildToGroupedIssueData(child: ParserGetChildrenResponse): Promise<GithubIssueDataWithGroup> {
-  const urlParams = paramsFromUrl(child.html_url);
-  const issueData = await getIssue(urlParams);
-  checkForLabel(issueData);
-
-  return {
-    ...issueData,
-    labels: issueData?.labels ?? [],
-    group: child.group
-  };
-}
-async function resolveChildren (children: ParserGetChildrenResponse[]): Promise<GithubIssueDataWithGroup[]> {
-  if (!Array.isArray(children)) {
-    throw new Error('Children is not an array. Is this a root issue?');
-  }
-
-  try {
-    const validChildren: GithubIssueDataWithGroup[] = []
-
-    for await (const child of children) {
-      try {
-        validChildren.push(await convertParsedChildToGroupedIssueData(child))
-      } catch (err) {
-        errorManager.addError({
-          issue: {
-            html_url: child.html_url,
-            title: child.html_url,
-          },
-          errorTitle: 'Error parsing issue',
-          errorMessage: (err as Error).message,
-          userGuideSection: '#children'
-        })
-      }
-    }
-
-    return validChildren;
-  } catch (reason) {
-    throw new Error(`Error resolving children: ${reason}`);
-  }
-};
-
-async function resolveChildrenWithDepth(children: ParserGetChildrenResponse[]): Promise<GithubIssueDataWithGroupAndChildren[]> {
-  try {
-    const issues = await resolveChildren(children);
-    return await Promise.all(issues.map(async (issueData): Promise<GithubIssueDataWithGroupAndChildren> => {
-      const childrenParsed = getChildren(issueData.body_html);
-      const childrenResolved = await resolveChildren(childrenParsed);
-
-      return {
-        ...issueData,
-        labels: issueData.labels ?? [],
-        children: await resolveChildrenWithDepth(childrenResolved),
-      }
-    }));
-  } catch (err) {
-    console.error('error:', err);
-    return [];
-  }
-};
+import { resolveChildrenWithDepth } from '../../lib/backend/resolveChildrenWithDepth';
 
 function calculateCompletionRate ({ children, state }): number {
   if (state === IssueStates.CLOSED) return 100;
@@ -171,6 +109,7 @@ export default async function handler(
     res.status(200).json({
       errors: errorManager.flushErrors(),
       data,
+      pendingChildren: children.flatMap((child) => child.pendingChildren),
     } as RoadmapApiResponseSuccess);
   } catch (err) {
     const message = (err as Error)?.message ?? err;
