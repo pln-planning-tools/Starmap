@@ -17,22 +17,38 @@ import { useEffect } from 'react';
 export async function getServerSideProps(context): Promise<ServerSidePropsResult> {
   const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
   const { filter_group, mode, view } = context.query;
-
-  const res = await fetch(
-    new URL(`${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&filter_group=${filter_group}`),
-  );
-  const response: RoadmapApiResponse = await res.json();
-
-  return {
-    props: {
-      errors: response.errors ?? [],
-      error: (response as RoadmapApiResponseFailure).error || null,
-      issueData: ((response as RoadmapApiResponseSuccess).data as IssueData) || null,
-      isLocal: process.env.IS_LOCAL === 'true',
-      groupBy: filter_group || null,
-      mode: mode || 'grid',
-    },
+  const serverSideProps: ServerSidePropsResult['props'] = {
+    errors: [],
+    error: null,
+    issueData: null,
+    isLocal: process.env.IS_LOCAL === 'true',
+    groupBy: filter_group || null,
+    mode: mode || 'grid',
   };
+
+  try {
+    const res = await fetch(
+      new URL(`${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&filter_group=${filter_group}`),
+    );
+    const response: RoadmapApiResponse = await res.json();
+    return {
+      props: {
+        ...serverSideProps,
+        errors: response.errors ?? [],
+        error: (response as RoadmapApiResponseFailure).error || null,
+        issueData: ((response as RoadmapApiResponseSuccess).data as IssueData) || null,
+      },
+    };
+  } catch (err) {
+    console.error(`err: `, err);
+    return {
+      props: {
+        ...serverSideProps,
+        error: err as { code: string; message: string }
+      }
+    }
+  }
+
 }
 
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
