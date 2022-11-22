@@ -161,13 +161,12 @@ export function RoadmapDetailed({
         <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={true} >
           {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {
             return (
-              <GroupWrapper key={index} >
-                <GroupItem group={group} />
+              <><GroupItem group={group} /><GroupWrapper key={index}>
                 {!!group.items &&
                   _.sortBy(group.items, ['title']).map((item, index) => {
-                    return <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks}/>;
+                    return <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} />;
                   })}
-              </GroupWrapper>
+              </GroupWrapper></>
             );
           })}
         </Grid>
