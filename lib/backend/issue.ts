@@ -1,10 +1,10 @@
 import { IssueStates } from '../enums';
 import { GithubIssueData } from '../types';
-import { octokit } from './octokit';
+import { getOctokit } from './octokit';
 
 export async function getIssue ({ owner, repo, issue_number }): Promise<GithubIssueData> {
   try {
-    const { data } = await octokit.rest.issues.get({
+    const { data } = await getOctokit().rest.issues.get({
       mediaType: {
         format: 'full',
       },

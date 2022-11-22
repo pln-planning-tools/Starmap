@@ -2,28 +2,29 @@ import NextLink from 'next/link';
 import { Flex, Spacer, Text } from '@chakra-ui/react';
 
 import { dayjs } from '../../lib/client/dayjs';
-import { getClosest } from '../../lib/client/getClosest';
 import { IssueData } from '../../lib/types';
 import { getInternalLinkForIssue } from '../../lib/general';
 import styles from './Roadmap.module.css';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
-import getDateAsQuarter from '../../lib/client/getDateAsQuarter';
+import { TimeScaler } from '../../lib/client/TimeScaler';
 
 export function GridRow({
   milestone,
   index,
   timelineTicks,
+  numGridCols,
+  numHeaderItems,
+  timeScaler
 }: {
   milestone: IssueData;
   index: number;
   timelineTicks: Date[];
+  numGridCols: number;
+  numHeaderItems: number;
+  timeScaler: TimeScaler;
 }) {
-  const closestDateIdx = getClosest({
-    currentDate: dayjs.utc(milestone.due_date).endOf('quarter').toDate(),
-    dates: timelineTicks,
-    totalTimelineTicks: timelineTicks.length,
-  });
-  const span = 4;
+  const closestDateIdx = Math.round(timeScaler.getColumn(dayjs.utc(milestone.due_date).toDate()));
+  const span = Math.max(4, numGridCols / timelineTicks.length);
   const closest = span * (closestDateIdx - 1);
 
   const childLink = getInternalLinkForIssue(milestone);
@@ -41,12 +42,23 @@ export function GridRow({
       return null;
     }
   }
+  const gridColumnEnd = closest === span ? closest : closest - 1
+
+  if (span > gridColumnEnd) {
+    // TODO: Handle this error
+    console.error('Span size is greater than gridColumnEnd', milestone)
+  }
+  if (closestDateIdx > numGridCols) {
+    // TODO: Handle this error
+    console.error('closestDateIdx is greater than numGridCols', milestone)
+  }
+
   const rowItem = (
     <div
       key={index}
       style={{
-        gridColumnStart: `span ${span}`,
-        gridColumnEnd: `${closest === span ? closest : closest - 1}`,
+        gridColumnStart: `span ${numGridCols / numHeaderItems}`,
+        gridColumnEnd: `${closestDateIdx}`,
         background: `linear-gradient(90deg, rgba(125, 224, 135, 0.6) ${parseInt(
           milestone.completion_rate.toString(2),
         )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(2))}%)`,
