@@ -32,4 +32,12 @@ describe('paramsFromUrl', function() {
       issue_number: '1',
     });
   });
+
+  it('Should not throw an error for a url with hashString', () => {
+    expect(paramsFromUrl('https://github.com/ipfs/kubo/issues/6523#issuecomment-547254760')).toEqual({
+      owner: 'ipfs',
+      repo: 'kubo',
+      issue_number: '6523',
+    });
+  })
 })
