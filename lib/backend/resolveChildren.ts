@@ -10,7 +10,7 @@ export async function resolveChildren (children: ParserGetChildrenResponse[]): P
   try {
     const validChildren: Promise<GithubIssueDataWithGroup>[] = []
 
-    for await (const child of children) {
+    for (const child of children) {
       try {
         validChildren.push(convertParsedChildToGroupedIssueData(child))
       } catch (err) {
