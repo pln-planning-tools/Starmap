@@ -73,8 +73,8 @@ export function RoadmapDetailed({
   const today = dayjs();
   let dates = formatDateArrayDayJs(issuesGrouped.map((v) => v.items.map((v) => v.due_date)).flat())
     .concat([today.toDate()]).filter((v) => dayjs(v).isValid())
-  let minDate = dayjs.min([...dates.map(v => dayjs(v)), today.subtract(1, 'month')])
-  let maxDate = dayjs.max([...dates.map(v => dayjs(v)), today.add(1, 'month')])
+  let minDate = dayjs.min([...dates.map(dayjs), today.subtract(1, 'month')])
+  let maxDate = dayjs.max([...dates.map(dayjs), today.add(1, 'month')])
   let incrementMax = false
 
   while (maxDate.diff(minDate, 'months') < (3 * DEFAULT_TICK_COUNT)) {
