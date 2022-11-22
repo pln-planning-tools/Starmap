@@ -55,7 +55,6 @@ export async function getServerSideProps(context): Promise<ServerSidePropsResult
   }
 }
 
-let done = false;
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { issueData, error, errors, isLocal, mode, dateGranularity, pendingChildren } = props;
 
