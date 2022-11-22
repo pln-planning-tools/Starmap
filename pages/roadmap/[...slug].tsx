@@ -26,6 +26,7 @@ export async function getServerSideProps(context): Promise<ServerSidePropsResult
     groupBy: filter_group || null,
     mode: mode || 'grid',
     dateGranularity: timeUnit || DateGranularityState.Months,
+    pendingChildren: [],
   };
 
   try {
@@ -33,12 +34,14 @@ export async function getServerSideProps(context): Promise<ServerSidePropsResult
       new URL(`${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&filter_group=${filter_group}`),
     );
     const response: RoadmapApiResponse = await res.json();
+
     return {
       props: {
         ...serverSideProps,
         errors: response.errors ?? [],
         error: (response as RoadmapApiResponseFailure).error || null,
         issueData: ((response as RoadmapApiResponseSuccess).data as IssueData) || null,
+        pendingChildren: (response as RoadmapApiResponseSuccess)?.pendingChildren ?? [],
       },
     };
   } catch (err) {
@@ -53,7 +56,7 @@ export async function getServerSideProps(context): Promise<ServerSidePropsResult
 }
 
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { issueData, error, errors, isLocal, mode, dateGranularity } = props;
+  const { issueData, error, errors, isLocal, mode, dateGranularity, pendingChildren } = props;
 
   useEffect(() => {
     setDateGranularity(dateGranularity);
