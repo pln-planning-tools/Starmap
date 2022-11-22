@@ -1,7 +1,38 @@
-import { quantile } from 'd3';
+import { quantile, scaleTime } from 'd3';
 
 import { dayjs } from './dayjs';
 
+/**
+ * Given an array of dates and totalNumber of ticks to display, return an array of dates
+ *
+ * @param ticks
+ * @param totalTicks
+ * @returns
+ */
+const getQuantilesNew = (ticks: Date[], totalTicks: number): Date[] => {
+  const newTicks = ticks.map((v) => dayjs.utc(v));
+  const tickIncrement = Number(1 / totalTicks);
+  const scaleDate = scaleTime()
+    .domain([dayjs.min(newTicks).toDate(), dayjs.max(newTicks).toDate()])
+    .range([1, totalTicks]);
+
+  const results: Date[] = [];
+  for (let i = 1; i <= totalTicks; i++) {
+    const quantileValue = scaleDate.invert(i);
+    if (quantileValue) {
+      results.push(dayjs.utc(quantileValue).toDate());
+    }
+  }
+  return results;
+}
+
+/**
+ * Given an array of dates and totalNumber of ticks to display, return an array of dates
+ *
+ * @param ticks
+ * @param totalTicks
+ * @returns
+ */
 const getQuantiles = (ticks: Date[], totalTicks: number): Date[] => {
   const newTicks = ticks.map((v) => dayjs.utc(v).toDate());
   const tickIncrement = Number(1 / totalTicks);
@@ -20,4 +51,4 @@ const getQuantiles = (ticks: Date[], totalTicks: number): Date[] => {
     .map((x) => dayjs.utc(x).toDate());
 };
 
-export { getQuantiles };
+export { getQuantiles, getQuantilesNew };
