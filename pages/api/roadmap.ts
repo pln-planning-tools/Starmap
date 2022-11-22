@@ -1,107 +1,18 @@
 import { checkForLabel } from '../../lib/backend/checkForLabel';
 import { errorManager } from '../../lib/backend/errorManager';
-import { getChildren, getDueDate } from '../../lib/parser';
+import { getChildren } from '../../lib/parser';
 import { getIssue } from '../../lib/backend/issue';
 import {
-  GithubIssueDataWithGroup,
   GithubIssueDataWithGroupAndChildren,
   IssueData,
-  ParserGetChildrenResponse,
   RoadmapApiResponse,
   RoadmapApiResponseFailure,
   RoadmapApiResponseSuccess
   } from '../../lib/types';
-import { IssueStates } from '../../lib/enums';
-import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { resolveChildrenWithDepth } from '../../lib/backend/resolveChildrenWithDepth';
+import { addToChildren } from '../../lib/backend/addToChildren';
 
-async function resolveChildren (children: ParserGetChildrenResponse[]): Promise<GithubIssueDataWithGroup[]> {
-  if (!Array.isArray(children)) {
-    throw new Error('Children is not an array. Is this a root issue?');
-  }
-
-  return Promise.all(children.map(async (child): Promise<GithubIssueDataWithGroup> => {
-    try {
-      const urlParams = paramsFromUrl(child.html_url);
-      const issueData = await getIssue(urlParams);
-      checkForLabel(issueData);
-      return {
-        ...issueData,
-        labels: issueData?.labels ?? [],
-        group: child.group
-      };
-    } catch (err) {
-      errorManager.addError({
-        issue: {
-          html_url: child.html_url,
-          title: child.html_url,
-        },
-        errorTitle: 'Error parsing issue',
-        errorMessage: (err as Error).message,
-        userGuideSection: '#children'
-      })
-      throw new Error(`Error parsing issue: ${err}`);
-    }
-  })).catch((reason) => {
-    throw new Error(`Error resolving children: ${reason}`);
-  });
-};
-
-async function resolveChildrenWithDepth(children: ParserGetChildrenResponse[]): Promise<GithubIssueDataWithGroupAndChildren[]> {
-  try {
-    const issues = await resolveChildren(children);
-    return await Promise.all(issues.map(async (issueData): Promise<GithubIssueDataWithGroupAndChildren> => {
-      const childrenParsed = getChildren(issueData.body_html);
-      const childrenResolved = await resolveChildren(childrenParsed);
-
-      return {
-        ...issueData,
-        labels: issueData.labels ?? [],
-        children: await resolveChildrenWithDepth(childrenResolved),
-      }
-    }));
-  } catch (err) {
-    console.error('error:', err);
-    return [];
-  }
-};
-
-function calculateCompletionRate ({ children, state }): number {
-  if (state === IssueStates.CLOSED) return 100;
-  if (!Array.isArray(children)) return 0;
-  const issueStats = Object.create({});
-  issueStats.total = children.length;
-  issueStats.open = children.filter(({state}) => state === IssueStates.OPEN).length;
-  issueStats.closed = children.filter(({state}) => state === IssueStates.CLOSED).length;
-  issueStats.completionRate = Number(Number(issueStats.closed / issueStats.total) * 100 || 0).toFixed(2);
-
-  return issueStats.completionRate;
-};
-
-function addToChildren(
-  data: GithubIssueDataWithGroupAndChildren[],
-  parent: IssueData | GithubIssueDataWithGroupAndChildren
-): IssueData[] {
-  if (Array.isArray(data)) {
-    return data.map((item: GithubIssueDataWithGroupAndChildren): IssueData => ({
-      labels: item.labels ?? [],
-      completion_rate: calculateCompletionRate(item),
-      due_date: getDueDate(item).eta,
-      html_url: item.html_url,
-      group: item.group,
-      title: item.title,
-      state: item.state,
-      node_id: item.node_id,
-      body: item.body,
-      body_html: item.body_html,
-      body_text: item.body_text,
-      parent: parent as IssueData,
-      children: addToChildren(item.children, item),
-    }));
-  }
-
-  return [];
-};
 
 export default async function handler(
   req: NextApiRequest,
@@ -162,6 +73,7 @@ export default async function handler(
     res.status(200).json({
       errors: errorManager.flushErrors(),
       data,
+      pendingChildren: children.flatMap((child) => child.pendingChildren),
     } as RoadmapApiResponseSuccess);
   } catch (err) {
     const message = (err as Error)?.message ?? err;
