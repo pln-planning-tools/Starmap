@@ -13,9 +13,6 @@ function getTest(currentDateString, startingDateString, endingDateString, totalT
   })
 }
 
-function testDateSpread(year, month, startingDate, endingDate) {
-
-}
 describe('getClosest', function() {
   describe('10 day spread', function() {
     describe('10 total timeline ticks', function() {
@@ -67,7 +64,6 @@ describe('getClosest', function() {
       getTest('2021-03-01', '2021-01-01', '2021-10-01', 20, 4);
       getTest('2021-04-01', '2021-01-01', '2021-10-01', 20, 7);
       getTest('2021-05-01', '2021-01-01', '2021-10-01', 20, 9);
-      // TODO: WHERE IS 5!?!
       getTest('2021-06-01', '2021-01-01', '2021-10-01', 20, 11);
       getTest('2021-07-01', '2021-01-01', '2021-10-01', 20, 13);
       getTest('2021-08-01', '2021-01-01', '2021-10-01', 20, 16);
@@ -93,20 +89,6 @@ describe('getClosest', function() {
       getTest(startDate.add(9, 'quarter').format('YYYY-MM-DD'), '2021-01-01', endDateString, 10, 9);
       getTest(startDate.add(10, 'quarter').format('YYYY-MM-DD'), '2021-01-01', endDateString, 10, 10);
     });
-
-    // describe('20 total timeline ticks', function() {
-    //   getTest('2021-01-01', '2021-01-01', endDateString, 20, 0);
-    //   getTest('2021-02-01', '2021-01-01', endDateString, 20, 2);
-    //   getTest('2021-03-01', '2021-01-01', endDateString, 20, 4);
-    //   getTest('2021-04-01', '2021-01-01', endDateString, 20, 7);
-    //   getTest('2021-05-01', '2021-01-01', endDateString, 20, 9);
-    //   // TODO: WHERE IS 5!?!
-    //   getTest('2021-06-01', '2021-01-01', endDateString, 20, 11);
-    //   getTest('2021-07-01', '2021-01-01', endDateString, 20, 13);
-    //   getTest('2021-08-01', '2021-01-01', endDateString, 20, 16);
-    //   getTest('2021-09-01', '2021-01-01', endDateString, 20, 18);
-    //   getTest('2021-10-01', '2021-01-01', endDateString, 20, 20);
-    // });
   });
 
 })
