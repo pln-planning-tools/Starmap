@@ -3,28 +3,27 @@ import { throttling } from '@octokit/plugin-throttling';
 import { Octokit } from '@octokit/rest';
 import {knuthShuffle} from 'knuth-shuffle';
 
-const auth1 = process.env.PLN_ADMIN_GITHUB_TOKEN;
-const auth2 = process.env.PLN_ADMIN_GITHUB_TOKEN2;
-const auth3 = process.env.PLN_ADMIN_GITHUB_TOKEN3;
-if (!auth1 && !auth2 && !auth3) {
+
+const authTokens = new Map<string, boolean>();
+const potentialTokens = [
+  process.env.PLN_ADMIN_GITHUB_TOKEN,
+  process.env.PLN_ADMIN_GITHUB_TOKEN2,
+  process.env.PLN_ADMIN_GITHUB_TOKEN3,
+];
+
+if (potentialTokens.filter((t: string | undefined) => t != null).length === 0) {
   console.error('You need to set `PLN_ADMIN_GITHUB_TOKEN`, `PLN_ADMIN_GITHUB_TOKEN1`, and/or `PLN_ADMIN_GITHUB_TOKEN3`')
   throw new Error('PLN_ADMIN_GITHUB_TOKEN environmental variable not set. It is required.');
 }
+potentialTokens.forEach((token: string | undefined) => {
+  if (token != null) {
+    authTokens.set(token, true);
+  }
+})
 
 const maxRetryAfterMinutes = 1;
 const RetryableOctokit = Octokit.plugin(retry, throttling);
 
-const authTokens = new Map<string, boolean>();
-
-if (auth1 != null) {
-  authTokens.set(auth1, true);
-}
-if (auth2 != null) {
-  authTokens.set(auth2, true);
-}
-if (auth3 != null) {
-  authTokens.set(auth3, true);
-}
 
 function getValidAuthToken(): string {
   const validAuthTokens: string[] = []
