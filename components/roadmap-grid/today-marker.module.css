@@ -1,0 +1,44 @@
+
+.todayMarkerWrapper {
+  position: absolute;
+  height: 50em;
+}
+
+.todayMarker {
+  position: relative;
+  height: 60em;
+  /* TODO: Waiting to match the rest of the figma styles */
+  /* border: 2px solid #1FA5FF; */
+  border: 1px dashed #F39106;
+  z-index: 3;
+  position: relative;
+  width: 1px;
+  top: -3rem;
+}
+
+.todayMarker::before {
+  white-space: nowrap;
+}
+
+.todayMarkerText {
+  font-size: 14px;
+  position:absolute;
+  /* TODO: Waiting to match the rest of the figma styles */
+  /* color: #F39106; */
+  color: #F39106;
+  z-index: 6;
+  font-weight: 900;
+  top: -5rem;
+  padding: 0.5rem;
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 19px;
+}
+
+.todayMarker.todayLine {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  border-left: thin solid #4a6792;
+  height: 0;
+}
