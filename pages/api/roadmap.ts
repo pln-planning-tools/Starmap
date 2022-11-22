@@ -15,36 +15,45 @@ import { IssueStates } from '../../lib/enums';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+async function convertParsedChildToGroupedIssueData(child: ParserGetChildrenResponse): Promise<GithubIssueDataWithGroup> {
+  const urlParams = paramsFromUrl(child.html_url);
+  const issueData = await getIssue(urlParams);
+  checkForLabel(issueData);
+
+  return {
+    ...issueData,
+    labels: issueData?.labels ?? [],
+    group: child.group
+  };
+}
 async function resolveChildren (children: ParserGetChildrenResponse[]): Promise<GithubIssueDataWithGroup[]> {
   if (!Array.isArray(children)) {
     throw new Error('Children is not an array. Is this a root issue?');
   }
 
-  return Promise.all(children.map(async (child): Promise<GithubIssueDataWithGroup> => {
-    try {
-      const urlParams = paramsFromUrl(child.html_url);
-      const issueData = await getIssue(urlParams);
-      checkForLabel(issueData);
-      return {
-        ...issueData,
-        labels: issueData?.labels ?? [],
-        group: child.group
-      };
-    } catch (err) {
-      errorManager.addError({
-        issue: {
-          html_url: child.html_url,
-          title: child.html_url,
-        },
-        errorTitle: 'Error parsing issue',
-        errorMessage: (err as Error).message,
-        userGuideSection: '#children'
-      })
-      throw new Error(`Error parsing issue: ${err}`);
+  try {
+    const validChildren: GithubIssueDataWithGroup[] = []
+
+    for await (const child of children) {
+      try {
+        validChildren.push(await convertParsedChildToGroupedIssueData(child))
+      } catch (err) {
+        errorManager.addError({
+          issue: {
+            html_url: child.html_url,
+            title: child.html_url,
+          },
+          errorTitle: 'Error parsing issue',
+          errorMessage: (err as Error).message,
+          userGuideSection: '#children'
+        })
+      }
     }
-  })).catch((reason) => {
+
+    return validChildren;
+  } catch (reason) {
     throw new Error(`Error resolving children: ${reason}`);
-  });
+  }
 };
 
 async function resolveChildrenWithDepth(children: ParserGetChildrenResponse[]): Promise<GithubIssueDataWithGroupAndChildren[]> {
