@@ -36,7 +36,6 @@ export async function getServerSideProps(context): Promise<ServerSidePropsResult
       new URL(`${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&filter_group=${filter_group}`),
     );
     const response: RoadmapApiResponse = await res.json();
-    // console.log(`(response as RoadmapApiResponseSuccess)?.pendingChildren: `, (response as RoadmapApiResponseSuccess)?.pendingChildren);
     return {
       props: {
         ...serverSideProps,
@@ -88,10 +87,6 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
   //   }
   }, false);
-  // console.log(`asyncError: `, asyncError);
-  // console.log(`value: `, value);
-  // console.log(`status: `, status);
-  // console.log(`execute: `, execute);
 
   useEffect(() => {
     switch(status) {

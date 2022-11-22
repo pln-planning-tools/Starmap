@@ -8,11 +8,11 @@ export async function resolveChildren (children: ParserGetChildrenResponse[]): P
   }
 
   try {
-    const validChildren: GithubIssueDataWithGroup[] = []
+    const validChildren: Promise<GithubIssueDataWithGroup>[] = []
 
-    for await (const child of children) {
+    for (const child of children) {
       try {
-        validChildren.push(await convertParsedChildToGroupedIssueData(child))
+        validChildren.push(convertParsedChildToGroupedIssueData(child))
       } catch (err) {
         errorManager.addError({
           issue: {
@@ -26,7 +26,7 @@ export async function resolveChildren (children: ParserGetChildrenResponse[]): P
       }
     }
 
-    return validChildren;
+    return await Promise.all(validChildren);
   } catch (reason) {
     throw new Error(`Error resolving children: ${reason}`);
   }

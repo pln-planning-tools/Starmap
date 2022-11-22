@@ -5,7 +5,7 @@ import { resolveChildren } from './resolveChildren';
 export async function resolveChildrenWithDepth(children: ParserGetChildrenResponse[]): Promise<GithubIssueDataWithGroupAndChildren[]> {
   try {
     const issues = await resolveChildren(children);
-    return await Promise.all(issues.map((issue) => getGithubIssueDataWithGroupAndChildren(issue)));
+    return await Promise.all(issues.map((issue) => getGithubIssueDataWithGroupAndChildren(issue, false)));
   } catch (err) {
     console.error('error:', err);
     return [];
