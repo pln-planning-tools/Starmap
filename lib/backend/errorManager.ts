@@ -42,7 +42,7 @@ export class ErrorManager {
     errorMessage,
     userGuideSection
   }: {
-    issue: GithubIssueData;
+    issue: Pick<GithubIssueData, 'html_url' | 'title'>;
     errorTitle: string;
     errorMessage: string;
     userGuideSection: string;

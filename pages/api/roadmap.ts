@@ -21,15 +21,30 @@ async function resolveChildren (children: ParserGetChildrenResponse[]): Promise<
   }
 
   return Promise.all(children.map(async (child): Promise<GithubIssueDataWithGroup> => {
-    const urlParams = paramsFromUrl(child.html_url);
-    const issueData = await getIssue(urlParams);
-    checkForLabel(issueData);
-    return {
-      ...issueData,
-      labels: issueData?.labels ?? [],
-      group: child.group
-    };
-  }));
+    try {
+      const urlParams = paramsFromUrl(child.html_url);
+      const issueData = await getIssue(urlParams);
+      checkForLabel(issueData);
+      return {
+        ...issueData,
+        labels: issueData?.labels ?? [],
+        group: child.group
+      };
+    } catch (err) {
+      errorManager.addError({
+        issue: {
+          html_url: child.html_url,
+          title: child.html_url,
+        },
+        errorTitle: 'Error parsing issue',
+        errorMessage: (err as Error).message,
+        userGuideSection: '#children'
+      })
+      throw new Error(`Error parsing issue: ${err}`);
+    }
+  })).catch((reason) => {
+    throw new Error(`Error resolving children: ${reason}`);
+  });
 };
 
 async function resolveChildrenWithDepth(children: ParserGetChildrenResponse[]): Promise<GithubIssueDataWithGroupAndChildren[]> {
