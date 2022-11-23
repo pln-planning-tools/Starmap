@@ -11,7 +11,7 @@ import styles from './Roadmap.module.css';
 import { Grid } from './grid';
 import { GridHeader } from './grid-header';
 import { GridRow } from './grid-row';
-import { GroupItem } from './group-item';
+import { GroupHeader } from './group-header';
 import { GroupWrapper } from './group-wrapper';
 import { Headerline } from './headerline';
 import { useEffect, useState } from 'react';
@@ -161,7 +161,7 @@ export function RoadmapDetailed({
         <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={true} >
           {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {
             return (
-              <><GroupItem group={group} /><GroupWrapper key={index}>
+              <><GroupHeader group={group} /><GroupWrapper key={index}>
                 {!!group.items &&
                   _.sortBy(group.items, ['title']).map((item, index) => {
                     return <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} />;
