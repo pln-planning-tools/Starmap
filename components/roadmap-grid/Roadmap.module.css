@@ -51,8 +51,8 @@
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
-  margin-bottom: 4px;
   border-radius: 8px;
+  margin: 2px 2px;
   z-index: 5;
   /* min-height: 6rem; */
 }
@@ -73,17 +73,17 @@
 }
 
 .groupWrapper:not(.timelineHeaderLineWrapper) {
-  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .groupWrapper:nth-child(odd):not(.timelineHeaderLineWrapper) {
   background: rgba(215, 228, 253, 0.5);
-  padding-bottom: 0.5rem;
+  padding: 1.25rem 0;
 }
 
 .groupWrapper:nth-child(even):not(.timelineHeaderLineWrapper) {
   background: rgba(215, 228, 253, 0.5);
-  padding-bottom: 0.5rem;
+  padding: 1.25rem 0;
 }
 
 .simpleView {
