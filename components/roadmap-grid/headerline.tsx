@@ -20,11 +20,20 @@ export function Headerline({ numGridCols, ticksRatio = 1 }: HeaderlineProps) {
     }
 
     return (
-      <div key={i} className={styles.timelineTick} style={{
-        gridColumnEnd: `span ${gridColumnEnd}`,
-        height: isTaller ? '20px' : '10px',
-        width: isTaller ? '2px' : '1px',
-      }}></div>
+      <>
+        <div key={i} className={styles.timelineTick} style={{
+          gridColumnEnd: `span ${gridColumnEnd}`,
+          height: isTaller ? '20px' : '10px',
+          width: isTaller ? '2px' : '1px',
+        }}>
+          {isTaller ? <div key={i} style={{
+            gridColumnEnd: `span ${gridColumnEnd}`,
+            height: '70vh',
+            border: '1px dashed #A2D0DE',
+            width: '1px'
+          }}></div> : null}
+        </div>
+      </>
     )
   });
 

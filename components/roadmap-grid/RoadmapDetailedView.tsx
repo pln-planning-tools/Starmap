@@ -152,7 +152,6 @@ export function RoadmapDetailed({
       <Box className={styles.timelineBox}>
         <Grid ticksLength={numGridCols}>
           {ticksHeader.map((tick, index) => (
-
             <GridHeader key={index} tick={tick} index={index} numHeaderTicks={numHeaderTicks} numGridCols={numGridCols} timeScaler={globalTimeScaler}/>
           ))}
 

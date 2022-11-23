@@ -24,7 +24,7 @@ export function GroupHeader({ group }: GroupHeaderProps) {
   }
 
   return (
-    <div className={`${styles.item} ${styles.group}`}>
+    <div className={`${styles.item} ${styles.group} ${styles.groupWrapperHeader}`}>
       <div>{groupNameElement}</div>
     </div>
   );

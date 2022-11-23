@@ -4,11 +4,12 @@
   grid-column-gap: 0;
   grid-template-columns: repeat(10, minmax(10px, 1fr));
   margin-top: 15px;
-  overflow-x: hidden;
+  background-color: #F8FBFF;
+  border-bottom: #A2D0DE solid 1px;
 }
 
 .scrollable {
-  extend: grid;
+  background: #F1F4F8;
   height: calc(100vh - 300px);
   overflow-y: auto;
   -ms-overflow-style: none;
@@ -72,10 +73,9 @@
   grid-auto-flow: dense;
 }
 
-.groupWrapper:not(.timelineHeaderLineWrapper) {
-  margin-bottom: 20px;
+.groupWrapperHeader:nth-child(n+3) {
+  padding-top: 20px;
 }
-
 .groupWrapper:nth-child(odd):not(.timelineHeaderLineWrapper) {
   background: rgba(215, 228, 253, 0.5);
   padding: 1.25rem 0;
@@ -147,7 +147,6 @@ a.milestoneTitle {
 }
 
 .timelineHeaderLineWrapper {
-  background: revert !important;
   border-top: 1px solid;
   gap: 0px;
 }

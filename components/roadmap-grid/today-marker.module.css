@@ -6,7 +6,7 @@
 
 .todayMarker {
   position: relative;
-  height: 60em;
+  height: 80vh;
   /* TODO: Waiting to match the rest of the figma styles */
   /* border: 2px solid #1FA5FF; */
   border: 1px dashed #F39106;
