@@ -34,7 +34,14 @@ export async function getServerSideProps(context): Promise<ServerSidePropsResult
   const urlString = `${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&filter_group=${filter_group}`
   console.log(`urlString: `, urlString);
   try {
-    const res = await fetch(new URL(urlString));
+    // throw new Error('test');
+    const url = `${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
+    const res = await fetch(new URL(url));
+
+    // if (!res.ok) {
+    //   throw new Error(`Could not query '${url}', ${res.status} ${res.statusText}`)
+    // }
+    // console.log(`res.clone(): `, res.clone());
     const response: RoadmapApiResponse = await res.json();
     console.log(`(response as RoadmapApiResponseFailure).error: `, (response as RoadmapApiResponseFailure).error);
     return {

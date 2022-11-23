@@ -13,71 +13,82 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { resolveChildrenWithDepth } from '../../lib/backend/resolveChildrenWithDepth';
 import { addToChildren } from '../../lib/backend/addToChildren';
 
+process.on('uncaughtException', (err, origin) => {
+  console.log('uncaughtException', err, origin);
+})
+
+process.on('unhandledRejection', (err, origin) => {
+  console.log('unhandledRejection', err, origin);
+})
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<RoadmapApiResponse>
 ): Promise<void> {
-  console.log(`API hit: roadmap`, req.query);
-  const { platform = 'github', owner, repo, issue_number } = req.query;
-  const options = Object.create({});
-  options.depth = Number(req.query.depth);
-  // Set filter_group to a specific word to only return children under the specified word heading.
-  options.filter_group = req.query.filter_group || 'children';
-
-  if (!platform || !owner || !repo || !issue_number) {
-    res.status(400).json({
-      errors: errorManager.flushErrors(),
-      error: { code: '400', message: 'URL query is missing fields' }
-    } as RoadmapApiResponseFailure);
-    return;
-  }
-
   try {
-    console.log('getting issue');
-    const rootIssue = await getIssue({ owner, repo, issue_number });
-    checkForLabel(rootIssue);
+    console.log(`API hit: roadmap`, req.query);
+    const { owner, repo, issue_number } = req.query;
 
-    const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue.body_html)) || null;
-    let children: Awaited<ReturnType<typeof resolveChildrenWithDepth>> = [];
-    try {
-      if (childrenFromBodyHtml != null) {
-        children = await resolveChildrenWithDepth(childrenFromBodyHtml)
-        if (children.length === 0) {
-          throw new Error('No children found, is this a root issue?');
-        }
-      }
-    } catch (err: any) {
-      console.error('err', err);
-      if (rootIssue != null) {
-        errorManager.addError({
-          issue: rootIssue,
-          userGuideSection: '#children',
-          errorTitle: 'Error resolving children',
-          errorMessage: err.message,
-        });
-      }
+    if (!owner || !repo || !issue_number) {
+      res.status(400).json({
+        errors: errorManager.flushErrors(),
+        error: { code: '400', message: 'URL query is missing fields' }
+      } as RoadmapApiResponseFailure);
+      return;
     }
 
-    const toReturn: GithubIssueDataWithGroupAndChildren = {
-      ...rootIssue,
-      root_issue: true,
-      group: 'root',
-      children
-    };
+    try {
+      const rootIssue = await getIssue({ owner, repo, issue_number });
+      checkForLabel(rootIssue);
 
-    const data = {
-      ...addToChildren([toReturn], {} as IssueData)[0],
-      parent: {},
-    };
+      const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue.body_html)) || null;
+      let children: Awaited<ReturnType<typeof resolveChildrenWithDepth>> = [];
+      try {
+        if (childrenFromBodyHtml != null) {
+          children = await resolveChildrenWithDepth(childrenFromBodyHtml)
+          if (children.length === 0) {
+            throw new Error('No children found, is this a root issue?');
+          }
+        }
+      } catch (err: any) {
+        console.error(err);
+        if (rootIssue != null) {
+          errorManager.addError({
+            issue: rootIssue,
+            userGuideSection: '#children',
+            errorTitle: 'Error resolving children',
+            errorMessage: err.message,
+          });
+        }
+      }
 
-    res.status(200).json({
-      errors: errorManager.flushErrors(),
-      data,
-      pendingChildren: children.flatMap((child) => child.pendingChildren),
-    } as RoadmapApiResponseSuccess);
+      const toReturn: GithubIssueDataWithGroupAndChildren = {
+        ...rootIssue,
+        root_issue: true,
+        group: 'root',
+        children
+      };
+
+      const data = {
+        ...addToChildren([toReturn], {} as IssueData)[0],
+        parent: {},
+      };
+
+      res.status(200).json({
+        errors: errorManager.flushErrors(),
+        data,
+        pendingChildren: children.flatMap((child) => child.pendingChildren).filter((child) => child != null),
+      } as RoadmapApiResponseSuccess);
+    } catch (err) {
+      const message = (err as Error)?.message ?? err;
+      res.status(500).json({
+        data: {},
+        errors: errorManager.flushErrors(),
+        error: { code: '500', message: `An Unknown error has occurred and was not captured by the errorManager: ${message}` }
+      } as RoadmapApiResponseFailure);
+    }
   } catch (err) {
     const message = (err as Error)?.message ?? err;
-    res.status(404).json({
+    res.status(500).json({
       errors: errorManager.flushErrors(),
       error: { code: '404', message: `An Unknown error has occurred and was not captured by the errorManager: ${message}` }
     } as RoadmapApiResponseFailure);
