@@ -18,11 +18,12 @@ import Header from './header';
 import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 
-export function RoadmapTabbedView({ issueData, isLoadingChildren }: { issueData: IssueData; isLoadingChildren: boolean }) {
+export function RoadmapTabbedView({ issueData, isLoadingChildren, numChanges }: { issueData: IssueData; isLoadingChildren: boolean, numChanges: number }) {
   const isLoading = useIsLoading();
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
   const router = useRouter();
-  if (isLoading == true) {
+  console.log(`RoadmapTabbedView numChanges: `, numChanges);
+  if (isLoading === true) {
     return <Spinner />
   }
   if ((issueData.children ?? []).length === 0) {
@@ -66,7 +67,7 @@ export function RoadmapTabbedView({ issueData, isLoadingChildren }: { issueData:
 
   const renderTabPanel = (_title: string, index: number) => (
     <TabPanel key={index}>
-      <RoadmapDetailed issueData={issueData} />
+      <RoadmapDetailed issueData={issueData} numChanges={numChanges}/>
     </TabPanel>
   );
 

@@ -7,7 +7,7 @@ import PageHeader from '../../components/layout/PageHeader';
 import { RoadmapTabbedView } from '../../components/roadmap-grid/RoadmapTabbedView';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { BASE_PROTOCOL, BASE_URL } from '../../config/constants';
-import { IssueData, ParserGetChildrenResponse, QueryParameters, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, RoadmapServerSidePropsResult, StarMapsIssueErrorsGrouped } from '../../lib/types';
+import { IssueData, ParserGetChildrenResponse, PendingChildren, QueryParameters, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, RoadmapServerSidePropsResult, StarMapsIssueErrorsGrouped } from '../../lib/types';
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 import { ViewMode } from '../../lib/enums';
 import { setViewMode } from '../../hooks/useViewMode';
@@ -18,6 +18,10 @@ import { setIsLoading } from '../../hooks/useIsLoading';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import { addStarMapsErrorsToStarMapsErrorGroups } from '../../lib/addStarMapsErrorsToStarMapsErrorGroups';
 import { mergeStarMapsErrorGroups } from '../../lib/mergeStarMapsErrorGroups';
+import { addChildToParentIssue } from '../../lib/addChildToParentIssue';
+import { find } from 'lodash';
+import { findIssueDataByUrl } from '../../lib/findIssueDataByUrl';
+import { addToChildren } from '../../lib/backend/addToChildren';
 
 export async function getServerSideProps(context): Promise<RoadmapServerSidePropsResult> {
   const [hostname, owner, repo, _, issue_number] = context.query.slug;
@@ -41,10 +45,11 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   let { error: serverError, baseUrl, isLocal, mode, dateGranularity, issue_number, repo, owner } = props;
 
   const [pendingInitialApiCall, setPendingInitialApiCall] = useState(true);
-  const [pendingChildren, setPendingChildren] = useState<ParserGetChildrenResponse[]>([]);
+  const [pendingChildren, setPendingChildren] = useState<PendingChildren[]>([]);
   const [errors, setErrors] = useState<StarMapsIssueErrorsGrouped[]>([]);
   const [error, setError] = useState<{ code: string; message: string } | null>(null);
   const [issueData, setIssueData] = useState<IssueData | null>(null);
+  const [numChanges, setNumChanges] = useState(0);
 
   const {execute, status, value: roadmapApiResult, error: asyncError} = useAsync<RoadmapApiResponseSuccess, RoadmapApiResponseFailure>(async () => {
 
@@ -74,7 +79,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         if (!pendingInitialApiCall) {
           return
         }
-        setIsLoading(false);
+        // setIsLoading(false);
         setPendingInitialApiCall(false);
         const typedAsyncError = asyncError as RoadmapApiResponseFailure;
         if (typedAsyncError.error != null) {
@@ -94,7 +99,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         }
         setPendingInitialApiCall(false);
         const typedRoadmapApiResult = roadmapApiResult as RoadmapApiResponseSuccess;
-        setIsLoading(false);
+        // setIsLoading(false);
         console.log('success roadmapApiResult:', roadmapApiResult);
 
         setPendingChildren(typedRoadmapApiResult.pendingChildren)
@@ -109,10 +114,6 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   }, [status, roadmapApiResult, execute, asyncError, pendingInitialApiCall])
 
   const [isLoadingChildren, setIsLoadingChildren] = useState(false);
-  // const [issueDataState, setIssueDataState] = useState(issueData);
-  // const [errorState, setErrorState] = useState(error);
-  // const [errorsState, setErrorsState] = useState(errors);
-  const pendingChild = pendingChildren[0]
   const {
     error: pendingChildrenAsyncError,
     execute: pendingChildrenAsyncExecute,
@@ -120,17 +121,37 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
     value: pendingChildrenAsyncValue
   } = useAsync(async () => {
   //   for await (const pendingChild of pendingChildren) {
+      /**
+       * This async function shouldn't execute unless pendingChild is set.
+       */
+      const typedPendingChild = pendingChildren.shift() as PendingChildren;
 
-      console.log(`pendingChild: `, pendingChild);
-      const { issue_number, owner, repo } = paramsFromUrl(pendingChild.html_url)
-      const params = new URLSearchParams()
-      params.append('issue_number', issue_number);
-      params.append('repo', repo);
-      params.append('owner', owner);
-      const url = new URL(`${baseUrl}/api/pendingChild?${params}`)
+      console.log(`typedPendingChild: `, typedPendingChild);
+      const { issue_number, owner, repo } = paramsFromUrl(typedPendingChild.html_url)
+      const requestBody = {
+        issue_number,
+        owner,
+        repo,
+        parent: findIssueDataByUrl(issueData as IssueData, typedPendingChild.parentHtmlUrl)
+      }
+      // const params = new URLSearchParams()
+      // params.append('issue_number', issue_number);
+      // params.append('repo', repo);
+      // params.append('owner', owner);
+      const url = new URL(`${baseUrl}/api/pendingChild`)
       try {
-        const res = await fetch(url);
-        return await res.json();
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+        const childIssueData = await res.json();
+        return {
+          issueData: childIssueData,
+          parentHtmlUrl: typedPendingChild.parentHtmlUrl
+        };
         // console.log(`response: `, response);
       } catch (err) {
         console.error('error getting pending child', err);
@@ -144,12 +165,20 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   useEffect(() => {
     switch(pendingChildrenAsyncStatus) {
       case 'idle':
-        if (pendingChild != null) {
+        if (isLoadingChildren === true) {
+          return;
+        }
+        if (issueData != null && pendingChildren.length > 0) {
           setIsLoadingChildren(true);
           pendingChildrenAsyncExecute();
+          console.log(`pendingChildrenAsyncExecute: `);
         }
         break;
       case 'error':
+        if (isLoadingChildren === false) {
+          return;
+        }
+        setIsLoading(false);
         setIsLoadingChildren(false);
         console.log('pendingChildrenAsyncError', pendingChildrenAsyncError);
         break;
@@ -157,14 +186,63 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         setIsLoadingChildren(true);
         break;
       case 'success':
-        setIsLoadingChildren(false);
+        if (isLoadingChildren === false) {
+          return;
+        }
         console.log('pendingChildrenAsyncValue', pendingChildrenAsyncValue);
+        if (pendingChildrenAsyncValue != null) {
+          console.log(`pendingChildrenAsyncValue.issueData.parent.html_url: `, pendingChildrenAsyncValue.issueData.parent.html_url);
+          const issueDataParent = findIssueDataByUrl(issueData as IssueData, pendingChildrenAsyncValue.issueData.parent.html_url)
+          // const newIssueData = addToChildren([pendingChildrenAsyncValue.issueData], issueDataParent)[0];
+          const newIssueData = pendingChildrenAsyncValue.issueData;
+          console.log(`newIssueData: `, newIssueData);
+          // issueDataParent.children =
+          console.log(`issueData: `, issueData);
+          console.log(`issueDataParent: `, issueDataParent);
+          setIssueData({
+            ...issueData as IssueData,
+            children: [...(issueData as IssueData).children.map((i) => {
+              if (i.html_url === issueDataParent.html_url) {
+                return {
+                  ...issueDataParent,
+                  children: [...issueDataParent.children, newIssueData]
+                }
+              }
+              return i;
+            })]
+          })
 
+          // setIssueData(addChildToParentIssue(issueData as IssueData, pendingChildrenAsyncValue.issueData, pendingChildrenAsyncValue.parent));
+          // console.log(`issueData: `, issueData);
+          // addChildToParentIssue(issueData as IssueData, newIssueData, pendingChildrenAsyncValue.parentHtmlUrl)
+          // setIssueData(issueData);
+          // issueData?.children.push(pendingChildrenAsyncValue.issueData)
+          // console.log(`addChildToParentIssue(issueData as IssueData, pendingChildrenAsyncValue.issueData, pendingChildrenAsyncValue.parent): `, addChildToParentIssue(issueData as IssueData, pendingChildrenAsyncValue.issueData, pendingChildrenAsyncValue.parentHtmlUrl));
+        }
+        //
+        //   ...issueData as IssueData,
+        //   children: [...(issueData as IssueData).children, pendingChildrenAsyncValue],
+        // })
+        setNumChanges(numChanges + 1);
+        setIsLoadingChildren(false);
+        setIsLoading(false);
         break;
     }
-  }, [pendingChild, pendingChildrenAsyncError, pendingChildrenAsyncExecute, pendingChildrenAsyncStatus, pendingChildrenAsyncValue])
+  }, [isLoadingChildren, pendingChildren, pendingChildrenAsyncError, pendingChildrenAsyncExecute, pendingChildrenAsyncStatus, pendingChildrenAsyncValue])
 
-
+  useEffect(() => {
+    if (issueData != null) {
+      const issueDataChildrenLength = issueData.children.length
+      const allChildrenLength = issueData.children.reduce((acc, i) => {
+        return acc + i.children.reduce((acc, i2) => {
+          return acc + i2.children.reduce((acc, i3) => {
+            return acc + i2.children.length
+          }, 0)
+        }, 0)
+      }, 0)
+      console.log('issueData.all.children', issueDataChildrenLength + allChildrenLength);
+    }
+  }, [issueData])
   useEffect(() => {
     setDateGranularity(dateGranularity);
   }, [dateGranularity, setDateGranularity]);
@@ -184,7 +262,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         {!!error && <Box color='red.500'>{error.message}</Box>}
         {!!issueData && mode === 'd3' && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
         {issueData != null && mode === 'grid' && (
-          <RoadmapTabbedView issueData={issueData} isLoadingChildren={isLoadingChildren}/>
+          <RoadmapTabbedView issueData={issueData} numChanges={numChanges} isLoadingChildren={isLoadingChildren}/>
         )}
       </Box>
     </>
