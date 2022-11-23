@@ -114,7 +114,7 @@ export interface DetailedViewGroup {
   url: string;
 }
 
-export interface GroupItemProps {
+export interface GroupHeaderProps {
   group: DetailedViewGroup;
 }
 
