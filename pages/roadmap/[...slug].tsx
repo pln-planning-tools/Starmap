@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import type { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import PageHeader from '../../components/layout/PageHeader';
 import { RoadmapTabbedView } from '../../components/roadmap-grid/RoadmapTabbedView';
@@ -31,11 +31,12 @@ export async function getServerSideProps(context): Promise<ServerSidePropsResult
     pendingChildren: [],
   };
 
+  const urlString = `${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&filter_group=${filter_group}`
+  console.log(`urlString: `, urlString);
   try {
-    const res = await fetch(
-      new URL(`${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&filter_group=${filter_group}`),
-    );
+    const res = await fetch(new URL(urlString));
     const response: RoadmapApiResponse = await res.json();
+    console.log(`(response as RoadmapApiResponseFailure).error: `, (response as RoadmapApiResponseFailure).error);
     return {
       props: {
         ...serverSideProps,
@@ -45,12 +46,12 @@ export async function getServerSideProps(context): Promise<ServerSidePropsResult
         pendingChildren: (response as RoadmapApiResponseSuccess)?.pendingChildren ?? [],
       },
     };
-  } catch (err) {
-    console.error(`err: `, err);
+  } catch (err: any) {
+    console.error(`err2: `,  err.toString());
     return {
       props: {
         ...serverSideProps,
-        error: err as { code: string; message: string }
+        error: {code: '500', message: err.toString()} as { code: string; message: string }
       }
     }
   }
@@ -59,51 +60,54 @@ export async function getServerSideProps(context): Promise<ServerSidePropsResult
 let done = false;
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { issueData, error, errors, isLocal, mode, dateGranularity, pendingChildren } = props;
-  const pendingChild = pendingChildren[0]
-  const {execute, status, value, error: asyncError} = useAsync(async () => {
-  //   for await (const pendingChild of pendingChildren) {
-    if (done) {
-      return;
-    }
-      done = true
-      console.log(`pendingChild: `, pendingChild);
-      const { issue_number, owner, repo } = paramsFromUrl(pendingChild.html_url)
-      const params = new URLSearchParams()
-      params.append('issue_number', issue_number);
-      params.append('repo', repo);
-      params.append('owner', owner);
-      params.append('group', pendingChild.group);
-      const url = new URL(`${window.location.origin}/api/pendingChild?${params}`)
-      console.log(`url: `, url);
-      try {
-        const res = await fetch(url);
-        const response: RoadmapApiResponse = await res.json();
-        console.log(`response: `, response);
-      } catch (err) {
-        console.error('error getting pending child', err);
-        // break;
-        throw err
-      }
 
+  // const [issueDataState, setIssueDataState] = useState(issueData);
+  // const [errorState, setErrorState] = useState(error);
+  // const [errorsState, setErrorsState] = useState(errors);
+  // const pendingChild = pendingChildren[0]
+  // const {execute, status, value, error: asyncError} = useAsync(async () => {
+  // //   for await (const pendingChild of pendingChildren) {
+  //   if (done) {
+  //     return;
   //   }
-  }, false);
+  //     done = true
+  //     console.log(`pendingChild: `, pendingChild);
+  //     const { issue_number, owner, repo } = paramsFromUrl(pendingChild.html_url)
+  //     const params = new URLSearchParams()
+  //     params.append('issue_number', issue_number);
+  //     params.append('repo', repo);
+  //     params.append('owner', owner);
+  //     const url = new URL(`${window.location.origin}/api/pendingChild?${params}`)
+  //     console.log(`url: `, url);
+  //     try {
+  //       const res = await fetch(url);
+  //       const response: RoadmapApiResponse = await res.json();
+  //       console.log(`response: `, response);
+  //     } catch (err) {
+  //       console.error('error getting pending child', err);
+  //       // break;
+  //       throw err
+  //     }
 
-  useEffect(() => {
-    switch(status) {
-      case 'idle':
-        execute();
-        break;
-      case 'error':
-        console.log('error', asyncError);
-        break;
-      case 'pending':
-        break;
-      case 'success':
-        console.log('success', value);
+  // //   }
+  // }, false);
 
-        break;
-    }
-  }, [status, value, execute, asyncError])
+  // useEffect(() => {
+  //   switch(status) {
+  //     case 'idle':
+  //       execute();
+  //       break;
+  //     case 'error':
+  //       console.log('error', asyncError);
+  //       break;
+  //     case 'pending':
+  //       break;
+  //     case 'success':
+  //       console.log('success', value);
+
+  //       break;
+  //   }
+  // }, [status, value, execute, asyncError])
 
 
   useEffect(() => {

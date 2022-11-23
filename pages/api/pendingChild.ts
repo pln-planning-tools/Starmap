@@ -16,7 +16,7 @@ export default async function handler(
 
   const data = await convertParsedChildToGroupedIssueData({
     html_url: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
-    group: group as string,
+    group: '',
   })
   const moreData = await getGithubIssueDataWithGroupAndChildren(data, false)
 

@@ -13,7 +13,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { resolveChildrenWithDepth } from '../../lib/backend/resolveChildrenWithDepth';
 import { addToChildren } from '../../lib/backend/addToChildren';
 
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<RoadmapApiResponse>
@@ -34,6 +33,7 @@ export default async function handler(
   }
 
   try {
+    console.log('getting issue');
     const rootIssue = await getIssue({ owner, repo, issue_number });
     checkForLabel(rootIssue);
 
@@ -47,7 +47,7 @@ export default async function handler(
         }
       }
     } catch (err: any) {
-      console.error(err);
+      console.error('err', err);
       if (rootIssue != null) {
         errorManager.addError({
           issue: rootIssue,
