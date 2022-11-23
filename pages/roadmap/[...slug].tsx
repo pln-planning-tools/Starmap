@@ -6,115 +6,130 @@ import { useEffect, useState } from 'react';
 import PageHeader from '../../components/layout/PageHeader';
 import { RoadmapTabbedView } from '../../components/roadmap-grid/RoadmapTabbedView';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
-import { API_URL } from '../../config/constants';
-import { IssueData, QueryParameters, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, ServerSidePropsResult } from '../../lib/types';
+import { BASE_PROTOCOL, BASE_URL } from '../../config/constants';
+import { IssueData, QueryParameters, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, RoadmapServerSidePropsResult } from '../../lib/types';
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 import { ViewMode } from '../../lib/enums';
 import { setViewMode } from '../../hooks/useViewMode';
 import { DateGranularityState } from '../../lib/enums';
 import { setDateGranularity } from '../../hooks/useDateGranularity';
 import { useAsync } from '../../hooks/useAsync';
+import { setIsLoading } from '../../hooks/useIsLoading';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
 
-export async function getServerSideProps(context): Promise<ServerSidePropsResult> {
-  const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
+export async function getServerSideProps(context): Promise<RoadmapServerSidePropsResult> {
+  const [hostname, owner, repo, _, issue_number] = context.query.slug;
   const { filter_group, mode, timeUnit }: QueryParameters = context.query;
 
-  const serverSideProps: ServerSidePropsResult['props'] = {
-    errors: [],
-    error: null,
-    issueData: null,
-    isLocal: process.env.IS_LOCAL === 'true',
-    groupBy: filter_group || null,
-    mode: mode || 'grid',
-    dateGranularity: timeUnit || DateGranularityState.Months,
-    pendingChildren: [],
-  };
-
-  const urlString = `${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&filter_group=${filter_group}`
-  console.log(`urlString: `, urlString);
-  try {
-    // throw new Error('test');
-    const url = `${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
-    const res = await fetch(new URL(url));
-
-    // if (!res.ok) {
-    //   throw new Error(`Could not query '${url}', ${res.status} ${res.statusText}`)
-    // }
-    // console.log(`res.clone(): `, res.clone());
-    const response: RoadmapApiResponse = await res.json();
-    console.log(`(response as RoadmapApiResponseFailure).error: `, (response as RoadmapApiResponseFailure).error);
-    return {
-      props: {
-        ...serverSideProps,
-        errors: response.errors ?? [],
-        error: (response as RoadmapApiResponseFailure).error || null,
-        issueData: ((response as RoadmapApiResponseSuccess).data as IssueData) || null,
-        pendingChildren: (response as RoadmapApiResponseSuccess)?.pendingChildren ?? [],
-      },
-    };
-  } catch (err: any) {
-    console.error(`err2: `,  err.toString());
-    return {
-      props: {
-        ...serverSideProps,
-        error: {code: '500', message: err.toString()} as { code: string; message: string }
-      }
+  return {
+    props: {
+      owner,
+      repo,
+      issue_number,
+      isLocal: process.env.IS_LOCAL === 'true',
+      groupBy: filter_group || null,
+      mode: mode || 'grid',
+      dateGranularity: timeUnit || DateGranularityState.Months,
+      baseUrl: `${BASE_PROTOCOL}://${BASE_URL}`,
     }
   }
 }
 
-let done = false;
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { issueData, error, errors, isLocal, mode, dateGranularity, pendingChildren } = props;
+  let { error: serverError, baseUrl, isLocal, mode, dateGranularity, issue_number, repo, owner } = props;
+
+  const {execute, status, value: roadmapApiResult, error: asyncError} = useAsync(async () => {
+
+    const urlString = `${baseUrl}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
+    try {
+      const res = await fetch(new URL(urlString));
+
+      return await res.json();
+    } catch (err: any) {
+      return {
+        props: {
+          // ...serverSideProps,
+          error: {code: '500', message: err.toString()} as { code: string; message: string }
+        }
+      }
+    }
+  }, false);
+
+  useEffect(() => {
+    switch(status) {
+      case 'idle':
+        setIsLoading(true);
+        execute();
+        break;
+      case 'error':
+        setIsLoading(false);
+        console.log('error roadmapApiResult:', asyncError);
+        break;
+      case 'pending':
+        setIsLoading(true);
+        break;
+      case 'success':
+        setIsLoading(false);
+        console.log('success roadmapApiResult:', roadmapApiResult);
+
+        break;
+    }
+  }, [status, roadmapApiResult, execute, asyncError])
+
+  const errors = roadmapApiResult?.errors ?? [];
+  const error = (roadmapApiResult as RoadmapApiResponseFailure)?.error || null;
+  const issueData = ((roadmapApiResult as RoadmapApiResponseSuccess)?.data as IssueData) || null;
+  const pendingChildren = (roadmapApiResult as RoadmapApiResponseSuccess)?.pendingChildren ?? [];
+
 
   // const [issueDataState, setIssueDataState] = useState(issueData);
   // const [errorState, setErrorState] = useState(error);
   // const [errorsState, setErrorsState] = useState(errors);
-  // const pendingChild = pendingChildren[0]
-  // const {execute, status, value, error: asyncError} = useAsync(async () => {
-  // //   for await (const pendingChild of pendingChildren) {
-  //   if (done) {
-  //     return;
+  const pendingChild = pendingChildren[0]
+  const {
+    error: pendingChildrenAsyncError,
+    execute: pendingChildrenAsyncExecute,
+    status: pendingChildrenAsyncStatus,
+    value: pendingChildrenAsyncValue
+  } = useAsync(async () => {
+  //   for await (const pendingChild of pendingChildren) {
+
+      console.log(`pendingChild: `, pendingChild);
+      const { issue_number, owner, repo } = paramsFromUrl(pendingChild.html_url)
+      const params = new URLSearchParams()
+      params.append('issue_number', issue_number);
+      params.append('repo', repo);
+      params.append('owner', owner);
+      const url = new URL(`${baseUrl}/api/pendingChild?${params}`)
+      try {
+        const res = await fetch(url);
+        return await res.json();
+        // console.log(`response: `, response);
+      } catch (err) {
+        console.error('error getting pending child', err);
+        // break;
+        throw err
+      }
+
   //   }
-  //     done = true
-  //     console.log(`pendingChild: `, pendingChild);
-  //     const { issue_number, owner, repo } = paramsFromUrl(pendingChild.html_url)
-  //     const params = new URLSearchParams()
-  //     params.append('issue_number', issue_number);
-  //     params.append('repo', repo);
-  //     params.append('owner', owner);
-  //     const url = new URL(`${window.location.origin}/api/pendingChild?${params}`)
-  //     console.log(`url: `, url);
-  //     try {
-  //       const res = await fetch(url);
-  //       const response: RoadmapApiResponse = await res.json();
-  //       console.log(`response: `, response);
-  //     } catch (err) {
-  //       console.error('error getting pending child', err);
-  //       // break;
-  //       throw err
-  //     }
+  }, false);
 
-  // //   }
-  // }, false);
+  useEffect(() => {
+    switch(pendingChildrenAsyncStatus) {
+      case 'idle':
+        pendingChildrenAsyncExecute();
+        break;
+      case 'error':
+        console.log('pendingChildrenAsyncError', pendingChildrenAsyncError);
+        break;
+      case 'pending':
+        break;
+      case 'success':
+        console.log('pendingChildrenAsyncValue', pendingChildrenAsyncValue);
 
-  // useEffect(() => {
-  //   switch(status) {
-  //     case 'idle':
-  //       execute();
-  //       break;
-  //     case 'error':
-  //       console.log('error', asyncError);
-  //       break;
-  //     case 'pending':
-  //       break;
-  //     case 'success':
-  //       console.log('success', value);
-
-  //       break;
-  //   }
-  // }, [status, value, execute, asyncError])
+        break;
+    }
+  }, [pendingChildrenAsyncError, pendingChildrenAsyncExecute, pendingChildrenAsyncStatus, pendingChildrenAsyncValue])
 
 
   useEffect(() => {
@@ -131,11 +146,11 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   return (
     <>
       <PageHeader />
-      <ErrorNotificationDisplay errors={errors} />
+      <ErrorNotificationDisplay errors={errors ?? []} />
       <Box pt={5} pr="120px" pl="120px">
         {!!error && <Box color='red.500'>{error.message}</Box>}
         {!!issueData && mode === 'd3' && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
-        {!!issueData && mode === 'grid' && (
+        {issueData != null && mode === 'grid' && (
           <RoadmapTabbedView issueData={issueData} />
         )}
       </Box>

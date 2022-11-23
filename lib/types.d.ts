@@ -91,11 +91,14 @@ export interface StarMapsIssueErrorsGrouped {
 }
 
 
-export interface ServerSidePropsResult {
+export interface RoadmapServerSidePropsResult {
   props: {
-    issueData: IssueData | null,
-    errors: StarMapsIssueErrorsGrouped[],
-    error: { code: string; message: string } | null,
+    owner: string;
+    repo: string;
+    issue_number: string;
+    // issueData: IssueData | null,
+    // errors: StarMapsIssueErrorsGrouped[],
+    // error: { code: string; message: string } | null,
     isLocal: boolean,
     /**
      * Used via the filter_group query parameter to filter the roadmap by a specific group.
@@ -104,7 +107,8 @@ export interface ServerSidePropsResult {
     error?: { code: string, message: string } | null;
     mode: RoadmapMode;
     dateGranularity: DateGranularityState;
-    pendingChildren: ParserGetChildrenResponse[]
+    baseUrl: string;
+    // pendingChildren: ParserGetChildrenResponse[]
   }
 }
 
