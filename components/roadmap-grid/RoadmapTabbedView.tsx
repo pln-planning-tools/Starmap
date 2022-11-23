@@ -18,7 +18,7 @@ import Header from './header';
 import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 
-export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
+export function RoadmapTabbedView({ issueData, isLoadingChildren }: { issueData: IssueData; isLoadingChildren: boolean }) {
   const isLoading = useIsLoading();
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
   const router = useRouter();
@@ -61,7 +61,7 @@ export function RoadmapTabbedView({ issueData }: { issueData: IssueData; }) {
         textDecorationLine: 'underline',
         textDecorationThickness: '2px',
       }}
-    >&nbsp;&nbsp;{title}&nbsp;&nbsp;</Tab>
+    >&nbsp;&nbsp;{title}&nbsp;&nbsp; { index===2 && isLoadingChildren ? 'Loading children...' : ''}</Tab>
   );
 
   const renderTabPanel = (_title: string, index: number) => (

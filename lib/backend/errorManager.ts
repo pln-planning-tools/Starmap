@@ -5,6 +5,7 @@ import {
   StarMapsIssueErrorsGrouped
 } from '../types';
 import { groupBy } from 'lodash';
+import { groupStarMapsErrors } from '../groupStarMapsErrors';
 
 export class ErrorManager {
   errors: StarMapsError[];
@@ -12,29 +13,7 @@ export class ErrorManager {
     this.errors = [];
   }
 
-  private processStarMapsErrors(): StarMapsIssueErrorsGrouped[] {
-    const groupedErrors = groupBy(this.errors, 'issueUrl');
-    const processedErrors: StarMapsIssueErrorsGrouped[] = [];
-    for (const [url, errorsForUrl] of Object.entries(groupedErrors)) {
-      const urlErrors: StarMapsIssueError[] = []
-      errorsForUrl.forEach((starMapError) => {
-        urlErrors.push({
-          // errors:
-          userGuideUrl: starMapError.userGuideUrl,
-          title: starMapError.title,
-          message: starMapError.message,
-        });
 
-      });
-      processedErrors.push({
-        issueUrl: url,
-        issueTitle: errorsForUrl[0].issueTitle,
-        errors: urlErrors,
-      });
-    }
-
-    return processedErrors;
-  }
 
   addError({
     issue,
@@ -58,7 +37,7 @@ export class ErrorManager {
   }
 
   flushErrors() {
-    const errors = this.processStarMapsErrors();
+    const errors = groupStarMapsErrors(this.errors);
     this.clearErrors();
     return errors;
   }

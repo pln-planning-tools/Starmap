@@ -4,24 +4,39 @@ import { checkForLabel } from '../../lib/backend/checkForLabel';
 import { convertParsedChildToGroupedIssueData } from '../../lib/backend/convertParsedChildToGroupedIssueData';
 import { getGithubIssueDataWithGroupAndChildren } from '../../lib/backend/getGithubIssueDataWithGroupAndChildren';
 import { getIssue } from '../../lib/backend/issue';
-import { GithubIssueDataWithGroupAndChildren } from '../../lib/types';
+import { GithubIssueDataWithGroup, GithubIssueDataWithGroupAndChildren } from '../../lib/types';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<GithubIssueDataWithGroupAndChildren>
+  res: NextApiResponse<GithubIssueDataWithGroupAndChildren | {error: Error}>
 ): Promise<void> {
-  const { owner, repo, issue_number, group } = req.query;
-  const githubIssue = await getIssue({ owner, repo, issue_number })
-  checkForLabel(githubIssue);
+  console.log(`API hit: pendingChild`, req.query);
+  const { owner, repo, issue_number } = req.query;
+  // const githubIssue = await getIssue({ owner, repo, issue_number })
+  // checkForLabel(githubIssue);
 
-  const data = await convertParsedChildToGroupedIssueData({
-    html_url: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
-    group: '',
-  })
-  const moreData = await getGithubIssueDataWithGroupAndChildren(data, false)
+  console.log('trying to get data for child')
+  try {
 
-  res.status(200).json({
-    ...moreData
-  });
+    const data: GithubIssueDataWithGroup = await convertParsedChildToGroupedIssueData({
+      html_url: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
+      group: '',
+    })
+    try {
+      const moreData = await getGithubIssueDataWithGroupAndChildren(data, false)
+
+      res.status(200).json({
+        ...moreData
+      });
+    } catch (err) {
+      res.status(501).json({
+        error: err as Error
+      })
+    }
+  } catch (err) {
+    res.status(502).json({
+      error: err as Error
+    })
+  }
 
 }

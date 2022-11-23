@@ -7,7 +7,7 @@ import PageHeader from '../../components/layout/PageHeader';
 import { RoadmapTabbedView } from '../../components/roadmap-grid/RoadmapTabbedView';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { BASE_PROTOCOL, BASE_URL } from '../../config/constants';
-import { IssueData, QueryParameters, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, RoadmapServerSidePropsResult } from '../../lib/types';
+import { IssueData, ParserGetChildrenResponse, QueryParameters, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, RoadmapServerSidePropsResult, StarMapsIssueErrorsGrouped } from '../../lib/types';
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 import { ViewMode } from '../../lib/enums';
 import { setViewMode } from '../../hooks/useViewMode';
@@ -16,6 +16,8 @@ import { setDateGranularity } from '../../hooks/useDateGranularity';
 import { useAsync } from '../../hooks/useAsync';
 import { setIsLoading } from '../../hooks/useIsLoading';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
+import { addStarMapsErrorsToStarMapsErrorGroups } from '../../lib/addStarMapsErrorsToStarMapsErrorGroups';
+import { mergeStarMapsErrorGroups } from '../../lib/mergeStarMapsErrorGroups';
 
 export async function getServerSideProps(context): Promise<RoadmapServerSidePropsResult> {
   const [hostname, owner, repo, _, issue_number] = context.query.slug;
@@ -38,7 +40,13 @@ export async function getServerSideProps(context): Promise<RoadmapServerSideProp
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   let { error: serverError, baseUrl, isLocal, mode, dateGranularity, issue_number, repo, owner } = props;
 
-  const {execute, status, value: roadmapApiResult, error: asyncError} = useAsync(async () => {
+  const [pendingInitialApiCall, setPendingInitialApiCall] = useState(true);
+  const [pendingChildren, setPendingChildren] = useState<ParserGetChildrenResponse[]>([]);
+  const [errors, setErrors] = useState<StarMapsIssueErrorsGrouped[]>([]);
+  const [error, setError] = useState<{ code: string; message: string } | null>(null);
+  const [issueData, setIssueData] = useState<IssueData | null>(null);
+
+  const {execute, status, value: roadmapApiResult, error: asyncError} = useAsync<RoadmapApiResponseSuccess, RoadmapApiResponseFailure>(async () => {
 
     const urlString = `${baseUrl}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
     try {
@@ -56,32 +64,51 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   }, false);
 
   useEffect(() => {
+    let newStarMapsErrors: StarMapsIssueErrorsGrouped[] = []
     switch(status) {
       case 'idle':
         setIsLoading(true);
         execute();
         break;
       case 'error':
+        if (!pendingInitialApiCall) {
+          return
+        }
         setIsLoading(false);
-        console.log('error roadmapApiResult:', asyncError);
+        setPendingInitialApiCall(false);
+        const typedAsyncError = asyncError as RoadmapApiResponseFailure;
+        if (typedAsyncError.error != null) {
+          setError(typedAsyncError.error ?? null);
+        }
+        newStarMapsErrors = typedAsyncError.errors ?? []
+        if (newStarMapsErrors.length > 0) {
+          setErrors(mergeStarMapsErrorGroups(errors, newStarMapsErrors))
+        }
         break;
       case 'pending':
         setIsLoading(true);
         break;
       case 'success':
+        if (!pendingInitialApiCall) {
+          return
+        }
+        setPendingInitialApiCall(false);
+        const typedRoadmapApiResult = roadmapApiResult as RoadmapApiResponseSuccess;
         setIsLoading(false);
         console.log('success roadmapApiResult:', roadmapApiResult);
 
+        setPendingChildren(typedRoadmapApiResult.pendingChildren)
+        newStarMapsErrors = typedRoadmapApiResult.errors ?? []
+        if (newStarMapsErrors.length > 0) {
+          setErrors(mergeStarMapsErrorGroups(errors, newStarMapsErrors))
+        }
+        setIssueData(typedRoadmapApiResult.data)
+
         break;
     }
-  }, [status, roadmapApiResult, execute, asyncError])
+  }, [status, roadmapApiResult, execute, asyncError, pendingInitialApiCall])
 
-  const errors = roadmapApiResult?.errors ?? [];
-  const error = (roadmapApiResult as RoadmapApiResponseFailure)?.error || null;
-  const issueData = ((roadmapApiResult as RoadmapApiResponseSuccess)?.data as IssueData) || null;
-  const pendingChildren = (roadmapApiResult as RoadmapApiResponseSuccess)?.pendingChildren ?? [];
-
-
+  const [isLoadingChildren, setIsLoadingChildren] = useState(false);
   // const [issueDataState, setIssueDataState] = useState(issueData);
   // const [errorState, setErrorState] = useState(error);
   // const [errorsState, setErrorsState] = useState(errors);
@@ -117,19 +144,25 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   useEffect(() => {
     switch(pendingChildrenAsyncStatus) {
       case 'idle':
-        pendingChildrenAsyncExecute();
+        if (pendingChild != null) {
+          setIsLoadingChildren(true);
+          pendingChildrenAsyncExecute();
+        }
         break;
       case 'error':
+        setIsLoadingChildren(false);
         console.log('pendingChildrenAsyncError', pendingChildrenAsyncError);
         break;
       case 'pending':
+        setIsLoadingChildren(true);
         break;
       case 'success':
+        setIsLoadingChildren(false);
         console.log('pendingChildrenAsyncValue', pendingChildrenAsyncValue);
 
         break;
     }
-  }, [pendingChildrenAsyncError, pendingChildrenAsyncExecute, pendingChildrenAsyncStatus, pendingChildrenAsyncValue])
+  }, [pendingChild, pendingChildrenAsyncError, pendingChildrenAsyncExecute, pendingChildrenAsyncStatus, pendingChildrenAsyncValue])
 
 
   useEffect(() => {
@@ -151,7 +184,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         {!!error && <Box color='red.500'>{error.message}</Box>}
         {!!issueData && mode === 'd3' && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
         {issueData != null && mode === 'grid' && (
-          <RoadmapTabbedView issueData={issueData} />
+          <RoadmapTabbedView issueData={issueData} isLoadingChildren={isLoadingChildren}/>
         )}
       </Box>
     </>
