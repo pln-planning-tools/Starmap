@@ -1,4 +1,4 @@
-import { Tooltip, Flex } from '@chakra-ui/react';
+import { Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import SvgGitHubLogo from './SvgGitHubLogo';
