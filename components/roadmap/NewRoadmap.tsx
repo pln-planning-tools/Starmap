@@ -3,7 +3,7 @@ import { Box, Center, Spinner } from '@chakra-ui/react';
 import { scaleTime } from 'd3';
 import { useEffect, useRef, useState } from 'react';
 
-import { useIsLoading } from '../../hooks/useIsLoading';
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { useMaxHeight, setMaxHeight } from '../../hooks/useMaxHeight';
 import { dayjs } from '../../lib/client/dayjs';
 import { IssueData } from '../../lib/types';
@@ -35,13 +35,13 @@ function NewRoadmap({ issueData, isLocal }: { issueData: IssueData; isLocal: boo
   const margin = { top: 0, right: 0, bottom: 20, left: 0 };
   const width = maxW - margin.left - margin.right;
   const height = maxH - margin.top - margin.bottom;
-  const isLoading = useIsLoading();
+  const globalLoadingState = useGlobalLoadingState();
 
   const scaleX = scaleTime()
     .domain([earliestEta.subtract(minMaxDiff / 4, 'days').toDate(), latestEta.add(minMaxDiff / 6, 'days').toDate()])
     .range([0, width]);
 
-  if (isLoading) {
+  if (globalLoadingState.get()) {
     return (
       <Center h={maxH} w={maxW}>
         <Spinner size='xl' />

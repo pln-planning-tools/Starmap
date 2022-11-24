@@ -19,6 +19,7 @@ import NumSlider from '../inputs/NumSlider';
 import { dayjs } from '../../lib/client/dayjs';
 import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
+import React from 'react';
 
 export function RoadmapDetailed({
   issueData
@@ -161,14 +162,14 @@ export function RoadmapDetailed({
         <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={true} >
           {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {
             return (
-              <>
-                <GroupHeader group={group} /><GroupWrapper key={index}>
+              <React.Fragment key={`Fragment-${index}`} >
+                <GroupHeader group={group} key={`GroupHeader-${index}`}/><GroupWrapper key={`GroupWrapper-${index}`}>
                   {!!group.items &&
                     _.sortBy(group.items, ['title']).map((item, index) => {
                       return <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} />;
                     })}
                 </GroupWrapper>
-              </>
+              </React.Fragment>
             );
           })}
         </Grid>
