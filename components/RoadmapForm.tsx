@@ -4,7 +4,7 @@ import { SearchIcon } from '@chakra-ui/icons'
 import { match } from 'path-to-regexp';
 import { useEffect, useState } from 'react';
 
-import { setIsLoading, useIsLoading } from '../hooks/useIsLoading';
+import { useGlobalLoadingState } from '../hooks/useGlobalLoadingState';
 import styles from './RoadmapForm.module.css'
 import theme from './theme/constants'
 import { setCurrentIssueUrl, useCurrentIssueUrl } from '../hooks/useCurrentIssueUrl';
@@ -22,7 +22,7 @@ const slugsFromUrl: any = (url) => {
 
 export function RoadmapForm() {
   const router = useRouter();
-  const isLoading = useIsLoading();
+  const globalLoadingState = useGlobalLoadingState();
   const currentIssueUrl = useCurrentIssueUrl();
   const [issueUrl, setIssueUrl] = useState<string | null>();
   const [error, setError] = useState<Error | null>(null);
@@ -56,11 +56,12 @@ export function RoadmapForm() {
               throw new Error('Already viewing this issue');
             }
             await router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}`);
-            setIsLoading(false);
+            globalLoadingState.stop();
           }
         } catch (err) {
           setError(err as Error);
-          setIsLoading(false);
+          globalLoadingState.stop();
+
         }
       }
     };
@@ -69,7 +70,7 @@ export function RoadmapForm() {
 
   const formSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    globalLoadingState.start();
     setError(null);
 
     try {
@@ -80,16 +81,16 @@ export function RoadmapForm() {
       setIssueUrl(newUrl.toString());
     } catch (err) {
       setError(err as Error);
-      setIsLoading(false);
+      globalLoadingState.stop();
     }
   }
 
   let inputRightElement = (
-    <Button type="submit" isLoading={isLoading} className={styles.formSubmitButton} border="1px solid #8D8D8D" borderRadius="4px"  bg="rgba(141, 141, 141, 0.3)" onClick={formSubmit}>
+    <Button type="submit" isLoading={globalLoadingState.get()} className={styles.formSubmitButton} border="1px solid #8D8D8D" borderRadius="4px"  bg="rgba(141, 141, 141, 0.3)" onClick={formSubmit}>
       <Text p="6px 10px" color="white">⏎</Text>
     </Button>
   )
-  if (isLoading) {
+  if (globalLoadingState.get()) {
     inputRightElement = <Spinner />
   }
   const onChangeHandler = (e) => {
