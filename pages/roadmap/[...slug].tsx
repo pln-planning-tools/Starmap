@@ -38,7 +38,7 @@ export async function getServerSideProps(context): Promise<RoadmapServerSideProp
 }
 
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { error: serverError, baseUrl, isLocal, mode, dateGranularity, issue_number, repo, owner } = props;
+  const { error: serverError, isLocal, mode, dateGranularity, issue_number, repo, owner } = props;
 
   const starMapsErrorsState = useHookstate<StarMapsIssueErrorsGrouped[]>([]);
   const roadmapLoadErrorState = useHookstate<{ code: string; message: string } | null>(null)
@@ -106,7 +106,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         repo,
         parent: findIssueDataByUrl(issueDataState.get() as IssueData, typedPendingChild.parentHtmlUrl.value)
       };
-      const pendingChildApiUrl = new URL(`${baseUrl}/api/pendingChild`);
+      const pendingChildApiUrl = new URL(`${window.location.origin}/api/pendingChild`);
 
       try {
         const apiResult = await fetch(pendingChildApiUrl, {
