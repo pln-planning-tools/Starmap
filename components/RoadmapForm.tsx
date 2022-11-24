@@ -10,6 +10,8 @@ import { setCurrentIssueUrl, useCurrentIssueUrl } from '../hooks/useCurrentIssue
 import { isEmpty } from 'lodash';
 import { paramsFromUrl } from '../lib/paramsFromUrl';
 import { getValidUrlFromInput } from '../lib/getValidUrlFromInput';
+import { useViewMode } from '../hooks/useViewMode';
+import { ViewMode } from '../lib/enums';
 
 export function RoadmapForm() {
   const router = useRouter();
@@ -19,6 +21,7 @@ export function RoadmapForm() {
   const [error, setError] = useState<Error | null>(null);
   const [isInputBlanked, setIsInputBlanked] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(globalLoadingState.get());
+  const viewMode = useViewMode() as ViewMode;
 
   useEffect(() => {
     if (!isInputBlanked && isEmpty(currentIssueUrl) && window.location.pathname.length > 1) {
@@ -47,7 +50,7 @@ export function RoadmapForm() {
               }, 5000);
               throw new Error('Already viewing this issue');
             }
-            await router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}`);
+            await router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}#${viewMode}`);
             setIsLoading(false);
           }
         } catch (err) {
@@ -90,7 +93,7 @@ export function RoadmapForm() {
   };
   return (
     <form onSubmit={formSubmit}>
-      <FormControl isInvalid={error != null}>
+      <FormControl isInvalid={error != null} isDisabled={isLoading || globalLoadingState.get()}>
         <InputGroup>
           <InputLeftElement
             pointerEvents='none'
