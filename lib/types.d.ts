@@ -39,6 +39,7 @@ export interface PreParsedIssueData extends ProcessedGithubIssueDataWithGroupAnd
   due_date: string;
   parent: PreParsedIssueData;
 }
+
 export interface IssueData extends  Omit<PostParsedIssueData, 'children' | 'parent'> {
   children: IssueData[];
   completion_rate: number;
@@ -51,6 +52,7 @@ export interface RoadmapApiResponseSuccess {
   errors?: StarMapsIssueErrorsGrouped[];
   pendingChildren: PendingChildren[];
 }
+
 export interface RoadmapApiResponseFailure {
   error?: { code: string; message: string };
   errors?: StarMapsIssueErrorsGrouped[];
@@ -111,7 +113,6 @@ export interface StarMapsIssueErrorsGrouped {
 
 export interface RoadmapServerSidePropsResult {
   props: {
-    error: { code: string; message: string } | null,
     owner: string;
     repo: string;
     issue_number: string;

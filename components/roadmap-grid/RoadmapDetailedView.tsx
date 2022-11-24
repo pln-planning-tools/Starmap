@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Spinner } from '@chakra-ui/react';
 import { group } from 'd3';
 import _ from 'lodash';
 import { getTicks } from '../../lib/client/getTicks';
@@ -20,6 +20,7 @@ import { dayjs } from '../../lib/client/dayjs';
 import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
 import React from 'react';
+import { convertIssueDataToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
 
 export function RoadmapDetailed({
   issueData
@@ -31,47 +32,31 @@ export function RoadmapDetailed({
    */
   const [isDevMode, setIsDevMode] = useState(false);
   const viewMode = useViewMode();
-  const newIssueData = issueData.children.map((v) => ({
-    ...v,
-    group: v.parent.title,
-    children: v.children.map((x) => ({ ...x, group: x.parent.title })),
-  }));
 
-  const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
+  const [issuesGrouped, setIssuesGrouped] = useState<DetailedViewGroup[]>([])
 
-  const issueDataLevelOneGrouped: DetailedViewGroup[] = Array.from(
-    group(issueDataLevelOne, (d) => d.group),
-    ([key, value]) => ({
-      groupName: key,
-      items: value,
-      url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
-    }),
-  );
+  useEffect(() => {
+    if (viewMode) {
+      setIssuesGrouped(convertIssueDataToDetailedViewGroupOld(issueData, viewMode));
+    }
+  }, [viewMode]);
 
-  const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, children: [v], group: v.title }));
-  const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = Array.from(
-    group(issueDataLevelOneIfNoChildren, (d) => d.group),
-    ([key, value]) => ({
-      groupName: key,
-      items: value,
-      url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
-    }),
-  );
+  /**
+   * Magic numbers that just seem to work are:
+   *  * 5 for number of header ticks
+   *    * we actually want 5 visible ticks.
+   *
+   *  * 45 for number of grid columns
+   *    * It usually works best if grid columns is easily divisble by the number of header ticks)
+   *
+   *  * 1.09 for a multiple of the number of grid columns
+   *    * otherwise the timeScale we get back doesn't map to gridColumns well.
+   */
+  const [numHeaderTicks, setNumHeaderTicks] = useState(5);
+  const [numGridCols, setNumGridCols] = useState(45);
 
-  let issuesGrouped: DetailedViewGroup[];
-  if (viewMode === ViewMode.Detail) {
-    issuesGrouped =
-      (!!issueDataLevelOneGrouped && issueDataLevelOneGrouped.length > 0 && issueDataLevelOneGrouped) ||
-      issueDataLevelOneIfNoChildrenGrouped;
-  } else {
-    issuesGrouped = Array.from(
-      group(issueData.children as IssueData[], (d) => d.group),
-      ([key, value]) => ({
-        groupName: key,
-        items: value,
-        url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
-      }),
-    );
+  if (issuesGrouped.length === 0) {
+    return <Spinner />
   }
 
   const today = dayjs();
@@ -124,19 +109,6 @@ export function RoadmapDetailed({
       return a.getTime() - b.getTime();
     });
 
-  /**
-   * Magic numbers that just seem to work are:
-   *  * 5 for number of header ticks
-   *    * we actually want 5 visible ticks.
-   *
-   *  * 45 for number of grid columns
-   *    * It usually works best if grid columns is easily divisble by the number of header ticks)
-   *
-   *  * 1.09 for a multiple of the number of grid columns
-   *    * otherwise the timeScale we get back doesn't map to gridColumns well.
-   */
-  const [numHeaderTicks, setNumHeaderTicks] = useState(5);
-  const [numGridCols, setNumGridCols] = useState(45);
   globalTimeScaler.setScale(dates, numGridCols * 1.09);
 
   /**

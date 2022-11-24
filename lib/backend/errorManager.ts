@@ -1,6 +1,4 @@
-import {
-  GithubIssueData,
-  StarMapsError} from '../types';
+import { GithubIssueData, StarMapsError } from '../types';
 import { groupStarMapsErrors } from '../groupStarMapsErrors';
 
 export class ErrorManager {
@@ -8,8 +6,6 @@ export class ErrorManager {
   constructor() {
     this.errors = [];
   }
-
-
 
   addError({
     issue,
