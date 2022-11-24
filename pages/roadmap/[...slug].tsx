@@ -29,7 +29,7 @@ export async function getServerSideProps(context): Promise<RoadmapServerSideProp
       groupBy: filter_group || null,
       mode: mode || 'grid',
       dateGranularity: timeUnit || DateGranularityState.Months,
-      baseUrl: `${BASE_PROTOCOL}://${BASE_URL}`,
+      baseUrl: `${BASE_PROTOCOL}://${process.env.VERCEL_URL}`,
     }
   }
 }
@@ -48,7 +48,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       globalLoadingState.start();
       const roadmapApiUrl = `${baseUrl}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
       try {
-        const apiResult = await fetch(new URL(roadmapApiUrl), {mode: 'no-cors'})
+        const apiResult = await fetch(new URL(roadmapApiUrl))
         const roadmapResponse: RoadmapApiResponse = await apiResult.json();
 
         const roadmapResponseSuccess = roadmapResponse as RoadmapApiResponseSuccess;
