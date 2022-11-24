@@ -46,21 +46,27 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
     if (globalLoadingState.get()) return;
     const fetchRoadMapResponse = async () => {
       globalLoadingState.start();
-      const apiResult = await fetch(new URL(`${baseUrl}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`))
-      const roadmapResponse: RoadmapApiResponse = await apiResult.json();
+      const roadmapApiUrl = `${baseUrl}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
+      try {
+        const apiResult = await fetch(new URL(roadmapApiUrl))
+        const roadmapResponse: RoadmapApiResponse = await apiResult.json();
 
-      const roadmapResponseSuccess = roadmapResponse as RoadmapApiResponseSuccess;
-      const roadmapResponseFailure = roadmapResponse as RoadmapApiResponseFailure;
-      if (roadmapResponse.errors) {
-        starMapsErrorsState.set(roadmapResponse.errors);
+        const roadmapResponseSuccess = roadmapResponse as RoadmapApiResponseSuccess;
+        const roadmapResponseFailure = roadmapResponse as RoadmapApiResponseFailure;
+        if (roadmapResponse.errors) {
+          starMapsErrorsState.set(roadmapResponse.errors);
+        }
+
+        if (roadmapResponseFailure.error != null) {
+          roadmapLoadErrorState.set(roadmapResponseFailure.error);
+        } else {
+          issueDataState.set(roadmapResponseSuccess.data);
+        }
+
+      } catch (err) {
+        console.log(`Error fetching ${roadmapApiUrl}`, err);
+        roadmapLoadErrorState.set({code: `Error fetching ${roadmapApiUrl}`, message: `Error fetching ${roadmapApiUrl}: ${(err as Error).toString()}`})
       }
-
-      if (roadmapResponseFailure.error != null) {
-        roadmapLoadErrorState.set(roadmapResponseFailure.error);
-      } else {
-        issueDataState.set(roadmapResponseSuccess.data);
-      }
-
       globalLoadingState.stop()
     };
 
