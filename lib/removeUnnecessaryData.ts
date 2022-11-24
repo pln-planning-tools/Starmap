@@ -1,20 +1,10 @@
-import { omit } from 'lodash';
-import { IssueData, ParentIssueData, PreParsedIssueData, PreParsedIssueDataParent } from './types';
+import { IssueData, PreParsedIssueData } from './types';
 
-export function removeUnnecessaryData(preParsedIssueData: PreParsedIssueData | IssueData): IssueData {
-  // const issueData: IssueData = omit(preParsedIssueData, ['body', 'body_html', 'body_text']) as IssueData;
-  // if ()
-  // preParsedIssueData.body = '';
-  // preParsedIssueData.body_html = '';
-  // preParsedIssueData.body_text = '';
-  // const preParsedParent: PreParsedIssueDataParent = ;
-  // if (parent != null && parent.children?.length > 0) {
-  //   // const parent = issueData.parent as PreParsedIssueData;
-  //   parent.children.map((i) => removeUnnecessaryData(i))
-  //   parent.children = [];
-  // }
-
-  // const parent: ParentIssueData =
+type PreParsedIssueData2 = Pick<
+  IssueData,
+  'html_url' | 'group' | 'children' | 'title' | 'state' | 'node_id' | 'labels' | 'completion_rate' | 'due_date' | 'parent'
+>;
+export function removeUnnecessaryData(preParsedIssueData: PreParsedIssueData2): IssueData {
   const issueData: IssueData = {
     html_url: preParsedIssueData.html_url,
     group: preParsedIssueData.group,
@@ -37,5 +27,5 @@ export function removeUnnecessaryData(preParsedIssueData: PreParsedIssueData | I
     },
   }
 
-  return issueData as IssueData;
+  return issueData;
 }

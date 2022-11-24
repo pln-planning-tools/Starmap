@@ -3,10 +3,6 @@ import { errorManager } from '../../lib/backend/errorManager';
 import { getChildren } from '../../lib/parser';
 import { getIssue } from '../../lib/backend/issue';
 import {
-  GithubIssueDataWithGroupAndChildren,
-  IssueData,
-  ParentIssueData,
-  PostParsedGithubIssueDataWithGroupAndChildren,
   RoadmapApiResponse,
   RoadmapApiResponseFailure,
   RoadmapApiResponseSuccess
@@ -14,7 +10,6 @@ import {
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { resolveChildrenWithDepth } from '../../lib/backend/resolveChildrenWithDepth';
 import { addToChildren } from '../../lib/backend/addToChildren';
-import { removeUnnecessaryData } from '../../lib/removeUnnecessaryData';
 
 export default async function handler(
   req: NextApiRequest,
@@ -60,23 +55,16 @@ export default async function handler(
       }
     }
 
-    const toReturn: GithubIssueDataWithGroupAndChildren = {
+    const issueData = addToChildren([{
       ...rootIssue,
       root_issue: true,
       group: 'root',
       children
-    };
-    const issueData = addToChildren([toReturn])[0]
-    const data: IssueData = removeUnnecessaryData({
-      ...issueData,
-      parent: {} as ParentIssueData,
-    });
-
-    console.log('final data: ', JSON.stringify(data, null, 2));
+    }])[0];
 
     res.status(200).json({
       errors: errorManager.flushErrors(),
-      data,
+      data: issueData,
       pendingChildren: children.flatMap((child) => child.pendingChildren),
     } as RoadmapApiResponseSuccess);
   } catch (err) {

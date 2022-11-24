@@ -21,33 +21,29 @@ export interface GithubIssueDataWithChildren extends GithubIssueData {
 export interface GithubIssueDataWithGroupAndChildren extends GithubIssueDataWithGroup, GithubIssueDataWithChildren {
   pendingChildren?: ParserGetChildrenResponse[]
 }
+export type ProcessedGithubIssueDataWithGroupAndChildren = Omit<GithubIssueDataWithGroupAndChildren, 'body' | 'body_html' | 'body_text'>
 
-type ProcessedGithubIssueDataWithGroupAndChildren = Omit<GithubIssueDataWithGroupAndChildren, 'body' | 'body_html' | 'body_text'>
-
-export interface PostParsedGithubIssueDataWithGroupAndChildren extends ProcessedGithubIssueDataWithGroupAndChildren {
-  children: PostParsedGithubIssueDataWithGroupAndChildren[];
-}
-
-export interface ProcessedIssueData extends PostParsedGithubIssueDataWithGroupAndChildren {
-  completion_rate: number;
-  due_date: string;
-}
-
-export interface PreParsedIssueData extends ProcessedIssueData {
+export interface PreParsedIssueData extends ProcessedGithubIssueDataWithGroupAndChildren {
   children: (PreParsedIssueData | IssueData)[];
-  parent: PreParsedIssueDataParent;
+  parent: PreParsedIssueData;
 }
 
 export type PostParsedIssueData = PreParsedIssueData;
-export type ProcessedParentIssueData = Omit<PreParsedIssueData, 'children', 'parent'>;
-export interface ParentIssueData extends Omit<PreParsedIssueDataParent, 'children', 'parent'> {
+export type ProcessedParentIssueData = Omit<PreParsedIssueData, 'children' | 'parent'>;
+export interface ParentIssueData extends Omit<PreParsedIssueDataParent, 'children' | 'parent'> {
 
 }
-
-type foobar = Omit<PreParsedIssueDataParent, 'children', 'parent'>
-export interface IssueData extends Omit<PostParsedIssueData, 'children', 'parent'> {
+export interface PreParsedIssueData extends ProcessedGithubIssueDataWithGroupAndChildren {
   children: IssueData[];
-  parent: Omit<ProcessedIssueData, 'children', 'parent'>;
+  completion_rate: number;
+  due_date: string;
+  parent: PreParsedIssueData;
+}
+export interface IssueData extends  Omit<PostParsedIssueData, 'children' | 'parent'> {
+  children: IssueData[];
+  completion_rate: number;
+  due_date: string;
+  parent: Omit<IssueData, 'children' | 'parent'>;
 }
 
 export interface RoadmapApiResponseSuccess {

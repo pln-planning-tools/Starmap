@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
 import { getChildren } from '../parser';
-import { GithubIssueDataWithGroup, GithubIssueDataWithGroupAndChildren, ParserGetChildrenResponse, PostParsedGithubIssueDataWithGroupAndChildren } from '../types';
+import { GithubIssueDataWithGroup, GithubIssueDataWithGroupAndChildren, ParserGetChildrenResponse } from '../types';
 import { resolveChildren } from './resolveChildren';
 import { resolveChildrenWithDepth } from './resolveChildrenWithDepth';
 
@@ -10,7 +10,6 @@ export async function getGithubIssueDataWithGroupAndChildren (issueData: GithubI
 
   const ghIssueDataWithGroupAndChildren: GithubIssueDataWithGroupAndChildren = {
     ...issueData,
-    // body_html: issueData.body_html,
     labels: issueData.labels ?? [],
     children: usePendingChildren ? [] : await resolveChildrenWithDepth(await resolveChildren(childrenParsed)),
     pendingChildren: usePendingChildren ? childrenParsed : undefined
