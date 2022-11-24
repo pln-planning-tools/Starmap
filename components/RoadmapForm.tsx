@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Text } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons'
-import { match } from 'path-to-regexp';
 import { useEffect, useState } from 'react';
 
 import { useGlobalLoadingState } from '../hooks/useGlobalLoadingState';
@@ -12,14 +11,6 @@ import { isEmpty } from 'lodash';
 import { paramsFromUrl } from '../lib/paramsFromUrl';
 import { getValidUrlFromInput } from '../lib/getValidUrlFromInput';
 
-const slugsFromUrl: any = (url) => {
-  const matchResult = match('/:owner/:repo/issues/:issue_number(\\d+)', {
-    decode: decodeURIComponent,
-  })(url);
-
-  return matchResult;
-};
-
 export function RoadmapForm() {
   const router = useRouter();
   const globalLoadingState = useGlobalLoadingState();
@@ -27,6 +18,7 @@ export function RoadmapForm() {
   const [issueUrl, setIssueUrl] = useState<string | null>();
   const [error, setError] = useState<Error | null>(null);
   const [isInputBlanked, setIsInputBlanked] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(globalLoadingState.get());
 
   useEffect(() => {
     if (!isInputBlanked && isEmpty(currentIssueUrl) && window.location.pathname.length > 1) {
@@ -56,12 +48,11 @@ export function RoadmapForm() {
               throw new Error('Already viewing this issue');
             }
             await router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}`);
-            globalLoadingState.stop();
+            setIsLoading(false);
           }
         } catch (err) {
           setError(err as Error);
-          globalLoadingState.stop();
-
+          setIsLoading(false);
         }
       }
     };
@@ -70,7 +61,7 @@ export function RoadmapForm() {
 
   const formSubmit = (e) => {
     e.preventDefault();
-    globalLoadingState.start();
+    setIsLoading(true);
     setError(null);
 
     try {
@@ -81,7 +72,7 @@ export function RoadmapForm() {
       setIssueUrl(newUrl.toString());
     } catch (err) {
       setError(err as Error);
-      globalLoadingState.stop();
+      setIsLoading(false);
     }
   }
 

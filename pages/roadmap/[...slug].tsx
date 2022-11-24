@@ -66,7 +66,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
     fetchRoadMapResponse();
 
-  }, []);
+  }, [issue_number, repo, owner]);
 
   useEffect(() => {
     setDateGranularity(dateGranularity);
