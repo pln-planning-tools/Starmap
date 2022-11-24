@@ -7,6 +7,7 @@ import {
   TabPanels,
   Tabs
 } from '@chakra-ui/react';
+import { State } from '@hookstate/core';
 import { useRouter } from 'next/router';
 import { useIsLoading } from '../../hooks/useIsLoading';
 
@@ -18,15 +19,16 @@ import Header from './header';
 import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 
-export function RoadmapTabbedView({ issueData, isLoadingChildren, numChanges }: { issueData: IssueData; isLoadingChildren: boolean, numChanges: number }) {
+export function RoadmapTabbedView({ issueDataState, isLoadingChildren, numChanges }: { issueDataState: State<IssueData>, isLoadingChildren: boolean, numChanges: number }) {
   const isLoading = useIsLoading();
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
   const router = useRouter();
+
   console.log(`RoadmapTabbedView numChanges: `, numChanges);
   if (isLoading === true) {
     return <Spinner />
   }
-  if ((issueData.children ?? []).length === 0) {
+  if ((issueDataState.children.get() ?? []).length === 0) {
     return (<></>);
   }
   // Defining what tabs to show and in what order
@@ -67,14 +69,14 @@ export function RoadmapTabbedView({ issueData, isLoadingChildren, numChanges }: 
 
   const renderTabPanel = (_title: string, index: number) => (
     <TabPanel key={index}>
-      <RoadmapDetailed issueData={issueData} numChanges={numChanges}/>
+      <RoadmapDetailed issueDataState={issueDataState} numChanges={numChanges}/>
     </TabPanel>
   );
 
   return (
     <>
       <Box className={styles.timelineBox}>
-        <Header issueData={issueData} />
+        <Header issueDataState={issueDataState} />
         <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} isLazy>
           <TabList>
             {tabs.map(renderTab)}

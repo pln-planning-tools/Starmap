@@ -5,6 +5,7 @@ import { checkForLabel } from '../../lib/backend/checkForLabel';
 import { convertParsedChildToGroupedIssueData } from '../../lib/backend/convertParsedChildToGroupedIssueData';
 import { getGithubIssueDataWithGroupAndChildren } from '../../lib/backend/getGithubIssueDataWithGroupAndChildren';
 import { getIssue } from '../../lib/backend/issue';
+import { removeUnnecessaryData } from '../../lib/removeUnnecessaryData';
 import { GithubIssueDataWithGroup, GithubIssueDataWithGroupAndChildren } from '../../lib/types';
 
 export default async function handler(
@@ -33,7 +34,7 @@ export default async function handler(
       const issueData = addToChildren([issueDataWithGroupAndChildren], parent)
 
       res.status(200).json({
-        ...issueData[0],
+        ...removeUnnecessaryData(issueData[0]),
       });
     } catch (err) {
       res.status(501).json({

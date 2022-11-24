@@ -24,11 +24,13 @@ export interface GithubIssueDataWithGroupAndChildren extends GithubIssueDataWith
   pendingChildren?: PendingChildren[]
 }
 
+export type ParentIssueData = IssueData; // Omit<IssueData, 'children'>;
+
 export interface IssueData extends GithubIssueDataWithGroupAndChildren {
   children: IssueData[];
   completion_rate: number;
   due_date: string;
-  parent: Omit<IssueData, 'children'>;
+  parent?: ParentIssueData;
 }
 
 export interface RoadmapApiResponseSuccess {

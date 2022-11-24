@@ -12,6 +12,8 @@ import {
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { resolveChildrenWithDepth } from '../../lib/backend/resolveChildrenWithDepth';
 import { addToChildren } from '../../lib/backend/addToChildren';
+import { removeUnnecessaryData } from '../../lib/removeUnnecessaryData';
+import { saveIssueDataToFile } from '../../lib/backend/saveIssueDataToFile';
 
 process.on('uncaughtException', (err, origin) => {
   console.log('uncaughtException', err, origin);
@@ -20,6 +22,7 @@ process.on('uncaughtException', (err, origin) => {
 process.on('unhandledRejection', (err, origin) => {
   console.log('unhandledRejection', err, origin);
 })
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<RoadmapApiResponse>
@@ -65,17 +68,26 @@ export default async function handler(
         ...rootIssue,
         root_issue: true,
         group: 'root',
-        children
+        children,
+        body: '',
+        body_html: '',
+        body_text: '',
       };
 
-      const data = {
+      const data: IssueData = {
         ...addToChildren([toReturn], {} as IssueData)[0],
-        parent: {},
+        parent: {} as IssueData,
+        body: '',
+        body_html: '',
+        body_text: '',
       };
+
+      const finalIssueData = removeUnnecessaryData(data);
+      saveIssueDataToFile(finalIssueData)
 
       res.status(200).json({
         errors: errorManager.flushErrors(),
-        data,
+        data: removeUnnecessaryData(finalIssueData),
         pendingChildren: children.flatMap((child) => child.pendingChildren).filter((child) => child != null),
       } as RoadmapApiResponseSuccess);
     } catch (err) {
@@ -94,3 +106,4 @@ export default async function handler(
     } as RoadmapApiResponseFailure);
   }
 }
+

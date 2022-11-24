@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { group } from 'd3';
-import _ from 'lodash';
+import _, { groupBy } from 'lodash';
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
 import { getInternalLinkForIssue } from '../../lib/general';
@@ -19,80 +19,43 @@ import NumSlider from '../inputs/NumSlider';
 import { dayjs } from '../../lib/client/dayjs';
 import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
+import { State, useHookstate } from '@hookstate/core';
+import { convertIssueDataToDetailedViewGroup, convertIssueDataToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
 
 export function RoadmapDetailed({
-  issueData,
+  issueDataState,
   numChanges,
 }: {
-  issueData: IssueData;
+  issueDataState: State<IssueData>;
   numChanges: number;
 }) {
   /**
    * Don't commit setting this to true.. just a simple toggle so we can debug things.
    */
   const [isDevMode, setIsDevMode] = useState(false);
-  const [issuesGrouped, setIssuesGrouped] = useState<DetailedViewGroup[]>([])
+  // const [issuesGrouped, setIssuesGrouped] = useState<DetailedViewGroup[]>([])
   console.log(`debug issuesGrouped - RoadmapDetailed numChanges: `, numChanges);
   const viewMode = useViewMode();
-  let numChildren = 0;
+  const childrenIssues = useHookstate(issueDataState.children);
+  const issuesGrouped = useHookstate<DetailedViewGroup[]>([])
+  console.log(`debug issuesGrouped - childrenIssues: `, childrenIssues.get({noproxy: true}));
+  if (viewMode != null) {
+    issuesGrouped.set(convertIssueDataToDetailedViewGroupOld(issueDataState.get(), viewMode));
+  }
+
   useEffect(() => {
-    const newIssueData = issueData.children.map((issueDataChild) => {
-      numChildren++
-      return {
-        ...issueDataChild,
-        group: issueDataChild.parent.title,
-        children: issueDataChild.children.map((issueDataGrandchild) => {
-          numChildren++
-          return ({ ...issueDataGrandchild, group: issueDataGrandchild.parent.title })
-        }),
-      };
-    });
-    console.log(`debug issuesGrouped - numChildren: `, numChildren);
+    console.log('debug issuesGrouped - useEffect - JSON issuesGrouped', JSON.stringify(issuesGrouped.get({noproxy: true}), null, 2));
+    console.log('debug issuesGrouped - useEffect - JSON issueData', JSON.stringify(issueDataState.get({noproxy: true}), null, 2));
 
-    const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
+  }, [issueDataState.get({noproxy: true})])
 
-    const issueDataLevelOneGrouped: DetailedViewGroup[] = Array.from(
-      group(issueDataLevelOne, (d) => d.group),
-      ([key, value]) => ({
-        groupName: key,
-        items: value,
-        url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
-      }),
-    );
 
-    const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, children: [v], group: v.title }));
-    const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = Array.from(
-      group(issueDataLevelOneIfNoChildren, (d) => d.group),
-      ([key, value]) => ({
-        groupName: key,
-        items: value,
-        url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
-      }),
-    );
-
-  // let issuesGrouped: DetailedViewGroup[] = [];
-    if (viewMode === ViewMode.Detail) {
-      setIssuesGrouped((!!issueDataLevelOneGrouped && issueDataLevelOneGrouped.length > 0 && issueDataLevelOneGrouped) ||
-        issueDataLevelOneIfNoChildrenGrouped);
-    } else {
-      setIssuesGrouped(Array.from(
-        group(issueData.children as IssueData[], (d) => d.group),
-        ([key, value]) => ({
-          groupName: key,
-          items: value,
-          url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
-        }),
-      ));
-    }
-  }, [viewMode, issueData])
-
-  console.log('debug issuesGrouped - issuesGrouped', issuesGrouped);
 
   const today = dayjs();
   /**
    * Collect all due dates from all issues, as DayJS dates.
    */
-  const dayjsDates = (issuesGrouped as DetailedViewGroup[])
+  const dayjsDates = (issuesGrouped.get() as DetailedViewGroup[] ?? [])
     .flatMap((group) => group.items.map((item) => dayjs(item.due_date).utc()))
     .filter((d) => d.isValid());
 
@@ -174,14 +137,14 @@ export function RoadmapDetailed({
           <Headerline numGridCols={numGridCols} ticksRatio={3}/>
         </Grid>
         <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={true} >
-          {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {
-            console.log('roadmap detailed view', group, index);
+          {issuesGrouped.map((group, index) => {
+            console.log('roadmap detailed view', group.get(), index);
             return (
               <GroupWrapper key={index} >
-                <GroupItem group={group} />
+                <GroupItem group={group.get()} />
                 {!!group.items &&
                   _.sortBy(group.items, ['title']).map((item, index) => {
-                    return <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks}/>;
+                    return <GridRow key={index} timeScaler={globalTimeScaler} milestone={item.get()} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks}/>;
                   })}
               </GroupWrapper>
             );
