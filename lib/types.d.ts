@@ -30,7 +30,7 @@ export interface IssueData extends GithubIssueDataWithGroupAndChildren {
   children: IssueData[];
   completion_rate: number;
   due_date: string;
-  parent?: ParentIssueData;
+  parent: ParentIssueData;
 }
 
 export interface RoadmapApiResponseSuccess {
