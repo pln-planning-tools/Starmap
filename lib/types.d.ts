@@ -2,8 +2,6 @@ import type { RoadmapMode, IssueStates, DateGranularityState } from './enums'
 
 export interface GithubIssueData {
   body_html: string;
-  body_text: string;
-  body: string;
   html_url: string;
   labels: string[];
   node_id: string;
@@ -24,11 +22,32 @@ export interface GithubIssueDataWithGroupAndChildren extends GithubIssueDataWith
   pendingChildren?: ParserGetChildrenResponse[]
 }
 
-export interface IssueData extends GithubIssueDataWithGroupAndChildren {
-  children: IssueData[];
+type ProcessedGithubIssueDataWithGroupAndChildren = Omit<GithubIssueDataWithGroupAndChildren, 'body' | 'body_html' | 'body_text'>
+
+export interface PostParsedGithubIssueDataWithGroupAndChildren extends ProcessedGithubIssueDataWithGroupAndChildren {
+  children: PostParsedGithubIssueDataWithGroupAndChildren[];
+}
+
+export interface ProcessedIssueData extends PostParsedGithubIssueDataWithGroupAndChildren {
   completion_rate: number;
   due_date: string;
-  parent: IssueData;
+}
+
+export interface PreParsedIssueData extends ProcessedIssueData {
+  children: (PreParsedIssueData | IssueData)[];
+  parent: PreParsedIssueDataParent;
+}
+
+export type PostParsedIssueData = PreParsedIssueData;
+export type ProcessedParentIssueData = Omit<PreParsedIssueData, 'children', 'parent'>;
+export interface ParentIssueData extends Omit<PreParsedIssueDataParent, 'children', 'parent'> {
+
+}
+
+type foobar = Omit<PreParsedIssueDataParent, 'children', 'parent'>
+export interface IssueData extends Omit<PostParsedIssueData, 'children', 'parent'> {
+  children: IssueData[];
+  parent: Omit<ProcessedIssueData, 'children', 'parent'>;
 }
 
 export interface RoadmapApiResponseSuccess {

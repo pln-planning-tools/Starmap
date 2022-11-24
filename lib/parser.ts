@@ -2,9 +2,9 @@ import { parseHTML } from 'linkedom';
 import { errorManager } from './backend/errorManager';
 
 import { getEtaDate, isValidChildren } from './helpers';
-import { GithubIssueData, ParserGetChildrenResponse } from './types';
+import { GithubIssueDataWithChildren, ParserGetChildrenResponse } from './types';
 
-export const getDueDate = (issue: GithubIssueData) => {
+export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' | 'body_html' | 'root_issue' | 'title'>) => {
   const { body_html: issueBodyHtml } = issue;
 
   const { document } = parseHTML(issueBodyHtml);

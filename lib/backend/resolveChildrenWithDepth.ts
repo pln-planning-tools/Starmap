@@ -1,4 +1,4 @@
-import { GithubIssueDataWithGroupAndChildren, ParserGetChildrenResponse } from '../types';
+import { GithubIssueDataWithGroupAndChildren, ParserGetChildrenResponse, PostParsedGithubIssueDataWithGroupAndChildren } from '../types';
 import { getGithubIssueDataWithGroupAndChildren } from './getGithubIssueDataWithGroupAndChildren';
 import { resolveChildren } from './resolveChildren';
 

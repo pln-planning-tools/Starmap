@@ -5,6 +5,8 @@ import { getIssue } from '../../lib/backend/issue';
 import {
   GithubIssueDataWithGroupAndChildren,
   IssueData,
+  ParentIssueData,
+  PostParsedGithubIssueDataWithGroupAndChildren,
   RoadmapApiResponse,
   RoadmapApiResponseFailure,
   RoadmapApiResponseSuccess
@@ -12,7 +14,7 @@ import {
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { resolveChildrenWithDepth } from '../../lib/backend/resolveChildrenWithDepth';
 import { addToChildren } from '../../lib/backend/addToChildren';
-
+import { removeUnnecessaryData } from '../../lib/removeUnnecessaryData';
 
 export default async function handler(
   req: NextApiRequest,
@@ -64,11 +66,13 @@ export default async function handler(
       group: 'root',
       children
     };
+    const issueData = addToChildren([toReturn])[0]
+    const data: IssueData = removeUnnecessaryData({
+      ...issueData,
+      parent: {} as ParentIssueData,
+    });
 
-    const data = {
-      ...addToChildren([toReturn], {} as IssueData)[0],
-      parent: {},
-    };
+    console.log('final data: ', JSON.stringify(data, null, 2));
 
     res.status(200).json({
       errors: errorManager.flushErrors(),
