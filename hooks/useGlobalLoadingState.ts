@@ -6,6 +6,7 @@ const wrapState = (s: State<boolean>) => ({
   toggle: () => s.set(p => !p),
   start: () => s.set(true),
   stop: () => s.set(false),
+  set: (v: boolean) => s.set(v),
 })
 
 // The following 2 functions can be exported now:

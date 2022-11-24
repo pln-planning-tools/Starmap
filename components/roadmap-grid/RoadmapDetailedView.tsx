@@ -1,6 +1,6 @@
 import { Box, Spinner } from '@chakra-ui/react';
 import { group } from 'd3';
-import _ from 'lodash';
+import _, { reverse, sortBy } from 'lodash';
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
 import { getInternalLinkForIssue } from '../../lib/general';
@@ -21,11 +21,12 @@ import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
 import React from 'react';
 import { convertIssueDataToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
+import { State } from '@hookstate/core';
 
 export function RoadmapDetailed({
-  issueData
+  issueDataState
 }: {
-  issueData: IssueData;
+  issueDataState: State<IssueData>;
 }) {
   /**
    * Don't commit setting this to true.. just a simple toggle so we can debug things.
@@ -37,9 +38,53 @@ export function RoadmapDetailed({
 
   useEffect(() => {
     if (viewMode) {
-      setIssuesGrouped(convertIssueDataToDetailedViewGroupOld(issueData, viewMode));
+      const newIssueData = issueDataState.children.value.map((v) => ({
+        ...v,
+        group: v.parent?.title ?? '',
+        children: v.children.map((x) => ({ ...x, group: x.parent?.title ?? '' })),
+      }));
+
+      const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
+
+      const issueDataLevelOneGrouped: DetailedViewGroup[] = Array.from(
+        group(issueDataLevelOne, (d) => d.group),
+        ([key, value]) => ({
+          groupName: key,
+          items: value,
+          url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+        }),
+      );
+
+      const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, children: [v], group: v.title }));
+      const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = Array.from(
+        group(issueDataLevelOneIfNoChildren, (d) => d.group),
+        ([key, value]) => ({
+          groupName: key,
+          items: value,
+          url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+        }),
+      );
+
+      let issuesGrouped: DetailedViewGroup[];
+      if (viewMode === ViewMode.Detail) {
+        issuesGrouped =
+          (!!issueDataLevelOneGrouped && issueDataLevelOneGrouped.length > 0 && issueDataLevelOneGrouped) ||
+          issueDataLevelOneIfNoChildrenGrouped;
+      } else {
+        issuesGrouped = Array.from(
+          group(issueDataState.children.value as IssueData[], (d) => d.group),
+          ([key, value]) => ({
+            groupName: key,
+            items: value,
+            url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+          }),
+        );
+      }
+
+  // return
+      setIssuesGrouped(reverse(Array.from(sortBy(issuesGrouped, ['groupName']))));
     }
-  }, [viewMode]);
+  }, [viewMode, issueDataState.children.value]);
 
   /**
    * Magic numbers that just seem to work are:
