@@ -1,4 +1,5 @@
-import { convertIssueDataToDetailedViewGroupOld, convertIssueDataToDetailedViewGroup } from '../../../lib/client/convertIssueDataToDetailedViewGroup';
+import { hookstate } from '@hookstate/core';
+import { convertIssueDataToDetailedViewGroup, convertIssueDataStateToDetailedViewGroupOld } from '../../../lib/client/convertIssueDataToDetailedViewGroup';
 import { IssueStates, ViewMode } from '../../../lib/enums';
 import { DetailedViewGroup, IssueData } from '../../../lib/types';
 
@@ -41,7 +42,7 @@ describe('convertIssueDataToDetailedViewGroup', function() {
         beforeAll(async () => {
           issueData = (await import(`../../fixtures/issueData/${roadmapName}.json`)).default as unknown as IssueData;
           issuesGrouped = (await import(`../../fixtures/issuesGrouped/${roadmapName}.json`)).default as unknown as DetailedViewGroup[];
-          actual = convertIssueDataToDetailedViewGroupOld(issueData, ViewMode.Detail);
+          actual = convertIssueDataStateToDetailedViewGroupOld(hookstate(issueData), ViewMode.Detail);
         })
         it(`group names match`, () => {
           expect(actual.map((i) => i.groupName).sort()).toEqual(issuesGrouped.map((i) => i.groupName).sort());

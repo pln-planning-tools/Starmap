@@ -22,6 +22,7 @@ import NumSlider from '../inputs/NumSlider';
 import { dayjs } from '../../lib/client/dayjs';
 import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
+import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
 
 export function RoadmapDetailed({
   issueDataState
@@ -34,56 +35,12 @@ export function RoadmapDetailed({
   const [isDevMode, setIsDevMode] = useState(false);
   const viewMode = useViewMode() as ViewMode;
 
-  const [issuesGrouped, setIssuesGrouped] = useState<DetailedViewGroup[]>([])
+  const [issuesGrouped, setIssuesGrouped] = useState<DetailedViewGroup[]>([]);
   const [dayjsDates, setDayjsDates] = useState<Dayjs[]>([]);
 
   useEffect(() => {
     if (viewMode) {
-      const newIssueData = issueDataState.children.value.map((v) => ({
-        ...v,
-        group: v.parent?.title ?? '',
-        children: v.children.map((x) => ({ ...x, group: x.parent?.title ?? '' })),
-      }));
-
-      const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
-
-      const issueDataLevelOneGrouped: DetailedViewGroup[] = Array.from(
-        group(issueDataLevelOne, (d) => d.group),
-        ([key, value]) => ({
-          groupName: key,
-          items: value,
-          url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
-        }),
-      );
-
-      const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, children: [v], group: v.title }));
-      const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = Array.from(
-        group(issueDataLevelOneIfNoChildren, (d) => d.group),
-        ([key, value]) => ({
-          groupName: key,
-          items: value,
-          url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
-        }),
-      );
-
-      let issuesGrouped: DetailedViewGroup[];
-      if (viewMode === ViewMode.Detail) {
-        issuesGrouped =
-          (!!issueDataLevelOneGrouped && issueDataLevelOneGrouped.length > 0 && issueDataLevelOneGrouped) ||
-          issueDataLevelOneIfNoChildrenGrouped;
-      } else {
-        issuesGrouped = Array.from(
-          group(issueDataState.children.value as IssueData[], (d) => d.group),
-          ([key, value]) => ({
-            groupName: key,
-            items: value,
-            url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
-          }),
-        );
-      }
-
-  // return
-      setIssuesGrouped(reverse(Array.from(sortBy(issuesGrouped, ['groupName']))));
+      setIssuesGrouped(convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode))
     }
   }, [viewMode, issueDataState.value]);
 

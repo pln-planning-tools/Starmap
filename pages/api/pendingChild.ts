@@ -14,7 +14,6 @@ export default async function handler(
     res.status(405).send({ error: new Error('Only POST requests allowed') })
     return
   }
-  console.log(`API hit: pendingChild`);
   const { owner, repo, issue_number, parent } = req.body;
 
   try {

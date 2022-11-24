@@ -1,3 +1,4 @@
+import { State } from '@hookstate/core';
 import { group } from 'd3';
 import { groupBy, reverse, sortBy, uniqBy } from 'lodash';
 import { ViewMode } from '../enums';
@@ -14,8 +15,8 @@ function flattenIssueData(issueData: IssueData, isChildIssue = false): IssueData
   return uniqBy(parentArray.concat(childrenArray), 'html_url')
 }
 
-export function convertIssueDataToDetailedViewGroupOld(issueData: IssueData, viewMode: ViewMode): DetailedViewGroup[] {
-  const newIssueData = issueData.children.map((v) => ({
+export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: State<IssueData>, viewMode: ViewMode): DetailedViewGroup[] {
+  const newIssueData = issueDataState.children.value.map((v) => ({
     ...v,
     group: v.parent?.title ?? '',
     children: v.children.map((x) => ({ ...x, group: x.parent?.title ?? '' })),
@@ -49,7 +50,7 @@ export function convertIssueDataToDetailedViewGroupOld(issueData: IssueData, vie
       issueDataLevelOneIfNoChildrenGrouped;
   } else {
     issuesGrouped = Array.from(
-      group(issueData.children as IssueData[], (d) => d.group),
+      group(issueDataState.children.value as IssueData[], (d) => d.group),
       ([key, value]) => ({
         groupName: key,
         items: value,
@@ -58,7 +59,7 @@ export function convertIssueDataToDetailedViewGroupOld(issueData: IssueData, vie
     );
   }
 
-  return reverse(Array.from(sortBy(issuesGrouped, ['groupName'])))
+  return reverse(Array.from(sortBy(issuesGrouped, ['groupName'])));
 }
 
 export function convertIssueDataToDetailedViewGroup(issueData: IssueData): DetailedViewGroup[] {
