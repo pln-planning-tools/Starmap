@@ -4,9 +4,25 @@ import { calculateCompletionRate } from './calculateCompletionRate';
 
 export function addToChildren(
   data: GithubIssueDataWithGroupAndChildren[],
-  parent: IssueData | GithubIssueDataWithGroupAndChildren
+  parent: IssueData | GithubIssueDataWithGroupAndChildren = {} as IssueData | GithubIssueDataWithGroupAndChildren
 ): IssueData[] {
+
   if (Array.isArray(data)) {
+    const parentAsGhIssueData = parent as GithubIssueDataWithGroupAndChildren;
+    let parentDueDate = '';
+    if (parentAsGhIssueData.body_html != null && parentAsGhIssueData.html_url != null) {
+      parentDueDate = getDueDate(parentAsGhIssueData).eta
+    }
+    const parentParsed: IssueData['parent'] = {
+      state: parent.state,
+      group: parent.group,
+      title: parent.title,
+      html_url: parent.html_url,
+      labels: parent.labels,
+      node_id: parent.node_id,
+      completion_rate: calculateCompletionRate(parent),
+      due_date: parentDueDate,
+    };
     return data.map((item: GithubIssueDataWithGroupAndChildren): IssueData => ({
       labels: item.labels ?? [],
       completion_rate: calculateCompletionRate(item),
@@ -16,10 +32,7 @@ export function addToChildren(
       title: item.title,
       state: item.state,
       node_id: item.node_id,
-      body: item.body,
-      body_html: item.body_html,
-      body_text: item.body_text,
-      parent: parent as IssueData,
+      parent: parentParsed,
       children: addToChildren(item.children, item),
     }));
   }
