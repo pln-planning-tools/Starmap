@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Text } from '@chakra-ui/react';
+import { Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons'
 import { useEffect, useState } from 'react';
 
@@ -83,10 +83,8 @@ export function RoadmapForm() {
     <Button type="submit" isLoading={globalLoadingState.get()} className={styles.formSubmitButton} border="1px solid #8D8D8D" borderRadius="4px"  bg="rgba(141, 141, 141, 0.3)" onClick={formSubmit}>
       <Text p="6px 10px" color="white">⏎</Text>
     </Button>
-  )
-  if (globalLoadingState.get()) {
-    inputRightElement = <Spinner />
-  }
+  );
+
   const onChangeHandler = (e) => {
     setIsInputBlanked(true);
     setCurrentIssueUrl(e.target.value ?? '')
