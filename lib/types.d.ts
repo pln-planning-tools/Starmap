@@ -21,7 +21,7 @@ export interface GithubIssueDataWithChildren extends GithubIssueData {
 }
 
 export interface GithubIssueDataWithGroupAndChildren extends GithubIssueDataWithGroup, GithubIssueDataWithChildren {
-  pendingChildren?: ParserGetChildrenResponse[]
+  pendingChildren?: PendingChildren[]
 }
 
 export interface IssueData extends GithubIssueDataWithGroupAndChildren {
@@ -34,7 +34,7 @@ export interface IssueData extends GithubIssueDataWithGroupAndChildren {
 export interface RoadmapApiResponseSuccess {
   data: IssueData;
   errors?: StarMapsIssueErrorsGrouped[];
-  pendingChildren: ParserGetChildrenResponse[];
+  pendingChildren: PendingChildren[];
 }
 export interface RoadmapApiResponseFailure {
   error?: { code: string; message: string };
@@ -46,6 +46,9 @@ export type RoadmapApiResponse = RoadmapApiResponseSuccess | RoadmapApiResponseF
 export interface ParserGetChildrenResponse {
   html_url: string;
   group: string;
+}
+export interface PendingChildren extends ParserGetChildrenResponse {
+  parentHtmlUrl: string;
 }
 
 interface RoadmapProps {}
