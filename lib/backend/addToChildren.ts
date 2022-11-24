@@ -1,4 +1,5 @@
 import { getDueDate } from '../parser';
+import { removeUnnecessaryData } from '../removeUnnecessaryData';
 import { GithubIssueDataWithGroupAndChildren, IssueData } from '../types';
 import { calculateCompletionRate } from './calculateCompletionRate';
 
@@ -7,7 +8,7 @@ export function addToChildren(
   parent: IssueData | GithubIssueDataWithGroupAndChildren
 ): IssueData[] {
   if (Array.isArray(data)) {
-    return data.map((item: GithubIssueDataWithGroupAndChildren): IssueData => ({
+    return data.map((item: GithubIssueDataWithGroupAndChildren): IssueData => removeUnnecessaryData({
       labels: item.labels ?? [],
       completion_rate: calculateCompletionRate(item),
       due_date: getDueDate(item).eta,
@@ -19,7 +20,10 @@ export function addToChildren(
       body: item.body,
       body_html: item.body_html,
       body_text: item.body_text,
-      parent: parent as IssueData,
+      parent: {
+        ...parent as IssueData,
+        children: [], // we don't need children in the parent
+      },
       children: addToChildren(item.children, item),
     }));
   }
