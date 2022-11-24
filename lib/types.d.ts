@@ -24,11 +24,13 @@ export interface GithubIssueDataWithGroupAndChildren extends GithubIssueDataWith
   pendingChildren?: PendingChildren[]
 }
 
+export type ParentIssueData = IssueData;
+
 export interface IssueData extends GithubIssueDataWithGroupAndChildren {
   children: IssueData[];
   completion_rate: number;
   due_date: string;
-  parent: IssueData;
+  parent?: ParentIssueData;
 }
 
 export interface RoadmapApiResponseSuccess {
@@ -94,20 +96,20 @@ export interface StarMapsIssueErrorsGrouped {
 }
 
 
-export interface ServerSidePropsResult {
+export interface RoadmapServerSidePropsResult {
   props: {
-    issueData: IssueData | null,
-    errors: StarMapsIssueErrorsGrouped[],
     error: { code: string; message: string } | null,
-    isLocal: boolean,
-    /**
-     * Used via the filter_group query parameter to filter the roadmap by a specific group.
-     */
+    owner: string;
+    repo: string;
+    issue_number: string;
+    isLocal: boolean;
+
     groupBy: string | null,
     error?: { code: string, message: string } | null;
     mode: RoadmapMode;
     dateGranularity: DateGranularityState;
-    pendingChildren: ParserGetChildrenResponse[]
+    pendingChildren?: ParserGetChildrenResponse[];
+    baseUrl: string;
   }
 }
 

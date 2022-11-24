@@ -2,61 +2,73 @@ import { Box } from '@chakra-ui/react';
 import type { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useHookstate } from '@hookstate/core';
 
 import PageHeader from '../../components/layout/PageHeader';
 import { RoadmapTabbedView } from '../../components/roadmap-grid/RoadmapTabbedView';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
-import { API_URL } from '../../config/constants';
-import { IssueData, QueryParameters, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, ServerSidePropsResult } from '../../lib/types';
+import { BASE_PROTOCOL, BASE_URL } from '../../config/constants';
+import { IssueData, QueryParameters, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, RoadmapServerSidePropsResult, StarMapsIssueErrorsGrouped } from '../../lib/types';
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 import { ViewMode } from '../../lib/enums';
 import { setViewMode } from '../../hooks/useViewMode';
 import { DateGranularityState } from '../../lib/enums';
 import { setDateGranularity } from '../../hooks/useDateGranularity';
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 
-export async function getServerSideProps(context): Promise<ServerSidePropsResult> {
-  const [hostname, owner, repo, issues_placeholder, issue_number] = context.query.slug;
+export async function getServerSideProps(context): Promise<RoadmapServerSidePropsResult> {
+  const [hostname, owner, repo, _, issue_number] = context.query.slug;
   const { filter_group, mode, timeUnit }: QueryParameters = context.query;
 
-  const serverSideProps: ServerSidePropsResult['props'] = {
-    errors: [],
-    error: null,
-    issueData: null,
-    isLocal: process.env.IS_LOCAL === 'true',
-    groupBy: filter_group || null,
-    mode: mode || 'grid',
-    dateGranularity: timeUnit || DateGranularityState.Months,
-    pendingChildren: [],
-  };
-
-  try {
-    const res = await fetch(
-      new URL(`${API_URL}?owner=${owner}&repo=${repo}&issue_number=${issue_number}&filter_group=${filter_group}`),
-    );
-    const response: RoadmapApiResponse = await res.json();
-
-    return {
-      props: {
-        ...serverSideProps,
-        errors: response.errors ?? [],
-        error: (response as RoadmapApiResponseFailure).error || null,
-        issueData: ((response as RoadmapApiResponseSuccess).data as IssueData) || null,
-        pendingChildren: (response as RoadmapApiResponseSuccess)?.pendingChildren ?? [],
-      },
-    };
-  } catch (err) {
-    console.error(`err: `, err);
-    return {
-      props: {
-        ...serverSideProps,
-        error: err as { code: string; message: string }
-      }
+  return {
+    props: {
+      owner,
+      repo,
+      issue_number,
+      isLocal: process.env.IS_LOCAL === 'true',
+      groupBy: filter_group || null,
+      mode: mode || 'grid',
+      dateGranularity: timeUnit || DateGranularityState.Months,
+      baseUrl: `${BASE_PROTOCOL}://${BASE_URL}`,
     }
   }
 }
 
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { issueData, error, errors, isLocal, mode, dateGranularity, pendingChildren } = props;
+  const { error: serverError, baseUrl, isLocal, mode, dateGranularity, issue_number, repo, owner } = props;
+
+  const starMapsErrorsState = useHookstate<StarMapsIssueErrorsGrouped[]>([]);
+  const roadmapLoadErrorState = useHookstate<{ code: string; message: string } | null>(null)
+  const issueDataState = useHookstate<IssueData | null>(null);
+  const globalLoadingState = useGlobalLoadingState();
+
+  const fetchRoadMapResponse = () =>
+    fetch(new URL(`${baseUrl}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`))
+    .then((r) => r.json() as RoadmapApiResponse)
+
+  const roadMapResponseState = useHookstate(fetchRoadMapResponse);
+
+  useEffect(() => {
+    console.log('RoadmapPage useEffect: ', roadMapResponseState.promised)
+    if (roadMapResponseState.promised) {
+      globalLoadingState.start();
+    } else if (roadMapResponseState.error) {
+      globalLoadingState.stop()
+      roadmapLoadErrorState.set({code: 'client-recognized-error', message: roadMapResponseState.error.toString()})
+    } else {
+      globalLoadingState.stop();
+        const roadmapResponse = roadMapResponseState.get({noproxy: true});
+        if (roadmapResponse.errors) starMapsErrorsState.set(roadmapResponse.errors);
+        const roadmapResponseSuccess = roadmapResponse as RoadmapApiResponseSuccess;
+        const roadmapResponseFailure = roadmapResponse as RoadmapApiResponseFailure;
+
+        if (roadmapResponseFailure.error != null) {
+          roadmapLoadErrorState.set(roadmapResponseFailure.error);
+        } else {
+          issueDataState.set(roadmapResponseSuccess.data);
+        }
+    }
+  }, [roadMapResponseState.promised]);
 
   useEffect(() => {
     setDateGranularity(dateGranularity);
@@ -69,12 +81,17 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
     setViewMode(hashString);
   }, [urlPath])
 
+  const issueData = issueDataState.get({ noproxy: true }) as IssueData
+  const errors = starMapsErrorsState.get({ noproxy: true });
+  const roadmapLoadError = roadmapLoadErrorState.get({noproxy: true});
+
   return (
     <>
       <PageHeader />
-      <ErrorNotificationDisplay errors={errors} />
+      <ErrorNotificationDisplay errors={errors ?? []} />
       <Box pt={5} pr="120px" pl="120px">
-        {!!error && <Box color='red.500'>{error.message}</Box>}
+        {!!serverError && <Box color='red.500'>{serverError.message}</Box>}
+        {!!roadmapLoadError && <Box color='red.500'>{roadmapLoadError.message}</Box>}
         {!!issueData && mode === 'd3' && <NewRoadmap issueData={issueData} isLocal={isLocal} />}
         {!!issueData && mode === 'grid' && (
           <RoadmapTabbedView issueData={issueData} />
