@@ -42,33 +42,31 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   const issueDataState = useHookstate<IssueData | null>(null);
   const globalLoadingState = useGlobalLoadingState();
 
-  const fetchRoadMapResponse = () =>
-    fetch(new URL(`${baseUrl}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`))
-    .then((r) => r.json() as RoadmapApiResponse)
-
-  const roadMapResponseState = useHookstate(fetchRoadMapResponse);
-
   useEffect(() => {
-    console.log('RoadmapPage useEffect: ', roadMapResponseState.promised)
-    if (roadMapResponseState.promised) {
+    if (globalLoadingState.get()) return;
+    const fetchRoadMapResponse = async () => {
       globalLoadingState.start();
-    } else if (roadMapResponseState.error) {
-      globalLoadingState.stop()
-      roadmapLoadErrorState.set({code: 'client-recognized-error', message: roadMapResponseState.error.toString()})
-    } else {
-      globalLoadingState.stop();
-        const roadmapResponse = roadMapResponseState.get({noproxy: true});
-        if (roadmapResponse.errors) starMapsErrorsState.set(roadmapResponse.errors);
-        const roadmapResponseSuccess = roadmapResponse as RoadmapApiResponseSuccess;
-        const roadmapResponseFailure = roadmapResponse as RoadmapApiResponseFailure;
+      const apiResult = await fetch(new URL(`${baseUrl}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`))
+      const roadmapResponse: RoadmapApiResponse = await apiResult.json();
 
-        if (roadmapResponseFailure.error != null) {
-          roadmapLoadErrorState.set(roadmapResponseFailure.error);
-        } else {
-          issueDataState.set(roadmapResponseSuccess.data);
-        }
-    }
-  }, [roadMapResponseState.promised]);
+      const roadmapResponseSuccess = roadmapResponse as RoadmapApiResponseSuccess;
+      const roadmapResponseFailure = roadmapResponse as RoadmapApiResponseFailure;
+      if (roadmapResponse.errors) {
+        starMapsErrorsState.set(roadmapResponse.errors);
+      }
+
+      if (roadmapResponseFailure.error != null) {
+        roadmapLoadErrorState.set(roadmapResponseFailure.error);
+      } else {
+        issueDataState.set(roadmapResponseSuccess.data);
+      }
+
+      globalLoadingState.stop()
+    };
+
+    fetchRoadMapResponse();
+
+  }, []);
 
   useEffect(() => {
     setDateGranularity(dateGranularity);
