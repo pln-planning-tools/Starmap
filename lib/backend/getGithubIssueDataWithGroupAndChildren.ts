@@ -14,10 +14,12 @@ export async function getGithubIssueDataWithGroupAndChildren (issueData: GithubI
     children = await resolveChildrenWithDepth(await resolveChildren(childrenParsed))
   }
 
-  return {
+  const ghIssueDataWithGroupAndChildren: GithubIssueDataWithGroupAndChildren = {
     ...issueData,
     labels: issueData.labels ?? [],
     children,
     pendingChildren,
   }
+
+  return ghIssueDataWithGroupAndChildren;
 }

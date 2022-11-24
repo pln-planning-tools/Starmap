@@ -3,8 +3,6 @@ import { errorManager } from '../../lib/backend/errorManager';
 import { getChildren } from '../../lib/parser';
 import { getIssue } from '../../lib/backend/issue';
 import {
-  GithubIssueDataWithGroupAndChildren,
-  IssueData,
   RoadmapApiResponse,
   RoadmapApiResponseFailure,
   RoadmapApiResponseSuccess
@@ -12,7 +10,6 @@ import {
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { resolveChildrenWithDepth } from '../../lib/backend/resolveChildrenWithDepth';
 import { addToChildren } from '../../lib/backend/addToChildren';
-
 
 export default async function handler(
   req: NextApiRequest,
@@ -58,21 +55,16 @@ export default async function handler(
       }
     }
 
-    const toReturn: GithubIssueDataWithGroupAndChildren = {
+    const issueData = addToChildren([{
       ...rootIssue,
       root_issue: true,
       group: 'root',
       children
-    };
-
-    const data = {
-      ...addToChildren([toReturn], {} as IssueData)[0],
-      parent: {},
-    };
+    }])[0];
 
     res.status(200).json({
       errors: errorManager.flushErrors(),
-      data,
+      data: issueData,
       pendingChildren: children.flatMap((child) => child.pendingChildren),
     } as RoadmapApiResponseSuccess);
   } catch (err) {
