@@ -18,11 +18,12 @@ jobs:
       with:
         node-version: '18'
 
-    - name: Test and Publish Code Coverage
+    - name: Test
       run: |
         yarn
         yarn test:ci
 
-    - uses: paambaati/codeclimate-action@v3.2.0
+    - name: Publish Code Coverage
+      uses: paambaati/codeclimate-action@v3.2.0
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}
