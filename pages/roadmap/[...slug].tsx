@@ -91,47 +91,49 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
   useEffect(() => {
     if (isPendingChildrenLoading) return;
-    const pendingChildren = pendingChildrenState.get({noproxy: true});
+    const typedPendingChild = pendingChildrenState[0];
+    if (typedPendingChild == null || typedPendingChild.html_url?.value == null) {
+      return
+    }
     const fetchPendingChildren = async () => {
       setIsPendingChildrenLoading(true);
 
       globalLoadingState.start();
-      for await (const typedPendingChild of pendingChildren) {
-        const { issue_number, owner, repo } = paramsFromUrl(typedPendingChild.html_url)
-        const requestBody = {
-          issue_number,
-          owner,
-          repo,
-          parent: findIssueDataByUrl(issueDataState.get() as IssueData, typedPendingChild.parentHtmlUrl)
-        };
-        const pendingChildApiUrl = new URL(`${baseUrl}/api/pendingChild`);
+      const { issue_number, owner, repo } = paramsFromUrl(typedPendingChild.html_url.value)
+      const requestBody = {
+        issue_number,
+        owner,
+        repo,
+        parent: findIssueDataByUrl(issueDataState.get() as IssueData, typedPendingChild.parentHtmlUrl.value)
+      };
+      const pendingChildApiUrl = new URL(`${baseUrl}/api/pendingChild`);
 
-        try {
-          const apiResult = await fetch(pendingChildApiUrl, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestBody)
-          });
-          const pendingChildResponse: IssueData | {error: Error} = await apiResult.json();
-          const pendingChildFailure = pendingChildResponse as {error: Error};
-          const pendingChildSuccess = pendingChildResponse as IssueData;
-          if (pendingChildFailure.error != null) {
-            roadmapLoadErrorState.set({ code: pendingChildFailure.error.name, message: pendingChildFailure.error.message });
-          } else {
-            asyncIssueDataState.merge([pendingChildSuccess]);
-          }
-        } catch (err) {
-          roadmapLoadErrorState.set({code: `Error fetching ${pendingChildApiUrl}`, message: `Error fetching ${pendingChildApiUrl}: ${(err as Error).toString()}`})
+      try {
+        const apiResult = await fetch(pendingChildApiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+        const pendingChildResponse: IssueData | {error: Error} = await apiResult.json();
+        const pendingChildFailure = pendingChildResponse as {error: Error};
+        const pendingChildSuccess = pendingChildResponse as IssueData;
+        if (pendingChildFailure.error != null) {
+          roadmapLoadErrorState.set({ code: pendingChildFailure.error.name, message: pendingChildFailure.error.message });
+        } else {
+          asyncIssueDataState.merge([pendingChildSuccess]);
         }
+      } catch (err) {
+        roadmapLoadErrorState.set({code: `Error fetching ${pendingChildApiUrl}`, message: `Error fetching ${pendingChildApiUrl}: ${(err as Error).toString()}`})
       }
+      pendingChildrenState[0].set(none);
 
       globalLoadingState.stop();
       setIsPendingChildrenLoading(false);
     };
     fetchPendingChildren();
-  }, [issue_number, repo, owner, isRootIssueLoading]);
+  }, [issue_number, repo, owner, isRootIssueLoading, pendingChildrenState.value]);
 
   /**
    * Add asyncIssueData items to issueDataState
