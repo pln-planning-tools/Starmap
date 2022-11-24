@@ -1,5 +1,4 @@
 import { getDueDate } from '../parser';
-import { removeUnnecessaryData } from '../removeUnnecessaryData';
 import { GithubIssueDataWithGroupAndChildren, IssueData } from '../types';
 import { calculateCompletionRate } from './calculateCompletionRate';
 
@@ -10,7 +9,6 @@ export function addToChildren(
 
   if (Array.isArray(data)) {
     const parentAsGhIssueData = parent as GithubIssueDataWithGroupAndChildren;
-    // const parentAsIssueData = parent as IssueData;
     let parentDueDate = '';
     if (parentAsGhIssueData.body_html != null && parentAsGhIssueData.html_url != null) {
       parentDueDate = getDueDate(parentAsGhIssueData).eta

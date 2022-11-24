@@ -1,4 +1,3 @@
-import { omit } from 'lodash';
 import { getChildren } from '../parser';
 import { GithubIssueDataWithGroup, GithubIssueDataWithGroupAndChildren, ParserGetChildrenResponse } from '../types';
 import { resolveChildren } from './resolveChildren';
@@ -6,7 +5,6 @@ import { resolveChildrenWithDepth } from './resolveChildrenWithDepth';
 
 export async function getGithubIssueDataWithGroupAndChildren (issueData: GithubIssueDataWithGroup, usePendingChildren = true): Promise<GithubIssueDataWithGroupAndChildren> {
   const childrenParsed: ParserGetChildrenResponse[] = getChildren(issueData.body_html);
-  // issueData.body
 
   const ghIssueDataWithGroupAndChildren: GithubIssueDataWithGroupAndChildren = {
     ...issueData,
