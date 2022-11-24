@@ -1,11 +1,14 @@
 import { Box, Spinner } from '@chakra-ui/react';
+import { State } from '@hookstate/core';
+import type { Dayjs } from 'dayjs';
 import { group } from 'd3';
 import _, { reverse, sortBy } from 'lodash';
+import React from 'react';
+
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
 import { getInternalLinkForIssue } from '../../lib/general';
 import { DetailedViewGroup, IssueData } from '../../lib/types';
-
 import { useViewMode } from '../../hooks/useViewMode';
 import styles from './Roadmap.module.css';
 import { Grid } from './grid';
@@ -19,9 +22,6 @@ import NumSlider from '../inputs/NumSlider';
 import { dayjs } from '../../lib/client/dayjs';
 import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
-import React from 'react';
-import { convertIssueDataToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
-import { State } from '@hookstate/core';
 
 export function RoadmapDetailed({
   issueDataState
@@ -32,9 +32,10 @@ export function RoadmapDetailed({
    * Don't commit setting this to true.. just a simple toggle so we can debug things.
    */
   const [isDevMode, setIsDevMode] = useState(false);
-  const viewMode = useViewMode();
+  const viewMode = useViewMode() as ViewMode;
 
   const [issuesGrouped, setIssuesGrouped] = useState<DetailedViewGroup[]>([])
+  const [dayjsDates, setDayjsDates] = useState<Dayjs[]>([]);
 
   useEffect(() => {
     if (viewMode) {
@@ -84,7 +85,7 @@ export function RoadmapDetailed({
   // return
       setIssuesGrouped(reverse(Array.from(sortBy(issuesGrouped, ['groupName']))));
     }
-  }, [viewMode, issueDataState.children.value]);
+  }, [viewMode, issueDataState.value]);
 
   /**
    * Magic numbers that just seem to work are:
@@ -100,17 +101,27 @@ export function RoadmapDetailed({
   const [numHeaderTicks, setNumHeaderTicks] = useState(5);
   const [numGridCols, setNumGridCols] = useState(45);
 
-  if (issuesGrouped.length === 0) {
-    return <Spinner />
-  }
 
   const today = dayjs();
+
   /**
    * Collect all due dates from all issues, as DayJS dates.
    */
-  const dayjsDates = issuesGrouped
-    .flatMap((group) => group.items.map((item) => dayjs(item.due_date).utc()))
-    .filter((d) => d.isValid());
+  useEffect(() => {
+    try {
+      const dayjsDates = issuesGrouped
+        .flatMap((group) => group.items.map((item) => dayjs(item.due_date).utc()))
+        .filter((d) => d.isValid());
+      setDayjsDates(dayjsDates);
+    } catch {
+      setDayjsDates([])
+    }
+
+  }, [issuesGrouped])
+
+  if (issuesGrouped.length === 0) {
+    return <Spinner />
+  }
 
   /**
    * Add today
