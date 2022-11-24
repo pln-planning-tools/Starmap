@@ -6,7 +6,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
-import { Center, Link, Image } from '@chakra-ui/react'
+import { Center, Link } from '@chakra-ui/react'
 
 import styles from './LandingPage.module.css'
 import PageHeader from '../components/layout/PageHeader';
@@ -29,7 +29,6 @@ export async function getServerSideProps(context): Promise<{props: SSProps}> {
 const chakraUiRendererTheme: Parameters<typeof ChakraUIRenderer>[0] = {
   a: (props) => {
     const { children, href } = props;
-    const link = children[0] as string;
 
     return (
       <Link target="_blank" rel="noopener noreferrer" href={href} color="#4987BD">
