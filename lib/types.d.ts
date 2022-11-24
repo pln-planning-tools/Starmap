@@ -19,7 +19,7 @@ export interface GithubIssueDataWithChildren extends GithubIssueData {
 }
 
 export interface GithubIssueDataWithGroupAndChildren extends GithubIssueDataWithGroup, GithubIssueDataWithChildren {
-  pendingChildren?: ParserGetChildrenResponse[]
+  pendingChildren?: PendingChildren[]
 }
 export type ProcessedGithubIssueDataWithGroupAndChildren = Omit<GithubIssueDataWithGroupAndChildren, 'body' | 'body_html' | 'body_text'>
 
@@ -49,7 +49,7 @@ export interface IssueData extends  Omit<PostParsedIssueData, 'children' | 'pare
 export interface RoadmapApiResponseSuccess {
   data: IssueData;
   errors?: StarMapsIssueErrorsGrouped[];
-  pendingChildren: ParserGetChildrenResponse[];
+  pendingChildren: PendingChildren[];
 }
 export interface RoadmapApiResponseFailure {
   error?: { code: string; message: string };
@@ -61,6 +61,9 @@ export type RoadmapApiResponse = RoadmapApiResponseSuccess | RoadmapApiResponseF
 export interface ParserGetChildrenResponse {
   html_url: string;
   group: string;
+}
+export interface PendingChildren extends ParserGetChildrenResponse {
+  parentHtmlUrl: string;
 }
 
 interface RoadmapProps {}
@@ -106,20 +109,20 @@ export interface StarMapsIssueErrorsGrouped {
 }
 
 
-export interface ServerSidePropsResult {
+export interface RoadmapServerSidePropsResult {
   props: {
-    issueData: IssueData | null,
-    errors: StarMapsIssueErrorsGrouped[],
     error: { code: string; message: string } | null,
-    isLocal: boolean,
-    /**
-     * Used via the filter_group query parameter to filter the roadmap by a specific group.
-     */
+    owner: string;
+    repo: string;
+    issue_number: string;
+    isLocal: boolean;
+
     groupBy: string | null,
     error?: { code: string, message: string } | null;
     mode: RoadmapMode;
     dateGranularity: DateGranularityState;
-    pendingChildren: ParserGetChildrenResponse[]
+    pendingChildren?: ParserGetChildrenResponse[];
+    baseUrl: string;
   }
 }
 
