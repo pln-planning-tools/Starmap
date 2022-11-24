@@ -1,5 +1,5 @@
 import { Box, Spinner } from '@chakra-ui/react';
-import { State } from '@hookstate/core';
+import { State, useHookstate } from '@hookstate/core';
 import type { Dayjs } from 'dayjs';
 import _ from 'lodash';
 import React from 'react';
@@ -33,12 +33,12 @@ export function RoadmapDetailed({
   const [isDevMode, setIsDevMode] = useState(false);
   const viewMode = useViewMode() as ViewMode;
 
-  const [issuesGrouped, setIssuesGrouped] = useState<DetailedViewGroup[]>([]);
+  const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
   const [dayjsDates, setDayjsDates] = useState<Dayjs[]>([]);
 
   useEffect(() => {
     if (viewMode) {
-      setIssuesGrouped(convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode))
+      issuesGroupedState.set(convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode))
     }
   }, [viewMode, issueDataState.value]);
 
@@ -64,7 +64,7 @@ export function RoadmapDetailed({
    */
   useEffect(() => {
     try {
-      const dayjsDates = issuesGrouped
+      const dayjsDates = issuesGroupedState.value
         .flatMap((group) => group.items.map((item) => dayjs(item.due_date).utc()))
         .filter((d) => d.isValid());
       setDayjsDates(dayjsDates);
@@ -72,9 +72,9 @@ export function RoadmapDetailed({
       setDayjsDates([])
     }
 
-  }, [issuesGrouped])
+  }, [issuesGroupedState.value])
 
-  if (issuesGrouped.length === 0) {
+  if (issuesGroupedState.value.length === 0) {
     return <Spinner />
   }
 
@@ -143,13 +143,13 @@ export function RoadmapDetailed({
           <Headerline numGridCols={numGridCols} ticksRatio={3}/>
         </Grid>
         <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={true} >
-          {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {
+          {issuesGroupedState.map((group, index) => {
             return (
               <React.Fragment key={`Fragment-${index}`} >
                 <GroupHeader group={group} key={`GroupHeader-${index}`}/><GroupWrapper key={`GroupWrapper-${index}`}>
-                  {!!group.items &&
+                  {!!group.items.value &&
                     _.sortBy(group.items, ['title']).map((item, index) => {
-                      return <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} />;
+                      return <GridRow key={index} timeScaler={globalTimeScaler} milestone={item.value} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} />;
                     })}
                 </GroupWrapper>
               </React.Fragment>

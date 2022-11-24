@@ -17,9 +17,9 @@ export function GroupHeader({ group }: GroupHeaderProps) {
 
   if (viewMode === ViewMode.Detail) {
     if (isEmpty(group.url)) {
-      groupNameElement = <Text color="black">{group.groupName}</Text>
+      groupNameElement = <Text color="black">{group.groupName.value}</Text>
     } else {
-      groupNameElement = <NextLink href={group.url}>{group.groupName}</NextLink>
+      groupNameElement = <NextLink href={group.url.value}>{group.groupName.value}</NextLink>
     }
   }
 

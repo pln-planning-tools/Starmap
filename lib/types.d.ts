@@ -1,3 +1,5 @@
+import type {State} from '@hookstate/core'
+
 import type { RoadmapMode, IssueStates, DateGranularityState } from './enums'
 
 export interface GithubIssueData {
@@ -134,7 +136,7 @@ export interface DetailedViewGroup {
 }
 
 export interface GroupHeaderProps {
-  group: DetailedViewGroup;
+  group: State<DetailedViewGroup>;
 }
 
 export interface UrlMatchSlugs {
