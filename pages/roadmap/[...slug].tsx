@@ -90,9 +90,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   }, [issue_number, repo, owner]);
 
   useEffect(() => {
-
     if (isPendingChildrenLoading) return;
-    let limit = 0;
     const pendingChildren = pendingChildrenState.get({noproxy: true});
     const fetchPendingChildren = async () => {
       setIsPendingChildrenLoading(true);
@@ -139,7 +137,6 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
    * Add asyncIssueData items to issueDataState
    */
   useEffect(() => {
-    if (isRootIssueLoading || isPendingChildrenLoading) return;
     const issueData = issueDataState.get({noproxy: true}) as IssueData;
     const asyncIssues = asyncIssueDataState.get();
     if (asyncIssues.length === 0) {
@@ -165,7 +162,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       asyncIssueDataState[0].set(none)
     }
 
-  }, [isRootIssueLoading, isPendingChildrenLoading, asyncIssueDataState.value])
+  }, [asyncIssueDataState.value])
 
   useEffect(() => {
     setDateGranularity(dateGranularity);

@@ -19,9 +19,6 @@ import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 
 export function RoadmapTabbedView({ issueDataState, isRootIssueLoading, isPendingChildrenLoading }: { issueDataState: State<IssueData>, isRootIssueLoading: boolean, isPendingChildrenLoading: boolean }) {
-  if (isRootIssueLoading || isPendingChildrenLoading) {
-    return <Spinner />
-  }
   if (issueDataState.children.length === 0) {
     return (<></>);
   }
@@ -72,7 +69,7 @@ export function RoadmapTabbedView({ issueDataState, isRootIssueLoading, isPendin
   return (
     <>
       <Box className={styles.timelineBox}>
-        <Header issueDataState={issueDataState} />
+        <Header issueDataState={issueDataState} isPendingChildrenLoading={isPendingChildrenLoading} isRootIssueLoading={isRootIssueLoading}/>
         <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} isLazy>
           <TabList>
             {tabs.map(renderTab)}
