@@ -46,7 +46,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
     if (globalLoadingState.get()) return;
     const fetchRoadMapResponse = async () => {
       globalLoadingState.start();
-      const roadmapApiUrl = `${baseUrl}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
+      const roadmapApiUrl = `${window.location.origin}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
       try {
         const apiResult = await fetch(new URL(roadmapApiUrl))
         const roadmapResponse: RoadmapApiResponse = await apiResult.json();
