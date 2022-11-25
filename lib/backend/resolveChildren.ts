@@ -6,9 +6,8 @@ export async function resolveChildren (children: ParserGetChildrenResponse[]): P
   if (!Array.isArray(children)) {
     throw new Error('Children is not an array. Is this a root issue?');
   }
-
   try {
-    const validChildren: Promise<GithubIssueDataWithGroup>[] = children.map(
+    return await Promise.all(children.map(
       async (child: ParserGetChildrenResponse): Promise<GithubIssueDataWithGroup> => {
         try {
           return await convertParsedChildToGroupedIssueData(child);
@@ -25,9 +24,7 @@ export async function resolveChildren (children: ParserGetChildrenResponse[]): P
           throw err;
         }
       }
-    );
-
-    return await Promise.all(validChildren);
+    ));
   } catch (reason) {
     throw new Error(`Error resolving children: ${reason}`);
   }
