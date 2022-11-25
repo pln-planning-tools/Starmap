@@ -1,4 +1,7 @@
-import { GithubIssueData, StarMapsError } from '../types';
+import {
+  GithubIssueData,
+  StarMapsError
+} from '../types';
 import { groupStarMapsErrors } from '../groupStarMapsErrors';
 
 export class ErrorManager {
