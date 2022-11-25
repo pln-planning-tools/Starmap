@@ -22,10 +22,8 @@ export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: Stat
     children: v.children.map((x) => ({ ...x, group: x.parent?.title ?? '' })),
   }));
 
-  const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
-
-  const issueDataLevelOneGrouped: DetailedViewGroup[] = Array.from(
-    group(issueDataLevelOne, (d) => d.group),
+  const getGroupedIssues = (issueData: IssueData[]): DetailedViewGroup[] => Array.from(
+    group(issueData, (d) => d.group),
     ([key, value]) => ({
       groupName: key,
       items: value,
@@ -34,14 +32,10 @@ export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: Stat
   );
 
   const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, children: [v], group: v.title }));
-  const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = Array.from(
-    group(issueDataLevelOneIfNoChildren, (d) => d.group),
-    ([key, value]) => ({
-      groupName: key,
-      items: value,
-      url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
-    }),
-  );
+
+  const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
+  const issueDataLevelOneGrouped: DetailedViewGroup[] = getGroupedIssues(issueDataLevelOne);
+  const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = getGroupedIssues(issueDataLevelOneIfNoChildren);
 
   let issuesGrouped: DetailedViewGroup[];
   if (viewMode === ViewMode.Detail) {
