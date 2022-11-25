@@ -2,8 +2,6 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 
 import { dayjs } from './client/dayjs';
-import { paramsFromUrl } from './paramsFromUrl';
-import { IssueData } from './types';
 
 export const toTimestamp = (date) => (_.isDate(date) && +new Date(date)) || +new Date(date?.split('-'));
 
@@ -25,14 +23,6 @@ export const addOffset = (dates: Date[], { offsetStart, offsetEnd }: { offsetSta
 
   return datesWithOffset;
 };
-
-export const getInternalLinkForIssue = (issue?: IssueData): string => {
-  if (issue == null) {
-    return '#'
-  }
-  const urlParams = paramsFromUrl(issue.html_url);
-  return `/roadmap/github.com/${urlParams.owner}/${urlParams.repo}/issues/${urlParams.issue_number}`
-}
 
 export const formatDateDayJs = (date: string): Date => dayjs(date).utc().toDate();
 export const formatDateArrayDayJs = (dates: string[]): Date[] => dates.map((date) => formatDateDayJs(date));

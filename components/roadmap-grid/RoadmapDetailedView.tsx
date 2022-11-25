@@ -3,7 +3,7 @@ import { group } from 'd3';
 import _ from 'lodash';
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
-import { getInternalLinkForIssue } from '../../lib/general';
+import { getLinkForRoadmapChild } from '../../lib/client/linkUtils';
 import { DetailedViewGroup, IssueData } from '../../lib/types';
 
 import { useViewMode } from '../../hooks/useViewMode';
@@ -44,7 +44,7 @@ export function RoadmapDetailed({
     ([key, value]) => ({
       groupName: key,
       items: value,
-      url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+      url: getLinkForRoadmapChild(newIssueData.find((i) => i.title === key)),
     }),
   );
 
@@ -54,7 +54,7 @@ export function RoadmapDetailed({
     ([key, value]) => ({
       groupName: key,
       items: value,
-      url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+      url: getLinkForRoadmapChild(newIssueData.find((i) => i.title === key)),
     }),
   );
 
@@ -69,7 +69,7 @@ export function RoadmapDetailed({
       ([key, value]) => ({
         groupName: key,
         items: value,
-        url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+        url: getLinkForRoadmapChild(newIssueData.find((i) => i.title === key)),
       }),
     );
   }
