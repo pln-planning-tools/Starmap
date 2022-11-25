@@ -1,5 +1,5 @@
 import NextLink from 'next/link';
-import { Flex, Spacer, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 
 import { dayjs } from '../../lib/client/dayjs';
 import { IssueData } from '../../lib/types';
@@ -7,6 +7,7 @@ import { getInternalLinkForIssue } from '../../lib/general';
 import styles from './Roadmap.module.css';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
 import { TimeScaler } from '../../lib/client/TimeScaler';
+import { ReactElement } from 'react-markdown/lib/react-markdown';
 
 export function GridRow({
   milestone,
@@ -22,7 +23,7 @@ export function GridRow({
   numGridCols: number;
   numHeaderItems: number;
   timeScaler: TimeScaler;
-}) {
+}): ReactElement | null {
   const closestDateIdx = Math.round(timeScaler.getColumn(dayjs.utc(milestone.due_date).toDate()));
   const span = Math.max(4, numGridCols / timelineTicks.length);
   const closest = span * (closestDateIdx - 1);
