@@ -1,24 +1,27 @@
 import {
   Box,
-  Spinner,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs
 } from '@chakra-ui/react';
-import { State } from '@hookstate/core';
 import { useRouter } from 'next/router';
+import { ReactElement } from 'react-markdown/lib/react-markdown';
 
 import { setViewMode, useViewMode } from '../../hooks/useViewMode';
 import { DEFAULT_INITIAL_VIEW_MODE } from '../../lib/defaults';
 import { ViewMode } from '../../lib/enums';
-import { IssueData } from '../../lib/types';
+import { IssueDataViewInput } from '../../lib/types';
 import Header from './header';
 import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 
-export function RoadmapTabbedView({ issueDataState, isRootIssueLoading, isPendingChildrenLoading }: { issueDataState: State<IssueData>, isRootIssueLoading: boolean, isPendingChildrenLoading: boolean }) {
+export function RoadmapTabbedView({
+  issueDataState,
+  isRootIssueLoading,
+  isPendingChildrenLoading
+}: IssueDataViewInput): ReactElement {
   if (issueDataState.children.length === 0) {
     return (<></>);
   }
