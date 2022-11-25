@@ -48,7 +48,7 @@ export function RoadmapDetailed({
     }),
   );
 
-  const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, children: [v], group: v.title }));
+  const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, group: v.title }));
   const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = Array.from(
     group(issueDataLevelOneIfNoChildren, (d) => d.group),
     ([key, value]) => ({
