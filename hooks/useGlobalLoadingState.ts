@@ -12,4 +12,3 @@ const wrapState = (s: State<boolean>) => ({
 // The following 2 functions can be exported now:
 export const accessGlobalLoadingState = () => wrapState(globalLoadingState)
 export const useGlobalLoadingState = () => wrapState(useHookstate(globalLoadingState))
-

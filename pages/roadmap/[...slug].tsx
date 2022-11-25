@@ -1,23 +1,30 @@
 import { Box } from '@chakra-ui/react';
+import { none, State, useHookstate } from '@hookstate/core';
 import type { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { none, State, useHookstate } from '@hookstate/core';
 
+import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 import PageHeader from '../../components/layout/PageHeader';
 import { RoadmapTabbedView } from '../../components/roadmap-grid/RoadmapTabbedView';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
-import { BASE_PROTOCOL, BASE_URL } from '../../config/constants';
-import { IssueData, PendingChildren, QueryParameters, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, RoadmapServerSidePropsResult, StarMapsIssueErrorsGrouped } from '../../lib/types';
-import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
-import { ViewMode } from '../../lib/enums';
-import { setViewMode } from '../../hooks/useViewMode';
-import { DateGranularityState } from '../../lib/enums';
+import { BASE_PROTOCOL } from '../../config/constants';
 import { setDateGranularity } from '../../hooks/useDateGranularity';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
-import { paramsFromUrl } from '../../lib/paramsFromUrl';
+import { setViewMode } from '../../hooks/useViewMode';
+import { DateGranularityState, ViewMode } from '../../lib/enums';
 import { findIssueDataByUrl } from '../../lib/findIssueDataByUrl';
-import { addToChildren } from '../../lib/backend/addToChildren';
+import { paramsFromUrl } from '../../lib/paramsFromUrl';
+import {
+  IssueData,
+  PendingChildren,
+  QueryParameters,
+  RoadmapApiResponse,
+  RoadmapApiResponseFailure,
+  RoadmapApiResponseSuccess,
+  RoadmapServerSidePropsResult,
+  StarMapsIssueErrorsGrouped
+} from '../../lib/types';
 
 export async function getServerSideProps(context): Promise<RoadmapServerSidePropsResult> {
   const [hostname, owner, repo, _, issue_number] = context.query.slug;
