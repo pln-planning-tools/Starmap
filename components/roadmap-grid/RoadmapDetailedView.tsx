@@ -1,13 +1,11 @@
 import { Box, Spinner } from '@chakra-ui/react';
 import { State } from '@hookstate/core';
 import type { Dayjs } from 'dayjs';
-import { group } from 'd3';
-import _, { reverse, sortBy } from 'lodash';
+import _ from 'lodash';
 import React from 'react';
 
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
-import { getInternalLinkForIssue } from '../../lib/general';
 import { DetailedViewGroup, IssueData } from '../../lib/types';
 import { useViewMode } from '../../hooks/useViewMode';
 import styles from './Roadmap.module.css';

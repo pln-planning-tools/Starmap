@@ -1,13 +1,17 @@
+import { Center, Flex, Link, Spacer, Spinner, Text } from '@chakra-ui/react';
 import Image from 'next/image';
-import { Link, Text, Flex, Spacer, Center, Spinner } from '@chakra-ui/react';
-import NextLink from 'next/link'
+import NextLink from 'next/link';
 
-import themes from '../theme/constants';
+import { ReactElement } from 'react-markdown/lib/react-markdown';
+import { IssueDataViewInput } from '../../lib/types';
 import GitHubSvgIcon from '../icons/GitHubLogo.svg';
-import { IssueData } from '../../lib/types';
-import { State } from '@hookstate/core';
+import themes from '../theme/constants';
 
-export default function Header({ issueDataState, isRootIssueLoading, isPendingChildrenLoading }: { issueDataState: State<IssueData>, isRootIssueLoading: boolean, isPendingChildrenLoading: boolean }) {
+export default function Header({
+  issueDataState,
+  isRootIssueLoading,
+  isPendingChildrenLoading
+}: IssueDataViewInput): ReactElement | null {
   if (issueDataState.html_url.value == null || typeof issueDataState.html_url.value !== 'string') {
     console.log('error with issueData', issueDataState.get({noproxy: true}))
     return null;

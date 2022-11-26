@@ -148,3 +148,9 @@ export interface QueryParameters {
   mode: RoadmapMode;
   timeUnit: DateGranularityState;
 }
+
+export interface IssueDataViewInput {
+  issueDataState: State<IssueData>,
+  isRootIssueLoading: boolean,
+  isPendingChildrenLoading: boolean
+}
