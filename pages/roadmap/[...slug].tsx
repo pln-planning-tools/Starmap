@@ -92,7 +92,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   return (
     <>
       <PageHeader />
-      <ErrorNotificationDisplay errors={errors ?? []} />
+      <ErrorNotificationDisplay errors={errors ?? []} issueDataState={issueDataState}/>
       <Box pt={5} pr="120px" pl="120px">
         {!!serverError && <Box color='red.500'>{serverError.message}</Box>}
         {!!roadmapLoadError && <Box color='red.500'>{roadmapLoadError.message}</Box>}

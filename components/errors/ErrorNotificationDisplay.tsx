@@ -1,17 +1,30 @@
 import { Box, Button, Center, Collapse, IconButton } from '@chakra-ui/react';
-import {ChevronDownIcon} from '@chakra-ui/icons'
 import { useState } from 'react';
+import type {State} from '@hookstate/core';
 
-import { StarMapsIssueErrorsGrouped } from '../../lib/types';
+import { IssueData, StarMapsIssueErrorsGrouped } from '../../lib/types';
 import { ErrorNotificationHeader } from './ErrorNotificationHeader';
 import { ErrorNotificationBody } from './ErrorNotificationBody';
+import React from 'react';
+import { ViewMode } from '../../lib/enums';
+import { errorFilters } from '../../lib/client/errorFilters';
+import { useViewMode } from '../../hooks/useViewMode';
 
 export interface ErrorNotificationDisplayProps {
-  errors: StarMapsIssueErrorsGrouped[]
+  errors: StarMapsIssueErrorsGrouped[];
+  issueDataState: State<IssueData | null>;
 }
-export function ErrorNotificationDisplay ({errors}: ErrorNotificationDisplayProps) {
+
+export function ErrorNotificationDisplay ({errors, issueDataState}: ErrorNotificationDisplayProps) {
   const [isExpanded, setIsExpanded] = useState(true);
-  if (errors == null || errors.length === 0) {
+
+  const viewMode = useViewMode();
+  let filteredErrors: StarMapsIssueErrorsGrouped[] = errors;
+  if (viewMode && issueDataState.ornull != null) {
+    filteredErrors = errorFilters[viewMode](errors, issueDataState)
+  }
+
+  if (filteredErrors == null || filteredErrors.length === 0) {
     return null;
   }
 
@@ -26,7 +39,7 @@ export function ErrorNotificationDisplay ({errors}: ErrorNotificationDisplayProp
         pb="1rem"
       >
         <ErrorNotificationHeader isExpanded={isExpanded} toggle={handleToggle} />
-        <ErrorNotificationBody isExpanded={isExpanded} errors={errors} />
+        <ErrorNotificationBody isExpanded={isExpanded} errors={filteredErrors} />
       </Box>
   </Center>
 }
