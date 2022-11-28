@@ -3,21 +3,3 @@
   padding: 0 120px;
   margin: 6vh 0 15vh 0;
 }
-
-.UserGuide-article img[alt="GitHub Logo"] {
-  height: 24px;
-  width: 24px;
-  display: inline;
-  float: right;
-  margin-left: 0.5rem;
-}
-
-.UserGuide-article  a:has(img[alt="GitHub Logo"]) {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  font-size: 15px;
-  font-weight: 400;
-  color: #313239;
-
-}

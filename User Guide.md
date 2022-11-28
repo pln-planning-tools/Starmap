@@ -1,5 +1,3 @@
-[View in GitHub ![GitHub Logo](images/GitHubLogo.png#right)](https://github.com/pln-planning-tools/StarMaps)
-
 # StarMaps User Guide
 
 StarMaps is a tool used to generate graphical representations of roadmaps which are stored as issues in GitHub. For the purposes of StarMaps, a Roadmap is an issue that contains a set of date-bound project Milestone issues for the project.
