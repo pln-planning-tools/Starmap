@@ -37,7 +37,7 @@ describe('errorFilters.ts', function() {
       expect(actual[2].issueUrl).toEqual('child2');
     });
 
-    it('Can filter out the root issue and direct children only', () => {
+    it('Can filter out the root issue and grandchildren', () => {
       const errFilterFn = getIssueErrorFilter(2);
       const actual = errFilterFn(errors, testIssueData);
       expect(actual).toHaveLength(5);
