@@ -20,8 +20,8 @@ export function ErrorNotificationDisplay ({errors, issueDataState}: ErrorNotific
 
   const viewMode = useViewMode();
   let filteredErrors: StarMapsIssueErrorsGrouped[] = errors;
-  if (viewMode && issueDataState.ornull != null) {
-    filteredErrors = errorFilters[viewMode](errors, issueDataState)
+  if (viewMode && issueDataState.value != null) {
+    filteredErrors = errorFilters[viewMode](errors, issueDataState.value)
   }
 
   if (filteredErrors == null || filteredErrors.length === 0) {
