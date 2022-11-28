@@ -57,7 +57,7 @@
   /* min-height: 6rem; */
 }
 
-.item.group.detailViewHeader:nth-child(2) {
+.scrollable .item.group:nth-child(2) {
   margin-top: 20px;
 }
 

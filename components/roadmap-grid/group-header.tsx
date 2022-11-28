@@ -24,7 +24,7 @@ export function GroupHeader({ group }: GroupHeaderProps) {
   }
 
   return (
-    <div className={`${viewMode === ViewMode.Detail ? styles.detailViewHeader : null} ${styles.item} ${styles.group}`}>
+    <div className={`${styles.item} ${styles.group}`}>
       <div>{groupNameElement}</div>
     </div>
   );
