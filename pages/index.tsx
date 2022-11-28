@@ -51,7 +51,7 @@ const App: NextPage<SSProps> = ({markdown}: SSProps) => {
       <Center>
         <article className={styles['UserGuide-article']}>
           <Flex w="100%" justify="flex-end">
-            <NextLink style={{display: 'inline'}} passHref href={starmapsGithubUrl}>
+            <NextLink style={{display: 'span'}} passHref href={starmapsGithubUrl}>
               <Link target="_blank" rel="noopener noreferrer">
                 <Center minWidth="9rem">
                   <Text as='span' fontSize={15} fontWeight={400} color={themes.light.text.color} pr="0.5rem">View in GitHub</Text>
