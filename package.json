@@ -13,6 +13,7 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.12",
     "@chakra-ui/react": "^2.3.6",
+    "@chakra-ui/system": "^2.3.3",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@hookstate/core": "^4.0.0-rc21",
@@ -23,7 +24,6 @@
     "@octokit/rest": "^19.0.5",
     "@types/d3": "^7.4.0",
     "@types/lodash": "^4.14.186",
-    "@types/mermaid": "^9.1.0",
     "chakra-ui-markdown-renderer": "^4.1.0",
     "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
