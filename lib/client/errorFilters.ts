@@ -10,8 +10,8 @@ import { StarMapsIssueErrorsGrouped, IssueData } from '../types';
  * @param {number} maxDepth - A 0-indexed number representing the maximum depth of the tree to search.
  */
 export const getIssueErrorFilter = (maxDepth: number) =>
-  (errors: StarMapsIssueErrorsGrouped[], issueDataState: IssueData, currentDepth = 0) => {
-    return errors.filter(({ issueUrl: errorIssueUrl, issueTitle }) => {
+  (errors: StarMapsIssueErrorsGrouped[], issueDataState: IssueData) => {
+    return errors.filter(({ issueUrl: errorIssueUrl }) => {
       if (issueDataState != null) {
         const foundIssueDepth = findIssueDepthByUrl(issueDataState, errorIssueUrl);
 
