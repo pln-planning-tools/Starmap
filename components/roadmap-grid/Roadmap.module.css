@@ -13,6 +13,7 @@
   overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  margin-top: -20px
 }
 
 .scrollable::-webkit-scrollbar {
@@ -148,7 +149,7 @@ a.milestoneTitle {
   position:relative;
   /** must align with .itemHeader left positioning. This is done in order to handle the centering of the text and grid ticks*/
   left: -1rem;
-  z-index: 999;
+  z-index: 6;
 }
 
 .timelineHeaderLine {

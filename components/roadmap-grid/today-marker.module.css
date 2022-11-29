@@ -13,7 +13,7 @@
   z-index: 3;
   position: relative;
   width: 1px;
-  top: -3rem;
+  top: -1.75rem;
 }
 
 .todayMarker::before {
@@ -28,7 +28,7 @@
   color: #F39106;
   z-index: 6;
   font-weight: 900;
-  top: -5rem;
+  top: -3.75rem;
   padding: 0.5rem;
   font-weight: 700;
   font-size: 19px;
