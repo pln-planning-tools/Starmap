@@ -13,11 +13,9 @@ export function calculateCompletionRate ({ children, state }: CalculateCompletio
   const total = children.length + 1;
   let closed = 0;
   children.concat([{ state }]).forEach(({ state }) => {
-     if (state === IssueStates.OPEN) {
-      open++;
-     } else if (state === IssueStates.CLOSED) {
+    if (state === IssueStates.CLOSED) {
       closed++;
-     }
+    }
   });
   const completionRate = Number((closed / total) * 100 || 0).toFixed(2);
 
