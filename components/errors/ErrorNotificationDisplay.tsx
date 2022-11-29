@@ -24,7 +24,7 @@ export function ErrorNotificationDisplay ({errors, issueDataState}: ErrorNotific
     filteredErrors = errorFilters[viewMode](errors, issueDataState.value)
   }
 
-  if (filteredErrors == null || filteredErrors.length === 0) {
+  if (filteredErrors?.length === 0) {
     return null;
   }
 
