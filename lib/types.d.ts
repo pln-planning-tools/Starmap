@@ -64,8 +64,6 @@ export interface PendingChildren extends ParserGetChildrenResponse {
   parentHtmlUrl: string;
 }
 
-interface RoadmapProps {}
-
 export interface StarMapsError {
   /**
    * The GitHub html_url for the issue with the error.

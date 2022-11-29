@@ -18,7 +18,7 @@ export function ErrorNotificationBody({ isExpanded, errors }: ErrorNotificationB
       <SimpleGrid columns={2} spacing={10} className="">
         <Text as="b" width="15rem">Link</Text>
         <Text as="b" width="15rem">Description of Error(s)</Text>
-        {errors.map((error, index) => (
+        {errors.map((error) => (
             <div className={styles.errorLineItemWrapper}>
               <Text className={`${styles.errorIssueLinkText} ${styles.errorIssueLinkWrapper}`}>
                 <NextLink passHref href={error.issueUrl}>

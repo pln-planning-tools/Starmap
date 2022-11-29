@@ -11,7 +11,6 @@ import { dayjs } from './dayjs';
  */
 const getQuantilesNew = (ticks: Date[], totalTicks: number): Date[] => {
   const newTicks = ticks.map((v) => dayjs.utc(v));
-  const tickIncrement = Number(1 / totalTicks);
   const scaleDate = scaleTime()
     .domain([dayjs.min(newTicks).toDate(), dayjs.max(newTicks).toDate()])
     .range([1, totalTicks]);
@@ -40,7 +39,7 @@ const getQuantiles = (ticks: Date[], totalTicks: number): Date[] => {
   return Array(totalTicks)
     .fill(Number(0))
     .reduce(
-      (a, b, index) => {
+      (a, _b, index) => {
         const prev = parseFloat((Number(a[index]) || 0).toPrecision(2));
 
         return [...a, parseFloat(Number(Number(prev) + Number(tickIncrement)).toPrecision(2))];

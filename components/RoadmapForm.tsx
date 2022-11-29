@@ -18,7 +18,7 @@ export function RoadmapForm() {
   const [issueUrl, setIssueUrl] = useState<string | null>();
   const [error, setError] = useState<Error | null>(null);
   const [isInputBlanked, setIsInputBlanked] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(globalLoadingState.get());
+  const [_isLoading, setIsLoading] = useState(globalLoadingState.get());
 
   useEffect(() => {
     if (!isInputBlanked && isEmpty(currentIssueUrl) && window.location.pathname.length > 1) {

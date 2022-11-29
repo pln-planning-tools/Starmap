@@ -14,7 +14,7 @@ import { GridRow } from './grid-row';
 import { GroupHeader } from './group-header';
 import { GroupWrapper } from './group-wrapper';
 import { Headerline } from './headerline';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import NumSlider from '../inputs/NumSlider';
 import { dayjs } from '../../lib/client/dayjs';
 import { DEFAULT_TICK_COUNT } from '../../config/constants';
@@ -28,7 +28,7 @@ export function RoadmapDetailed({
   /**
    * Don't commit setting this to true.. just a simple toggle so we can debug things.
    */
-  const [isDevMode, setIsDevMode] = useState(false);
+  const [isDevMode] = useState(false);
   const viewMode = useViewMode();
   const newIssueData = issueData.children.map((v) => ({
     ...v,
@@ -119,9 +119,7 @@ export function RoadmapDetailed({
    */
   const dates = dayjsDates
     .map((date) => date.toDate())
-    .sort((a, b) => {
-      return a.getTime() - b.getTime();
-    });
+    .sort((a, b) => a.getTime() - b.getTime());
 
   /**
    * Magic numbers that just seem to work are:
@@ -159,18 +157,14 @@ export function RoadmapDetailed({
           <Headerline numGridCols={numGridCols} ticksRatio={3}/>
         </Grid>
         <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={true} >
-          {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => {
-            return (
+          {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => (
               <React.Fragment key={`Fragment-${index}`} >
                 <GroupHeader group={group} key={`GroupHeader-${index}`}/><GroupWrapper key={`GroupWrapper-${index}`}>
                   {!!group.items &&
-                    _.sortBy(group.items, ['title']).map((item, index) => {
-                      return <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} />;
-                    })}
+                    _.sortBy(group.items, ['title']).map((item, index) => <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} />)}
                 </GroupWrapper>
               </React.Fragment>
-            );
-          })}
+            ))}
         </Grid>
       </Box>
     </>

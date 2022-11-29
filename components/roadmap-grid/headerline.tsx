@@ -1,4 +1,4 @@
-import { Center, GridItem } from '@chakra-ui/react';
+import { GridItem } from '@chakra-ui/react';
 
 import styles from './Roadmap.module.css';
 import { GroupWrapper } from './group-wrapper';
