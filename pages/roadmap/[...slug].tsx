@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { none, State, useHookstate } from '@hookstate/core';
 import type { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 import PageHeader from '../../components/layout/PageHeader';
@@ -89,7 +89,6 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         roadmapLoadErrorState.set({code: `Error fetching ${roadmapApiUrl}`, message: `Error fetching ${roadmapApiUrl}: ${(err as Error).toString()}`})
       }
       setIsRootIssueLoading(false);
-      globalLoadingState.stop();
     };
 
     fetchRoadMap();
@@ -105,7 +104,6 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
     const fetchPendingChildren = async () => {
       setIsPendingChildrenLoading(true);
 
-      globalLoadingState.start();
       const { issue_number, owner, repo } = paramsFromUrl(typedPendingChild.html_url.value)
       const requestBody = {
         issue_number,
@@ -136,8 +134,9 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       }
       pendingChildrenState[0].set(none);
 
-      globalLoadingState.stop();
-      setIsPendingChildrenLoading(false);
+      if (pendingChildrenState.length === 0) {
+        setIsPendingChildrenLoading(false);
+      }
     };
     fetchPendingChildren();
   }, [issue_number, repo, owner, isRootIssueLoading, pendingChildrenState.value]);
@@ -171,7 +170,16 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       asyncIssueDataState[0].set(none)
     }
 
-  }, [asyncIssueDataState.value])
+  }, [asyncIssueDataState.value]);
+
+  /**
+   * Resolve global loading after root issue and pending issues are done.
+   */
+  useEffect(() => {
+    if (!isPendingChildrenLoading && !isRootIssueLoading) {
+      globalLoadingState.stop();
+    }
+  }, [isPendingChildrenLoading, isRootIssueLoading])
 
   useEffect(() => {
     setDateGranularity(dateGranularity);
@@ -193,7 +201,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         {!!roadmapLoadError && <Box color='red.500'>{roadmapLoadError.message}</Box>}
         {!!issueDataState.ornull && mode === 'd3' && <NewRoadmap issueData={issueDataState.get({noproxy: true}) as IssueData} isLocal={isLocal} />}
         {!!issueDataState.ornull && mode === 'grid' && (
-          <RoadmapTabbedView issueDataState={issueDataState as State<IssueData>} isPendingChildrenLoading={isPendingChildrenLoading} isRootIssueLoading={isRootIssueLoading}/>
+          <RoadmapTabbedView issueDataState={issueDataState as State<IssueData>} />
         )}
       </Box>
     </>

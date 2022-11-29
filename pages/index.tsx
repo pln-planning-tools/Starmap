@@ -14,6 +14,7 @@ import themes from '../components/theme/constants';
 
 import styles from './LandingPage.module.css'
 import PageHeader from '../components/layout/PageHeader';
+import { useGlobalLoadingState } from '../hooks/useGlobalLoadingState';
 
 interface SSProps {
   markdown: string
@@ -42,9 +43,12 @@ const chakraUiRendererTheme: Parameters<typeof ChakraUIRenderer>[0] = {
       </Link>
     );
   },
-}
+};
+
 
 const App: NextPage<SSProps> = ({markdown}: SSProps) => {
+  // const isGlobalLoadingState = useGlobalLoadingState();
+  // isGlobalLoadingState.stop();
   return (
     <>
       <PageHeader />

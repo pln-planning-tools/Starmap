@@ -7,6 +7,7 @@ import {
   Tabs
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 
 import { setViewMode, useViewMode } from '../../hooks/useViewMode';
@@ -16,17 +17,17 @@ import { IssueDataViewInput } from '../../lib/types';
 import Header from './header';
 import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 
 export function RoadmapTabbedView({
   issueDataState,
-  isRootIssueLoading,
-  isPendingChildrenLoading
 }: IssueDataViewInput): ReactElement {
-  if (issueDataState.children.length === 0) {
-    return (<></>);
-  }
+  const globalLoadingState = useGlobalLoadingState();
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
   const router = useRouter();
+  if (issueDataState.children.length === 0 || globalLoadingState.get()) {
+    return (<></>);
+  }
   // Defining what tabs to show and in what order
   const tabs = ['Overview', 'Detailed View'] as const;
 
@@ -72,7 +73,7 @@ export function RoadmapTabbedView({
   return (
     <>
       <Box className={styles.timelineBox}>
-        <Header issueDataState={issueDataState} isPendingChildrenLoading={isPendingChildrenLoading} isRootIssueLoading={isRootIssueLoading}/>
+        <Header issueDataState={issueDataState} />
         <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} isLazy>
           <TabList>
             {tabs.map(renderTab)}

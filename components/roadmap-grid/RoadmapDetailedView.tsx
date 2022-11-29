@@ -6,7 +6,7 @@ import React from 'react';
 
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
-import { DetailedViewGroup, IssueData } from '../../lib/types';
+import { DetailedViewGroup, IssueData, IssueDataViewInput } from '../../lib/types';
 import { useViewMode } from '../../hooks/useViewMode';
 import styles from './Roadmap.module.css';
 import { Grid } from './grid';
@@ -24,9 +24,7 @@ import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/co
 
 export function RoadmapDetailed({
   issueDataState
-}: {
-  issueDataState: State<IssueData>;
-}) {
+}: IssueDataViewInput) {
   /**
    * Don't commit setting this to true.. just a simple toggle so we can debug things.
    */
@@ -34,7 +32,7 @@ export function RoadmapDetailed({
   const viewMode = useViewMode() as ViewMode;
 
   const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
-  const [dayjsDates, setDayjsDates] = useState<Dayjs[]>([]);
+  // const [dayjsDates, setDayjsDates] = useState<Dayjs[]>([]);
 
   useEffect(() => {
     if (viewMode) {
@@ -62,17 +60,19 @@ export function RoadmapDetailed({
   /**
    * Collect all due dates from all issues, as DayJS dates.
    */
-  useEffect(() => {
+  let dayjsDates: Dayjs[] = []
+  // useEffect(() => {
     try {
-      const dayjsDates = issuesGroupedState.value
+      dayjsDates = issuesGroupedState.value
         .flatMap((group) => group.items.map((item) => dayjs(item.due_date).utc()))
         .filter((d) => d.isValid());
-      setDayjsDates(dayjsDates);
+      // setDayjsDates(dayjsDates);
     } catch {
-      setDayjsDates([])
+      // setDayjsDates([])
+      dayjsDates=[]
     }
 
-  }, [issuesGroupedState.value])
+  // }, [issuesGroupedState.value])
 
   if (issuesGroupedState.value.length === 0) {
     return <Spinner />

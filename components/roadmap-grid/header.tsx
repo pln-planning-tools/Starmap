@@ -1,17 +1,18 @@
 import { Center, Flex, Link, Spacer, Spinner, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 import NextLink from 'next/link';
+import React from 'react';
 
 import { ReactElement } from 'react-markdown/lib/react-markdown';
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { IssueDataViewInput } from '../../lib/types';
 import GitHubSvgIcon from '../icons/GitHubLogo.svg';
 import themes from '../theme/constants';
 
 export default function Header({
-  issueDataState,
-  isRootIssueLoading,
-  isPendingChildrenLoading
+  issueDataState
 }: IssueDataViewInput): ReactElement | null {
+  const globalLoadingState = useGlobalLoadingState();
   if (issueDataState.html_url.value == null || typeof issueDataState.html_url.value !== 'string') {
     console.log('error with issueData', issueDataState.get({noproxy: true}))
     return null;
@@ -21,7 +22,7 @@ export default function Header({
     <>
       <Flex direction={'row'}>
         <Text as='span' mb='8px' fontSize={40} fontWeight={600} pr="5rem">
-          {issueDataState.title.value} {isRootIssueLoading || isPendingChildrenLoading ? <Spinner /> : null}
+          {issueDataState.title.value} {globalLoadingState.get() ? <Spinner /> : null}
         </Text>
         <Spacer />
         <Center>

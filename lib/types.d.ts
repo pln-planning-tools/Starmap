@@ -152,7 +152,7 @@ export interface QueryParameters {
 }
 
 export interface IssueDataViewInput {
-  issueDataState: State<IssueData>,
-  isRootIssueLoading: boolean,
-  isPendingChildrenLoading: boolean
+  issueDataState: State<IssueData>;
+  // isRootIssueLoading: boolean;
+  // isPendingChildrenLoading: boolean;
 }

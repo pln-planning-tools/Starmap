@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import { Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons'
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useGlobalLoadingState } from '../hooks/useGlobalLoadingState';
 import styles from './RoadmapForm.module.css'
@@ -20,7 +20,6 @@ export function RoadmapForm() {
   const [issueUrl, setIssueUrl] = useState<string | null>();
   const [error, setError] = useState<Error | null>(null);
   const [isInputBlanked, setIsInputBlanked] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(globalLoadingState.get());
   const viewMode = useViewMode() as ViewMode;
 
   useEffect(() => {
@@ -51,11 +50,11 @@ export function RoadmapForm() {
               throw new Error('Already viewing this issue');
             }
             await router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}#${viewMode}`);
-            setIsLoading(false);
+            globalLoadingState.stop();
           }
         } catch (err) {
           setError(err as Error);
-          setIsLoading(false);
+          globalLoadingState.stop();
         }
       }
     };
@@ -64,7 +63,7 @@ export function RoadmapForm() {
 
   const formSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    globalLoadingState.start();
     setError(null);
 
     try {
@@ -75,7 +74,7 @@ export function RoadmapForm() {
       setIssueUrl(newUrl.toString());
     } catch (err) {
       setError(err as Error);
-      setIsLoading(false);
+      globalLoadingState.stop();
     }
   }
 
@@ -89,9 +88,14 @@ export function RoadmapForm() {
     setIsInputBlanked(true);
     setCurrentIssueUrl(e.target.value ?? '')
   };
+
+  Router.events.on('routeChangeStart', (...events) => {
+    setCurrentIssueUrl(events[0])
+  });
+
   return (
     <form onSubmit={formSubmit}>
-      <FormControl isInvalid={error != null} isDisabled={isLoading || globalLoadingState.get()}>
+      <FormControl isInvalid={error != null} isDisabled={globalLoadingState.get()}>
         <InputGroup>
           <InputLeftElement
             pointerEvents='none'

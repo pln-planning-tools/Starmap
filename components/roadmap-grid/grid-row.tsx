@@ -1,5 +1,6 @@
 import NextLink from 'next/link';
 import { Flex, Text } from '@chakra-ui/react';
+import React from 'react';
 
 import { dayjs } from '../../lib/client/dayjs';
 import { IssueData } from '../../lib/types';
@@ -51,7 +52,7 @@ export function GridRow({
   }
   if (closestDateIdx > numGridCols) {
     // TODO: Handle this error
-    console.error('closestDateIdx is greater than numGridCols', milestone)
+    // console.error('closestDateIdx is greater than numGridCols', milestone)
   }
 
   const rowItem = (
