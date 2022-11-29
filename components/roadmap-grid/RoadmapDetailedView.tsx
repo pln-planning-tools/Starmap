@@ -37,14 +37,11 @@ export function RoadmapDetailed({
   }));
 
   const issueDataMapper = ([key, value]) => {
-    const roadmapChild = newIssueData.find((i) => i.title === key);
-    if(!roadmapChild) {
-      throw new Error(`Could not find roadmap child with title ${key}`);
-    }
+    const roadmapChild = newIssueData.find((i) => i.title === key) || '';
     return {
       groupName: key,
       items: value,
-      url: getLinkForRoadmapChild(roadmapChild),
+      url: roadmapChild === '' ? '' : getLinkForRoadmapChild(roadmapChild),
     }
   };
 
@@ -114,11 +111,7 @@ export function RoadmapDetailed({
   dayjsDates.push(maxDate)
 
   /**
-([key, value]) => {
-      const roadmapChild = newIssueData.find((i) => i.title === key);
-      if (!roadmapChild) {
-        throw new Error(`Could not find roadmap child with title ${key}`);
-      }   * Ensure that the dates are
+   *  * Ensure that the dates are
    *  * converted back to JS Date objects.
    *  * sorted - d3 timescale requires it to function properly
    */
