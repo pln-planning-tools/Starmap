@@ -5,7 +5,7 @@ export function findIssueDepthByUrl(rootIssueData: IssueData, parentHtmlUrl: str
     return depth;
   }
 
-  let foundIssueDepth = -1
+  const foundIssueDepth = -1
   for (const issueData of rootIssueData.children) {
     const foundDepth = findIssueDepthByUrl(issueData, parentHtmlUrl, depth + 1);
     if (foundDepth !== -1) {
