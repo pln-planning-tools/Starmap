@@ -1,5 +1,3 @@
-import type {State} from '@hookstate/core';
-
 import { ViewMode } from '../enums';
 import { findIssueDepthByUrl } from '../findIssueDepthByUrl';
 import { StarMapsIssueErrorsGrouped, IssueData } from '../types';
@@ -11,8 +9,7 @@ import { StarMapsIssueErrorsGrouped, IssueData } from '../types';
  * @returns {function} filterFn
  */
 export const getIssueErrorFilter = (maxDepth: number) =>
-  (errors: StarMapsIssueErrorsGrouped[], issueDataState: IssueData) => {
-    return errors.filter(({ issueUrl: errorIssueUrl }) => {
+  (errors: StarMapsIssueErrorsGrouped[], issueDataState: IssueData) => errors.filter(({ issueUrl: errorIssueUrl }) => {
       if (issueDataState != null) {
         const foundIssueDepth = findIssueDepthByUrl(issueDataState, errorIssueUrl);
 
@@ -22,8 +19,7 @@ export const getIssueErrorFilter = (maxDepth: number) =>
       }
 
       return false;
-    });
-  }
+    })
 
 
 

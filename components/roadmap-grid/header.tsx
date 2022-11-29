@@ -14,7 +14,7 @@ export default function Header({
 }: IssueDataViewInput): ReactElement | null {
   const globalLoadingState = useGlobalLoadingState();
   if (issueDataState.html_url.value == null || typeof issueDataState.html_url.value !== 'string') {
-    console.log('error with issueData', issueDataState.get({noproxy: true}))
+    console.log('error with issueData', issueDataState.get({ noproxy: true }))
     return null;
   }
 
@@ -26,7 +26,7 @@ export default function Header({
         </Text>
         <Spacer />
         <Center>
-          <NextLink style={{display: 'span'}} passHref href={issueDataState.get().html_url}>
+          <NextLink style={{ display: 'span' }} passHref href={issueDataState.get().html_url}>
             <Link target="_blank" rel="noopener noreferrer">
               <Center minWidth="9rem">
                 <Text as='span' fontSize={15} fontWeight={400} color={themes.light.text.color} pr="0.5rem">View in GitHub</Text>

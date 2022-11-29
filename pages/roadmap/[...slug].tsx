@@ -27,7 +27,7 @@ import {
 } from '../../lib/types';
 
 export async function getServerSideProps(context): Promise<RoadmapServerSidePropsResult> {
-  const [hostname, owner, repo, _, issue_number] = context.query.slug;
+  const [_hostname, owner, repo, _, issue_number] = context.query.slug;
   const { filter_group, mode, timeUnit }: QueryParameters = context.query;
 
   return {
@@ -57,7 +57,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   const [isPendingChildrenLoading, setIsPendingChildrenLoading] = useState(false);
 
   const errors = starMapsErrorsState.get({ noproxy: true });
-  const roadmapLoadError = roadmapLoadErrorState.get({noproxy: true});
+  const roadmapLoadError = roadmapLoadErrorState.get({ noproxy: true });
 
   useEffect(() => {
     if (isRootIssueLoading) return;
@@ -86,7 +86,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
       } catch (err) {
         console.log(`Error fetching ${roadmapApiUrl}`, err);
-        roadmapLoadErrorState.set({code: `Error fetching ${roadmapApiUrl}`, message: `Error fetching ${roadmapApiUrl}: ${(err as Error).toString()}`})
+        roadmapLoadErrorState.set({ code: `Error fetching ${roadmapApiUrl}`, message: `Error fetching ${roadmapApiUrl}: ${(err as Error).toString()}` })
       }
       setIsRootIssueLoading(false);
     };
@@ -131,7 +131,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         }
       } catch (err) {
         console.error(`err: `, err);
-        roadmapLoadErrorState.set({code: `Error fetching ${pendingChildApiUrl}`, message: `Error fetching ${pendingChildApiUrl}: ${(err as Error).toString()}`})
+        roadmapLoadErrorState.set({ code: `Error fetching ${pendingChildApiUrl}`, message: `Error fetching ${pendingChildApiUrl}: ${(err as Error).toString()}` })
       }
       pendingChildrenState[0].set(none);
 
@@ -150,19 +150,17 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
    * Add asyncIssueData items to issueDataState
    */
   useEffect(() => {
-    const issueData = issueDataState.get({noproxy: true}) as IssueData;
+    const issueData = issueDataState.get({ noproxy: true }) as IssueData;
     const asyncIssues = asyncIssueDataState.get();
     if (asyncIssues.length === 0) {
       return
     }
-    let newIssueData = asyncIssueDataState[0];
+    const newIssueData = asyncIssueDataState[0];
     if (newIssueData !== undefined) {
       try {
-        const parentIndex = issueData.children.findIndex((potentialParent) => {
-          return potentialParent.html_url === newIssueData.parent.html_url.value
-        });
+        const parentIndex = issueData.children.findIndex((potentialParent) => potentialParent.html_url === newIssueData.parent.html_url.value);
         if (parentIndex > -1) {
-          (issueDataState as State<IssueData>).children[parentIndex].children.merge([newIssueData.get({noproxy: true})]);
+          (issueDataState as State<IssueData>).children[parentIndex].children.merge([newIssueData.get({ noproxy: true })]);
         } else {
           throw new Error('Could not find parentIndex');
         }
@@ -206,7 +204,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       <Box pt={5} pr="120px" pl="120px">
         {!!serverError && <Box color='red.500'>{serverError.message}</Box>}
         {!!roadmapLoadError && <Box color='red.500'>{roadmapLoadError.message}</Box>}
-        {!!issueDataState.ornull && mode === 'd3' && <NewRoadmap issueData={issueDataState.get({noproxy: true}) as IssueData} isLocal={isLocal} />}
+        {!!issueDataState.ornull && mode === 'd3' && <NewRoadmap issueData={issueDataState.get({ noproxy: true }) as IssueData} isLocal={isLocal} />}
         {!!issueDataState.ornull && mode === 'grid' && (
           <RoadmapTabbedView issueDataState={issueDataState as State<IssueData>} />
         )}

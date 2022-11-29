@@ -6,7 +6,6 @@ const createJestConfig = nextJest({
 
 const customJestConfig = {
   testEnvironment: 'jest-environment-node',
-  collectCoverage: true,
   collectCoverageFrom: ['lib', 'components', 'hooks', 'pages'].map(dir => `${dir}/**/*.{js,jsx,ts,tsx}`),
   preset: 'ts-jest',
   transform: {

@@ -8,36 +8,48 @@ module.exports = {
   env: {
     jest: true,
   },
-  plugins: ['@typescript-eslint'],
+  plugins: [
+    '@typescript-eslint',
+    'import',
+  ],
   extends: [
-    // "next/core-web-vitals",
-    // 'eslint:recommended',
-    // 'airbnb',
-    // 'airbnb-typescript',
-    // 'plugin:@typescript-eslint/recommended',
-    // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'prettier',
+    'plugin:@next/next/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier'
   ],
   rules: {
-    'react/react-in-jsx-scope': 'off',
-    'no-multiple-empty-lines': 'off',
-    '@typescript-eslint/no-unsafe-assignment': 'off',
-    '@typescript-eslint/no-unsafe-member-access': 'off',
-    '@typescript-eslint/no-unsafe-call': 'off',
-    '@typescript-eslint/no-unsafe-argument': 'off',
-    '@typescript-eslint/no-unsafe-return': 'off',
-    'max-len': 'off',
-    'arrow-body-style': 'warn',
-    'react/function-component-definition': 'off',
-    '@typescript-eslint/restrict-template-expressions': 'off',
-    'no-console': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
-    'jsx-quotes': 'off',
-    'react/prop-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    'object-curly-newline': 'off',
+    '@typescript-eslint/no-unsafe-argument': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/no-unsafe-call': 'off',
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/no-unsafe-return': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { 'destructuredArrayIgnorePattern': '^_' }],
+    '@typescript-eslint/restrict-template-expressions': 'off',
+    'arrow-body-style': 'off',
+    'arrow-body-style': 'warn',
     'implicit-arrow-linebreak': 'off',
     'jsx-a11y/alt-text': 'off',
-    'arrow-body-style': 'off',
+    'jsx-quotes': 'off',
+    'max-len': 'off',
+    'no-console': 'off',
+    'object-curly-newline': 'off',
+    'object-curly-spacing': ['error', 'always'],
+    'react/function-component-definition': 'off',
+    'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx']
+    },
+    'import/resolver': {
+      typescript: {},
+      node: {
+        extensions: ['.jsx', '.jsx', '.ts', '.tsx'],
+        moduleDirectory: ['node_modules', 'lib/', 'components/', 'hooks/', 'pages/'],
+      }
+    }
+  }
 };

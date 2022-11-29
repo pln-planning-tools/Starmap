@@ -1,5 +1,5 @@
-import {readFile} from 'fs/promises'
-import {join} from 'path'
+import { readFile } from 'fs/promises'
+import { join } from 'path'
 
 import type { NextPage } from 'next';
 import React from 'react';
@@ -14,7 +14,6 @@ import themes from '../components/theme/constants';
 
 import styles from './LandingPage.module.css'
 import PageHeader from '../components/layout/PageHeader';
-import { useGlobalLoadingState } from '../hooks/useGlobalLoadingState';
 
 interface SSProps {
   markdown: string
@@ -22,7 +21,7 @@ interface SSProps {
 
 const starmapsGithubUrl = 'https://github.com/pln-planning-tools/StarMaps/blob/main/User%20Guide.md';
 
-export async function getServerSideProps(context): Promise<{props: SSProps}> {
+export async function getServerSideProps(): Promise<{props: SSProps}> {
   const filePath = join(process.cwd(), 'User Guide.md');
   const markdown = await readFile(filePath, 'utf8');
 
@@ -46,16 +45,13 @@ const chakraUiRendererTheme: Parameters<typeof ChakraUIRenderer>[0] = {
 };
 
 
-const App: NextPage<SSProps> = ({markdown}: SSProps) => {
-  // const isGlobalLoadingState = useGlobalLoadingState();
-  // isGlobalLoadingState.stop();
-  return (
+const App: NextPage<SSProps> = ({ markdown }: SSProps) => (
     <>
       <PageHeader />
       <Center>
         <article className={styles['UserGuide-article']}>
           <Flex w="100%" justify="flex-end">
-            <NextLink style={{display: 'span'}} passHref href={starmapsGithubUrl}>
+            <NextLink style={{ display: 'span' }} passHref href={starmapsGithubUrl}>
               <Link target="_blank" rel="noopener noreferrer">
                 <Center minWidth="9rem">
                   <Text as='span' fontSize={15} fontWeight={400} color={themes.light.text.color} pr="0.5rem">View in GitHub</Text>
@@ -69,6 +65,5 @@ const App: NextPage<SSProps> = ({markdown}: SSProps) => {
       </Center>
     </>
   );
-};
 
 export default App;

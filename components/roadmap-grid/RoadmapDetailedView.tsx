@@ -15,12 +15,15 @@ import { GridRow } from './grid-row';
 import { GroupHeader } from './group-header';
 import { GroupWrapper } from './group-wrapper';
 import { Headerline } from './headerline';
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import NumSlider from '../inputs/NumSlider';
 import { dayjs } from '../../lib/client/dayjs';
 import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
+<<<<<<< HEAD
 import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
+=======
+>>>>>>> main
 
 export function RoadmapDetailed({
   issueDataState
@@ -28,6 +31,7 @@ export function RoadmapDetailed({
   /**
    * Don't commit setting this to true.. just a simple toggle so we can debug things.
    */
+<<<<<<< HEAD
   const [isDevMode, setIsDevMode] = useState(false);
   const viewMode = useViewMode() as ViewMode;
 
@@ -54,6 +58,50 @@ export function RoadmapDetailed({
   const [numHeaderTicks, setNumHeaderTicks] = useState(5);
   const [numGridCols, setNumGridCols] = useState(45);
 
+=======
+  const [isDevMode] = useState(false);
+  const viewMode = useViewMode();
+  const newIssueData = issueData.children.map((v) => ({
+    ...v,
+    group: v.parent.title,
+    children: v.children.map((x) => ({ ...x, group: x.parent.title })),
+  }));
+
+  const issueDataMapper = ([key, value]) => {
+    const roadmapChild = newIssueData.find((i) => i.title === key) || '';
+    return {
+      groupName: key,
+      items: value,
+      url: roadmapChild === '' ? '' : getLinkForRoadmapChild(roadmapChild),
+    }
+  };
+
+  const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
+
+  const issueDataLevelOneGrouped: DetailedViewGroup[] = Array.from(
+    group(issueDataLevelOne, (d) => d.group),
+    issueDataMapper
+  );
+
+  const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, group: v.title }));
+
+  const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = Array.from(
+    group(issueDataLevelOneIfNoChildren, (d) => d.group),
+    issueDataMapper
+  );
+
+  let issuesGrouped: DetailedViewGroup[];
+  if (viewMode === ViewMode.Detail) {
+    issuesGrouped =
+      (!!issueDataLevelOneGrouped && issueDataLevelOneGrouped.length > 0 && issueDataLevelOneGrouped) ||
+      issueDataLevelOneIfNoChildrenGrouped;
+  } else {
+    issuesGrouped = Array.from(
+      group(issueData.children as IssueData[], (d) => d.group),
+      issueDataMapper
+    );
+  }
+>>>>>>> main
 
   const today = dayjs();
 
@@ -110,15 +158,13 @@ export function RoadmapDetailed({
   dayjsDates.push(maxDate)
 
   /**
-   * Ensure that the dates are
+   *  * Ensure that the dates are
    *  * converted back to JS Date objects.
    *  * sorted - d3 timescale requires it to function properly
    */
   const dates = dayjsDates
     .map((date) => date.toDate())
-    .sort((a, b) => {
-      return a.getTime() - b.getTime();
-    });
+    .sort((a, b) => a.getTime() - b.getTime());
 
   globalTimeScaler.setScale(dates, numGridCols * 1.09);
 
@@ -143,6 +189,7 @@ export function RoadmapDetailed({
           <Headerline numGridCols={numGridCols} ticksRatio={3}/>
         </Grid>
         <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={true} >
+<<<<<<< HEAD
           {issuesGroupedState.map((group, index) => {
             return (
               <React.Fragment key={`Fragment-${index}`} >
@@ -151,10 +198,16 @@ export function RoadmapDetailed({
                     _.sortBy(group.items, ['title']).map((item, index) => {
                       return <GridRow key={index} timeScaler={globalTimeScaler} milestone={item.value} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} />;
                     })}
+=======
+          {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => (
+              <React.Fragment key={`Fragment-${index}`} >
+                <GroupHeader group={group} key={`GroupHeader-${index}`}/><GroupWrapper key={`GroupWrapper-${index}`}>
+                  {!!group.items &&
+                    _.sortBy(group.items, ['title']).map((item, index) => <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} />)}
+>>>>>>> main
                 </GroupWrapper>
               </React.Fragment>
-            );
-          })}
+            ))}
         </Grid>
       </Box>
     </>

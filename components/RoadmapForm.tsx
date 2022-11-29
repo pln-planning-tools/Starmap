@@ -7,11 +7,11 @@ import { useGlobalLoadingState } from '../hooks/useGlobalLoadingState';
 import styles from './RoadmapForm.module.css'
 import theme from './theme/constants'
 import { setCurrentIssueUrl, useCurrentIssueUrl } from '../hooks/useCurrentIssueUrl';
-import { isEmpty } from 'lodash';
 import { paramsFromUrl } from '../lib/paramsFromUrl';
 import { getValidUrlFromInput } from '../lib/getValidUrlFromInput';
 import { useViewMode } from '../hooks/useViewMode';
 import { ViewMode } from '../lib/enums';
+import { isEmpty } from 'lodash';
 
 export function RoadmapForm() {
   const router = useRouter();
@@ -78,7 +78,7 @@ export function RoadmapForm() {
     }
   }
 
-  let inputRightElement = (
+  const inputRightElement = (
     <Button type="submit" isLoading={globalLoadingState.get()} className={styles.formSubmitButton} border="1px solid #8D8D8D" borderRadius="4px"  bg="rgba(141, 141, 141, 0.3)" onClick={formSubmit}>
       <Text p="6px 10px" color="white">⏎</Text>
     </Button>

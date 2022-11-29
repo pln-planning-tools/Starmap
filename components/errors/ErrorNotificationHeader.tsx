@@ -1,13 +1,12 @@
-import { Box, Center, Flex, IconButton, Spacer, Text } from '@chakra-ui/react';
-import {ChevronDownIcon, ChevronUpIcon, WarningTwoIcon} from '@chakra-ui/icons'
+import { Box, Center, Flex, Spacer, Text } from '@chakra-ui/react';
+import { ChevronDownIcon, ChevronUpIcon, WarningTwoIcon } from '@chakra-ui/icons'
 
 export interface ErrorNotificationHeaderProps {
   isExpanded: boolean;
   toggle: () => void;
 }
-export function ErrorNotificationHeader({isExpanded, toggle}: ErrorNotificationHeaderProps) {
+export function ErrorNotificationHeader({ isExpanded, toggle }: ErrorNotificationHeaderProps) {
 
-  const ariaLabel = isExpanded ? 'Collapse' : 'Expand';
   const iconWandH = 8;
   const icon = isExpanded
     ? <ChevronDownIcon width={iconWandH} height={iconWandH} cursor="pointer" onClick={toggle} />
