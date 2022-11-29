@@ -3,11 +3,11 @@ import { Flex, Text } from '@chakra-ui/react';
 
 import { dayjs } from '../../lib/client/dayjs';
 import { IssueData } from '../../lib/types';
-import { getInternalLinkForIssue } from '../../lib/general';
 import styles from './Roadmap.module.css';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
 import { TimeScaler } from '../../lib/client/TimeScaler';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
+import { getLinkForRoadmapChild } from '../../lib/client/linkUtils';
 
 export function GridRow({
   milestone,
@@ -28,7 +28,7 @@ export function GridRow({
   const span = Math.max(4, numGridCols / timelineTicks.length);
   const closest = span * (closestDateIdx - 1);
 
-  const childLink = getInternalLinkForIssue(milestone);
+  const childLink = getLinkForRoadmapChild(milestone);
   const clickable = milestone.children.length > 0;
 
   /**
