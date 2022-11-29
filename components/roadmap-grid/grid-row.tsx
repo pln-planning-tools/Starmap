@@ -66,12 +66,12 @@ export function GridRow({
       className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink}`}
 
     >
-      <Flex direction={{base:"column", md:"column", lg:"row"}} justify="space-between" position="relative">
-        <Flex direction="column" maxW={{base: "100%", sm: "100%", md:"100%", lg:"85%"}}>
+      <Flex direction={{ base:"column", md:"column", lg:"row" }} justify="space-between" position="relative">
+        <Flex direction="column" maxW={{ base: "100%", sm: "100%", md:"100%", lg:"85%" }}>
           <Text as="b" className={styles.milestoneTitleWrapper}>{milestone.title}</Text>
           <p className={styles.milestoneDate}>{milestone.due_date}</p>
         </Flex>
-        <Flex m={{base: "0", sm: "8px 0", md: "8px 0", lg: "0"}}>
+        <Flex m={{ base: "0", sm: "8px 0", md: "8px 0", lg: "0" }}>
           <SvgGitHubLogoWithTooltip githuburl={milestone.html_url}/>
         </Flex>
 

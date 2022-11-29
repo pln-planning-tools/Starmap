@@ -2,8 +2,6 @@ import { useRouter } from 'next/router';
 
 import { useEffect } from 'react';
 
-import RoadmapPage from './roadmap/[...slug]';
-
 // const router = useRouter();
 // const { pathname, query } = router;
 

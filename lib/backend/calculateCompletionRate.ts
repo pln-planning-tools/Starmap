@@ -11,9 +11,8 @@ export function calculateCompletionRate ({ children, state }: CalculateCompletio
    * The total count is all children plus the parent.
    */
   const total = children.length + 1;
-  let open = 0;
   let closed = 0;
-  children.concat([{ state }]).forEach(({state}) => {
+  children.concat([{ state }]).forEach(({ state }) => {
      if (state === IssueStates.OPEN) {
       open++;
      } else if (state === IssueStates.CLOSED) {

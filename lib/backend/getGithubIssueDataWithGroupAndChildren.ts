@@ -9,7 +9,7 @@ export async function getGithubIssueDataWithGroupAndChildren (issueData: GithubI
   let children: GithubIssueDataWithGroupAndChildren[] = [];
 
   if (usePendingChildren) {
-    pendingChildren = childrenParsed.map(({html_url}) => ({html_url, group: issueData.title, parentHtmlUrl: issueData.html_url}))
+    pendingChildren = childrenParsed.map(({ html_url }) => ({ html_url, group: issueData.title, parentHtmlUrl: issueData.html_url }))
   } else {
     children = await resolveChildrenWithDepth(await resolveChildren(childrenParsed))
   }

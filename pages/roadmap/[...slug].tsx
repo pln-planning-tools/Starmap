@@ -7,7 +7,7 @@ import { useHookstate } from '@hookstate/core';
 import PageHeader from '../../components/layout/PageHeader';
 import { RoadmapTabbedView } from '../../components/roadmap-grid/RoadmapTabbedView';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
-import { BASE_PROTOCOL, BASE_URL } from '../../config/constants';
+import { BASE_PROTOCOL } from '../../config/constants';
 import { IssueData, QueryParameters, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, RoadmapServerSidePropsResult, StarMapsIssueErrorsGrouped } from '../../lib/types';
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 import { ViewMode , DateGranularityState } from '../../lib/enums';
@@ -16,7 +16,7 @@ import { setDateGranularity } from '../../hooks/useDateGranularity';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 
 export async function getServerSideProps(context): Promise<RoadmapServerSidePropsResult> {
-  const [hostname, owner, repo, _, issue_number] = context.query.slug;
+  const [_hostname, owner, repo, _, issue_number] = context.query.slug;
   const { filter_group, mode, timeUnit }: QueryParameters = context.query;
 
   return {
@@ -34,7 +34,7 @@ export async function getServerSideProps(context): Promise<RoadmapServerSideProp
 }
 
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { error: serverError, baseUrl, isLocal, mode, dateGranularity, issue_number, repo, owner } = props;
+  const { error: serverError, isLocal, mode, dateGranularity, issue_number, repo, owner } = props;
 
   const starMapsErrorsState = useHookstate<StarMapsIssueErrorsGrouped[]>([]);
   const roadmapLoadErrorState = useHookstate<{ code: string; message: string } | null>(null)
@@ -64,7 +64,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
       } catch (err) {
         console.log(`Error fetching ${roadmapApiUrl}`, err);
-        roadmapLoadErrorState.set({code: `Error fetching ${roadmapApiUrl}`, message: `Error fetching ${roadmapApiUrl}: ${(err as Error).toString()}`})
+        roadmapLoadErrorState.set({ code: `Error fetching ${roadmapApiUrl}`, message: `Error fetching ${roadmapApiUrl}: ${(err as Error).toString()}` })
       }
       globalLoadingState.stop()
     };
@@ -86,7 +86,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
   const issueData = issueDataState.get({ noproxy: true }) as IssueData
   const errors = starMapsErrorsState.get({ noproxy: true });
-  const roadmapLoadError = roadmapLoadErrorState.get({noproxy: true});
+  const roadmapLoadError = roadmapLoadErrorState.get({ noproxy: true });
 
   return (
     <>

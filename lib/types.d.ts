@@ -30,9 +30,7 @@ export interface PreParsedIssueData extends ProcessedGithubIssueDataWithGroupAnd
 
 export type PostParsedIssueData = PreParsedIssueData;
 export type ProcessedParentIssueData = Omit<PreParsedIssueData, 'children' | 'parent'>;
-export interface ParentIssueData extends Omit<PreParsedIssueDataParent, 'children' | 'parent'> {
-
-}
+export type ParentIssueData = Omit<PreParsedIssueDataParent, 'children' | 'parent'>
 export interface PreParsedIssueData extends ProcessedGithubIssueDataWithGroupAndChildren {
   children: IssueData[];
   completion_rate: number;
