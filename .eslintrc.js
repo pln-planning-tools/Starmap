@@ -5,6 +5,9 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.json'],
   },
+  env: {
+    jest: true,
+  },
   plugins: ['@typescript-eslint'],
   extends: [
     // "next/core-web-vitals",

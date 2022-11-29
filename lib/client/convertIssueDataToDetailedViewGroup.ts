@@ -1,9 +1,9 @@
 import { State } from '@hookstate/core';
 import { group } from 'd3';
 import { groupBy, reverse, sortBy, uniqBy } from 'lodash';
-import { ViewMode } from '../enums';
-import { getInternalLinkForIssue } from '../general';
 
+import { ViewMode } from '../enums';
+import {getLinkForRoadmapChild} from './linkUtils';
 import { DetailedViewGroup, IssueData } from '../types';
 
 function flattenIssueData(issueData: IssueData, isChildIssue = false): IssueData[] {
@@ -27,7 +27,7 @@ export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: Stat
     ([key, value]) => ({
       groupName: key,
       items: value,
-      url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+      url: getLinkForRoadmapChild(newIssueData.find((i) => i.title === key)),
     }),
   );
 
@@ -48,7 +48,7 @@ export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: Stat
       ([key, value]) => ({
         groupName: key,
         items: value,
-        url: getInternalLinkForIssue(newIssueData.find((i) => i.title === key)),
+        url: getLinkForRoadmapChild(newIssueData.find((i) => i.title === key)),
       }),
     );
   }
@@ -69,7 +69,7 @@ export function convertIssueDataToDetailedViewGroup(issueData: IssueData): Detai
           viewGroup.push({
             groupName: issueItem.parent.title ?? 'no title for issue with parent',
             items: [issueItem],
-            url: getInternalLinkForIssue(issueItem)
+            url: getLinkForRoadmapChild(issueItem)
           })
         }
       } else if (issueItem.children?.length > 0) {
@@ -77,7 +77,7 @@ export function convertIssueDataToDetailedViewGroup(issueData: IssueData): Detai
         viewGroup.push({
           groupName: issueItem.title ?? 'no title for issue with no parent',
           items: [],
-          url: getInternalLinkForIssue(issueItem)
+          url: getLinkForRoadmapChild(issueItem)
         })
       }
     }
