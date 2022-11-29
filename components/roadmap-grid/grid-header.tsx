@@ -16,7 +16,7 @@ interface GridHeaderProps {
 /**
  * This is the labels for the grid. The quarters and the top with the tick.
  */
-export function GridHeader({ tick, index, numGridCols, timeScaler, numHeaderTicks }: GridHeaderProps) {
+export function GridHeader({ tick, index, numGridCols, numHeaderTicks }: GridHeaderProps) {
   const dateGranularity = useDateGranularity();
   const date = dayjs(tick).utc();
 

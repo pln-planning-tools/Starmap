@@ -9,7 +9,7 @@ interface ErrorNotificationBodyProps {
   isExpanded: boolean;
   errors: StarMapsIssueErrorsGrouped[];
 }
-export function ErrorNotificationBody({isExpanded, errors}: ErrorNotificationBodyProps) {
+export function ErrorNotificationBody({ isExpanded, errors }: ErrorNotificationBodyProps) {
   if (!isExpanded) {
     return null;
   }
@@ -18,8 +18,7 @@ export function ErrorNotificationBody({isExpanded, errors}: ErrorNotificationBod
       <SimpleGrid columns={2} spacing={10} className="">
         <Text as="b" width="15rem">Link</Text>
         <Text as="b" width="15rem">Description of Error(s)</Text>
-        {errors.map((error, index) => {
-          return (
+        {errors.map((error) => (
             <div className={styles.errorLineItemWrapper}>
               <Text className={`${styles.errorIssueLinkText} ${styles.errorIssueLinkWrapper}`}>
                 <NextLink passHref href={error.issueUrl}>
@@ -30,8 +29,7 @@ export function ErrorNotificationBody({isExpanded, errors}: ErrorNotificationBod
               </Text>
               <ErrorLineItemDescription error={error} />
             </div>
-          );
-        })}
+          ))}
       </SimpleGrid>
     </Box>
   </Box>;

@@ -20,7 +20,7 @@ export default function Header({ issueData }: { issueData: IssueData }) {
         </Text>
         <Spacer />
         <Center>
-          <NextLink style={{display: 'span'}} passHref href={issueData.html_url}>
+          <NextLink style={{ display: 'span' }} passHref href={issueData.html_url}>
             <Link target="_blank" rel="noopener noreferrer">
               <Center minWidth="9rem">
                 <Text as='span' fontSize={15} fontWeight={400} color={themes.light.text.color} pr="0.5rem">View in GitHub</Text>

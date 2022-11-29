@@ -7,9 +7,9 @@ import { useGlobalLoadingState } from '../hooks/useGlobalLoadingState';
 import styles from './RoadmapForm.module.css'
 import theme from './theme/constants'
 import { setCurrentIssueUrl, useCurrentIssueUrl } from '../hooks/useCurrentIssueUrl';
-import { isEmpty } from 'lodash';
 import { paramsFromUrl } from '../lib/paramsFromUrl';
 import { getValidUrlFromInput } from '../lib/getValidUrlFromInput';
+import { isEmpty } from 'lodash';
 
 export function RoadmapForm() {
   const router = useRouter();
@@ -18,7 +18,7 @@ export function RoadmapForm() {
   const [issueUrl, setIssueUrl] = useState<string | null>();
   const [error, setError] = useState<Error | null>(null);
   const [isInputBlanked, setIsInputBlanked] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(globalLoadingState.get());
+  const [_isLoading, setIsLoading] = useState(globalLoadingState.get());
 
   useEffect(() => {
     if (!isInputBlanked && isEmpty(currentIssueUrl) && window.location.pathname.length > 1) {

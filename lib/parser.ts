@@ -47,11 +47,7 @@ export const getChildren = (issue: string): ParserGetChildrenResponse[] => {
       return [...a, { group: listTitle, hrefs: listHrefs }];
     }, [])
     .flat()
-    .map((item) => {
-      return item.hrefs.map((href) => {
-        return { html_url: href, group: item.group };
-      });
-    })
+    .map((item) => item.hrefs.map((href) => ({ html_url: href, group: item.group })))
     .flat();
 
   return [...children];
