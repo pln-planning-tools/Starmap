@@ -6,11 +6,12 @@ module.exports = {
     project: ['./tsconfig.json'],
   },
   plugins: [
-    '@typescript-eslint'
+    '@typescript-eslint',
+    'import',
   ],
   extends: [
-    'plugin:import/recommended',
     'plugin:@next/next/recommended',
+    'plugin:@typescript-eslint/recommended',
     'prettier'
   ],
   rules: {
@@ -35,9 +36,14 @@ module.exports = {
     'arrow-body-style': 'off',
   },
   settings: {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx']
+    },
+    'import/resolver': {
+      typescript: {},
+      node: {
+        extensions: ['.jsx', '.jsx', '.ts', '.tsx'],
+        moduleDirectory: ['node_modules', 'lib/', 'components/', 'hooks/', 'pages/'],
       }
     }
   }
