@@ -1,4 +1,6 @@
 .UserGuide-article {
+  overflow-y: auto;
+  height: calc(100vh - 160px);
   min-width: 390px;
   padding: 0 120px;
   margin: 6vh 0 15vh 0;
