@@ -1015,7 +1015,7 @@
   dependencies:
     "@chakra-ui/checkbox" "2.2.4"
 
-"@chakra-ui/system@2.3.3":
+"@chakra-ui/system@2.3.3", "@chakra-ui/system@^2.3.3":
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/@chakra-ui/system/-/system-2.3.3.tgz#1557f573a3394e375411631b0836f0e79c9f68f9"
   integrity sha512-nOEXC08d4PiK/4QwSV4tnci2SoWjDHEVSveWW9qoRRr1iZUbQffpwYyJY4pBpPJE7CsA2w3GXK7NdMFRwPtamQ==
