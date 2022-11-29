@@ -14,12 +14,11 @@ import { GridRow } from './grid-row';
 import { GroupHeader } from './group-header';
 import { GroupWrapper } from './group-wrapper';
 import { Headerline } from './headerline';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NumSlider from '../inputs/NumSlider';
 import { dayjs } from '../../lib/client/dayjs';
 import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
-import React from 'react';
 
 export function RoadmapDetailed({
   issueData

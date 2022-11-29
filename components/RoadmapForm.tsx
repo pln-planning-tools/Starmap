@@ -7,9 +7,9 @@ import { useGlobalLoadingState } from '../hooks/useGlobalLoadingState';
 import styles from './RoadmapForm.module.css'
 import theme from './theme/constants'
 import { setCurrentIssueUrl, useCurrentIssueUrl } from '../hooks/useCurrentIssueUrl';
-import { isEmpty } from 'lodash';
 import { paramsFromUrl } from '../lib/paramsFromUrl';
 import { getValidUrlFromInput } from '../lib/getValidUrlFromInput';
+import { isEmpty } from 'lodash';
 
 export function RoadmapForm() {
   const router = useRouter();

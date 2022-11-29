@@ -10,9 +10,8 @@ import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { BASE_PROTOCOL, BASE_URL } from '../../config/constants';
 import { IssueData, QueryParameters, RoadmapApiResponse, RoadmapApiResponseFailure, RoadmapApiResponseSuccess, RoadmapServerSidePropsResult, StarMapsIssueErrorsGrouped } from '../../lib/types';
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
-import { ViewMode } from '../../lib/enums';
+import { ViewMode , DateGranularityState } from '../../lib/enums';
 import { setViewMode } from '../../hooks/useViewMode';
-import { DateGranularityState } from '../../lib/enums';
 import { setDateGranularity } from '../../hooks/useDateGranularity';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 
