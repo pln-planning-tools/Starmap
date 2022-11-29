@@ -5,22 +5,50 @@ export interface CalculateCompletionRateOptions {
   children: { state: IssueStates, children: CalculateCompletionRateOptions[] }[];
 }
 
-export function calculateCompletionRate ({ children, state }: CalculateCompletionRateOptions): number {
-  children = Array.isArray(children) ? children : [];
-  /**
-   * The total count is all children plus the parent.
-   */
-  const total = children.length + 1;
-  let open = 0;
-  let closed = 0;
-  children.concat([{ state, children: [] }]).forEach(({state}) => {
-     if (state === IssueStates.OPEN) {
-      open++;
-     } else if (state === IssueStates.CLOSED) {
-      closed++;
-     }
-  });
-  const completionRate = Number((closed / total) * 100 || 0).toFixed(2);
+interface GetIssueCountsResponse {
+  open: number;
+  closed: number;
+  total: number;
+  percentClosed: number;
+}
 
-  return Number(completionRate);
+/**
+ * recursively count the total, open, and closed issues, and return an object that includes the percent closed
+ * @param {CalculateCompletionRateOptions} issue
+ * @returns
+ */
+export function getIssueCounts(issue: CalculateCompletionRateOptions): GetIssueCountsResponse {
+  let open = issue.state === IssueStates.OPEN ? 1 : 0;
+  let closed = issue.state === IssueStates.CLOSED ? 1 : 0;
+  let total = 1;
+  if ((issue.children?.length ?? 0) !== 0) {
+
+    const withChildren = issue.children.reduce(({open: accOpen, closed: accClosed, total: accTotal}, child) => {
+      const { open: childrenOpen, closed: childrenClosed, total: childrenTotal } = getIssueCounts(child);
+      const total = accTotal + childrenTotal;
+      const open = accOpen + childrenOpen;
+      const closed = accClosed + childrenClosed;
+      return {
+        total,
+        open,
+        closed,
+      };
+    }, {open, closed, total});
+    open = withChildren.open;
+    closed = withChildren.closed;
+    total = withChildren.total;
+  }
+
+
+  return {
+    total,
+    open,
+    closed,
+    percentClosed: Number(Number((closed / total) * 100 || 0).toFixed(2)),
+  };
+
+}
+
+export function calculateCompletionRate ({ children, state }: CalculateCompletionRateOptions): number {
+  return getIssueCounts({ children, state }).percentClosed;
 };
