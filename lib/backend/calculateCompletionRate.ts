@@ -2,7 +2,7 @@ import { IssueStates } from '../enums';
 
 export interface CalculateCompletionRateOptions {
   state: IssueStates;
-  children: { state: IssueStates }[];
+  children: { state: IssueStates, children: CalculateCompletionRateOptions[] }[];
 }
 
 export function calculateCompletionRate ({ children, state }: CalculateCompletionRateOptions): number {
@@ -13,7 +13,7 @@ export function calculateCompletionRate ({ children, state }: CalculateCompletio
   const total = children.length + 1;
   let open = 0;
   let closed = 0;
-  children.concat([{ state }]).forEach(({state}) => {
+  children.concat([{ state, children: [] }]).forEach(({state}) => {
      if (state === IssueStates.OPEN) {
       open++;
      } else if (state === IssueStates.CLOSED) {
