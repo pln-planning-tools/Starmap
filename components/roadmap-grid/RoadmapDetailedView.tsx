@@ -36,25 +36,30 @@ export function RoadmapDetailed({
     children: v.children.map((x) => ({ ...x, group: x.parent.title })),
   }));
 
+  const issueDataMapper = ([key, value]) => {
+    const roadmapChild = newIssueData.find((i) => i.title === key);
+    if(!roadmapChild) {
+      throw new Error(`Could not find roadmap child with title ${key}`);
+    }
+    return {
+      groupName: key,
+      items: value,
+      url: getLinkForRoadmapChild(roadmapChild),
+    }
+  };
+
   const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
 
   const issueDataLevelOneGrouped: DetailedViewGroup[] = Array.from(
     group(issueDataLevelOne, (d) => d.group),
-    ([key, value]) => ({
-      groupName: key,
-      items: value,
-      url: getLinkForRoadmapChild(newIssueData.find((i) => i.title === key)),
-    }),
+    issueDataMapper
   );
 
   const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, group: v.title }));
+
   const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = Array.from(
     group(issueDataLevelOneIfNoChildren, (d) => d.group),
-    ([key, value]) => ({
-      groupName: key,
-      items: value,
-      url: getLinkForRoadmapChild(newIssueData.find((i) => i.title === key)),
-    }),
+    issueDataMapper
   );
 
   let issuesGrouped: DetailedViewGroup[];
@@ -65,11 +70,7 @@ export function RoadmapDetailed({
   } else {
     issuesGrouped = Array.from(
       group(issueData.children as IssueData[], (d) => d.group),
-      ([key, value]) => ({
-        groupName: key,
-        items: value,
-        url: getLinkForRoadmapChild(newIssueData.find((i) => i.title === key)),
-      }),
+      issueDataMapper
     );
   }
 
@@ -113,7 +114,11 @@ export function RoadmapDetailed({
   dayjsDates.push(maxDate)
 
   /**
-   * Ensure that the dates are
+([key, value]) => {
+      const roadmapChild = newIssueData.find((i) => i.title === key);
+      if (!roadmapChild) {
+        throw new Error(`Could not find roadmap child with title ${key}`);
+      }   * Ensure that the dates are
    *  * converted back to JS Date objects.
    *  * sorted - d3 timescale requires it to function properly
    */
