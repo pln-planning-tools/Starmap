@@ -1,12 +1,10 @@
-import { Box, Button, Center, Collapse, IconButton } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Box, Center } from '@chakra-ui/react';
 import type {State} from '@hookstate/core';
+import React, { useState } from 'react';
 
 import { IssueData, StarMapsIssueErrorsGrouped } from '../../lib/types';
 import { ErrorNotificationHeader } from './ErrorNotificationHeader';
 import { ErrorNotificationBody } from './ErrorNotificationBody';
-import React from 'react';
-import { ViewMode } from '../../lib/enums';
 import { errorFilters } from '../../lib/client/errorFilters';
 import { useViewMode } from '../../hooks/useViewMode';
 

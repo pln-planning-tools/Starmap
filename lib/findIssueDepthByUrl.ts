@@ -14,5 +14,4 @@ export function findIssueDepthByUrl(rootIssueData: IssueData, parentHtmlUrl: str
   };
 
   return foundIssueDepth;
-  // throw new Error(`findIssueDataByUrl: Cannot find issue with url '${parentHtmlUrl}' in rootIssueData`);
 }

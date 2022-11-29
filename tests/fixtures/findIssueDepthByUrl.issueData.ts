@@ -5,26 +5,26 @@ export const testIssueData: IssueData = getFakeIssue({
       html_url: 'root',
       children: [
         getFakeIssue({
-          html_url: 'child1',
+          html_url: 'childA',
           children: [
             getFakeIssue({
-              html_url: 'child1-1',
+              html_url: 'childA-1',
               children: [
                 getFakeIssue({
-                  html_url: 'child1-1-1',
+                  html_url: 'childA-1-a',
                 }),
               ],
             }),
           ]
         }),
         getFakeIssue({
-          html_url: 'child2',
+          html_url: 'childB',
           children: [
             getFakeIssue({
-              html_url: 'child2-1',
+              html_url: 'childB-1',
               children: [
                 getFakeIssue({
-                  html_url: 'child2-1-1',
+                  html_url: 'childB-1-a',
                 }),
               ],
             }),

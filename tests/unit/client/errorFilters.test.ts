@@ -33,19 +33,32 @@ describe('errorFilters.ts', function() {
       const actual = errFilterFn(errors, testIssueData);
       expect(actual).toHaveLength(3);
       expect(actual[0].issueUrl).toEqual('root');
-      expect(actual[1].issueUrl).toEqual('child1');
-      expect(actual[2].issueUrl).toEqual('child2');
+      expect(actual[1].issueUrl).toEqual('childA');
+      expect(actual[2].issueUrl).toEqual('childB');
     });
 
-    it('Can filter out the root issue and grandchildren', () => {
+    it('Can filter out the root issue and grandchildren 2 levels deep', () => {
       const errFilterFn = getIssueErrorFilter(2);
       const actual = errFilterFn(errors, testIssueData);
       expect(actual).toHaveLength(5);
       expect(actual[0].issueUrl).toEqual('root');
-      expect(actual[1].issueUrl).toEqual('child1');
-      expect(actual[2].issueUrl).toEqual('child1-1');
-      expect(actual[3].issueUrl).toEqual('child2');
-      expect(actual[4].issueUrl).toEqual('child2-1');
+      expect(actual[1].issueUrl).toEqual('childA');
+      expect(actual[2].issueUrl).toEqual('childA-1');
+      expect(actual[3].issueUrl).toEqual('childB');
+      expect(actual[4].issueUrl).toEqual('childB-1');
+    });
+
+    it('Can filter out the root issue and grandchildren 3 levels deep', () => {
+      const errFilterFn = getIssueErrorFilter(3);
+      const actual = errFilterFn(errors, testIssueData);
+      expect(actual).toHaveLength(7);
+      expect(actual[0].issueUrl).toEqual('root');
+      expect(actual[1].issueUrl).toEqual('childA');
+      expect(actual[2].issueUrl).toEqual('childA-1');
+      expect(actual[3].issueUrl).toEqual('childA-1-a');
+      expect(actual[4].issueUrl).toEqual('childB');
+      expect(actual[5].issueUrl).toEqual('childB-1');
+      expect(actual[6].issueUrl).toEqual('childB-1-a');
     });
 
   });
