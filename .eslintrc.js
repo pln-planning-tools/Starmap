@@ -5,19 +5,16 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.json'],
   },
-  plugins: ['@typescript-eslint'],
+  plugins: [
+    '@typescript-eslint'
+  ],
   extends: [
-    // "next/core-web-vitals",
-    // 'eslint:recommended',
-    // 'airbnb',
-    // 'airbnb-typescript',
-    // 'plugin:@typescript-eslint/recommended',
-    // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'prettier',
+    'plugin:import/recommended',
+    'plugin:@next/next/recommended',
+    'prettier'
   ],
   rules: {
     'react/react-in-jsx-scope': 'off',
-    'no-multiple-empty-lines': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-unsafe-call': 'off',
@@ -37,4 +34,11 @@ module.exports = {
     'jsx-a11y/alt-text': 'off',
     'arrow-body-style': 'off',
   },
+  settings: {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
 };

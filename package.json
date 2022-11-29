@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "test": "jest",
     "test:ci": "jest --ci"
   },
@@ -50,6 +51,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
+    "@next/eslint-plugin-next": "^13.0.5",
     "@octokit/types": "^8.0.0",
     "@primer/primitives": "^7.10.0",
     "@trivago/prettier-plugin-sort-imports": "^3.4.0",
@@ -65,7 +67,7 @@
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-next": "12.3.1",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-primer-react": "^1.0.1",
     "eslint-plugin-react": "^7.28.0",
