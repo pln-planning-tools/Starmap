@@ -53,14 +53,14 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   const pendingChildrenState = useHookstate<PendingChildren[]>([])
   const asyncIssueDataState = useHookstate<IssueData[]>([])
   const globalLoadingState = useGlobalLoadingState();
-  const [isRootIssueLoading, setIsRootIssueLoading] = useState(true);
+  const [isRootIssueLoading, setIsRootIssueLoading] = useState(false);
   const [isPendingChildrenLoading, setIsPendingChildrenLoading] = useState(false);
 
   const errors = starMapsErrorsState.get({ noproxy: true });
   const roadmapLoadError = roadmapLoadErrorState.get({noproxy: true});
 
   useEffect(() => {
-    if (globalLoadingState.get()) return;
+    if (isRootIssueLoading) return;
     const fetchRoadMap = async () => {
       setIsRootIssueLoading(true);
       globalLoadingState.start();
@@ -130,13 +130,18 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
           asyncIssueDataState.merge([pendingChildSuccess]);
         }
       } catch (err) {
+        console.error(`err: `, err);
         roadmapLoadErrorState.set({code: `Error fetching ${pendingChildApiUrl}`, message: `Error fetching ${pendingChildApiUrl}: ${(err as Error).toString()}`})
       }
       pendingChildrenState[0].set(none);
 
-      if (pendingChildrenState.length === 0) {
+      // if (pendingChildrenState.length === 0) {
         setIsPendingChildrenLoading(false);
-      }
+      // } else {
+      //   console.log(`pendingChildrenState.length: `, pendingChildrenState.length);
+      //   console.log('not setting is pending children loading to false');
+      //   console.log('roadmapLoadErrorState.get()', roadmapLoadErrorState.get());
+      // }
     };
     fetchPendingChildren();
   }, [issue_number, repo, owner, isRootIssueLoading, pendingChildrenState.value]);
@@ -176,10 +181,12 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
    * Resolve global loading after root issue and pending issues are done.
    */
   useEffect(() => {
-    if (!isPendingChildrenLoading && !isRootIssueLoading) {
+    if (!isPendingChildrenLoading && !isRootIssueLoading && pendingChildrenState.length === 0) {
       globalLoadingState.stop();
+    } else {
+      globalLoadingState.start();
     }
-  }, [isPendingChildrenLoading, isRootIssueLoading])
+  }, [isRootIssueLoading, pendingChildrenState.length])
 
   useEffect(() => {
     setDateGranularity(dateGranularity);
