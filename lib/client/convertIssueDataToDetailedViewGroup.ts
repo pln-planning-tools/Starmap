@@ -1,9 +1,9 @@
 import { State } from '@hookstate/core';
 import { group } from 'd3';
-import { groupBy, reverse, sortBy, uniqBy } from 'lodash';
+import { reverse, sortBy, uniqBy } from 'lodash';
 
 import { ViewMode } from '../enums';
-import {getLinkForRoadmapChild} from './linkUtils';
+import { getLinkForRoadmapChild } from './linkUtils';
 import { DetailedViewGroup, IssueData } from '../types';
 
 function flattenIssueData(issueData: IssueData, isChildIssue = false): IssueData[] {
@@ -39,9 +39,11 @@ export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: Stat
 
   let issuesGrouped: DetailedViewGroup[];
   if (viewMode === ViewMode.Detail) {
-    issuesGrouped =
-      (!!issueDataLevelOneGrouped && issueDataLevelOneGrouped.length > 0 && issueDataLevelOneGrouped) ||
-      issueDataLevelOneIfNoChildrenGrouped;
+    if (issueDataLevelOneGrouped.length > 0) {
+      issuesGrouped = issueDataLevelOneGrouped
+    } else {
+      issuesGrouped = issueDataLevelOneIfNoChildrenGrouped
+    }
   } else {
     issuesGrouped = Array.from(
       group(issueDataState.children.value as IssueData[], (d) => d.group),

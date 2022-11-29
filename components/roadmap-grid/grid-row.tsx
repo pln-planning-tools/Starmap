@@ -1,6 +1,7 @@
 import NextLink from 'next/link';
 import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
+import type { State } from '@hookstate/core'
 
 import { dayjs } from '../../lib/client/dayjs';
 import { IssueData } from '../../lib/types';
@@ -18,29 +19,29 @@ export function GridRow({
   numHeaderItems,
   timeScaler
 }: {
-  milestone: IssueData;
+  milestone: State<IssueData>;
   index: number;
   timelineTicks: Date[];
   numGridCols: number;
   numHeaderItems: number;
   timeScaler: TimeScaler;
 }): ReactElement | null {
-  const closestDateIdx = Math.round(timeScaler.getColumn(dayjs.utc(milestone.due_date).toDate()));
+  const closestDateIdx = Math.round(timeScaler.getColumn(dayjs.utc(milestone.due_date.get()).toDate()));
   const span = Math.max(4, numGridCols / timelineTicks.length);
   const closest = span * (closestDateIdx - 1);
 
-  const childLink = getLinkForRoadmapChild(milestone);
+  const childLink = getLinkForRoadmapChild(milestone.get());
   const clickable = milestone.children.length > 0;
 
   /**
    * Do not render milestone items if their ETAs are invalid.
    */
-  if (milestone.root_issue !== true) {
-    if (!dayjs(milestone.due_date).isValid()) {
+  if (milestone.root_issue.value !== true) {
+    if (!dayjs(milestone.due_date.value).isValid()) {
       return null;
     }
 
-    if (!milestone.labels.includes('starmaps')) {
+    if (!milestone.labels.get().includes('starmaps')) {
       return null;
     }
   }
@@ -48,11 +49,15 @@ export function GridRow({
 
   if (span > gridColumnEnd) {
     // TODO: Handle this error
-    console.error('Span size is greater than gridColumnEnd', milestone)
+    console.error('Span size is greater than gridColumnEnd', milestone.get({ noproxy: true }))
   }
   if (closestDateIdx > numGridCols) {
-    // TODO: Handle this error
-    // console.error('closestDateIdx is greater than numGridCols', milestone)
+    /**
+     * TODO: Handle this error
+     * This error is sometimes happening for milestones that are currently being used as a group item.
+     * i.e. we shouldn't be attempting to render those at all.
+     */
+    console.error('closestDateIdx is greater than numGridCols', milestone.get({ noproxy: true }))
   }
 
   const rowItem = (
@@ -70,8 +75,8 @@ export function GridRow({
     >
       <Flex direction={{ base:"column", md:"column", lg:"row" }} justify="space-between" position="relative">
         <Flex direction="column" maxW={{ base: "100%", sm: "100%", md:"100%", lg:"85%" }}>
-          <Text as="b" className={styles.milestoneTitleWrapper}>{milestone.title}</Text>
-          <p className={styles.milestoneDate}>{milestone.due_date}</p>
+          <Text as="b" className={styles.milestoneTitleWrapper}>{milestone.title.value}</Text>
+          <p className={styles.milestoneDate}>{milestone.due_date.value}</p>
         </Flex>
         <Flex m={{ base: "0", sm: "8px 0", md: "8px 0", lg: "0" }}>
           <SvgGitHubLogoWithTooltip githuburl={milestone.html_url}/>

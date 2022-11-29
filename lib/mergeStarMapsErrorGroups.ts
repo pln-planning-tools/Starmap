@@ -1,5 +1,3 @@
-import { uniqBy } from 'lodash';
-
 import { flattenStarMapsErrorGroups } from './flattenStarMapsErrorGroups';
 import { groupStarMapsErrors } from './groupStarMapsErrors';
 import { StarMapsError, StarMapsIssueErrorsGrouped } from './types';

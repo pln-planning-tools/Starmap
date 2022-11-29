@@ -1,5 +1,6 @@
 import {
   Box,
+  Spinner,
   Tab,
   TabList,
   TabPanel,
@@ -26,7 +27,7 @@ export function RoadmapTabbedView({
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
   const router = useRouter();
   if (issueDataState.children.length === 0 || globalLoadingState.get()) {
-    return (<></>);
+    return (<Spinner size="lg" />);
   }
   // Defining what tabs to show and in what order
   const tabs = ['Overview', 'Detailed View'] as const;

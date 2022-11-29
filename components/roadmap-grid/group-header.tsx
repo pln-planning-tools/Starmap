@@ -1,6 +1,7 @@
 import { Text } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import NextLink from 'next/link';
+import React from 'react';
 import { useViewMode } from '../../hooks/useViewMode';
 
 import { ViewMode } from '../../lib/enums';

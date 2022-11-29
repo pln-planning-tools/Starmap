@@ -1,4 +1,4 @@
-import type {State} from '@hookstate/core'
+import type { State } from '@hookstate/core'
 
 import type { RoadmapMode, IssueStates, DateGranularityState } from './enums'
 

@@ -1,7 +1,7 @@
 import { Center, Spinner } from '@chakra-ui/react';
 
 import { scaleTime } from 'd3';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { useMaxHeight, setMaxHeight } from '../../hooks/useMaxHeight';

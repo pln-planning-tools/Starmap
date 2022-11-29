@@ -90,7 +90,8 @@ export function RoadmapForm() {
   };
 
   Router.events.on('routeChangeStart', (...events) => {
-    setCurrentIssueUrl(events[0])
+    const currentUrl = getValidUrlFromInput(events[0].split('#')[0].replace('/roadmap/', ''));
+    setCurrentIssueUrl(currentUrl.toString());
   });
 
   return (
