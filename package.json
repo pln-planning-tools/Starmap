@@ -9,7 +9,7 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "test": "jest",
-    "test:ci": "yarn lint && jest --ci"
+    "test:ci": "yarn lint && jest --ci --coverage"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.12",
