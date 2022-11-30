@@ -10,7 +10,7 @@ interface GetIssueCountsResponse {
   percentClosed: number;
 }
 
-const issueKey = ({html_url}: Pick<IssueData, 'html_url'>) => html_url;
+const issueKey = ({ html_url }: Pick<IssueData, 'html_url'>) => html_url;
 
 function getIssueStatesMap(issue: CalculateCompletionRateOptions, issueStatesMap = new Map<string, IssueStates>()): Map<string, IssueStates> {
   const key = issueKey(issue);

@@ -1,15 +1,17 @@
-import { useRouter } from 'next/router';
-import { Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Text } from '@chakra-ui/react';
+import { Router, useRouter } from 'next/router';
+import { Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons'
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useGlobalLoadingState } from '../hooks/useGlobalLoadingState';
 import styles from './RoadmapForm.module.css'
 import theme from './theme/constants'
 import { setCurrentIssueUrl, useCurrentIssueUrl } from '../hooks/useCurrentIssueUrl';
-import { isEmpty } from 'lodash';
 import { paramsFromUrl } from '../lib/paramsFromUrl';
 import { getValidUrlFromInput } from '../lib/getValidUrlFromInput';
+import { useViewMode } from '../hooks/useViewMode';
+import { ViewMode } from '../lib/enums';
+import { isEmpty } from 'lodash';
 
 export function RoadmapForm() {
   const router = useRouter();
@@ -18,7 +20,7 @@ export function RoadmapForm() {
   const [issueUrl, setIssueUrl] = useState<string | null>();
   const [error, setError] = useState<Error | null>(null);
   const [isInputBlanked, setIsInputBlanked] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(globalLoadingState.get());
+  const viewMode = useViewMode() as ViewMode;
 
   useEffect(() => {
     if (!isInputBlanked && isEmpty(currentIssueUrl) && window.location.pathname.length > 1) {
@@ -47,12 +49,12 @@ export function RoadmapForm() {
               }, 5000);
               throw new Error('Already viewing this issue');
             }
-            await router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}`);
-            setIsLoading(false);
+            await router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}#${viewMode}`);
+            globalLoadingState.stop();
           }
         } catch (err) {
           setError(err as Error);
-          setIsLoading(false);
+          globalLoadingState.stop();
         }
       }
     };
@@ -61,7 +63,7 @@ export function RoadmapForm() {
 
   const formSubmit = (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    globalLoadingState.start();
     setError(null);
 
     try {
@@ -72,25 +74,29 @@ export function RoadmapForm() {
       setIssueUrl(newUrl.toString());
     } catch (err) {
       setError(err as Error);
-      setIsLoading(false);
+      globalLoadingState.stop();
     }
   }
 
-  let inputRightElement = (
+  const inputRightElement = (
     <Button type="submit" isLoading={globalLoadingState.get()} className={styles.formSubmitButton} border="1px solid #8D8D8D" borderRadius="4px"  bg="rgba(141, 141, 141, 0.3)" onClick={formSubmit}>
       <Text p="6px 10px" color="white">⏎</Text>
     </Button>
-  )
-  if (globalLoadingState.get()) {
-    inputRightElement = <Spinner />
-  }
+  );
+
   const onChangeHandler = (e) => {
     setIsInputBlanked(true);
     setCurrentIssueUrl(e.target.value ?? '')
   };
+
+  Router.events.on('routeChangeStart', (...events) => {
+    const currentUrl = getValidUrlFromInput(events[0].split('#')[0].replace('/roadmap/', ''));
+    setCurrentIssueUrl(currentUrl.toString());
+  });
+
   return (
     <form onSubmit={formSubmit}>
-      <FormControl isInvalid={error != null}>
+      <FormControl isInvalid={error != null} isDisabled={globalLoadingState.get()}>
         <InputGroup>
           <InputLeftElement
             pointerEvents='none'

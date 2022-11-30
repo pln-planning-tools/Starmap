@@ -9,7 +9,7 @@ interface NumSelectorProps {
   step?: number;
 }
 
-function NumSlider({value, min, max, setValue, msg, step}: NumSelectorProps) {
+function NumSlider({ value, min, max, setValue, msg, step }: NumSelectorProps) {
   const message = msg ?? `Select a number: `;
   step = step ?? 1;
   return (

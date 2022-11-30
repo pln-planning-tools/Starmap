@@ -1,7 +1,7 @@
-import { Box, Center, Spinner } from '@chakra-ui/react';
+import { Center, Spinner } from '@chakra-ui/react';
 
 import { scaleTime } from 'd3';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { useMaxHeight, setMaxHeight } from '../../hooks/useMaxHeight';
@@ -11,9 +11,8 @@ import AxisTop from './AxisTop';
 import RoadmapHeader from './RoadmapHeader';
 import RoadmapItem from './RoadmapItem';
 import TodayLine from './TodayLine';
-import WeekTicksSelector from './WeekTicksSelector';
 
-function NewRoadmap({ issueData, isLocal }: { issueData: IssueData; isLocal: boolean }) {
+function NewRoadmap({ issueData }: { issueData: IssueData; isLocal: boolean }) {
   if (!issueData) return null;
 
   const ref = useRef(null);

@@ -9,10 +9,11 @@
 
 .scrollable {
   extend: grid;
-  height: calc(100vh - 300px);
+  height: calc(100vh - 280px);
   overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  margin-top: -20px
 }
 
 .scrollable::-webkit-scrollbar {
@@ -55,6 +56,10 @@
   margin: 2px 2px;
   z-index: 5;
   /* min-height: 6rem; */
+}
+
+.scrollable .item.group:nth-child(2) {
+  margin-top: 20px;
 }
 
 .item.group {
@@ -144,6 +149,7 @@ a.milestoneTitle {
   position:relative;
   /** must align with .itemHeader left positioning. This is done in order to handle the centering of the text and grid ticks*/
   left: -1rem;
+  z-index: 6;
 }
 
 .timelineHeaderLine {
