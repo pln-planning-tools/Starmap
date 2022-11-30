@@ -46,7 +46,8 @@ module.exports = {
         'components/roadmap/',
         'lib/backend/saveIssueDataToFile.ts',
         'lib/mergeStarMapsErrorGroups.ts',
-        'lib/addStarMapsErrorsToStarMapsErrorGroups.ts'
+        'lib/addStarMapsErrorsToStarMapsErrorGroups.ts',
+        'playwright.config.ts',
       ]
     }]
   },
