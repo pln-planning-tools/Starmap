@@ -193,15 +193,17 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   return (
     <>
       <PageHeader />
-      <ErrorNotificationDisplay errors={errors ?? []} issueDataState={issueDataState}/>
-      <Box pt={5} pr="120px" pl="120px">
-        {!!serverError && <Box color='red.500'>{serverError.message}</Box>}
-        {!!roadmapLoadError && <Box color='red.500'>{roadmapLoadError.message}</Box>}
-        {!!issueDataState.ornull && mode === 'd3' && <NewRoadmap issueData={issueDataState.get({ noproxy: true }) as IssueData} isLocal={isLocal} />}
-        {!!issueDataState.ornull && mode === 'grid' && (
-          <RoadmapTabbedView issueDataState={issueDataState as State<IssueData>} />
-        )}
-      </Box>
+      <div style={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
+        <ErrorNotificationDisplay errors={errors ?? []} issueDataState={issueDataState}/>
+        <Box pt={5} pr="120px" pl="120px">
+          {!!serverError && <Box color='red.500'>{serverError.message}</Box>}
+          {!!roadmapLoadError && <Box color='red.500'>{roadmapLoadError.message}</Box>}
+          {!!issueDataState.ornull && mode === 'd3' && <NewRoadmap issueData={issueDataState.get({ noproxy: true }) as IssueData} isLocal={isLocal} />}
+          {!!issueDataState.ornull && mode === 'grid' && (
+            <RoadmapTabbedView issueDataState={issueDataState as State<IssueData>} />
+          )}
+        </Box>
+      </div>
     </>
   );
 }
