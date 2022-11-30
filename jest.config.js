@@ -4,8 +4,7 @@ const createJestConfig = nextJest({
   dir: './',
 })
 
-module.exports = {
-  ...createJestConfig,
+const customJestConfig = {
   testEnvironment: 'jest-environment-node',
   collectCoverageFrom: ['lib', 'components', 'hooks', 'pages'].map(dir => `${dir}/**/*.{js,jsx,ts,tsx}`),
   preset: 'ts-jest',
@@ -26,3 +25,5 @@ module.exports = {
     '^d3$': '<rootDir>/node_modules/d3/dist/d3.min.js',
   },
 };
+
+module.exports = createJestConfig(customJestConfig)

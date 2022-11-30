@@ -1,0 +1,4767 @@
+[
+  {
+    "groupName": "Engineering - M1 - End Users",
+    "items": [
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2022-12-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1225",
+        "group": "Engineering - M1 - End Users",
+        "title": "Theme: Bacalhau integrates with FIL+",
+        "node_id": "I_kwDOGVTvs85W2S4g",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M1 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1220",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyT9E",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": [
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1150",
+            "group": "Children:",
+            "title": "M1: Jobs that start with Filecoin Plus Result in Verified Deals",
+            "node_id": "I_kwDOGVTvs85WXi1v",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Bacalhau integrates with FIL+",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1225",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2S4g",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": [
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/770",
+                "group": "children:",
+                "title": "Design doc for FIL+",
+                "node_id": "I_kwDOGVTvs85THNi-",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Jobs that start with Filecoin Plus Result in Verified Deals",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1150",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WXi1v",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/449",
+                "group": "children:",
+                "title": "Use of Filecoin+ For Implementing Filecoin Storage",
+                "node_id": "I_kwDOGVTvs85PUnc4",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Jobs that start with Filecoin Plus Result in Verified Deals",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1150",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WXi1v",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "epic",
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/665",
+                "group": "children:",
+                "title": "Getting SPs on board, Filecoin, Filecoin+",
+                "node_id": "I_kwDOGVTvs85SeXQh",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Jobs that start with Filecoin Plus Result in Verified Deals",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1150",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WXi1v",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "UX",
+                  "Provider Onboarding",
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/561",
+                "group": "children:",
+                "title": "Setup Proper Filecoin Devstack",
+                "node_id": "I_kwDOGVTvs85RKdpM",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Jobs that start with Filecoin Plus Result in Verified Deals",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1150",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WXi1v",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/911",
+                "group": "children:",
+                "title": "Change Lotus publisher to support the new Lotus container image",
+                "node_id": "I_kwDOGVTvs85UT95v",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Jobs that start with Filecoin Plus Result in Verified Deals",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1150",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WXi1v",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/924",
+                "group": "children:",
+                "title": "Lotus Filecoin publisher should discover a miner rather than be configured with it",
+                "node_id": "I_kwDOGVTvs85Uh6sb",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Jobs that start with Filecoin Plus Result in Verified Deals",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1150",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WXi1v",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/947",
+                "group": "children:",
+                "title": "Allow Filecoin publisher to be selected for publishing",
+                "node_id": "I_kwDOGVTvs85U2tG7",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Jobs that start with Filecoin Plus Result in Verified Deals",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1150",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WXi1v",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/449",
+                "group": "children:",
+                "title": "Use of Filecoin+ For Implementing Filecoin Storage",
+                "node_id": "I_kwDOGVTvs85PUnc4",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Jobs that start with Filecoin Plus Result in Verified Deals",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1150",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WXi1v",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/909",
+                "group": "children:",
+                "title": "Set Estuary to be the default publisher for all jobs",
+                "node_id": "I_kwDOGVTvs85UNr-k",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Jobs that start with Filecoin Plus Result in Verified Deals",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1150",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WXi1v",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "UX",
+                  "example",
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/676",
+                "group": "children:",
+                "title": "[example] Pinning files workload onboarding example",
+                "node_id": "I_kwDOGVTvs85Soz3K",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Jobs that start with Filecoin Plus Result in Verified Deals",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1150",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WXi1v",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1179",
+            "group": "Children:",
+            "title": "M1: Data permanence powered by FIL+",
+            "node_id": "I_kwDOGVTvs85WlHyc",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Bacalhau integrates with FIL+",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1225",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2S4g",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "needs refinement",
+              "UX",
+              "Provider Onboarding",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/562",
+            "group": "Children:",
+            "title": "Block Analyzer to distinguish Filecoin+ Content",
+            "node_id": "I_kwDOGVTvs85RKfsx",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Bacalhau integrates with FIL+",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1225",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2S4g",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2022-12-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1226",
+        "group": "Engineering - M1 - End Users",
+        "title": "Theme: Improved resilience, performance & quality",
+        "node_id": "I_kwDOGVTvs85W2S4t",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M1 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1220",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyT9E",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": [
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1147",
+            "group": "Children:",
+            "title": "M1: Improve monitoring, traceability and logging",
+            "node_id": "I_kwDOGVTvs85WWnOR",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Improved resilience, performance & quality",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1226",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2S4t",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": [
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/1145",
+                "group": "children:",
+                "title": "Investigate Prometheus best practices",
+                "node_id": "I_kwDOGVTvs85WWlYO",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Improve monitoring, traceability and logging",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1147",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WWnOR",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/1146",
+                "group": "children:",
+                "title": "Improve Prometheus developer experience",
+                "node_id": "I_kwDOGVTvs85WWmik",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Improve monitoring, traceability and logging",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1147",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WWnOR",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/582",
+                "group": "children:",
+                "title": "Add more metrics to the codebase",
+                "node_id": "I_kwDOGVTvs85RUiGL",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Improve monitoring, traceability and logging",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1147",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WWnOR",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/1148",
+                "group": "children:",
+                "title": "Enable logging to files with rotation",
+                "node_id": "I_kwDOGVTvs85WWqrZ",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Improve monitoring, traceability and logging",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1147",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WWnOR",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/1149",
+                "group": "children:",
+                "title": "Centralize logging",
+                "node_id": "I_kwDOGVTvs85WWrrP",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Improve monitoring, traceability and logging",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1147",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WWnOR",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/1152",
+                "group": "children:",
+                "title": "Include trace ID and Job ID in all log statements",
+                "node_id": "I_kwDOGVTvs85WZJYr",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Improve monitoring, traceability and logging",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1147",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WWnOR",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              },
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2022-12-31",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/1153",
+                "group": "children:",
+                "title": "Support arbitrary OTEL trace destinations rather than just Honeycomb",
+                "node_id": "I_kwDOGVTvs85WZLSb",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M1: Improve monitoring, traceability and logging",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1147",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WWnOR",
+                  "completion_rate": 0,
+                  "due_date": "2022-12-31"
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1180",
+            "group": "Children:",
+            "title": "M1: Improved performance",
+            "node_id": "I_kwDOGVTvs85WlHy1",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Improved resilience, performance & quality",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1226",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2S4t",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1181",
+            "group": "Children:",
+            "title": "M1: Improved quality of examples & documentation",
+            "node_id": "I_kwDOGVTvs85WlHzR",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Improved resilience, performance & quality",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1226",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2S4t",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2022-12-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1227",
+        "group": "Engineering - M1 - End Users",
+        "title": "Theme: Client side interaction (Dashboard, SDK)",
+        "node_id": "I_kwDOGVTvs85W2S43",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M1 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1220",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyT9E",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": [
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1182",
+            "group": "Children:",
+            "title": "M1: Dashboard for visualizing jobs",
+            "node_id": "I_kwDOGVTvs85WlHzr",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Client side interaction (Dashboard, SDK)",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1227",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2S43",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1183",
+            "group": "Children:",
+            "title": "M1: Python SDK for easy interaction with Bacalhau from Python",
+            "node_id": "I_kwDOGVTvs85WlH0E",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Client side interaction (Dashboard, SDK)",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1227",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2S43",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2022-12-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+        "group": "Engineering - M1 - End Users",
+        "title": "Theme: Stabilize tests",
+        "node_id": "I_kwDOGVTvs85Vrfeo",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M1 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1220",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyT9E",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": [
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1264",
+            "group": "Children:",
+            "title": "Run tests offline",
+            "node_id": "I_kwDOGVTvs85W2mYA",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1030",
+            "group": "Children:",
+            "title": "M1 mac running (or equivalent) should be <2 min for most jobs",
+            "node_id": "I_kwDOGVTvs85VudJA",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1031",
+            "group": "Children:",
+            "title": "Figure out correct patterns (e.g. t.Run, Suites, etc)",
+            "node_id": "I_kwDOGVTvs85VudKv",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1032",
+            "group": "Children:",
+            "title": "Remove all logging information during test runs and/or devstack",
+            "node_id": "I_kwDOGVTvs85VudL2",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "flake",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1033",
+            "group": "Children:",
+            "title": "Remove known flakes (e.g. DeterministcVerifier, DockerRunEndToEnd)",
+            "node_id": "I_kwDOGVTvs85Vugg9",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1034",
+            "group": "Children:",
+            "title": "Implement parallel?",
+            "node_id": "I_kwDOGVTvs85VugiT",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1035",
+            "group": "Children:",
+            "title": "Template for implementing new Suite, new Noop test, new Full Devstack test",
+            "node_id": "I_kwDOGVTvs85Vugjf",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1036",
+            "group": "Children:",
+            "title": "Remove use of Docker for things that don't test Docker",
+            "node_id": "I_kwDOGVTvs85VuglB",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "flake",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1064",
+            "group": "Children:",
+            "title": "CircleCI failing due to missing docker or failing to pull images",
+            "node_id": "I_kwDOGVTvs85WAnQT",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "enhancement",
+              "testing",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/410",
+            "group": "Children:",
+            "title": "refactor test tooling",
+            "node_id": "I_kwDOGVTvs85OjSg6",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "testing",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/471",
+            "group": "Children:",
+            "title": "Refactor all of these tests to use common functionality; they're all very similar",
+            "node_id": "I_kwDOGVTvs85PlWpL",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "enhancement",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/503",
+            "group": "Children:",
+            "title": "figure out how to test for CIDs that are not local",
+            "node_id": "I_kwDOGVTvs85P_UPd",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/519",
+            "group": "Children:",
+            "title": "alerting on performance dashboard - if perf tests start going 10% slower",
+            "node_id": "I_kwDOGVTvs85QWrtU",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "testing",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/523",
+            "group": "Children:",
+            "title": "Add unit tests for compute node state machine",
+            "node_id": "I_kwDOGVTvs85QcKzp",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "enhancement",
+              "testing",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/812",
+            "group": "Children:",
+            "title": "Test suite improvements",
+            "node_id": "I_kwDOGVTvs85TZGgs",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/635",
+            "group": "Children:",
+            "title": "Tests should work offline",
+            "node_id": "I_kwDOGVTvs85SD7pB",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "testing",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/820",
+            "group": "Children:",
+            "title": "Concurrency testing",
+            "node_id": "I_kwDOGVTvs85ThcBp",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1008",
+            "group": "Children:",
+            "title": "Have a test that runs before everything that verifies the state of test",
+            "node_id": "I_kwDOGVTvs85VcPU_",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "flake",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1029",
+            "group": "Children:",
+            "title": "Make sure all things are cleanly runnable offline",
+            "node_id": "I_kwDOGVTvs85VubXl",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1045",
+            "group": "Children:",
+            "title": "Unskip TestDockerRunSuite/TestRun_Deterministic_Verifier",
+            "node_id": "I_kwDOGVTvs85V0mD6",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1080",
+            "group": "Children:",
+            "title": "Logging in tests still not great",
+            "node_id": "I_kwDOGVTvs85WJ7iT",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1085",
+            "group": "Children:",
+            "title": "run linux arm64 tests",
+            "node_id": "I_kwDOGVTvs85WLEd-",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "bug",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/361",
+            "group": "Children:",
+            "title": "uploading files to devstack ipfs nodes",
+            "node_id": "I_kwDOGVTvs85NWcul",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "bug",
+              "testing",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/382",
+            "group": "Children:",
+            "title": "fix test flakiness when running multiple wasm tests",
+            "node_id": "I_kwDOGVTvs85NxpFS",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Stabilize tests",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1020",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85Vrfeo",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          }
+        ]
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1220"
+  },
+  {
+    "groupName": "Engineering - M1 - Compute Providers",
+    "items": [
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2022-12-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1228",
+        "group": "Engineering - M1 - Compute Providers",
+        "title": "Theme: FIL+ for CPs",
+        "node_id": "I_kwDOGVTvs85W2TU5",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M1 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1221",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyU0O",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": [
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1184",
+            "group": "Children:",
+            "title": "M1: FIL+ integration launches, CPs doing the job can “win” verified deals first",
+            "node_id": "I_kwDOGVTvs85WlH0d",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: FIL+ for CPs",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1228",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TU5",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1187",
+            "group": "Children:",
+            "title": "M1: FIL+ Dashboard and UX for moderators in place",
+            "node_id": "I_kwDOGVTvs85WlH1n",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: FIL+ for CPs",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1228",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TU5",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2022-12-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1229",
+        "group": "Engineering - M1 - Compute Providers",
+        "title": "Theme: Simplified Setup & Management",
+        "node_id": "I_kwDOGVTvs85W2Tak",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M1 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1221",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyU0O",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": [
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1231",
+            "group": "Children:",
+            "title": "Default for Server Setup takes no parameters to join default network",
+            "node_id": "I_kwDOGVTvs85W2Wx6",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Simplified Setup & Management",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1229",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2Tak",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "enhancement",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/570",
+            "group": "Children:",
+            "title": "check compute node has all installed components",
+            "node_id": "I_kwDOGVTvs85RMqVW",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Simplified Setup & Management",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1229",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2Tak",
+              "completion_rate": 0,
+              "due_date": "2022-12-31"
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+        "group": "Engineering - M1 - Compute Providers",
+        "title": "Theme: Resilience and Performance",
+        "node_id": "I_kwDOGVTvs85W2TeK",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M1 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1221",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyU0O",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": [
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1186",
+            "group": "Children:",
+            "title": "M1: Communication on work on protocol for eventual native incentive mechanism",
+            "node_id": "I_kwDOGVTvs85WlH1O",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1172",
+            "group": "Children:",
+            "title": "Make the Bacalhau network more resilient to losing messages on libp2p, and nodes failing/coming back",
+            "node_id": "I_kwDOGVTvs85WlFCL",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1173",
+            "group": "Children:",
+            "title": "Get to API stability for the Job, JobSpec, etc structs so that we can turn on persistence without being unable to upgrade nodes in future, and for the yaml/json versions too - IOW, change whatever we want to change before we commit to the API",
+            "node_id": "I_kwDOGVTvs85WlFCi",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1174",
+            "group": "Children:",
+            "title": "Turn on persistence by implementing a sqlite version of the localdb - right now when we restart a bacalhau server it forgets everything! so upgrades e.g. break `bacalhau list` etc",
+            "node_id": "I_kwDOGVTvs85WlFC6",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "enhancement",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/696",
+            "group": "Children:",
+            "title": "Need a Publisher failover mechanism",
+            "node_id": "I_kwDOGVTvs85S6DYi",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "enhancement",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/697",
+            "group": "Children:",
+            "title": "Estuary publisher should be more resilient",
+            "node_id": "I_kwDOGVTvs85S6DoA",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1175",
+            "group": "Children:",
+            "title": "M1: What happens if a job can't do anything in the sequence of steps it needs to do - do we error? Yes at the moment, but ideally we'd retry and try it again",
+            "node_id": "I_kwDOGVTvs85WlFDq",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "bug",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/306",
+            "group": "Children:",
+            "title": "fix all the data races",
+            "node_id": "I_kwDOGVTvs85M19pe",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/310",
+            "group": "Children:",
+            "title": "rethink the use of pointers, maps and slices for concurrency",
+            "node_id": "I_kwDOGVTvs85M4bfc",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "bug",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/339",
+            "group": "Children:",
+            "title": "concurrency=1 but 3 nodes are getting bid accepted",
+            "node_id": "I_kwDOGVTvs85NIb9D",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "enhancement",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/350",
+            "group": "Children:",
+            "title": "terraform check google project",
+            "node_id": "I_kwDOGVTvs85NOB-X",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "kind/enhancement",
+              "topic/meta"
+            ],
+            "completion_rate": 0,
+            "due_date": "",
+            "html_url": "https://github.com/ipfs/kubo/issues/6523",
+            "group": "Children:",
+            "title": "Improve ipfs add performance for large trees of files & directories",
+            "node_id": "MDU6SXNzdWU0Njg4MTQ2MjE=",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/427",
+            "group": "Children:",
+            "title": "Long Running Jobs",
+            "node_id": "I_kwDOGVTvs85O0CV2",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "bug",
+              "enhancement",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/464",
+            "group": "Children:",
+            "title": "call executor IsInstalled and rename",
+            "node_id": "I_kwDOGVTvs85PfG7C",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "flake",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1127",
+            "group": "Children:",
+            "title": "try reverting libp2p change in a branch and see if it makes tests less flaky",
+            "node_id": "I_kwDOGVTvs85WUOSb",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1143",
+            "group": "Children:",
+            "title": "Explore Dependency Injection framworks",
+            "node_id": "I_kwDOGVTvs85WV-80",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1161",
+            "group": "Children:",
+            "title": "Summary of libp2p gossipsub issues",
+            "node_id": "I_kwDOGVTvs85Wbuhb",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/486",
+            "group": "Children:",
+            "title": "unexpected fault address 0x0",
+            "node_id": "I_kwDOGVTvs85Pz2ye",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "question",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/488",
+            "group": "Children:",
+            "title": "consider libp2p topology and protocols",
+            "node_id": "I_kwDOGVTvs85P0MmM",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "bug",
+              "UX",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/504",
+            "group": "Children:",
+            "title": "Can't fetch stderr of a job with container exit code 1",
+            "node_id": "I_kwDOGVTvs85QAdWp",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/512",
+            "group": "Children:",
+            "title": "calculate network size dynamically",
+            "node_id": "I_kwDOGVTvs85QH5cB",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Resilience and Performance",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1230",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2TeK",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          }
+        ]
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1221"
+  },
+  {
+    "groupName": "Partners - M1",
+    "items": [
+      {
+        "labels": [
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2022-12-31",
+        "html_url": "https://github.com/bacalhau-project/bacalhau-gtm/issues/7",
+        "group": "Partners - M1",
+        "title": "Align on our Product Positioning",
+        "node_id": "I_kwDOIcqpH85XHvy7",
+        "parent": {
+          "group": "children:",
+          "title": "Partners - M1",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1261",
+          "labels": [
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kcT",
+          "completion_rate": 0,
+          "due_date": ""
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2022-12-31",
+        "html_url": "https://github.com/bacalhau-project/bacalhau-gtm/issues/5",
+        "group": "Partners - M1",
+        "title": "Market Analysis (Quantitative)",
+        "node_id": "I_kwDOIcqpH85WnZpg",
+        "parent": {
+          "group": "children:",
+          "title": "Partners - M1",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1261",
+          "labels": [
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kcT",
+          "completion_rate": 0,
+          "due_date": ""
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2022-12-31",
+        "html_url": "https://github.com/bacalhau-project/bacalhau-gtm/issues/8",
+        "group": "Partners - M1",
+        "title": "Agree on draft Invocation Spec for IPVM interoperability with other CoD projects",
+        "node_id": "I_kwDOIcqpH85XH5bd",
+        "parent": {
+          "group": "children:",
+          "title": "Partners - M1",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1261",
+          "labels": [
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kcT",
+          "completion_rate": 0,
+          "due_date": ""
+        },
+        "children": []
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1261"
+  },
+  {
+    "groupName": "DevRel - M1",
+    "items": [
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/544",
+        "group": "DevRel - M1",
+        "title": "M1: Create hackathon materials that can be updated for each quarter, and hold one hackathon with them",
+        "node_id": "I_kwDOGVTvs85Q6afF",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M1",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1265",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W3MNK",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2022-12-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1290",
+        "group": "DevRel - M1",
+        "title": "M1: DOCs revamp",
+        "node_id": "I_kwDOGVTvs85XD5aB",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M1",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1265",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W3MNK",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1291",
+        "group": "DevRel - M1",
+        "title": "M1: DevEx feedback loop between community and Eng/PM",
+        "node_id": "I_kwDOGVTvs85XD7we",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M1",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1265",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W3MNK",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2022-12-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1292",
+        "group": "DevRel - M1",
+        "title": "M1: Present at 2 Conferences",
+        "node_id": "I_kwDOGVTvs85XD9m4",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M1",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1265",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W3MNK",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1293",
+        "group": "DevRel - M1",
+        "title": "M1: Participate in 3 Hackathons",
+        "node_id": "I_kwDOGVTvs85XD91P",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M1",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1265",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W3MNK",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1294",
+        "group": "DevRel - M1",
+        "title": "M1: Record 3 videos",
+        "node_id": "I_kwDOGVTvs85XD-HE",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M1",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1265",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W3MNK",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2022-12-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1295",
+        "group": "DevRel - M1",
+        "title": "M1: Give 2 micro grants to developers",
+        "node_id": "I_kwDOGVTvs85XD-8s",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M1",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1265",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W3MNK",
+          "completion_rate": 0,
+          "due_date": "2022-12-31"
+        },
+        "children": []
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1265"
+  },
+  {
+    "groupName": "Engineering - M2 - End Users",
+    "items": [
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1233",
+        "group": "Engineering - M2 - End Users",
+        "title": "Theme: Improve, CID-ify and Make Job Specs Immutable",
+        "node_id": "I_kwDOGVTvs85W2Y-g",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1223",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVrv",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": [
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-06-30",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1134",
+            "group": "Children:",
+            "title": "Work with Fission on JobSpec (Invocation spec)",
+            "node_id": "I_kwDOGVTvs85WVHjy",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Improve, CID-ify and Make Job Specs Immutable",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1233",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2Y-g",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "enhancement",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/880",
+            "group": "Children:",
+            "title": "Load WASM import modules from IPFS",
+            "node_id": "I_kwDOGVTvs85T46Bi",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Improve, CID-ify and Make Job Specs Immutable",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1233",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2Y-g",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/818",
+            "group": "Children:",
+            "title": "Iterate the WASM spec and internals to disconnect from the Language executor",
+            "node_id": "I_kwDOGVTvs85Tgi5Q",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Improve, CID-ify and Make Job Specs Immutable",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1233",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2Y-g",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/406",
+            "group": "Children:",
+            "title": "HTTPS URLs aren't immutable",
+            "node_id": "I_kwDOGVTvs85OaqcU",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Improve, CID-ify and Make Job Specs Immutable",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1233",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2Y-g",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2022-12-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/366",
+            "group": "Children:",
+            "title": "How immutable is a job?",
+            "node_id": "I_kwDOGVTvs85NerWN",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Improve, CID-ify and Make Job Specs Immutable",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1233",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2Y-g",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "enhancement",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-06-30",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/342",
+            "group": "Children:",
+            "title": "DX Improvement: We need more validation on incoming jobs",
+            "node_id": "I_kwDOGVTvs85NIl4s",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Improve, CID-ify and Make Job Specs Immutable",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1233",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2Y-g",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/247",
+            "group": "Children:",
+            "title": "Content addressible functions (jobs) - caching is cool",
+            "node_id": "I_kwDOGVTvs85L0B6d",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Improve, CID-ify and Make Job Specs Immutable",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1233",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2Y-g",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1188",
+            "group": "Children:",
+            "title": "M2: Support for WASM: Make it easier to bring common workloads to WASM transparently (e.g. Go, Python…",
+            "node_id": "I_kwDOGVTvs85WlH2J",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Improve, CID-ify and Make Job Specs Immutable",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1233",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2Y-g",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1209",
+            "group": "Children:",
+            "title": "Refactor model.Job to strip out non necessary fields for job creation",
+            "node_id": "I_kwDOGVTvs85Wtbgm",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Improve, CID-ify and Make Job Specs Immutable",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1233",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2Y-g",
+              "completion_rate": 0,
+              "due_date": "2023-03-31"
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1259",
+        "group": "Engineering - M2 - End Users",
+        "title": "Theme: Get End User API to 1.0",
+        "node_id": "I_kwDOGVTvs85W2jwz",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1223",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVrv",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": [
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1189",
+            "group": "Children:",
+            "title": "M2: Improved reliability.",
+            "node_id": "I_kwDOGVTvs85WlH2s",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Get End User API to 1.0",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1259",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2jwz",
+              "completion_rate": 0,
+              "due_date": "2023-06-30"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1191",
+            "group": "Children:",
+            "title": "M2: API/client reaches 1.0.",
+            "node_id": "I_kwDOGVTvs85WlH4A",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Get End User API to 1.0",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1259",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2jwz",
+              "completion_rate": 0,
+              "due_date": "2023-06-30"
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1260",
+        "group": "Engineering - M2 - End Users",
+        "title": "Theme: Significant DX & support for more advanced jobs",
+        "node_id": "I_kwDOGVTvs85W2kGR",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1223",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVrv",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": [
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1194",
+            "group": "Children:",
+            "title": "M2: Users are able to make limited use of networking from inside their jobs",
+            "node_id": "I_kwDOGVTvs85WlH5T",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Significant DX & support for more advanced jobs",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1260",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2kGR",
+              "completion_rate": 0,
+              "due_date": "2023-06-30"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1190",
+            "group": "Children:",
+            "title": "M2: Faster REPL (local code ->  executing remotely -> feedback).",
+            "node_id": "I_kwDOGVTvs85WlH3i",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Significant DX & support for more advanced jobs",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1260",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2kGR",
+              "completion_rate": 0,
+              "due_date": "2023-06-30"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-03-31",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/1193",
+            "group": "Children:",
+            "title": "M2: Many new examples available",
+            "node_id": "I_kwDOGVTvs85WlH49",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Significant DX & support for more advanced jobs",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1260",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2kGR",
+              "completion_rate": 0,
+              "due_date": "2023-06-30"
+            },
+            "children": [
+              {
+                "labels": [
+                  "milestone",
+                  "starmaps"
+                ],
+                "completion_rate": 0,
+                "due_date": "2023-06-30",
+                "html_url": "https://github.com/filecoin-project/bacalhau/issues/490",
+                "group": "Children:",
+                "title": "Branch-Train-Merge: Embarrassingly Parallel Training of Expert Language Models on bacalhau",
+                "node_id": "I_kwDOGVTvs85P0-k2",
+                "parent": {
+                  "group": "Children:",
+                  "title": "M2: Many new examples available",
+                  "html_url": "https://github.com/filecoin-project/bacalhau/issues/1193",
+                  "labels": [
+                    "milestone",
+                    "starmaps"
+                  ],
+                  "node_id": "I_kwDOGVTvs85WlH49",
+                  "completion_rate": 0,
+                  "due_date": "2023-03-31"
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "labels": [
+              "enhancement",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-06-30",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/494",
+            "group": "Children:",
+            "title": "zip and tar http storage drivers",
+            "node_id": "I_kwDOGVTvs85P38ZV",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Significant DX & support for more advanced jobs",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1260",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2kGR",
+              "completion_rate": 0,
+              "due_date": "2023-06-30"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-06-30",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/528",
+            "group": "Children:",
+            "title": "Remove more defaults from CLI",
+            "node_id": "I_kwDOGVTvs85Qntcs",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Significant DX & support for more advanced jobs",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1260",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2kGR",
+              "completion_rate": 0,
+              "due_date": "2023-06-30"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "UX",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-06-30",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/551",
+            "group": "Children:",
+            "title": "Support IPFS subpaths",
+            "node_id": "I_kwDOGVTvs85RETmy",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Significant DX & support for more advanced jobs",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1260",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2kGR",
+              "completion_rate": 0,
+              "due_date": "2023-06-30"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "documentation",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/623",
+            "group": "Children:",
+            "title": "Auto generate https://docs.bacalhau.org/all-flags/",
+            "node_id": "I_kwDOGVTvs85R55nG",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Significant DX & support for more advanced jobs",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1260",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2kGR",
+              "completion_rate": 0,
+              "due_date": "2023-06-30"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "documentation",
+              "UX",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/616",
+            "group": "Children:",
+            "title": "Docs page for python wasm mode",
+            "node_id": "I_kwDOGVTvs85R0fNu",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Significant DX & support for more advanced jobs",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1260",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2kGR",
+              "completion_rate": 0,
+              "due_date": "2023-06-30"
+            },
+            "children": []
+          },
+          {
+            "labels": [
+              "ops",
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/620",
+            "group": "Children:",
+            "title": "Install instructions/script for bare metal (ubuntu)",
+            "node_id": "I_kwDOGVTvs85R2DVs",
+            "parent": {
+              "group": "Children:",
+              "title": "Theme: Significant DX & support for more advanced jobs",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1260",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2kGR",
+              "completion_rate": 0,
+              "due_date": "2023-06-30"
+            },
+            "children": []
+          }
+        ]
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1223"
+  },
+  {
+    "groupName": "Engineering - M2 - Compute Providers",
+    "items": [
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1195",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "M2: Initial support for keypairs to encrypt data going into IPFS",
+        "node_id": "I_kwDOGVTvs85WlH5t",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1196",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "M2: Unified control plane across nodes and metrics dashboard.",
+        "node_id": "I_kwDOGVTvs85WlH6Q",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1197",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "M2: Partner program for CP to augment their storage systems.",
+        "node_id": "I_kwDOGVTvs85WlH6u",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1198",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "M2: Multiple executors support.",
+        "node_id": "I_kwDOGVTvs85WlH7K",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1199",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "M2: API/server reaches 1.0.",
+        "node_id": "I_kwDOGVTvs85WlI6w",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1201",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "M2: Onboard 5 compute providers and compute nodes via direct outreach",
+        "node_id": "I_kwDOGVTvs85WlI76",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1200",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "M2: FIL+ integration with Evergreen",
+        "node_id": "I_kwDOGVTvs85WlI7T",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1202",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "M2: Improve Separation between Requester and Compute nodes",
+        "node_id": "I_kwDOGVTvs85WlI8c",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1203",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "M2: Communication on results from initial protocol hardening efforts (simualtion, formal verification & game theory approaches)",
+        "node_id": "I_kwDOGVTvs85WlI81",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/482",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "Retention policy for stored results",
+        "node_id": "I_kwDOGVTvs85Py5Uf",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/566",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "add graph network view to bacalhau dashboard",
+        "node_id": "I_kwDOGVTvs85RMGI5",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/567",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "deploy dashboard somewhere!",
+        "node_id": "I_kwDOGVTvs85RMGV5",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "ops",
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/620",
+        "group": "Engineering - M2 - Compute Providers",
+        "title": "Install instructions/script for bare metal (ubuntu)",
+        "node_id": "I_kwDOGVTvs85R2DVs",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M2 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1224",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85WyVtO",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1224"
+  },
+  {
+    "groupName": "Partners - M2",
+    "items": [
+      {
+        "labels": [
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/bacalhau-project/bacalhau-gtm/issues/9",
+        "group": "Partners - M2",
+        "title": "Bacalhau workload growth: add 5 new partners",
+        "node_id": "I_kwDOIcqpH85XH6V9",
+        "parent": {
+          "group": "children:",
+          "title": "Partners - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1262",
+          "labels": [
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kk4",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/bacalhau-project/bacalhau-gtm/issues/11",
+        "group": "Partners - M2",
+        "title": "4 net new funded grants for COD WG projects building on Bacalhau and/or onboarding data to Filecoin",
+        "node_id": "I_kwDOIcqpH85XIB0L",
+        "parent": {
+          "group": "children:",
+          "title": "Partners - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1262",
+          "labels": [
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kk4",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/bacalhau-project/bacalhau-gtm/issues/12",
+        "group": "Partners - M2",
+        "title": "Onboard 5 Compute Providers and compute nodes via direct outreach",
+        "node_id": "I_kwDOIcqpH85XIk-B",
+        "parent": {
+          "group": "children:",
+          "title": "Partners - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1262",
+          "labels": [
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kk4",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1262"
+  },
+  {
+    "groupName": "DevRel - M2",
+    "items": [
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1192",
+        "group": "DevRel - M2",
+        "title": "M2: Grant program & “Bacalhau Season” starts.",
+        "node_id": "I_kwDOGVTvs85WlH4c",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1263",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kmM",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1314",
+        "group": "DevRel - M2",
+        "title": "M2: Docs create plan and start execution",
+        "node_id": "I_kwDOGVTvs85XJZdz",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1263",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kmM",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1329",
+        "group": "DevRel - M2",
+        "title": "M2: DevEx feedback loop between community and Eng/PM",
+        "node_id": "I_kwDOGVTvs85XJryk",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1263",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kmM",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1315",
+        "group": "DevRel - M2",
+        "title": "M2: Run Empathy Session ",
+        "node_id": "I_kwDOGVTvs85XJaa-",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1263",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kmM",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1357",
+        "group": "DevRel - M2",
+        "title": "M2: Update current materials",
+        "node_id": "I_kwDOGVTvs85XKQqO",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1263",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kmM",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1316",
+        "group": "DevRel - M2",
+        "title": "M2: Present at 5 Conferences",
+        "node_id": "I_kwDOGVTvs85XJbgA",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1263",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kmM",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1320",
+        "group": "DevRel - M2",
+        "title": "M2: Sponsor 1 Hackathon",
+        "node_id": "I_kwDOGVTvs85XJgxJ",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1263",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kmM",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1323",
+        "group": "DevRel - M2",
+        "title": "M2: 2 QuickStart Guides",
+        "node_id": "I_kwDOGVTvs85XJleY",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1263",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kmM",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1322",
+        "group": "DevRel - M2",
+        "title": "M2: Record 10 videos",
+        "node_id": "I_kwDOGVTvs85XJiAL",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1263",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kmM",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1324",
+        "group": "DevRel - M2",
+        "title": "M2: Give 5 micro grants to developers",
+        "node_id": "I_kwDOGVTvs85XJmcf",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1263",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kmM",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-03-31",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1327",
+        "group": "DevRel - M2",
+        "title": "M2: Give 2 micro grants to education entities",
+        "node_id": "I_kwDOGVTvs85XJoTZ",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M2",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1263",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2kmM",
+          "completion_rate": 0,
+          "due_date": "2023-03-31"
+        },
+        "children": []
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1263"
+  },
+  {
+    "groupName": "Engineering - M3 - End Users",
+    "items": [
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1236",
+        "group": "Engineering - M3 - End Users",
+        "title": "Streamlined developer experience (with lots of syntactic sugar).",
+        "node_id": "I_kwDOGVTvs85W2d7o",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1234",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2dxU",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": [
+          {
+            "labels": [
+              "milestone",
+              "starmaps"
+            ],
+            "completion_rate": 0,
+            "due_date": "2023-06-30",
+            "html_url": "https://github.com/filecoin-project/bacalhau/issues/474",
+            "group": "Children:",
+            "title": "Auto-mounting CID for Local Content",
+            "node_id": "I_kwDOGVTvs85Po-WE",
+            "parent": {
+              "group": "Children:",
+              "title": "Streamlined developer experience (with lots of syntactic sugar).",
+              "html_url": "https://github.com/filecoin-project/bacalhau/issues/1236",
+              "labels": [
+                "milestone",
+                "starmaps"
+              ],
+              "node_id": "I_kwDOGVTvs85W2d7o",
+              "completion_rate": 0,
+              "due_date": "2023-06-30"
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1235",
+        "group": "Engineering - M3 - End Users",
+        "title": "Support for DAGs: Ability to view lineage",
+        "node_id": "I_kwDOGVTvs85W2d7R",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1234",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2dxU",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1237",
+        "group": "Engineering - M3 - End Users",
+        "title": "Federated Reads",
+        "node_id": "I_kwDOGVTvs85W2d8G",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1234",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2dxU",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1238",
+        "group": "Engineering - M3 - End Users",
+        "title": "Rich Local Client",
+        "node_id": "I_kwDOGVTvs85W2d8Z",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1234",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2dxU",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1239",
+        "group": "Engineering - M3 - End Users",
+        "title": "Documentation excellent for end users",
+        "node_id": "I_kwDOGVTvs85W2d8u",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1234",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2dxU",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1240",
+        "group": "Engineering - M3 - End Users",
+        "title": "Trusted Execution Environments on AMD hardware available as alpha",
+        "node_id": "I_kwDOGVTvs85W2d9L",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1234",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2dxU",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1241",
+        "group": "Engineering - M3 - End Users",
+        "title": "Support for nodes to select based on availability of encryption key",
+        "node_id": "I_kwDOGVTvs85W2d9p",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1234",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2dxU",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/590",
+        "group": "Engineering - M3 - End Users",
+        "title": "Improve bacalhau docker run --local",
+        "node_id": "I_kwDOGVTvs85RitJF",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1234",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2dxU",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1234"
+  },
+  {
+    "groupName": "Engineering - M3 - Compute Providers",
+    "items": [
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1250",
+        "group": "Engineering - M3 - Compute Providers",
+        "title": "Additional deal engines",
+        "node_id": "I_kwDOGVTvs85W2fHE",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1248",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2fAn",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1251",
+        "group": "Engineering - M3 - Compute Providers",
+        "title": "Support for up to ⅓ unreliable nodes in a job.",
+        "node_id": "I_kwDOGVTvs85W2fHa",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1248",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2fAn",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1252",
+        "group": "Engineering - M3 - Compute Providers",
+        "title": "Recruit Compute Providers with FIL+ incentive",
+        "node_id": "I_kwDOGVTvs85W2fHt",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1248",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2fAn",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1253",
+        "group": "Engineering - M3 - Compute Providers",
+        "title": "Documentation excellent for computer providers",
+        "node_id": "I_kwDOGVTvs85W2fIO",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1248",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2fAn",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1254",
+        "group": "Engineering - M3 - Compute Providers",
+        "title": "External state storage for better resilience/HA setups",
+        "node_id": "I_kwDOGVTvs85W2fIk",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1248",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2fAn",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1255",
+        "group": "Engineering - M3 - Compute Providers",
+        "title": "Communication on results from further protocol hardening efforts (simualtion, formal verification & game theory approaches)",
+        "node_id": "I_kwDOGVTvs85W2fJA",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1248",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2fAn",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "enhancement",
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/569",
+        "group": "Engineering - M3 - Compute Providers",
+        "title": "consolidate config in one package",
+        "node_id": "I_kwDOGVTvs85RMYRl",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M3 - Compute Providers",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1248",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2fAn",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1248"
+  },
+  {
+    "groupName": "Partners - M3",
+    "items": [
+      {
+        "labels": [
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/bacalhau-project/bacalhau-gtm/issues/13",
+        "group": "Partners - M3",
+        "title": " Bacalhau workload growth: sourced via direct outreach (Wes) and via scaled contractors",
+        "node_id": "I_kwDOIcqpH85XIlr6",
+        "parent": {
+          "group": "children:",
+          "title": "Partners - M3",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1311",
+          "labels": [
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XImzX",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/bacalhau-project/bacalhau-gtm/issues/14",
+        "group": "Partners - M3",
+        "title": "“COD WG 2.1: User Demand Gen (Market Making)”: driving awareness among COD target users to drive workloads",
+        "node_id": "I_kwDOIcqpH85XIl6h",
+        "parent": {
+          "group": "children:",
+          "title": "Partners - M3",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1311",
+          "labels": [
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XImzX",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-06-30",
+        "html_url": "https://github.com/bacalhau-project/bacalhau-gtm/issues/15",
+        "group": "Partners - M3",
+        "title": "Onboard compute providers and compute nodes and inbound marketing (social media, blog, website, partner program)",
+        "node_id": "I_kwDOIcqpH85XImHX",
+        "parent": {
+          "group": "children:",
+          "title": "Partners - M3",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1311",
+          "labels": [
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XImzX",
+          "completion_rate": 0,
+          "due_date": "2023-06-30"
+        },
+        "children": []
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1311"
+  },
+  {
+    "groupName": "Engineering - M4 - End Users",
+    "items": [
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1243",
+        "group": "Engineering - M4 - End Users",
+        "title": "Consensus & verification of deterministic jobs.",
+        "node_id": "I_kwDOGVTvs85W2eR-",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M4 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1242",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2eNJ",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1244",
+        "group": "Engineering - M4 - End Users",
+        "title": "Website for data & common jobs.",
+        "node_id": "I_kwDOGVTvs85W2eST",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M4 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1242",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2eNJ",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1245",
+        "group": "Engineering - M4 - End Users",
+        "title": "Arbitrary networking via gateway.",
+        "node_id": "I_kwDOGVTvs85W2eSn",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M4 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1242",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2eNJ",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1246",
+        "group": "Engineering - M4 - End Users",
+        "title": "Self-hosted Airflow (i.e. orchestrator runs inside Bacalhau)",
+        "node_id": "I_kwDOGVTvs85W2eTF",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M4 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1242",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2eNJ",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1247",
+        "group": "Engineering - M4 - End Users",
+        "title": "End-to-end support for encryption of private data",
+        "node_id": "I_kwDOGVTvs85W2eTf",
+        "parent": {
+          "group": "children:",
+          "title": "Engineering - M4 - End Users",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1242",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85W2eNJ",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1242"
+  },
+  {
+    "groupName": "DevRel - M4",
+    "items": [
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1337",
+        "group": "DevRel - M4",
+        "title": "M4: Docs improvements",
+        "node_id": "I_kwDOGVTvs85XJ05h",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1338",
+        "group": "DevRel - M4",
+        "title": "M4: DevEx feedback loop between community and Eng/PM",
+        "node_id": "I_kwDOGVTvs85XJ1TZ",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1340",
+        "group": "DevRel - M4",
+        "title": "M4: Work with 2 Universities",
+        "node_id": "I_kwDOGVTvs85XJ2I5",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1339",
+        "group": "DevRel - M4",
+        "title": "M4: Present at 4 Conferences",
+        "node_id": "I_kwDOGVTvs85XJ11T",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1342",
+        "group": "DevRel - M4",
+        "title": "M4: Sponsor 1 Hackathon",
+        "node_id": "I_kwDOGVTvs85XJ3P8",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1343",
+        "group": "DevRel - M4",
+        "title": "M4: 2 Meetups",
+        "node_id": "I_kwDOGVTvs85XJ37J",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1344",
+        "group": "DevRel - M4",
+        "title": "M4: 1 Event with Partner",
+        "node_id": "I_kwDOGVTvs85XJ5cZ",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1345",
+        "group": "DevRel - M4",
+        "title": "M4: 2 Partners who built on Bacalhau present their success ",
+        "node_id": "I_kwDOGVTvs85XJ5_U",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1346",
+        "group": "DevRel - M4",
+        "title": "M4: 3 QuickStart Guides",
+        "node_id": "I_kwDOGVTvs85XJ6jD",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1347",
+        "group": "DevRel - M4",
+        "title": "M4: Create 5 trainings",
+        "node_id": "I_kwDOGVTvs85XJ7KD",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1355",
+        "group": "DevRel - M4",
+        "title": "M4: Train the Trainer",
+        "node_id": "I_kwDOGVTvs85XKASe",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1354",
+        "group": "DevRel - M4",
+        "title": "M4: Cheatsheet",
+        "node_id": "I_kwDOGVTvs85XJ_hq",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1358",
+        "group": "DevRel - M4",
+        "title": "M4: Update current materials",
+        "node_id": "I_kwDOGVTvs85XKRg3",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1348",
+        "group": "DevRel - M4",
+        "title": "M4: Run 2 online webinars",
+        "node_id": "I_kwDOGVTvs85XJ7cL",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1353",
+        "group": "DevRel - M4",
+        "title": "M4: Run 2 office hours",
+        "node_id": "I_kwDOGVTvs85XJ-0S",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1333",
+        "group": "DevRel - M4",
+        "title": "M4: COD Summit Spring",
+        "node_id": "I_kwDOGVTvs85XJwg1",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1352",
+        "group": "DevRel - M4",
+        "title": "M4: Give 15 micro grants to developers",
+        "node_id": "I_kwDOGVTvs85XJ9ql",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1351",
+        "group": "DevRel - M4",
+        "title": "M4: Give 4 micro grants to education entities",
+        "node_id": "I_kwDOGVTvs85XJ9U2",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "bug",
+          "milestone"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1350",
+        "group": "DevRel - M4",
+        "title": "M4: Give 2 micro grants to champions",
+        "node_id": "I_kwDOGVTvs85XJ9IE",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      },
+      {
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "completion_rate": 0,
+        "due_date": "2023-09-30",
+        "html_url": "https://github.com/filecoin-project/bacalhau/issues/1349",
+        "group": "DevRel - M4",
+        "title": "M4: Give 2 SDK grants to developers",
+        "node_id": "I_kwDOGVTvs85XJ8zf",
+        "parent": {
+          "group": "children:",
+          "title": "DevRel - M4",
+          "html_url": "https://github.com/filecoin-project/bacalhau/issues/1317",
+          "labels": [
+            "milestone",
+            "starmaps"
+          ],
+          "node_id": "I_kwDOGVTvs85XJfBu",
+          "completion_rate": 0,
+          "due_date": "2023-09-30"
+        },
+        "children": []
+      }
+    ],
+    "url": "/roadmap/github.com/filecoin-project/bacalhau/issues/1317"
+  }
+]

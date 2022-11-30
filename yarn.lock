@@ -2580,11 +2580,6 @@
   dependencies:
     "@types/unist" "*"
 
-"@types/mermaid@^9.1.0":
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/@types/mermaid/-/mermaid-9.1.0.tgz#e9ba511d8a6793749d6be84f86325f0f58553154"
-  integrity sha512-rc8QqhveKAY7PouzY/p8ljS+eBSNCv7o79L97RSub/Ic2SQ34ph1Ng3s8wFLWVjvaEt6RLOWtSCsgYWd95NY8A==
-
 "@types/ms@*":
   version "0.7.31"
   resolved "https://registry.yarnpkg.com/@types/ms/-/ms-0.7.31.tgz#31b7ca6407128a3d2bbc27fe2d21b345397f6197"

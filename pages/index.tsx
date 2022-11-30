@@ -42,7 +42,8 @@ const chakraUiRendererTheme: Parameters<typeof ChakraUIRenderer>[0] = {
       </Link>
     );
   },
-}
+};
+
 
 const App: NextPage<SSProps> = ({ markdown }: SSProps) => (
     <>
