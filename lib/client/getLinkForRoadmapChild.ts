@@ -1,11 +1,13 @@
 import { paramsFromUrl } from '../paramsFromUrl';
 import { IssueData } from '../types';
 import { getCrumbStringFromIssueData } from '../breadcrumbs';
+import { ViewMode } from '../enums';
 
 interface GetLinkForRoadmapChildOptions {
-  issueData?: IssueData;
+  issueData?: Pick<IssueData, 'html_url' | 'children' | 'parent'> & Partial<Pick<IssueData, 'children'>>;
   query?: {crumbs?: string};
   currentRoadmapRoot?: Pick<IssueData, 'html_url' | 'title'>;
+  viewMode?: ViewMode;
 }
 
 function addCrumbsParamToUrl({ url, currentRoadmapRoot, query }: Pick<GetLinkForRoadmapChildOptions, 'currentRoadmapRoot' | 'query'> & {url: URL}) {
@@ -20,7 +22,7 @@ function addCrumbsParamToUrl({ url, currentRoadmapRoot, query }: Pick<GetLinkFor
   }
 }
 
-export function getLinkForRoadmapChild({ issueData, currentRoadmapRoot, query }: GetLinkForRoadmapChildOptions): string {
+export function getLinkForRoadmapChild({ issueData, currentRoadmapRoot, query, viewMode }: GetLinkForRoadmapChildOptions): string {
   if (issueData == null || issueData?.children?.length === 0) {
     return '#';
   }
@@ -28,6 +30,9 @@ export function getLinkForRoadmapChild({ issueData, currentRoadmapRoot, query }:
   const urlM = paramsFromUrl(issueData.html_url);
   const url = new URL(`/roadmap/github.com/${urlM.owner}/${urlM.repo}/issues/${urlM.issue_number}`, window.location.origin);
   addCrumbsParamToUrl({ currentRoadmapRoot, query, url });
+  if (viewMode != null) {
+    url.hash = viewMode;
+  }
 
   return url.toString().replace(window.location.origin, '');
 }

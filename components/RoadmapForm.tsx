@@ -92,7 +92,6 @@ export function RoadmapForm() {
   Router.events.on('routeChangeStart', (...events) => {
     globalLoadingState.start();
     const path = events[0];
-    console.log(`path: `, path);
     if (path === '/') {
       setIsInputBlanked(true);
       setCurrentIssueUrl('');
