@@ -4,7 +4,7 @@ import {
 import { useRouter } from 'next/router';
 import React from 'react'
 import { useViewMode } from '../../hooks/useViewMode';
-import { getCrumbDataFromCrumbString } from '../../lib/client/getCrumbDataFromCrumbString';
+import { getCrumbDataFromCrumbString } from '../../lib/breadcrumbs';
 import { ViewMode } from '../../lib/enums';
 import { StarmapsBreadcrumbItem } from './StarmapsBreadcrumbItem';
 

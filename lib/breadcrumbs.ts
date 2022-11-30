@@ -1,10 +1,16 @@
-import { ViewMode } from '../enums';
-import { getValidUrlFromInput } from '../getValidUrlFromInput';
-import { paramsFromUrl } from '../paramsFromUrl';
+import { convertGithubUrlToShorthand } from './convertGithubUrlToShorthand';
+import { ViewMode } from './enums';
+import { getValidUrlFromInput } from './getValidUrlFromInput';
+import { paramsFromUrl } from './paramsFromUrl';
+import { IssueData } from './types';
 
 interface CrumbData {
   url: null | string;
   title: string;
+}
+
+export function getCrumbStringFromIssueData(issue: Pick<IssueData, 'html_url' | 'title'>): string {
+  return `${convertGithubUrlToShorthand(new URL(issue.html_url))}@@${issue.title}`
 }
 
 export function getCrumbDataFromCrumbString(crumbs: string, viewMode: ViewMode): CrumbData[] {

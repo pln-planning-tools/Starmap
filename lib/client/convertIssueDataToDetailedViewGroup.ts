@@ -3,7 +3,7 @@ import { group } from 'd3';
 import { reverse, sortBy, uniqBy } from 'lodash';
 
 import { ViewMode } from '../enums';
-import { getLinkForRoadmapChild } from './linkUtils';
+import { getLinkForRoadmapChild } from './getLinkForRoadmapChild';
 import { DetailedViewGroup, IssueData } from '../types';
 import { ParsedUrlQuery } from 'querystring';
 
@@ -28,7 +28,7 @@ export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: Stat
     ([key, value]) => ({
       groupName: key,
       items: value,
-      url: getLinkForRoadmapChild(newIssueData.find((i) => i.title === key), parsedQuery),
+      url: getLinkForRoadmapChild({ issueData: newIssueData.find((i) => i.title === key), query: parsedQuery }),
     }),
   );
 
@@ -51,7 +51,7 @@ export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: Stat
       ([key, value]) => ({
         groupName: key,
         items: value,
-        url: getLinkForRoadmapChild(newIssueData.find((i) => i.title === key), parsedQuery),
+        url: getLinkForRoadmapChild({ issueData: newIssueData.find((i) => i.title === key), query: parsedQuery }),
       }),
     );
   }
@@ -72,7 +72,7 @@ export function convertIssueDataToDetailedViewGroup(issueData: IssueData): Detai
           viewGroup.push({
             groupName: issueItem.parent.title ?? 'no title for issue with parent',
             items: [issueItem],
-            url: getLinkForRoadmapChild(issueItem, {})
+            url: getLinkForRoadmapChild({ issueData: issueItem, currentRoadmapRoot: issueData }),
           })
         }
       } else if (issueItem.children?.length > 0) {
@@ -80,7 +80,7 @@ export function convertIssueDataToDetailedViewGroup(issueData: IssueData): Detai
         viewGroup.push({
           groupName: issueItem.title ?? 'no title for issue with no parent',
           items: [],
-          url: getLinkForRoadmapChild(issueItem, {})
+          url: getLinkForRoadmapChild({ issueData: issueItem, currentRoadmapRoot: issueData }),
         })
       }
     }

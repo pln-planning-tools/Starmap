@@ -3,7 +3,7 @@ import NextLink from 'next/link';
 import { ScaleTime } from 'd3';
 import dayjs from 'dayjs';
 
-import { getLinkForRoadmapChild } from '../../lib/client/linkUtils';
+import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
 import { IssueData } from '../../lib/types';
 import { useMaxHeight, setMaxHeight } from '../../hooks/useMaxHeight';
 import { useEffect } from 'react';
@@ -43,7 +43,7 @@ function RoadmapItem({
 
   // TODO: Add on hover to show clickability
   return (
-    <NextLink key={`roadmapItem-${index}`} href={getLinkForRoadmapChild(childIssue, useRouter().query)} passHref>
+    <NextLink key={`roadmapItem-${index}`} href={getLinkForRoadmapChild({ issueData: childIssue, query: useRouter().query })} passHref>
       <g cursor={'pointer'}>
         <rect
           x={etaX - rectConfig.width}

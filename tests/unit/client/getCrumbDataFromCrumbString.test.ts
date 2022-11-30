@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { getCrumbDataFromCrumbString } from '../../../lib/client/getCrumbDataFromCrumbString';
+import { getCrumbDataFromCrumbString } from '../../../lib/breadcrumbs';
 import { ViewMode } from '../../../lib/enums';
 
 describe('getCrumbDataFromCrumbString', function () {

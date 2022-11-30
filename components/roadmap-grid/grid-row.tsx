@@ -4,13 +4,22 @@ import React from 'react';
 import type { State } from '@hookstate/core'
 
 import { dayjs } from '../../lib/client/dayjs';
-import { IssueData } from '../../lib/types';
+import { IssueData, IssueDataViewInput } from '../../lib/types';
 import styles from './Roadmap.module.css';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
 import { TimeScaler } from '../../lib/client/TimeScaler';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
-import { getLinkForRoadmapChild } from '../../lib/client/linkUtils';
+import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
 import { useRouter } from 'next/router';
+
+interface GridRowProps extends IssueDataViewInput {
+  milestone: State<IssueData>;
+  index: number;
+  timelineTicks: Date[];
+  numGridCols: number;
+  numHeaderItems: number;
+  timeScaler: TimeScaler;
+}
 
 export function GridRow({
   milestone,
@@ -18,20 +27,14 @@ export function GridRow({
   timelineTicks,
   numGridCols,
   numHeaderItems,
-  timeScaler
-}: {
-  milestone: State<IssueData>;
-  index: number;
-  timelineTicks: Date[];
-  numGridCols: number;
-  numHeaderItems: number;
-  timeScaler: TimeScaler;
-}): ReactElement | null {
+  timeScaler,
+  issueDataState
+}: GridRowProps): ReactElement | null {
   const closestDateIdx = Math.round(timeScaler.getColumn(dayjs.utc(milestone.due_date.get()).toDate()));
   const span = Math.max(4, numGridCols / timelineTicks.length);
   const closest = span * (closestDateIdx - 1);
 
-  const childLink = getLinkForRoadmapChild(milestone.get(), useRouter().query);
+  const childLink = getLinkForRoadmapChild({ issueData: milestone.get(), query: useRouter().query, currentRoadmapRoot: issueDataState.value });
   const clickable = milestone.children.length > 0;
 
   /**
