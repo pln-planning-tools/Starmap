@@ -1,9 +1,7 @@
 import { IssueStates } from '../enums';
+import { IssueData } from '../types';
 
-export interface CalculateCompletionRateOptions {
-  state: IssueStates;
-  children: { state: IssueStates, children: CalculateCompletionRateOptions[] }[];
-}
+export type CalculateCompletionRateOptions = Pick<IssueData, 'html_url' | 'state'> & { children: CalculateCompletionRateOptions[] };
 
 interface GetIssueCountsResponse {
   open: number;
@@ -12,33 +10,30 @@ interface GetIssueCountsResponse {
   percentClosed: number;
 }
 
-/**
- * recursively count the total, open, and closed issues, and return an object that includes the percent closed
- * @param {CalculateCompletionRateOptions} issue
- * @returns
- */
-export function getIssueCounts(issue: CalculateCompletionRateOptions): GetIssueCountsResponse {
-  let open = issue.state === IssueStates.OPEN ? 1 : 0;
-  let closed = issue.state === IssueStates.CLOSED ? 1 : 0;
-  let total = 1;
-  if ((issue.children?.length ?? 0) !== 0) {
+const issueKey = ({html_url}: Pick<IssueData, 'html_url'>) => html_url;
 
-    const withChildren = issue.children.reduce(({open: accOpen, closed: accClosed, total: accTotal}, child) => {
-      const { open: childrenOpen, closed: childrenClosed, total: childrenTotal } = getIssueCounts(child);
-      const total = accTotal + childrenTotal;
-      const open = accOpen + childrenOpen;
-      const closed = accClosed + childrenClosed;
-      return {
-        total,
-        open,
-        closed,
-      };
-    }, {open, closed, total});
-    open = withChildren.open;
-    closed = withChildren.closed;
-    total = withChildren.total;
+function getIssueStatesMap(issue: CalculateCompletionRateOptions, issueStatesMap = new Map<string, IssueStates>()): Map<string, IssueStates> {
+  const key = issueKey(issue);
+  if (issueStatesMap.has(key)) {
+    return issueStatesMap;
   }
+  issueStatesMap.set(key, issue.state);
+  issue.children?.map((child) => getIssueStatesMap(child, issueStatesMap));
 
+  return issueStatesMap;
+}
+
+function getIssueCounts(issueStatesMap: Map<string, IssueStates>): GetIssueCountsResponse {
+  const total = issueStatesMap.size;
+  let open = 0;
+  let closed = 0;
+  issueStatesMap.forEach((value) => {
+    if (value === IssueStates.OPEN) {
+      open++;
+    } else {
+      closed++;
+    }
+  });
 
   return {
     total,
@@ -46,9 +41,10 @@ export function getIssueCounts(issue: CalculateCompletionRateOptions): GetIssueC
     closed,
     percentClosed: Number(Number((closed / total) * 100 || 0).toFixed(2)),
   };
-
 }
 
-export function calculateCompletionRate ({ children, state }: CalculateCompletionRateOptions): number {
-  return getIssueCounts({ children, state }).percentClosed;
+export function calculateCompletionRate (issue: CalculateCompletionRateOptions): number {
+  const issueStatesMap = getIssueStatesMap(issue);
+  const { percentClosed } = getIssueCounts(issueStatesMap);
+  return percentClosed;
 };

@@ -6,44 +6,58 @@ const closed = IssueStates.CLOSED;
 const open = IssueStates.OPEN;
 
 describe('calculateCompletionRate', function() {
-  let testObject: CalculateCompletionRateOptions
+  let testObject: CalculateCompletionRateOptions;
   beforeEach(() => {
     testObject = {
       state: open,
+      html_url: 'root',
       children: [
         {
           state: open,
+          html_url: 'childB',
           children: [
             {
               state: open,
+              html_url: 'childB-1',
               children: [
                 {
                   state: open,
+                  html_url: 'childB-1-a',
                   children: [] as IssueData[],
                 },
                 {
                   state: open,
+                  html_url: 'childB-1-b',
                   children: [] as IssueData[],
                 },
                 {
                   state: open,
+                  html_url: 'childB-1-c',
                   children: [] as IssueData[],
                 },
                 {
                   state: open,
+                  html_url: 'childB-1-d',
                   children: [] as IssueData[],
                 },
                 {
                   state: open,
+                  html_url: 'childB-1-e',
                   children: [] as IssueData[],
                 }
               ],
-            }
+            },
           ],
-        }
+        },
+        {
+          state: open,
+          html_url: 'childB', // purposefully a duplicate
+          children: [] as IssueData[],
+        },
       ],
     };
   });
+
   describe('parent issue closed', () => {
     beforeEach(() => {
       testObject.state = closed;
@@ -62,25 +76,25 @@ describe('calculateCompletionRate', function() {
       expect(calculateCompletionRate(testObject)).toEqual(100);
     });
     it('without valid children to 100', () => {
-      expect(calculateCompletionRate({children: null as unknown as CalculateCompletionRateOptions[], state: closed})).toEqual(100);
+      expect(calculateCompletionRate({html_url: 'childC', children: null as unknown as CalculateCompletionRateOptions[], state: closed})).toEqual(100);
     });
 
     describe('multiple children', () => {
       it('with 2 open children to 33.33', () => {
         testObject.children[0].children = [];
-        testObject.children.push({...testObject.children[0]});
+        testObject.children.push({...testObject.children[0], html_url: 'childC' });
         expect(calculateCompletionRate(testObject)).toEqual(33.33);
       });
       it('with 1 open child and 1 closed child to 66.67', () => {
         testObject.children[0].children = [];
-        testObject.children.push({...testObject.children[0]});
+        testObject.children.push({...testObject.children[0], html_url: 'childC' });
         testObject.children[0].state = closed;
         expect(calculateCompletionRate(testObject)).toEqual(66.67);
       });
       it('with 2 closed children to 100', () => {
         testObject.children[0].children = [];
         testObject.children[0].state = closed;
-        testObject.children.push({...testObject.children[0]});
+        testObject.children.push({...testObject.children[0], html_url: 'childC' });
         expect(calculateCompletionRate(testObject)).toEqual(100);
       });
     });
@@ -135,7 +149,7 @@ describe('calculateCompletionRate', function() {
       expect(calculateCompletionRate(testObject)).toEqual(50);
     });
     it('without valid children to 0', () => {
-      expect(calculateCompletionRate({children: null as unknown as CalculateCompletionRateOptions[], state: open})).toEqual(0);
+      expect(calculateCompletionRate({html_url: 'childC', children: null as unknown as CalculateCompletionRateOptions[], state: open})).toEqual(0);
     });
 
     describe('multiple children', () => {
@@ -145,16 +159,15 @@ describe('calculateCompletionRate', function() {
         expect(calculateCompletionRate(testObject)).toEqual(0);
       });
       it('with 1 open child and 1 closed child to 33.33', () => {
-
         testObject.children[0].children = [];
-        testObject.children.push({...testObject.children[0]});
+        testObject.children.push({...testObject.children[0], html_url: 'childC' });
         testObject.children[0].state = closed;
         expect(calculateCompletionRate(testObject)).toEqual(33.33);
       });
       it('with 2 closed children to 66.67', () => {
         testObject.children[0].children = [];
         testObject.children[0].state = closed;
-        testObject.children.push({...testObject.children[0]});
+        testObject.children.push({...testObject.children[0], html_url: 'childC' });
         expect(calculateCompletionRate(testObject)).toEqual(66.67);
       });
     });
@@ -188,6 +201,16 @@ describe('calculateCompletionRate', function() {
         testObject.children[0].children[0].children[1].state = closed;
         testObject.children[0].children[0].children[2].state = closed;
         testObject.children[0].children[0].children[3].state = closed;
+
+        expect(calculateCompletionRate(testObject)).toEqual(50);
+      });
+
+      it('with 4 successful duplicated grandchildren to 50', () => {
+        testObject.children[0].children[0].children[0].state = closed;
+        testObject.children[0].children[0].children[1].state = closed;
+        testObject.children[0].children[0].children[2].state = closed;
+        testObject.children[0].children[0].children[3].state = closed;
+        testObject.children.push(...testObject.children[0].children[0].children);
 
         expect(calculateCompletionRate(testObject)).toEqual(50);
       });
