@@ -1,5 +1,5 @@
 import { Center } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
 import styles from './today-marker.module.css';

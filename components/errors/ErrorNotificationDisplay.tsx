@@ -8,7 +8,7 @@ import { ErrorNotificationBody } from './ErrorNotificationBody';
 import { errorFilters } from '../../lib/client/errorFilters';
 import { useViewMode } from '../../hooks/useViewMode';
 
-export interface ErrorNotificationDisplayProps {
+interface ErrorNotificationDisplayProps {
   errors: StarMapsIssueErrorsGrouped[];
   issueDataState: State<IssueData | null>;
 }

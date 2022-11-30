@@ -1,11 +1,12 @@
-import { Box } from '@chakra-ui/react';
-import { group } from 'd3';
+import { Box, Spinner } from '@chakra-ui/react';
+import { useHookstate } from '@hookstate/core';
+import type { Dayjs } from 'dayjs';
 import _ from 'lodash';
+import React, { useEffect, useState } from 'react';
+
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
-import { getLinkForRoadmapChild } from '../../lib/client/linkUtils';
-import { DetailedViewGroup, IssueData } from '../../lib/types';
-
+import { DetailedViewGroup, IssueDataViewInput } from '../../lib/types';
 import { useViewMode } from '../../hooks/useViewMode';
 import styles from './Roadmap.module.css';
 import { Grid } from './grid';
@@ -14,70 +15,67 @@ import { GridRow } from './grid-row';
 import { GroupHeader } from './group-header';
 import { GroupWrapper } from './group-wrapper';
 import { Headerline } from './headerline';
-import React, { useState } from 'react';
 import NumSlider from '../inputs/NumSlider';
 import { dayjs } from '../../lib/client/dayjs';
 import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
+import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
 
 export function RoadmapDetailed({
-  issueData
-}: {
-  issueData: IssueData;
-}) {
+  issueDataState
+}: IssueDataViewInput) {
   /**
    * Don't commit setting this to true.. just a simple toggle so we can debug things.
    */
-  const [isDevMode] = useState(false);
-  const viewMode = useViewMode();
-  const newIssueData = issueData.children.map((v) => ({
-    ...v,
-    group: v.parent.title,
-    children: v.children.map((x) => ({ ...x, group: x.parent.title })),
-  }));
+  const [isDevMode, _setIsDevMode] = useState(false);
+  const viewMode = useViewMode() as ViewMode;
 
-  const issueDataMapper = ([key, value]) => {
-    const roadmapChild = newIssueData.find((i) => i.title === key) || '';
-    return {
-      groupName: key,
-      items: value,
-      url: roadmapChild === '' ? '' : getLinkForRoadmapChild(roadmapChild),
+  const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
+  // const [dayjsDates, setDayjsDates] = useState<Dayjs[]>([]);
+
+  useEffect(() => {
+    if (viewMode) {
+      issuesGroupedState.set(convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode))
     }
-  };
+  }, [viewMode, issueDataState.value]);
 
-  const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
+  /**
+   * Magic numbers that just seem to work are:
+   *  * 5 for number of header ticks
+   *    * we actually want 5 visible ticks.
+   *
+   *  * 45 for number of grid columns
+   *    * It usually works best if grid columns is easily divisble by the number of header ticks)
+   *
+   *  * 1.09 for a multiple of the number of grid columns
+   *    * otherwise the timeScale we get back doesn't map to gridColumns well.
+   */
+  const [numHeaderTicks, setNumHeaderTicks] = useState(5);
+  const [numGridCols, setNumGridCols] = useState(45);
 
-  const issueDataLevelOneGrouped: DetailedViewGroup[] = Array.from(
-    group(issueDataLevelOne, (d) => d.group),
-    issueDataMapper
-  );
-
-  const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, group: v.title }));
-
-  const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = Array.from(
-    group(issueDataLevelOneIfNoChildren, (d) => d.group),
-    issueDataMapper
-  );
-
-  let issuesGrouped: DetailedViewGroup[];
-  if (viewMode === ViewMode.Detail) {
-    issuesGrouped =
-      (!!issueDataLevelOneGrouped && issueDataLevelOneGrouped.length > 0 && issueDataLevelOneGrouped) ||
-      issueDataLevelOneIfNoChildrenGrouped;
-  } else {
-    issuesGrouped = Array.from(
-      group(issueData.children as IssueData[], (d) => d.group),
-      issueDataMapper
-    );
-  }
 
   const today = dayjs();
+
   /**
    * Collect all due dates from all issues, as DayJS dates.
    */
-  const dayjsDates = issuesGrouped
-    .flatMap((group) => group.items.map((item) => dayjs(item.due_date).utc()))
-    .filter((d) => d.isValid());
+  let dayjsDates: Dayjs[] = []
+  // useEffect(() => {
+    try {
+      dayjsDates = issuesGroupedState.value
+        .flatMap((group) => group.items.map((item) => dayjs(item.due_date).utc()))
+        .filter((d) => d.isValid());
+      // setDayjsDates(dayjsDates);
+    } catch {
+      // setDayjsDates([])
+      dayjsDates=[]
+    }
+
+  // }, [issuesGroupedState.value])
+
+  if (issuesGroupedState.value.length === 0) {
+    return <Spinner />
+  }
 
   /**
    * Add today
@@ -119,19 +117,6 @@ export function RoadmapDetailed({
     .map((date) => date.toDate())
     .sort((a, b) => a.getTime() - b.getTime());
 
-  /**
-   * Magic numbers that just seem to work are:
-   *  * 5 for number of header ticks
-   *    * we actually want 5 visible ticks.
-   *
-   *  * 45 for number of grid columns
-   *    * It usually works best if grid columns is easily divisble by the number of header ticks)
-   *
-   *  * 1.09 for a multiple of the number of grid columns
-   *    * otherwise the timeScale we get back doesn't map to gridColumns well.
-   */
-  const [numHeaderTicks, setNumHeaderTicks] = useState(5);
-  const [numGridCols, setNumGridCols] = useState(45);
   globalTimeScaler.setScale(dates, numGridCols * 1.09);
 
   /**
@@ -155,10 +140,10 @@ export function RoadmapDetailed({
           <Headerline numGridCols={numGridCols} ticksRatio={3}/>
         </Grid>
         <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={true} >
-          {_.reverse(Array.from(_.sortBy(issuesGrouped, ['groupName']))).map((group, index) => (
+          {issuesGroupedState.map((group, index) => (
               <React.Fragment key={`Fragment-${index}`} >
                 <GroupHeader group={group} key={`GroupHeader-${index}`}/><GroupWrapper key={`GroupWrapper-${index}`}>
-                  {!!group.items &&
+                  {!!group.items.value &&
                     _.sortBy(group.items, ['title']).map((item, index) => <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} />)}
                 </GroupWrapper>
               </React.Fragment>

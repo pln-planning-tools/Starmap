@@ -1,3 +1,5 @@
+import type { State } from '@hookstate/core'
+
 import type { RoadmapMode, IssueStates, DateGranularityState } from './enums'
 
 export interface GithubIssueData {
@@ -21,22 +23,24 @@ export interface GithubIssueDataWithChildren extends GithubIssueData {
 export interface GithubIssueDataWithGroupAndChildren extends GithubIssueDataWithGroup, GithubIssueDataWithChildren {
   pendingChildren?: PendingChildren[]
 }
-export type ProcessedGithubIssueDataWithGroupAndChildren = Omit<GithubIssueDataWithGroupAndChildren, 'body' | 'body_html' | 'body_text'>
+interface ProcessedGithubIssueDataWithGroupAndChildren extends Omit<GithubIssueDataWithGroupAndChildren, 'body' | 'body_html' | 'body_text' | 'children'> {
+  children: ProcessedGithubIssueDataWithGroupAndChildren[];
+}
 
-export interface PreParsedIssueData extends ProcessedGithubIssueDataWithGroupAndChildren {
+interface PreParsedIssueData extends ProcessedGithubIssueDataWithGroupAndChildren {
   children: (PreParsedIssueData | IssueData)[];
   parent: PreParsedIssueData;
 }
 
-export type PostParsedIssueData = PreParsedIssueData;
-export type ProcessedParentIssueData = Omit<PreParsedIssueData, 'children' | 'parent'>;
-export type ParentIssueData = Omit<PreParsedIssueDataParent, 'children' | 'parent'>
-export interface PreParsedIssueData extends ProcessedGithubIssueDataWithGroupAndChildren {
-  children: IssueData[];
+type PostParsedIssueData = PreParsedIssueData;
+type ProcessedParentIssueData = Omit<PreParsedIssueData, 'children' | 'parent'>;
+interface PreParsedIssueData extends ProcessedGithubIssueDataWithGroupAndChildren {
+  children: (PreParsedIssueData | IssueData)[];
   completion_rate: number;
   due_date: string;
   parent: PreParsedIssueData;
 }
+
 export interface IssueData extends  Omit<PostParsedIssueData, 'children' | 'parent'> {
   children: IssueData[];
   completion_rate: number;
@@ -49,6 +53,7 @@ export interface RoadmapApiResponseSuccess {
   errors?: StarMapsIssueErrorsGrouped[];
   pendingChildren: PendingChildren[];
 }
+
 export interface RoadmapApiResponseFailure {
   error?: { code: string; message: string };
   errors?: StarMapsIssueErrorsGrouped[];
@@ -107,7 +112,6 @@ export interface StarMapsIssueErrorsGrouped {
 
 export interface RoadmapServerSidePropsResult {
   props: {
-    error: { code: string; message: string } | null,
     owner: string;
     repo: string;
     issue_number: string;
@@ -129,17 +133,23 @@ export interface DetailedViewGroup {
 }
 
 export interface GroupHeaderProps {
-  group: DetailedViewGroup;
+  group: State<DetailedViewGroup>;
 }
 
 export interface UrlMatchSlugs {
   owner: string;
   repo: string;
   issue_number: string;
-};
+}
 
 export interface QueryParameters {
   filter_group: string;
   mode: RoadmapMode;
   timeUnit: DateGranularityState;
+}
+
+export interface IssueDataViewInput {
+  issueDataState: State<IssueData>;
+  // isRootIssueLoading: boolean;
+  // isPendingChildrenLoading: boolean;
 }

@@ -1,27 +1,43 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { addToChildren } from '../../lib/backend/addToChildren';
 
 import { checkForLabel } from '../../lib/backend/checkForLabel';
 import { convertParsedChildToGroupedIssueData } from '../../lib/backend/convertParsedChildToGroupedIssueData';
 import { getGithubIssueDataWithGroupAndChildren } from '../../lib/backend/getGithubIssueDataWithGroupAndChildren';
-import { getIssue } from '../../lib/backend/issue';
-import { GithubIssueDataWithGroupAndChildren } from '../../lib/types';
+import { GithubIssueDataWithGroup, IssueData } from '../../lib/types';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<GithubIssueDataWithGroupAndChildren>
+  res: NextApiResponse<IssueData | {error: Error}>
 ): Promise<void> {
-  const { owner, repo, issue_number, group } = req.query;
-  const githubIssue = await getIssue({ owner, repo, issue_number })
-  checkForLabel(githubIssue);
+  if (req.method !== 'POST') {
+    res.status(405).send({ error: new Error('Only POST requests allowed') })
+    return
+  }
+  const { owner, repo, issue_number, parent } = req.body;
 
-  const data = await convertParsedChildToGroupedIssueData({
-    html_url: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
-    group: group as string,
-  })
-  const moreData = await getGithubIssueDataWithGroupAndChildren(data, false)
+  try {
+    const issueDataWithGroup: GithubIssueDataWithGroup = await convertParsedChildToGroupedIssueData({
+      html_url: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
+      group: '',
+    })
+    try {
+      const issueDataWithGroupAndChildren = await getGithubIssueDataWithGroupAndChildren(issueDataWithGroup, false)
+      const issueData = addToChildren([issueDataWithGroupAndChildren], parent)[0]
+      checkForLabel(issueData);
 
-  res.status(200).json({
-    ...moreData
-  });
+      res.status(200).json({
+        ...issueData,
+      } as IssueData);
+    } catch (err) {
+      res.status(501).json({
+        error: err as Error
+      })
+    }
+  } catch (err) {
+    res.status(502).json({
+      error: err as Error
+    })
+  }
 
 }

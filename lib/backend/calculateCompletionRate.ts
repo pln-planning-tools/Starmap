@@ -1,6 +1,6 @@
 import { IssueStates } from '../enums';
 
-export interface CalculateCompletionRateOptions {
+interface CalculateCompletionRateOptions {
   state: IssueStates;
   children: { state: IssueStates }[];
 }

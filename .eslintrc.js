@@ -5,6 +5,9 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.json'],
   },
+  env: {
+    jest: true,
+  },
   plugins: [
     '@typescript-eslint',
     'import',
@@ -36,6 +39,16 @@ module.exports = {
     'react/function-component-definition': 'off',
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
+    'import/no-unused-modules': [2, {
+      "unusedExports": true,
+      "ignoreExports": [
+        'pages/',
+        'components/roadmap/',
+        'lib/backend/saveIssueDataToFile.ts',
+        'lib/mergeStarMapsErrorGroups.ts',
+        'lib/addStarMapsErrorsToStarMapsErrorGroups.ts'
+      ]
+    }]
   },
   settings: {
     'import/parsers': {

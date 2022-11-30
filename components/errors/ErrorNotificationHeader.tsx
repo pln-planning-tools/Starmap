@@ -1,7 +1,8 @@
 import { Box, Center, Flex, Spacer, Text } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronUpIcon, WarningTwoIcon } from '@chakra-ui/icons'
+import React from 'react';
 
-export interface ErrorNotificationHeaderProps {
+interface ErrorNotificationHeaderProps {
   isExpanded: boolean;
   toggle: () => void;
 }
