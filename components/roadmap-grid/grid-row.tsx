@@ -10,6 +10,7 @@ import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip
 import { TimeScaler } from '../../lib/client/TimeScaler';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 import { getLinkForRoadmapChild } from '../../lib/client/linkUtils';
+import { useRouter } from 'next/router';
 
 export function GridRow({
   milestone,
@@ -30,7 +31,7 @@ export function GridRow({
   const span = Math.max(4, numGridCols / timelineTicks.length);
   const closest = span * (closestDateIdx - 1);
 
-  const childLink = getLinkForRoadmapChild(milestone.get());
+  const childLink = getLinkForRoadmapChild(milestone.get(), useRouter().query);
   const clickable = milestone.children.length > 0;
 
   /**

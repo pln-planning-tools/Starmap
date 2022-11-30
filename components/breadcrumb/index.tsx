@@ -20,25 +20,21 @@ export function StarmapsBreadcrumb({ currentTitle }: StarmapsBreadcrumbProps) {
   const viewMode = useViewMode();
 
   const { crumbs } = router.query as {crumbs: string};
-  const parents = getCrumbDataFromCrumbString(crumbs, viewMode as ViewMode);
+  const parents = crumbs == null ? [] : getCrumbDataFromCrumbString(crumbs, viewMode as ViewMode);
   parents.push({ url: null, title: currentTitle });
 
   let fontSize = 40;
-  if (parents.length > 2) {
-    fontSize = 30;
-  } else if (parents.length > 3) {
+  if (parents.length >= 3) {
+    fontSize = 20;
+  } else if (parents.length >= 2) {
     fontSize = 25;
   }
 
   return (
     <Breadcrumb separator="/" mb='8px' fontSize={fontSize} fontWeight={600} pr="5rem">
-      {parents.map(({ title, url }, index) => {
-        const foo = 'test';
-        console.log(`foo: `, foo);
-        return (
+      {parents.map(({ title, url }, index) => (
           <StarmapsBreadcrumbItem key={index} title={title} url={url} />
-        )
-      })}
+        ))}
     </Breadcrumb>
   );
 }

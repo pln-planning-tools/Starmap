@@ -9,9 +9,9 @@ export function StarmapsBreadcrumbItem({ title, url, ...props }: StarmapsBreadcr
 
   return (
     <BreadcrumbItem isCurrentPage={url == null} {...props}>
-      <BreadcrumbLink href={url ?? undefined} textDecoration="underline">
-          {title}
-      </BreadcrumbLink>
+        <BreadcrumbLink href={url ?? ''} textDecoration={url == null ? 'none' : 'underline'}>
+            {title}
+        </BreadcrumbLink>
     </BreadcrumbItem>
   );
 }

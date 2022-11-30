@@ -7,6 +7,8 @@ import { getLinkForRoadmapChild } from '../../lib/client/linkUtils';
 import { IssueData } from '../../lib/types';
 import { useMaxHeight, setMaxHeight } from '../../hooks/useMaxHeight';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import React from 'react';
 
 function RoadmapItem({
   childIssue,
@@ -41,7 +43,7 @@ function RoadmapItem({
 
   // TODO: Add on hover to show clickability
   return (
-    <NextLink key={`roadmapItem-${index}`} href={getLinkForRoadmapChild(childIssue)} passHref>
+    <NextLink key={`roadmapItem-${index}`} href={getLinkForRoadmapChild(childIssue, useRouter().query)} passHref>
       <g cursor={'pointer'}>
         <rect
           x={etaX - rectConfig.width}

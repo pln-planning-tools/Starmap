@@ -20,6 +20,7 @@ import { dayjs } from '../../lib/client/dayjs';
 import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
 import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
+import { useRouter } from 'next/router';
 
 export function RoadmapDetailed({
   issueDataState
@@ -29,13 +30,14 @@ export function RoadmapDetailed({
    */
   const [isDevMode, _setIsDevMode] = useState(false);
   const viewMode = useViewMode() as ViewMode;
+  const router = useRouter();
 
   const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
   // const [dayjsDates, setDayjsDates] = useState<Dayjs[]>([]);
 
   useEffect(() => {
     if (viewMode) {
-      issuesGroupedState.set(convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode))
+      issuesGroupedState.set(convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, router.query))
     }
   }, [viewMode, issueDataState.value]);
 
