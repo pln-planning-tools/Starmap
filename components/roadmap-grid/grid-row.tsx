@@ -67,8 +67,8 @@ export function GridRow({
         gridColumnStart: `span ${numGridCols / numHeaderItems}`,
         gridColumnEnd: `${closestDateIdx}`,
         background: `linear-gradient(90deg, rgba(125, 224, 135, 0.6) ${parseInt(
-          milestone.completion_rate.toString(2),
-        )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString(2))}%)`,
+          milestone.completion_rate.toString(),
+        )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString())}%)`,
       }}
       className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink}`}
 
