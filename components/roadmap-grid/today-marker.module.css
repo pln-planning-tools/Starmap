@@ -1,12 +1,14 @@
 
 .todayMarkerWrapper {
-  position: absolute;
-  height: 50em;
+  position: relative;
+  float: left;
+  margin-top: -20px;
+  height: calc(100vh - 320px);
 }
 
 .todayMarker {
   position: relative;
-  height: 60em;
+  height: 100%;
   /* TODO: Waiting to match the rest of the figma styles */
   /* border: 2px solid #1FA5FF; */
   border: 1px dashed #F39106;
