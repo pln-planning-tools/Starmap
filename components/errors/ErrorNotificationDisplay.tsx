@@ -1,5 +1,5 @@
 import { Box, Center } from '@chakra-ui/react';
-import type {State} from '@hookstate/core';
+import type { State } from '@hookstate/core';
 import React, { useState } from 'react';
 
 import { IssueData, StarMapsIssueErrorsGrouped } from '../../lib/types';
@@ -8,12 +8,12 @@ import { ErrorNotificationBody } from './ErrorNotificationBody';
 import { errorFilters } from '../../lib/client/errorFilters';
 import { useViewMode } from '../../hooks/useViewMode';
 
-export interface ErrorNotificationDisplayProps {
+interface ErrorNotificationDisplayProps {
   errors: StarMapsIssueErrorsGrouped[];
   issueDataState: State<IssueData | null>;
 }
 
-export function ErrorNotificationDisplay ({errors, issueDataState}: ErrorNotificationDisplayProps) {
+export function ErrorNotificationDisplay ({ errors, issueDataState }: ErrorNotificationDisplayProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const viewMode = useViewMode();

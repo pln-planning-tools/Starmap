@@ -1,5 +1,8 @@
+import React from 'react';
+
 import { useDateGranularity } from '../../hooks/useDateGranularity';
 import { dayjs } from '../../lib/client/dayjs';
+import getDateAsQuarter from '../../lib/client/getDateAsQuarter';
 import { TimeScaler } from '../../lib/client/TimeScaler';
 import { DateGranularityState } from '../../lib/enums';
 import { ErrorBoundary } from '../errors/ErrorBoundary';
@@ -16,16 +19,14 @@ interface GridHeaderProps {
 /**
  * This is the labels for the grid. The quarters and the top with the tick.
  */
-export function GridHeader({ tick, index, numGridCols, timeScaler, numHeaderTicks }: GridHeaderProps) {
+export function GridHeader({ tick, index, numGridCols, numHeaderTicks }: GridHeaderProps) {
   const dateGranularity = useDateGranularity();
   const date = dayjs(tick).utc();
 
   let label = '';
   switch (dateGranularity) {
     case DateGranularityState.Quarters:
-      const quarterNum = date.quarter();
-      const year = date.format('YYYY');
-      label = `Q${quarterNum} ${year}`;
+      label = getDateAsQuarter(date);
       break;
     case DateGranularityState.Months:
     case DateGranularityState.Weeks:

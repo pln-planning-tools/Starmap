@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import React from 'react';
 
 import { Link, Text } from '@chakra-ui/react';
 
@@ -9,7 +10,6 @@ interface RoadmapHeaderProps {
 }
 
 function RoadmapHeader({ issueData }: RoadmapHeaderProps) {
-  // console.log(`issueData: `, issueData);
   const router = useRouter();
 
   return (

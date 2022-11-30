@@ -19,13 +19,10 @@ function RoadmapItem({
 }) {
   const maxSvgHeight = useMaxHeight();
   console.log('index:', index);
-  const x = 50;
   const y = 50;
-  const xPadding = 5;
   const yPadding = 5;
   const etaX = scale(dayjs(childIssue.due_date).toDate());
   const ySpacingBetweenItems = 20;
-  const rectangleHeight = 50;
   const rectConfig = {
     width: 300,
     height: 80,
