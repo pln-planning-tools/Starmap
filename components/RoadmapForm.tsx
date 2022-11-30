@@ -90,7 +90,15 @@ export function RoadmapForm() {
   };
 
   Router.events.on('routeChangeStart', (...events) => {
-    const currentUrl = getValidUrlFromInput(events[0].split('#')[0].replace('/roadmap/', ''));
+    globalLoadingState.start();
+    const path = events[0];
+    console.log(`path: `, path);
+    if (path === '/') {
+      setIsInputBlanked(true);
+      setCurrentIssueUrl('');
+      return;
+    }
+    const currentUrl = getValidUrlFromInput(path.split('#')[0].replace('/roadmap/', ''));
     setCurrentIssueUrl(currentUrl.toString());
   });
 
