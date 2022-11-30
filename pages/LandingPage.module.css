@@ -5,28 +5,3 @@
   padding: 40px 120px;
   margin: 0 0 15vh 0;
 }
-
-.UserGuide-article h1 {
-  font-size: 36pt;
-  font-weight: 800; /* extra bold */
-}
-
-.UserGuide-article h2 {
-  font-size: 28pt;
-  font-weight: 600; /* medium */
-}
-
-.UserGuide-article h3 {
-  font-size: 24pt;
-  font-weight: 600; /* semi-bold */
-}
-
-.UserGuide-article h4 {
-  font-size: 20pt;
-  font-weight: normal;
-}
-
-.UserGuide-article p {
-  font-size: 16pt;
-  font-weight: normal;
-}
