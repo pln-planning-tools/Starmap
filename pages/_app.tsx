@@ -4,6 +4,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 
 import React from 'react';
 
+import './style.css';
+
 function App({ Component, pageProps }) {
   return (
     <>

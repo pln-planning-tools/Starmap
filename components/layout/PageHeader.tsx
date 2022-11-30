@@ -1,5 +1,6 @@
 import { Box, Flex, Spacer, Text, Center, Link } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import React from 'react';
 
 import { RoadmapForm } from '../RoadmapForm';
 import theme from '../theme/constants'
@@ -14,7 +15,7 @@ function PageHeader() {
 
       <ErrorBoundary>
         <NextLink href="/" passHref>
-          <Link>
+          <Link className="js-headerLogo">
             <Center>
               <SvgStarMapsLogo width={45} height={45} className={styles.StarMapsLogo} />
               <Text fontSize={'24px'} as='span' color={theme.light.header.text.color}>Star</Text>

@@ -79,7 +79,7 @@ export function GridRow({
           <p className={styles.milestoneDate}>{milestone.due_date.value}</p>
         </Flex>
         <Flex m={{ base: "0", sm: "8px 0", md: "8px 0", lg: "0" }}>
-          <SvgGitHubLogoWithTooltip githuburl={milestone.html_url}/>
+          <SvgGitHubLogoWithTooltip githuburl={milestone.html_url.value}/>
         </Flex>
 
       </Flex>
