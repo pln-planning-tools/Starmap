@@ -1,4 +1,4 @@
-import { Tooltip } from '@chakra-ui/react';
+import { Link, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import SvgGitHubLogo from './SvgGitHubLogo';
@@ -16,15 +16,16 @@ export const SvgGitHubLogoWithTooltip = (props) => {
      * prevent roadmap card from handling the click event
      */
     event.stopPropagation()
-    window.open(props.githuburl, '_blank', 'noopener,noreferrer')
   }
   return (
     <div onClick={onClickHandler}>
+      <Link href={props.githuburl} target="_blank" rel="noopener noreferrer">
         <Tooltip hasArrow label='Open in GitHub'>
           <div className={styles['githubIcon-withTooltip']}>
             <LogoWithTooltip {...props} />
           </div>
         </Tooltip>
+      </Link>
     </div>
   )
 }
