@@ -5,8 +5,9 @@ import React from 'react';
 interface ErrorNotificationHeaderProps {
   isExpanded: boolean;
   toggle: () => void;
+  errorCount: number;
 }
-export function ErrorNotificationHeader({ isExpanded, toggle }: ErrorNotificationHeaderProps) {
+export function ErrorNotificationHeader({ isExpanded, toggle, errorCount }: ErrorNotificationHeaderProps) {
 
   const iconWandH = 8;
   const icon = isExpanded
@@ -26,7 +27,7 @@ export function ErrorNotificationHeader({ isExpanded, toggle }: ErrorNotificatio
       <Flex>
         <Center>
           <WarningTwoIcon color="#F39106" ml="1rem" mr="1rem" width={iconWandH} height={iconWandH} />
-          <Text fontSize="20">Issues with roadmap</Text>
+          <Text fontSize="20">{errorCount} issue{errorCount > 1 && 's'} with roadmap</Text>
         </Center>
         <Spacer />
         {icon}
