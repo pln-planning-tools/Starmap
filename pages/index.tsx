@@ -33,17 +33,12 @@ export async function getServerSideProps(): Promise<{props: SSProps}> {
 }
 
 const chakraUiRendererTheme: Parameters<typeof ChakraUIRenderer>[0] = {
-  a: (props) => {
-    const { children, href } = props;
-
-    return (
-      <Link target="_blank" rel="noopener noreferrer" href={href} color="#4987BD">
-        {children}
-      </Link>
-    );
-  },
+  a: ({ children, href }) => (
+    <Link target="_blank" rel="noopener noreferrer" href={href} color="#4987BD">
+      {children}
+    </Link>
+  )
 };
-
 
 const App: NextPage<SSProps> = ({ markdown }: SSProps) => (
     <>
