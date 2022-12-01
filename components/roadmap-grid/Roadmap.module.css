@@ -59,8 +59,8 @@
   /* min-height: 6rem; */
 }
 
-  /* first-group */
-.scrollable .item.group:first-child {
+  /* detail view first-group */
+.detailGrid .scrollable .item.group:first-child {
   margin-top: 20px;
 }
 
