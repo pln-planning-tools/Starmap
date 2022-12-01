@@ -48,7 +48,7 @@ export function GridRow({
       return null;
     }
 
-    if (!milestone.labels.get().includes('starmaps')) {
+    if (milestone.labels.ornull == null || !milestone.labels.ornull.value.includes('starmaps')) {
       return null;
     }
   }
