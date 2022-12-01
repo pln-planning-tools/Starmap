@@ -19,14 +19,13 @@ export const SvgGitHubLogoWithTooltip = (props) => {
   }
   return (
     <div onClick={onClickHandler}>
-      <Link href={props.githuburl} target="_blank" rel="noopener noreferrer">
-        <Tooltip hasArrow label='Open in GitHub'>
-          <div className={styles['githubIcon-withTooltip']}>
+      <Tooltip hasArrow label='Open in GitHub'>
+        <div className={styles['githubIcon-withTooltip']}>
+          <Link href={props.githuburl} target="_blank" rel="noopener noreferrer">
             <LogoWithTooltip {...props} />
-          </div>
-        </Tooltip>
-      </Link>
+          </Link>
+        </div>
+      </Tooltip>
     </div>
   )
 }
-
