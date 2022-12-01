@@ -1,5 +1,6 @@
 import {
   Box,
+  Link,
   Spinner,
   Tab,
   TabList,
@@ -62,7 +63,7 @@ export function RoadmapTabbedView({
         textDecorationLine: 'underline',
         textDecorationThickness: '2px',
       }}
-    >&nbsp;&nbsp;{title}&nbsp;&nbsp;</Tab>
+    >&nbsp;&nbsp;<Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>&nbsp;&nbsp;</Tab>
   );
 
   const renderTabPanel = (_title: string, index: number) => (
