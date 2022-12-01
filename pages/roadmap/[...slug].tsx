@@ -100,6 +100,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
     if (isPendingChildrenLoading) return;
     const typedPendingChild = pendingChildrenState[0];
     if (typedPendingChild == null || typedPendingChild.html_url?.value == null) {
+      pendingChildrenState[0].set(none);
       return
     }
     const fetchPendingChildren = async () => {
