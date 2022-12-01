@@ -7,7 +7,7 @@ export function ErrorLineItemDescription({ error }: {error: StarMapsIssueErrorsG
   return (
     <Box>
         {error.errors.map((errItem, index) => (
-            <Text key={index} className={styles.errorIssueDescriptionText}>&nbsp;{errItem.message}</Text>
+            <Text as="span" width="auto" key={index} className={styles.errorIssueDescriptionText}>&nbsp;{errItem.message};</Text>
           ))}
     </Box>
   )

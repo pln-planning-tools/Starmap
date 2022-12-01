@@ -12,8 +12,13 @@
   grid-column: 1 / -1;
 }
 
+.errorLineItemWrapper > * {
+  margin: 10px 0px;
+}
+
 .errorLineItemWrapper:nth-child(odd) {
   background-color: #F8FBFF;
+  color: black;
 }
 
 .errorIssueLineItem {
