@@ -182,3 +182,7 @@ a.milestoneTitle {
 .wrapperLink:hover {
   border: 2px solid #1FA5FF;
 }
+
+.noDecoration {
+  text-decoration: none !important;
+}
