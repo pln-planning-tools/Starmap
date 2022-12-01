@@ -12,6 +12,7 @@ interface CrumbData {
 export function getCrumbStringFromIssueData({ html_url, title }: Pick<IssueData, 'html_url' | 'title'>): string {
   return JSON.stringify(getCrumbDataArrayFromIssueData({ html_url, title }));
 }
+
 export function getCrumbDataArrayFromIssueData({ html_url, title }: Pick<IssueData, 'html_url' | 'title'>): [string, string] {
   return [convertGithubUrlToShorthand(new URL(html_url)), title];
 }
