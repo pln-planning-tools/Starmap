@@ -60,7 +60,7 @@
 }
 
   /* detail view first-group */
-.detailGrid .scrollable .item.group:first-child {
+.detailView .scrollable .item.group:first-child {
   margin-top: 20px;
 }
 

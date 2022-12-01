@@ -130,7 +130,7 @@ export function RoadmapDetailed({
       {isDevMode && <NumSlider msg="how many header ticks" value={numHeaderTicks} min={5} max={60} setValue={setNumHeaderTicks}/>}
       {isDevMode && <NumSlider msg="how many grid columns" value={numGridCols} min={20} max={60} step={numHeaderTicks} setValue={setNumGridCols}/>}
 
-      <Box className={`${styles.timelineBox} ${ viewMode=='detail' ? styles.detailGrid : styles.overviewGrid }`} >
+      <Box className={`${styles.timelineBox} ${ viewMode=='detail' ? styles.detailView : '' }`} >
         <Grid ticksLength={numGridCols}>
           {ticksHeader.map((tick, index) => (
 
