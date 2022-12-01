@@ -5,6 +5,7 @@ import { getLinkForRoadmapChild } from '../../../lib/client/getLinkForRoadmapChi
 import { convertCrumbDataArraysToCrumbDataString, getCrumbDataArrayFromIssueData } from '../../../lib/breadcrumbs';
 import { IssueData } from '../../../lib/types';
 import { getFakeIssue } from '../../utils/getFakeIssue';
+import { ViewMode } from '../../../lib/enums';
 
 describe('getLinkForRoadmapChild', function() {
   let parent: IssueData;
@@ -45,6 +46,18 @@ describe('getLinkForRoadmapChild', function() {
       const expectedCrumbs = convertCrumbDataArraysToCrumbDataString([getCrumbDataArrayFromIssueData(parent)]);
       const expectedLink = `/roadmap/github.com${new URL(child.html_url).pathname}?crumbs=${encodeURIComponent(expectedCrumbs)}`
       expect(getLinkForRoadmapChild({ issueData: child })).toEqual(expectedLink);
+    });
+
+    it('issueData has children and parent, with replaceOrigin=false', () => {
+      const expectedCrumbs = convertCrumbDataArraysToCrumbDataString([getCrumbDataArrayFromIssueData(parent)]);
+      const expectedLink = `http://localhost/roadmap/github.com${new URL(child.html_url).pathname}?crumbs=${encodeURIComponent(expectedCrumbs)}`
+      expect(getLinkForRoadmapChild({ issueData: child, replaceOrigin: false })).toEqual(expectedLink);
+    });
+
+    it('issueData has children and parent, with viewMode', () => {
+      const expectedCrumbs = convertCrumbDataArraysToCrumbDataString([getCrumbDataArrayFromIssueData(parent)]);
+      const expectedLink = `/roadmap/github.com${new URL(child.html_url).pathname}?crumbs=${encodeURIComponent(expectedCrumbs)}#detail`
+      expect(getLinkForRoadmapChild({ issueData: child, viewMode: ViewMode.Detail })).toEqual(expectedLink);
     });
 
     it('issueData has children and no parent, but with currentRoadmapRoot', () => {

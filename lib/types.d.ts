@@ -143,9 +143,10 @@ export interface UrlMatchSlugs {
 }
 
 export interface QueryParameters {
-  filter_group: string;
-  mode: RoadmapMode;
-  timeUnit: DateGranularityState;
+  filter_group?: string;
+  mode?: RoadmapMode;
+  timeUnit?: DateGranularityState;
+  crumbs?: string;
 }
 
 export interface IssueDataViewInput {

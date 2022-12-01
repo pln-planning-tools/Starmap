@@ -1,11 +1,11 @@
 import { paramsFromUrl } from '../paramsFromUrl';
-import { IssueData } from '../types';
-import { convertCrumbDataArraysToCrumbDataString, getCrumbDataArrayFromIssueData } from '../breadcrumbs';
+import { IssueData, QueryParameters } from '../types';
+import { appendCrumbArrayData, convertCrumbDataArraysToCrumbDataString, getCrumbDataArrayFromIssueData, routerQueryToCrumbArrayData } from '../breadcrumbs';
 import { ViewMode } from '../enums';
 
 interface GetLinkForRoadmapChildOptions {
   issueData?: Pick<IssueData, 'html_url' | 'children'> & Partial<Pick<IssueData, 'children' | 'parent'>>;
-  query?: {crumbs?: string};
+  query?: QueryParameters;
   currentRoadmapRoot?: Pick<IssueData, 'html_url' | 'title'>;
   viewMode?: ViewMode;
   replaceOrigin?: boolean;
@@ -14,18 +14,10 @@ interface GetLinkForRoadmapChildOptions {
 function addCrumbsParamToUrl({ url, currentRoadmapRoot, query }: Pick<GetLinkForRoadmapChildOptions, 'currentRoadmapRoot' | 'query'> & {url: URL}) {
   if (currentRoadmapRoot != null) {
     const parentCrumbDataArray = getCrumbDataArrayFromIssueData(currentRoadmapRoot);
-    const crumbShortIdSet = new Set();
     let crumbDataArrays: [string, string][] = [parentCrumbDataArray];
-    if (query?.crumbs != null) {
-      const urlCrumbDataArray = JSON.parse(decodeURIComponent(query.crumbs));
-      urlCrumbDataArray.forEach((crumbDataArray) => crumbShortIdSet.add(crumbDataArray[0]));
-      // prevent duplicates
-      if (crumbShortIdSet.has(parentCrumbDataArray[0])) {
-        crumbDataArrays = urlCrumbDataArray;
-      } else {
-        // parent hasn't been added, so we're going to add it to the existing array.
-        crumbDataArrays = urlCrumbDataArray.concat([parentCrumbDataArray]);
-      }
+    if (query != null) {
+      const urlCrumbDataArray = routerQueryToCrumbArrayData(query);
+      crumbDataArrays = appendCrumbArrayData(urlCrumbDataArray, parentCrumbDataArray);
     }
 
     url.searchParams.set('crumbs', convertCrumbDataArraysToCrumbDataString(crumbDataArrays));

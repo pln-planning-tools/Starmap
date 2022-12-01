@@ -13,7 +13,7 @@ import { BASE_PROTOCOL } from '../../config/constants';
 import { setDateGranularity } from '../../hooks/useDateGranularity';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { setViewMode } from '../../hooks/useViewMode';
-import { DateGranularityState, ViewMode } from '../../lib/enums';
+import { DateGranularityState, RoadmapMode, ViewMode } from '../../lib/enums';
 import { findIssueDataByUrl } from '../../lib/findIssueDataByUrl';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import {
@@ -38,7 +38,7 @@ export async function getServerSideProps(context): Promise<RoadmapServerSideProp
       issue_number,
       isLocal: process.env.IS_LOCAL === 'true',
       groupBy: filter_group || null,
-      mode: mode || 'grid',
+      mode: mode || RoadmapMode.grid,
       dateGranularity: timeUnit || DateGranularityState.Months,
       baseUrl: `${BASE_PROTOCOL}://${process.env.VERCEL_URL}`,
     }

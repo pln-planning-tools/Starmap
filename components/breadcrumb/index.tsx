@@ -4,7 +4,7 @@ import {
 import { useRouter } from 'next/router';
 import React, { useMemo } from 'react'
 import { useViewMode } from '../../hooks/useViewMode';
-import { getCrumbDataFromCrumbString } from '../../lib/breadcrumbs';
+import { getCrumbDataFromCrumbDataArray, routerQueryToCrumbArrayData } from '../../lib/breadcrumbs';
 import { ViewMode } from '../../lib/enums';
 import { StarmapsBreadcrumbItem } from './StarmapsBreadcrumbItem';
 
@@ -19,19 +19,25 @@ export function StarmapsBreadcrumb({ currentTitle }: StarmapsBreadcrumbProps) {
   const router = useRouter();
   const viewMode = useViewMode();
 
-  const { crumbs } = router.query as {crumbs: string};
-  const decodedCrumbs = decodeURIComponent(crumbs)
+  const urlCrumbDataArray = routerQueryToCrumbArrayData(router.query);
   const parents = useMemo(() => {
-      if (decodedCrumbs == null || decodedCrumbs == 'null' || decodedCrumbs == 'undefined') {
+      if (urlCrumbDataArray.length === 0) {
         return []
       }
-      const parentsFromQuery = getCrumbDataFromCrumbString(decodedCrumbs, viewMode as ViewMode)
-      if (parentsFromQuery.length !== 0) {
-        parentsFromQuery.push({ url: router.asPath, title: currentTitle });
+      try {
+        const parentsFromQuery = getCrumbDataFromCrumbDataArray(urlCrumbDataArray, viewMode as ViewMode)
+        /**
+         * We don't add the currently viewed item unless there are already breadcrumbs
+         */
+        if (parentsFromQuery.length !== 0) {
+          parentsFromQuery.push({ url: router.asPath, title: currentTitle });
+        }
+        return parentsFromQuery;
+      } catch (err) {
+        return []
       }
-      return parentsFromQuery;
     },
-    [currentTitle, decodedCrumbs, router.asPath, viewMode],
+    [currentTitle, router.asPath, urlCrumbDataArray, viewMode],
   );
 
   if (parents.length === 0) {
