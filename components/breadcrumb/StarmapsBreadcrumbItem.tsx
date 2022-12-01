@@ -10,25 +10,18 @@ interface StarmapsBreadcrumbItemProps extends BreadcrumbItemProps {
 export function StarmapsBreadcrumbItem({ title, url, ...props }: StarmapsBreadcrumbItemProps) {
   const globalLoadingState = useGlobalLoadingState();
 
-  const isClickable = url != null;
   const breadcrumbItemProps = {
     ...props,
-    color: 'black',
-    // eslint-disable-next-line arrow-body-style
-    onClick: () => { return; },
-    className: 'js-breadcrumbItem',
-    isCurrentPage: false,
-    cursor: 'default',
-  }
-  if (isClickable) {
-    breadcrumbItemProps.onClick = () => {
+    color: '#4987BD',
+    onClick: () => {
       globalLoadingState.start();
       setTimeout(() => globalLoadingState.stop(), 5000);
-    }
-    breadcrumbItemProps.color = '#4987BD';
-    breadcrumbItemProps.className += ' js-breadcrumbItem-link';
-    breadcrumbItemProps.cursor = 'pointer'
+    },
+    className: 'js-breadcrumbItem js-breadcrumbItem-link',
+    isCurrentPage: false,
+    cursor: 'pointer',
   }
+
   return (
     <BreadcrumbItem {...breadcrumbItemProps}>
         <BreadcrumbLink href={url}>
