@@ -5,7 +5,7 @@ import { paramsFromUrl } from './paramsFromUrl';
 import { IssueData } from './types';
 
 interface CrumbData {
-  url: null | string;
+  url: string;
   title: string;
 }
 

@@ -21,17 +21,20 @@ export function StarmapsBreadcrumb({ currentTitle }: StarmapsBreadcrumbProps) {
 
   const { crumbs } = router.query as {crumbs: string};
   const parents = crumbs == null ? [] : getCrumbDataFromCrumbString(decodeURIComponent(crumbs), viewMode as ViewMode);
-  parents.push({ url: null, title: currentTitle });
 
-  let fontSize = 40;
-  if (parents.length >= 3) {
-    fontSize = 20;
-  } else if (parents.length >= 2) {
-    fontSize = 25;
+  if (parents.length !== 0) {
+    parents.push({ url: router.asPath, title: currentTitle });
+  }
+
+  if (parents.length === 0) {
+    /**
+     * TODO: Need a placeholder
+     */
+    return null;
   }
 
   return (
-    <Breadcrumb separator="/" mb='8px' fontSize={fontSize} fontWeight={600} pr="5rem">
+    <Breadcrumb ml="120px" mr="120px" mt="2rem" mb="2rem" padding="0.25rem" separator={<span style={{ color: 'black' }}>/</span>} fontSize={16} fontWeight={600}>
       {parents.map(({ title, url }, index) => (
           <StarmapsBreadcrumbItem key={index} title={title} url={url} />
         ))}

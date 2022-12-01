@@ -8,7 +8,6 @@ import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { IssueDataViewInput } from '../../lib/types';
 import GitHubSvgIcon from '../icons/GitHubLogo.svg';
 import themes from '../theme/constants';
-import { StarmapsBreadcrumb } from '../breadcrumb';
 
 export default function Header({
   issueDataState
@@ -22,7 +21,9 @@ export default function Header({
   return (
     <>
       <Flex direction={'row'}>
-          <StarmapsBreadcrumb currentTitle={issueDataState.title.value}/> {globalLoadingState.get() ? <Spinner /> : null}
+          <Text as='span' mb='8px' fontSize={40} fontWeight={600} pr="5rem">
+            {issueDataState.title.value} {globalLoadingState.get() ? <Spinner /> : null}
+          </Text>
         <Spacer />
         <Center>
           <NextLink style={{ display: 'span' }} passHref href={issueDataState.get().html_url}>

@@ -4,24 +4,34 @@ import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 
 interface StarmapsBreadcrumbItemProps extends BreadcrumbItemProps {
   title: string;
-  url: string | null;
+  url: string;
 }
 
 export function StarmapsBreadcrumbItem({ title, url, ...props }: StarmapsBreadcrumbItemProps) {
   const globalLoadingState = useGlobalLoadingState();
-  // eslint-disable-next-line arrow-body-style
-  let onClickHandler = () => {
-    return;
-  }
+
   const isClickable = url != null;
+  const breadcrumbItemProps = {
+    ...props,
+    color: 'black',
+    // eslint-disable-next-line arrow-body-style
+    onClick: () => { return; },
+    className: 'js-breadcrumbItem',
+    isCurrentPage: false,
+    cursor: 'default',
+  }
   if (isClickable) {
-    onClickHandler = () => {
+    breadcrumbItemProps.onClick = () => {
       globalLoadingState.start();
+      setTimeout(() => globalLoadingState.stop(), 5000);
     }
+    breadcrumbItemProps.color = '#4987BD';
+    breadcrumbItemProps.className += ' js-breadcrumbItem-link';
+    breadcrumbItemProps.cursor = 'pointer'
   }
   return (
-    <BreadcrumbItem onClick={onClickHandler} className="js-breadcrumbItem-link" isCurrentPage={!isClickable} {...props}>
-        <BreadcrumbLink href={url ?? ''} textDecoration={isClickable ? 'underline' : 'none'}>
+    <BreadcrumbItem {...breadcrumbItemProps}>
+        <BreadcrumbLink href={url}>
             {title}
         </BreadcrumbLink>
     </BreadcrumbItem>

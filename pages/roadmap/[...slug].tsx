@@ -3,6 +3,7 @@ import { none, State, useHookstate } from '@hookstate/core';
 import type { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { StarmapsBreadcrumb } from '../../components/breadcrumb';
 
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 import PageHeader from '../../components/layout/PageHeader';
@@ -194,8 +195,9 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
     <>
       <PageHeader />
       <div style={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
+        {!!issueDataState.ornull && <StarmapsBreadcrumb currentTitle={issueDataState.title.value} />}
         <ErrorNotificationDisplay errors={errors ?? []} issueDataState={issueDataState}/>
-        <Box pt={5} pr="120px" pl="120px">
+        <Box pr="120px" pl="120px" mt="2rem">
           {!!serverError && <Box color='red.500'>{serverError.message}</Box>}
           {!!roadmapLoadError && <Box color='red.500'>{roadmapLoadError.message}</Box>}
           {!!issueDataState.ornull && mode === 'd3' && <NewRoadmap issueData={issueDataState.get({ noproxy: true }) as IssueData} isLocal={isLocal} />}

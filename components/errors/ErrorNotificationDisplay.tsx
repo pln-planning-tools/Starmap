@@ -31,10 +31,9 @@ export function ErrorNotificationDisplay ({ errors, issueDataState }: ErrorNotif
   return <Center>
       <Box
         width="100%"
-        pr="120px"
-        pl="120px"
-        pt="4rem"
-        pb="1rem"
+        mr="120px"
+        ml="120px"
+        padding="0.25rem"
       >
       <ErrorNotificationHeader isExpanded={isExpanded} toggle={handleToggle} errorCount={filteredErrors.length} />
         <ErrorNotificationBody isExpanded={isExpanded} errors={filteredErrors} />
