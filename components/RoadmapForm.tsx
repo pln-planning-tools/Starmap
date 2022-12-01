@@ -12,6 +12,7 @@ import { getValidUrlFromInput } from '../lib/getValidUrlFromInput';
 import { useViewMode } from '../hooks/useViewMode';
 import { ViewMode } from '../lib/enums';
 import { isEmpty } from 'lodash';
+import useCheckMobileScreen from '../hooks/useCheckSmallScreen';
 
 export function RoadmapForm() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export function RoadmapForm() {
   const [issueUrl, setIssueUrl] = useState<string | null>();
   const [error, setError] = useState<Error | null>(null);
   const [isInputBlanked, setIsInputBlanked] = useState<boolean>(false);
+  const [isSmallScreen] = useCheckMobileScreen();
   const viewMode = useViewMode() as ViewMode;
 
   useEffect(() => {
@@ -103,31 +105,33 @@ export function RoadmapForm() {
   });
 
   return (
-    <form onSubmit={formSubmit}>
-      <FormControl isInvalid={error != null} isDisabled={globalLoadingState.get()}>
-        <InputGroup>
-          <InputLeftElement
-            pointerEvents='none'
-            children={<SearchIcon color='#FFFFFF' />}
-          />
-          <Input
-            type="text"
-            value={currentIssueUrl}
-            className={styles.urlInput}
-            color={theme.light.header.input.text.color}
-            aria-label='Issue URL'
-            name='issue-url'
-            autoComplete='url'
-            onChange={onChangeHandler}
-            placeholder='https://github.com/...'
-            bg={theme.light.header.input.background.color}
-            borderColor={theme.light.header.input.border.color}
-            borderRadius={theme.light.header.input.border.radius}
-          />
-          <InputRightElement cursor="pointer" children={inputRightElement}/>
-        </InputGroup>
-        <FormErrorMessage>{error?.message}</FormErrorMessage>
-      </FormControl>
-    </form>
+    isSmallScreen ?
+      <SearchIcon color='#FFFFFF' /> :
+      <form onSubmit={formSubmit}>
+        <FormControl isInvalid={error != null} isDisabled={globalLoadingState.get()}>
+          <InputGroup>
+            <InputLeftElement
+              pointerEvents='none'
+              children={<SearchIcon color='#FFFFFF' />}
+            />
+            <Input
+              type="text"
+              value={currentIssueUrl}
+              className={styles.urlInput}
+              color={theme.light.header.input.text.color}
+              aria-label='Issue URL'
+              name='issue-url'
+              autoComplete='url'
+              onChange={onChangeHandler}
+              placeholder='https://github.com/...'
+              bg={theme.light.header.input.background.color}
+              borderColor={theme.light.header.input.border.color}
+              borderRadius={theme.light.header.input.border.radius}
+            />
+            <InputRightElement cursor="pointer" children={inputRightElement} />
+          </InputGroup>
+          <FormErrorMessage>{error?.message}</FormErrorMessage>
+        </FormControl>
+      </form>
   );
 }

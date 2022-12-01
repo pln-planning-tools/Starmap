@@ -1,3 +1,5 @@
+export const SMALL_SCREEN_THRESHOLD = 720; // average mobile screen height in pixels.
+
 const lightMode = {
   header: {
     background: {

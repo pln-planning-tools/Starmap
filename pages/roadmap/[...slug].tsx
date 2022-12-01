@@ -201,7 +201,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       <div style={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
         {!!issueDataState.ornull && <StarmapsBreadcrumb currentTitle={issueDataState.ornull.title.value} />}
         <ErrorNotificationDisplay errors={errors ?? []} issueDataState={issueDataState}/>
-        <Box pr="120px" pl="120px" mt="2rem">
+        <Box pt={5} pr={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }} pl={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }} >
           {!!serverError && <Box color='red.500'>{serverError.message}</Box>}
           {!!roadmapLoadError && <Box color='red.500'>{roadmapLoadError.message}</Box>}
           {!!issueDataState.ornull && mode === 'd3' && <NewRoadmap issueData={issueDataState.get({ noproxy: true }) as IssueData} isLocal={isLocal} />}
