@@ -120,7 +120,13 @@ export function RoadmapDetailed({
     globalTimeScaler.setScale(dates, numGridCols * 1.09);
   }, [dates, numGridCols]);
 
-  if (issuesGroupedState.value.length === 0) {
+  const invalidGroups = issuesGroupedState.filter((group) => group.ornull == null || group.items.ornull == null)
+  if (issuesGroupedState.value.length === 0 || invalidGroups.length > 0) {
+    if (invalidGroups.length > 0) {
+      invalidGroups.forEach((g) => {
+        console.warn('Found an invalid group: ', g.value);
+      });
+    }
     return <Spinner />;
   }
 
@@ -148,7 +154,7 @@ export function RoadmapDetailed({
           {issuesGroupedState.map((group, index) => (
               <ErrorBoundary key={`Fragment-${index}`} >
                 <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState}/><GroupWrapper key={`GroupWrapper-${index}`}>
-                  {!!group.items.ornull &&
+                  {group.ornull != null && group.items.ornull != null &&
                     _.sortBy(group.items.ornull, ['title']).map((item, index) => <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
                 </GroupWrapper>
               </ErrorBoundary>

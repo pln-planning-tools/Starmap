@@ -40,6 +40,9 @@ export function GridRow({
   const childLink = getLinkForRoadmapChild({ viewMode, issueData: milestone.get(), query: useRouter().query, currentRoadmapRoot: issueDataState.value });
   const clickable = milestone.children.length > 0;
 
+  if (milestone == null || milestone.ornull == null) {
+    return null;
+  }
   /**
    * Do not render milestone items if their ETAs are invalid.
    */
