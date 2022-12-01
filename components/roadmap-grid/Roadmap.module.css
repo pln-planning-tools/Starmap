@@ -73,6 +73,7 @@
   color: #3182ce;
 }
 
+/* detail view GroupHeader text */
 .item.group div:first-child {
   position: relative;
   z-index: 3;
