@@ -45,6 +45,7 @@
   position: relative;
   /** must align with .timelineTick left positioning. This is done in order to handle the centering of the text and grid ticks*/
   left: -1rem;
+  z-index: 4;
 }
 
 .nested > .item:not(.group) {
@@ -70,6 +71,12 @@
   grid-column-end: none;
   background: white;
   color: #3182ce;
+}
+
+/* detail view GroupHeader text */
+.item.group div:first-child {
+  position: relative;
+  z-index: 3;
 }
 
 .groupWrapper {
