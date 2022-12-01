@@ -132,7 +132,7 @@ export interface DetailedViewGroup {
   url: string;
 }
 
-export interface GroupHeaderProps {
+export interface GroupHeaderProps extends IssueDataViewInput {
   group: State<DetailedViewGroup>;
 }
 

@@ -1,9 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-import { getCrumbDataFromCrumbString, getCrumbStringFromIssueData } from '../../../lib/breadcrumbs';
-import { ViewMode } from '../../../lib/enums';
-import { IssueData } from '../../../lib/types';
+import { convertCrumbDataArraysToCrumbDataString, getCrumbDataArrayFromIssueData, getCrumbDataFromCrumbString, getCrumbStringFromIssueData } from '../../lib/breadcrumbs';
+import { ViewMode } from '../../lib/enums';
+import { IssueData } from '../../lib/types';
 
 const testData: (Pick<IssueData, 'html_url' | 'title' | 'children'>)[] = [
   {
@@ -31,7 +31,7 @@ const testData: (Pick<IssueData, 'html_url' | 'title' | 'children'>)[] = [
 const getExpectedUrlForTestData = (testIssue: typeof testData[number], parents: typeof testData[number][] = [], viewMode = ViewMode.Detail) => {
   const url = new URL(`http://localhost/roadmap/${testIssue.html_url.replace('https://', '')}#${viewMode}`)
   if (parents.length > 0) {
-    const expectedCrumbs = parents.map(getCrumbStringFromIssueData).join(',');
+    const expectedCrumbs = convertCrumbDataArraysToCrumbDataString(parents.map(getCrumbDataArrayFromIssueData));
     url.searchParams.append('crumbs', expectedCrumbs);
   }
   return url.toString();
@@ -40,7 +40,9 @@ const getExpectedUrlForTestData = (testIssue: typeof testData[number], parents: 
 describe('getCrumbDataFromCrumbString', function () {
 
   it('works with 1 crumb', () => {
-    expect(getCrumbDataFromCrumbString(getCrumbStringFromIssueData(testData[0] as IssueData), ViewMode.Detail)).toEqual([
+    const crumbDataArray = getCrumbDataArrayFromIssueData(testData[0]);
+    const crumbsString = convertCrumbDataArraysToCrumbDataString([crumbDataArray]);
+    expect(getCrumbDataFromCrumbString(crumbsString, ViewMode.Detail)).toEqual([
       {
         url: getExpectedUrlForTestData(testData[0]),
         title: testData[0].title,
@@ -49,7 +51,11 @@ describe('getCrumbDataFromCrumbString', function () {
   });
 
   it('works with 2 crumbs', () => {
-    expect(getCrumbDataFromCrumbString((testData.slice(0,2) as IssueData[]).map(getCrumbStringFromIssueData).join(','), ViewMode.Detail)).toEqual([
+    const crumbsString = convertCrumbDataArraysToCrumbDataString([
+      getCrumbDataArrayFromIssueData(testData[0]),
+      getCrumbDataArrayFromIssueData(testData[1]),
+    ]);
+    expect(getCrumbDataFromCrumbString(crumbsString, ViewMode.Detail)).toEqual([
       {
         url: getExpectedUrlForTestData(testData[0]),
         title: testData[0].title,
@@ -62,7 +68,13 @@ describe('getCrumbDataFromCrumbString', function () {
   });
 
   it('works with 3 crumbs', () => {
-    expect(getCrumbDataFromCrumbString((testData.slice(0,3) as IssueData[]).map(getCrumbStringFromIssueData).join(','), ViewMode.Detail)).toEqual([
+    const crumbsString = convertCrumbDataArraysToCrumbDataString([
+      getCrumbDataArrayFromIssueData(testData[0]),
+      getCrumbDataArrayFromIssueData(testData[1]),
+      getCrumbDataArrayFromIssueData(testData[2]),
+    ]);
+
+    expect(getCrumbDataFromCrumbString(crumbsString, ViewMode.Detail)).toEqual([
       {
         url: getExpectedUrlForTestData(testData[0]),
         title: testData[0].title,
@@ -79,7 +91,13 @@ describe('getCrumbDataFromCrumbString', function () {
   });
 
   it('works with 4 crumbs', () => {
-    expect(getCrumbDataFromCrumbString((testData.slice(0,4) as IssueData[]).map(getCrumbStringFromIssueData).join(','), ViewMode.Detail)).toEqual([
+    const crumbsString = convertCrumbDataArraysToCrumbDataString([
+      getCrumbDataArrayFromIssueData(testData[0]),
+      getCrumbDataArrayFromIssueData(testData[1]),
+      getCrumbDataArrayFromIssueData(testData[2]),
+      getCrumbDataArrayFromIssueData(testData[3]),
+    ]);
+    expect(getCrumbDataFromCrumbString(crumbsString, ViewMode.Detail)).toEqual([
       {
         url: getExpectedUrlForTestData(testData[0]),
         title: testData[0].title,

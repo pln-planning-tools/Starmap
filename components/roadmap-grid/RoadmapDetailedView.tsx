@@ -144,7 +144,7 @@ export function RoadmapDetailed({
         <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={true} >
           {issuesGroupedState.map((group, index) => (
               <React.Fragment key={`Fragment-${index}`} >
-                <GroupHeader group={group} key={`GroupHeader-${index}`}/><GroupWrapper key={`GroupWrapper-${index}`}>
+                <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState}/><GroupWrapper key={`GroupWrapper-${index}`}>
                   {!!group.items.value &&
                     _.sortBy(group.items, ['title']).map((item, index) => <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
                 </GroupWrapper>

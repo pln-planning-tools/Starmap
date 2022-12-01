@@ -23,7 +23,7 @@ export function saveIssueDataToFile(finalIssueData: IssueData) {
   const pathToSaveFiles = join(__dirname, '..', '..', 'tests', 'fixtures', 'issueData');
   const fileName = `${owner}-${repo}-${issue_number}.json`;
   const filePath = join(pathToSaveFiles, fileName);
-  console.log(`Saving ${owner}/${repo}#${issue_number} issueData to ${filePath}`);
+
   writeFile(filePath, JSON.stringify(finalIssueData, null, 2)).catch((err) => {
     console.error(`Error writing file ${filePath}`, err);
   });
