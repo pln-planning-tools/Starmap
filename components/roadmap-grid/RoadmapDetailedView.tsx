@@ -21,7 +21,6 @@ import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
 import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
 import { useRouter } from 'next/router';
-import { ErrorBoundary } from '../errors/ErrorBoundary';
 
 export function RoadmapDetailed({
   issueDataState
@@ -146,12 +145,12 @@ export function RoadmapDetailed({
         </Grid>
         <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={true} >
           {issuesGroupedState.map((group, index) => (
-              <ErrorBoundary key={`Fragment-${index}`} >
+              <React.Fragment key={`Fragment-${index}`} >
                 <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState}/><GroupWrapper key={`GroupWrapper-${index}`}>
                   {!!group.items.ornull &&
                     _.sortBy(group.items.ornull, ['title']).map((item, index) => <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
                 </GroupWrapper>
-              </ErrorBoundary>
+              </React.Fragment>
             ))}
         </Grid>
       </Box>
