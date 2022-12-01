@@ -15,7 +15,7 @@ module.exports = {
   extends: [
     'plugin:@next/next/recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended'
+    'plugin:react-hooks/recommended',
     'prettier',
   ],
   rules: {
