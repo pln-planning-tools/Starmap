@@ -11,6 +11,7 @@ import { TimeScaler } from '../../lib/client/TimeScaler';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
 import { useRouter } from 'next/router';
+import { useViewMode } from '../../hooks/useViewMode';
 
 interface GridRowProps extends IssueDataViewInput {
   milestone: State<IssueData>;
@@ -33,8 +34,9 @@ export function GridRow({
   const closestDateIdx = Math.round(timeScaler.getColumn(dayjs.utc(milestone.due_date.get()).toDate()));
   const span = Math.max(4, numGridCols / timelineTicks.length);
   const closest = span * (closestDateIdx - 1);
+  const viewMode = useViewMode();
 
-  const childLink = getLinkForRoadmapChild({ issueData: milestone.get(), query: useRouter().query, currentRoadmapRoot: issueDataState.value });
+  const childLink = getLinkForRoadmapChild({ viewMode, issueData: milestone.get(), query: useRouter().query, currentRoadmapRoot: issueDataState.value });
   const clickable = milestone.children.length > 0;
 
   /**

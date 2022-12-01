@@ -20,6 +20,7 @@ export function StarmapsBreadcrumb({ currentTitle }: StarmapsBreadcrumbProps) {
   const viewMode = useViewMode();
 
   const { crumbs } = router.query as {crumbs: string};
+
   const parents = crumbs == null ? [] : getCrumbDataFromCrumbString(decodeURIComponent(crumbs), viewMode as ViewMode);
 
   if (parents.length !== 0) {

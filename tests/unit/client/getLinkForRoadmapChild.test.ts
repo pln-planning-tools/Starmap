@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 import { getLinkForRoadmapChild } from '../../../lib/client/getLinkForRoadmapChild';
-import { getCrumbStringFromIssueData } from '../../../lib/breadcrumbs';
+import { convertCrumbDataArraysToCrumbDataString, getCrumbDataArrayFromIssueData } from '../../../lib/breadcrumbs';
 import { IssueData } from '../../../lib/types';
 import { getFakeIssue } from '../../utils/getFakeIssue';
 
@@ -42,25 +42,25 @@ describe('getLinkForRoadmapChild', function() {
 
   describe('returns path with crumb(s)', function() {
     it('issueData has children and parent', () => {
-      const expectedCrumbs = encodeURIComponent(getCrumbStringFromIssueData(parent));
-      const expectedLink = `/roadmap/github.com${new URL(child.html_url).pathname}?crumbs=${expectedCrumbs}`
+      const expectedCrumbs = convertCrumbDataArraysToCrumbDataString([getCrumbDataArrayFromIssueData(parent)]);
+      const expectedLink = `/roadmap/github.com${new URL(child.html_url).pathname}?crumbs=${encodeURIComponent(expectedCrumbs)}`
       expect(getLinkForRoadmapChild({ issueData: child })).toEqual(expectedLink);
     });
 
     it('issueData has children and no parent, but with currentRoadmapRoot', () => {
       // @ts-expect-error
       delete child.parent
-      const expectedCrumbs = encodeURIComponent(getCrumbStringFromIssueData(parentDetached));
-      const expectedLink = `/roadmap/github.com${new URL(child.html_url).pathname}?crumbs=${expectedCrumbs}`
+      const expectedCrumbs = convertCrumbDataArraysToCrumbDataString([getCrumbDataArrayFromIssueData(parentDetached)]);
+      const expectedLink = `/roadmap/github.com${new URL(child.html_url).pathname}?crumbs=${encodeURIComponent(expectedCrumbs)}`
       expect(getLinkForRoadmapChild({ issueData: child, currentRoadmapRoot: parentDetached })).toEqual(expectedLink);
     });
 
     it('issueData has children and parent and current crumbs', () => {
-      const currentUrlCrumbs = getCrumbStringFromIssueData(parentDetached);
-      const parentCrumbs = getCrumbStringFromIssueData(parent);
-      const expectedCrumbs = encodeURIComponent([currentUrlCrumbs, parentCrumbs].join(','));
-      const expectedLink = `/roadmap/github.com${new URL(child.html_url).pathname}?crumbs=${expectedCrumbs}`
-      expect(getLinkForRoadmapChild({ issueData: child, query: { crumbs: encodeURIComponent(currentUrlCrumbs) } })).toEqual(expectedLink);
+      const currentUrlCrumbs = getCrumbDataArrayFromIssueData(parentDetached);
+      const parentCrumbs = getCrumbDataArrayFromIssueData(parent);
+      const expectedCrumbs = convertCrumbDataArraysToCrumbDataString([parentCrumbs, currentUrlCrumbs]);
+      const expectedLink = `/roadmap/github.com${new URL(child.html_url).pathname}?crumbs=${encodeURIComponent(expectedCrumbs)}`
+      expect(getLinkForRoadmapChild({ issueData: child, query: { crumbs: encodeURIComponent(expectedCrumbs) } })).toEqual(expectedLink);
     });
   });
 
