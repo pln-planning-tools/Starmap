@@ -6,6 +6,11 @@ import * as fixture98 from '../tests/fixtures/issueData/ipfs-roadmap-98.json'
 
 test('clicking a milestone item should show more breadcrumbs', async ({ page, context }) => {
 
+  const getSpinnerAndBreadcrumbPromise = (spinnerCount: number, breadcrumbCount: number) => Promise.all([
+    page.waitForFunction((count: number) => document.querySelectorAll('.chakra-spinner').length === count, spinnerCount, { timeout: 10000 },),
+    page.waitForFunction((count: number) => document.querySelectorAll('.js-breadcrumbItem').length === count, breadcrumbCount, { timeout: 10000 }),
+  ]);
+
   await context.route((url) => url.pathname.includes('api/roadmap'), (route) => {
     const requestedUrl = route.request().url()
     let mockedFixture: IssueData;
@@ -33,8 +38,8 @@ test('clicking a milestone item should show more breadcrumbs', async ({ page, co
     page.goto('http://localhost:3000/roadmap/github.com/ipfs/roadmap/issues/102'),
   ]);
 
-  await page.waitForFunction(() => document.querySelectorAll('.chakra-spinner').length === 0, { timeout: 10000 });
-  await page.locator('.js-breadcrumbItem').waitFor({ state: 'hidden', timeout: 10000 });
+  await getSpinnerAndBreadcrumbPromise(0, 0);
+  await page.waitForFunction(() => document.querySelectorAll('.js-milestoneCard').length > 1, { timeout: 10000 });
   expect(await page.locator('.js-milestoneCard-ipfs-roadmap-98')).toHaveCount(1, { timeout: 10000 });
 
   await Promise.all([
@@ -54,9 +59,8 @@ test('clicking a milestone item should show more breadcrumbs', async ({ page, co
   newUrl.searchParams.set('crumbs', expectedCrumbs);
   newUrl.hash = 'simple';
   await expect(page).toHaveURL(newUrl.href);
-  await page.waitForFunction(() => document.querySelectorAll('.chakra-spinner').length === 0, { timeout: 10000 });
-  await page.waitForFunction(() => document.querySelectorAll('.js-breadcrumbItem').length === 2, { timeout: 10000 });
-  await page.waitForFunction(() => document.querySelectorAll('.js-breadcrumbItem').length === 2, { timeout: 10000 });
+
+  await getSpinnerAndBreadcrumbPromise(0, 2);
 
   // click the first breadcrumb item and expect it to take us back to the parent.
   await Promise.all([
