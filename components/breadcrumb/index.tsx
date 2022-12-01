@@ -9,7 +9,7 @@ import { ViewMode } from '../../lib/enums';
 import { StarmapsBreadcrumbItem } from './StarmapsBreadcrumbItem';
 
 /**
- * Test with "http://localhost:3000/roadmap/github.com/ipfs/ipfs-gui/issues/106?crumbs=ipfs%2Fipfs-gui%23106%40%40This%20is%20a%20name%2CownerA%2FrepoB%23222%40%40Name%202#detail"
+ * Test with "http://localhost:3000/roadmap/github.com/ipfs/ipfs-gui/issues/110?crumbs=%5B%5B%22ipfs%2Fipfs-gui%23106%22%2C%22IPFS+Ignite+Roadmap+-+2022-%3E2023%22%5D%2C%5B%22ipfs%2Fipfs-gui%23124%22%2C%22Theme%3A+UX+%26+UI+Improvements%22%5D%5D#simple"
  */
 interface StarmapsBreadcrumbProps {
   currentTitle: string;
