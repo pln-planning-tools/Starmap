@@ -20,7 +20,7 @@ export class ErrorBoundary extends Component<{children: any}, {hasError: boolean
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
-      return <h1>Something went wrong.</h1>;
+      return <h1>Something went wrong. Please try to refresh the page.</h1>;
     }
 
     return this.props.children;
