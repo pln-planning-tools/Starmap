@@ -15,7 +15,7 @@ test('clicking the logo should navigate users to the homepage', async ({ page, c
 
   await page.goto('http://localhost:3000/roadmap/github.com/ipfs/roadmap/issues/102');
 
-  await page.locator('.chakra-spinner').waitFor({ state: 'hidden', timeout: 2000 });
+  await page.locator('.chakra-spinner').waitFor({ state: 'hidden', timeout: 10000 });
 
   await page.click('.js-headerLogo');
 
