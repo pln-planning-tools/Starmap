@@ -22,6 +22,9 @@ export class TimeScaler {
     this.gridColScale = scaleTime().domain(domain).range([0, numCols]);
   }
 
+  getPercentileInverse(num: number) {
+    return this.percentageScale.invert(num)
+  }
   getPercentile(date: Date) {
     return this.percentageScale(date)
   }

@@ -12,6 +12,7 @@ import { ReactElement } from 'react-markdown/lib/react-markdown';
 import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
 import { useRouter } from 'next/router';
 import { useViewMode } from '../../hooks/useViewMode';
+import { paramsFromUrl } from '../../lib/paramsFromUrl';
 
 interface GridRowProps extends IssueDataViewInput {
   milestone: State<IssueData>;
@@ -66,6 +67,12 @@ export function GridRow({
     console.error('closestDateIdx is greater than numGridCols', milestone.get({ noproxy: true }))
   }
 
+  let className = '';
+  try {
+    const { owner, repo, issue_number } = paramsFromUrl(milestone.html_url.value);
+    className = `js-milestoneCard-${owner}-${repo}-${issue_number}`
+  } catch {}
+
   const rowItem = (
     <div
       key={index}
@@ -76,7 +83,7 @@ export function GridRow({
           milestone.completion_rate.toString(),
         )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString())}%)`,
       }}
-      className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink}`}
+      className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink} js-milestoneCard ${clickable && className}`}
 
     >
       <Flex direction={{ base:"column", md:"column", lg:"row" }} justify="space-between" position="relative">

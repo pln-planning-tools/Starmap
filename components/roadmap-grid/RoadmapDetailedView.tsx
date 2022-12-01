@@ -2,7 +2,7 @@ import { Box, Spinner } from '@chakra-ui/react';
 import { useHookstate } from '@hookstate/core';
 import type { Dayjs } from 'dayjs';
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
@@ -33,13 +33,14 @@ export function RoadmapDetailed({
   const router = useRouter();
 
   const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
-  // const [dayjsDates, setDayjsDates] = useState<Dayjs[]>([]);
 
+  const setIssuesGroupedState = issuesGroupedState.set
   useEffect(() => {
     if (viewMode) {
-      issuesGroupedState.set(convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, router.query))
+      setIssuesGroupedState(convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, router.query))
     }
-  }, [viewMode, issueDataState.value]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewMode, router.query, issueDataState.children]);
 
   /**
    * Magic numbers that just seem to work are:
@@ -55,71 +56,72 @@ export function RoadmapDetailed({
   const [numHeaderTicks, setNumHeaderTicks] = useState(5);
   const [numGridCols, setNumGridCols] = useState(45);
 
-
-  const today = dayjs();
-
+  // for preventing dayjsDates from being recalculated if it doesn't need to be
+  const issuesGroupedId = issuesGroupedState.value.map((g) => g.groupName).join(',');
   /**
    * Collect all due dates from all issues, as DayJS dates.
    */
-  let dayjsDates: Dayjs[] = []
-  // useEffect(() => {
+  const dayjsDates: Dayjs[] = useMemo(() => {
+    const today = dayjs();
+    let innerDayjsDates: Dayjs[] = []
     try {
-      dayjsDates = issuesGroupedState.value
+      innerDayjsDates = issuesGroupedState.value
         .flatMap((group) => group.items.map((item) => dayjs(item.due_date).utc()))
         .filter((d) => d.isValid());
-      // setDayjsDates(dayjsDates);
     } catch {
-      // setDayjsDates([])
-      dayjsDates=[]
+      innerDayjsDates = []
+    }
+    /**
+     * Add today
+     */
+    innerDayjsDates.push(today);
+
+    /**
+     * TODO: We need to modify today.subtract and today.add based on the current DateGranularityState
+     */
+    let minDate = dayjs.min([...innerDayjsDates, today.subtract(1, 'month')]);
+    let maxDate = dayjs.max([...innerDayjsDates, today.add(1, 'month')]);
+    let incrementMax = false
+
+    /**
+     * This is a hack to make sure that the first and last ticks are always visible.
+     * TODO: Perform in constant time based on current DateGranularity
+     */
+    while (maxDate.diff(minDate, 'months') < (3 * DEFAULT_TICK_COUNT)) {
+      if (incrementMax) {
+        maxDate = maxDate.add(1, 'quarter');
+      } else {
+        minDate = minDate.subtract(1, 'quarter');
+      }
+      incrementMax = !incrementMax;
     }
 
-  // }, [issuesGroupedState.value])
+    /**
+     * Add minDate and maxDate so that the grid is not cut off.
+     */
+    innerDayjsDates.push(minDate)
+    innerDayjsDates.push(maxDate)
 
-  if (issuesGroupedState.value.length === 0) {
-    return <Spinner />
-  }
-
-  /**
-   * Add today
-   */
-  dayjsDates.push(today);
-
-  /**
-   * TODO: We need to modify today.subtract and today.add based on the current DateGranularityState
-   */
-  let minDate = dayjs.min([...dayjsDates, today.subtract(1, 'month')])
-  let maxDate = dayjs.max([...dayjsDates, today.add(1, 'month')])
-  let incrementMax = false
-
-  /**
-   * This is a hack to make sure that the first and last ticks are always visible.
-   * TODO: Perform in constant time based on current DateGranularity
-   */
-  while (maxDate.diff(minDate, 'months') < (3 * DEFAULT_TICK_COUNT)) {
-    if (incrementMax) {
-      maxDate = maxDate.add(1, 'quarter');
-    } else {
-      minDate = minDate.subtract(1, 'quarter');
-    }
-    incrementMax = !incrementMax;
-  }
-
-  /**
-   * Add minDate and maxDate so that the grid is not cut off.
-   */
-  dayjsDates.push(minDate)
-  dayjsDates.push(maxDate)
+    return innerDayjsDates;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [issuesGroupedState.length, issuesGroupedId]);
 
   /**
    *  * Ensure that the dates are
    *  * converted back to JS Date objects.
    *  * sorted - d3 timescale requires it to function properly
    */
-  const dates = dayjsDates
+  const dates = useMemo(() => dayjsDates
     .map((date) => date.toDate())
-    .sort((a, b) => a.getTime() - b.getTime());
+    .sort((a, b) => a.getTime() - b.getTime()),  [dayjsDates]);
 
-  globalTimeScaler.setScale(dates, numGridCols * 1.09);
+  useEffect(() => {
+    globalTimeScaler.setScale(dates, numGridCols * 1.09);
+  }, [dates, numGridCols]);
+
+  if (issuesGroupedState.value.length === 0) {
+    return <Spinner />;
+  }
 
   /**
    * Current getTicks function returns 1 less than the number of ticks we want.
@@ -145,8 +147,8 @@ export function RoadmapDetailed({
           {issuesGroupedState.map((group, index) => (
               <React.Fragment key={`Fragment-${index}`} >
                 <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState}/><GroupWrapper key={`GroupWrapper-${index}`}>
-                  {!!group.items.value &&
-                    _.sortBy(group.items, ['title']).map((item, index) => <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
+                  {!!group.items.ornull &&
+                    _.sortBy(group.items.ornull, ['title']).map((item, index) => <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
                 </GroupWrapper>
               </React.Fragment>
             ))}

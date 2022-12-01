@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Center, Spinner } from '@chakra-ui/react';
 
 import { scaleTime } from 'd3';

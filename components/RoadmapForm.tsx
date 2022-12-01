@@ -29,7 +29,7 @@ export function RoadmapForm() {
         setCurrentIssueUrl(urlObj.toString());
       } catch {}
     }
-  }, [currentIssueUrl, getValidUrlFromInput, setCurrentIssueUrl])
+  }, [currentIssueUrl, isInputBlanked])
 
   useEffect(() => {
     const asyncFn = async () => {
@@ -59,7 +59,7 @@ export function RoadmapForm() {
       }
     };
     asyncFn();
-  }, [router, issueUrl, setCurrentIssueUrl]);
+  }, [router, issueUrl, viewMode, globalLoadingState]);
 
   const formSubmit = (e) => {
     e.preventDefault();
@@ -98,6 +98,7 @@ export function RoadmapForm() {
       return;
     }
     const currentUrl = getValidUrlFromInput(path.split('#')[0].replace('/roadmap/', ''));
+    currentUrl.searchParams.delete('crumbs');
     setCurrentIssueUrl(currentUrl.toString());
   });
 

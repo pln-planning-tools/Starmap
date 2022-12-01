@@ -1,6 +1,6 @@
 import { Box, Center } from '@chakra-ui/react';
 import type { State } from '@hookstate/core';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { IssueData, StarMapsIssueErrorsGrouped } from '../../lib/types';
 import { ErrorNotificationHeader } from './ErrorNotificationHeader';
@@ -17,10 +17,13 @@ export function ErrorNotificationDisplay ({ errors, issueDataState }: ErrorNotif
   const [isExpanded, setIsExpanded] = useState(true);
 
   const viewMode = useViewMode();
-  let filteredErrors: StarMapsIssueErrorsGrouped[] = errors;
-  if (viewMode && issueDataState.value != null) {
-    filteredErrors = errorFilters[viewMode](errors, issueDataState.value)
-  }
+  const filteredErrors: StarMapsIssueErrorsGrouped[] = useMemo(() => {
+
+    if (viewMode && issueDataState.value != null) {
+      return errorFilters[viewMode](errors, issueDataState.value)
+    }
+    return errors;
+  }, [errors, viewMode, issueDataState.value]);
 
   if (filteredErrors?.length === 0) {
     return null;
