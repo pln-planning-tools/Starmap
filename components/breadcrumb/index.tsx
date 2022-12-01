@@ -2,7 +2,7 @@ import {
   Breadcrumb,
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router';
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useViewMode } from '../../hooks/useViewMode';
 import { getCrumbDataFromCrumbString } from '../../lib/breadcrumbs';
 import { ViewMode } from '../../lib/enums';
@@ -20,12 +20,19 @@ export function StarmapsBreadcrumb({ currentTitle }: StarmapsBreadcrumbProps) {
   const viewMode = useViewMode();
 
   const { crumbs } = router.query as {crumbs: string};
-
-  const parents = crumbs == null ? [] : getCrumbDataFromCrumbString(decodeURIComponent(crumbs), viewMode as ViewMode);
-
-  if (parents.length !== 0) {
-    parents.push({ url: router.asPath, title: currentTitle });
-  }
+  const decodedCrumbs = decodeURIComponent(crumbs)
+  const parents = useMemo(() => {
+      if (decodedCrumbs == null || decodedCrumbs == 'null' || decodedCrumbs == 'undefined') {
+        return []
+      }
+      const parentsFromQuery = getCrumbDataFromCrumbString(decodedCrumbs, viewMode as ViewMode)
+      if (parentsFromQuery.length !== 0) {
+        parentsFromQuery.push({ url: router.asPath, title: currentTitle });
+      }
+      return parentsFromQuery;
+    },
+    [currentTitle, decodedCrumbs, router.asPath, viewMode],
+  );
 
   if (parents.length === 0) {
     /**

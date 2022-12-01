@@ -94,6 +94,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
     fetchRoadMap();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [issue_number, repo, owner]);
 
   useEffect(() => {
@@ -140,7 +141,8 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       setIsPendingChildrenLoading(false);
     };
     fetchPendingChildren();
-  }, [issue_number, repo, owner, isRootIssueLoading, pendingChildrenState.value]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [issue_number, repo, owner, isRootIssueLoading, pendingChildrenState.length]);
 
   /**
    * Add asyncIssueData items to issueDataState
@@ -148,26 +150,26 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   useEffect(() => {
     const issueData = issueDataState.get({ noproxy: true }) as IssueData;
     const asyncIssues = asyncIssueDataState.get();
-    if (asyncIssues.length === 0) {
+    const newIssueData = asyncIssueDataState[0];
+    if (asyncIssues.length === 0 || newIssueData == null) {
+      asyncIssueDataState[0].set(none);
       return
     }
-    const newIssueData = asyncIssueDataState[0];
-    if (newIssueData !== undefined) {
-      try {
-        const parentIndex = issueData.children.findIndex((potentialParent) => potentialParent.html_url === newIssueData.parent.html_url.value);
-        if (parentIndex > -1) {
-          (issueDataState as State<IssueData>).children[parentIndex].children.merge([newIssueData.get({ noproxy: true })]);
-        } else {
-          throw new Error('Could not find parentIndex');
-        }
-
-      } catch (err) {
-        console.log('getting parent - error', err);
-        console.log('getting parent - error - issueData', issueData);
+    try {
+      const parentIndex = issueData.children.findIndex((potentialParent) => potentialParent.html_url === newIssueData.parent.html_url.value);
+      if (parentIndex > -1) {
+        (issueDataState as State<IssueData>).children[parentIndex].children.merge([newIssueData.get({ noproxy: true })]);
+      } else {
+        throw new Error('Could not find parentIndex');
       }
-      asyncIssueDataState[0].set(none)
-    }
 
+    } catch (err) {
+      console.log('getting parent - error', err);
+      console.log('getting parent - error - issueData', issueData);
+    }
+    asyncIssueDataState[0].set(none)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asyncIssueDataState.value]);
 
   /**
@@ -179,11 +181,12 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
     } else {
       globalLoadingState.start();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRootIssueLoading, pendingChildrenState.length, asyncIssueDataState.length])
 
   useEffect(() => {
     setDateGranularity(dateGranularity);
-  }, [dateGranularity, setDateGranularity]);
+  }, [dateGranularity]);
 
   const router = useRouter();
   const urlPath = router.asPath
