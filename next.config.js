@@ -13,6 +13,7 @@ const nextConfig = {
 
 module.exports = {
   ...nextConfig,
+  productionBrowserSourceMaps: true,
 
   webpack(config, options) {
     config.experiments = config.experiments || {};
