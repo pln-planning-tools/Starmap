@@ -10,7 +10,7 @@ import { ErrorBoundary } from '../errors/ErrorBoundary';
 
 function PageHeader() {
   return (
-    <Flex direction={'row'} bg={theme.light.header.background.color} pl="120px" pr="120px">
+    <Flex direction={'row'} bg={theme.light.header.background.color} pr={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }} pl={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }}>
       <Box pt={6} pb={6} className={styles.Logo} textAlign={'center'} alignContent='center' verticalAlign='center'>
 
       <ErrorBoundary>

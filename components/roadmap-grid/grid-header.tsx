@@ -7,6 +7,7 @@ import { TimeScaler } from '../../lib/client/TimeScaler';
 import { DateGranularityState } from '../../lib/enums';
 import { ErrorBoundary } from '../errors/ErrorBoundary';
 import styles from './Roadmap.module.css';
+import { Text } from '@chakra-ui/react';
 
 interface GridHeaderProps {
   tick: Date;
@@ -40,8 +41,8 @@ export function GridHeader({ tick, index, numGridCols, numHeaderTicks }: GridHea
     <ErrorBoundary>
       <div key={index} className={`${styles.item} ${styles.itemHeader}`} style={{
         gridColumnEnd: `span ${numGridCols / numHeaderTicks}`,
-      }}>
-        <span>{label}</span>
+      }} >
+        <Text fontSize={{ sm:"15px", md:"16px", lg:"16px" }}>{label}</Text>
       </div>
     </ErrorBoundary>
   );

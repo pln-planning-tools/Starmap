@@ -40,7 +40,7 @@
 .item.itemHeader {
   background: revert;
   text-align: center;
-  font-size: 16px;
+  /* font-size: 16px; */
   font-weight: 600;
   position: relative;
   /** must align with .timelineTick left positioning. This is done in order to handle the centering of the text and grid ticks*/

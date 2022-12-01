@@ -1,4 +1,4 @@
-import { Center } from '@chakra-ui/react';
+import { Center, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
@@ -18,7 +18,9 @@ export function TodayMarker() {
         left: `${percentLeft}%`,
     }}>
       {isLineVisible ? <div className={styles.todayMarker} /> : null}
-      <Center cursor="pointer" onClick={() => setIsLineVisible(!isLineVisible)}><div className={styles.todayMarkerText}>TODAY</div></Center>
+      <Center cursor="pointer" onClick={() => setIsLineVisible(!isLineVisible)}>
+        <Text className={styles.todayMarkerText} fontSize={{ sm:"16px", md:"19px", lg:"19px" }}>TODAY</Text>
+      </Center>
     </div>
   );
 }
