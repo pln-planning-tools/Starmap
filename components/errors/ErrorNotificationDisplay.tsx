@@ -39,7 +39,7 @@ export function ErrorNotificationDisplay ({ errorsState, issueDataState }: Error
         width="100%"
         pr={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }}
         pl={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }}
-        pt="4rem"
+        pt="2rem"
         pb="1rem"
       >
       <ErrorNotificationHeader isExpanded={isExpanded} toggle={handleToggle} errorCount={filteredErrors.length} />
