@@ -145,7 +145,7 @@ export function RoadmapDetailed({
         <Grid ticksLength={numGridCols}>
           {ticksHeader.map((tick, index) => (
 
-            <GridHeader key={index} tick={tick} index={index} numHeaderTicks={numHeaderTicks} numGridCols={numGridCols} timeScaler={globalTimeScaler}/>
+            <GridHeader key={index} tick={tick} index={index} numHeaderTicks={numHeaderTicks} numGridCols={numGridCols}/>
           ))}
 
           <Headerline numGridCols={numGridCols} ticksRatio={3}/>
@@ -155,7 +155,7 @@ export function RoadmapDetailed({
               <ErrorBoundary key={`Fragment-${index}`} >
                 <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState}/><GroupWrapper key={`GroupWrapper-${index}`}>
                   {group.ornull != null && group.items.ornull != null &&
-                    _.sortBy(group.items.ornull, ['title']).map((item, index) => <GridRow key={index} timeScaler={globalTimeScaler} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
+                    _.sortBy(group.items.ornull, ['title']).map((item, index) => <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
                 </GroupWrapper>
               </ErrorBoundary>
             ))}

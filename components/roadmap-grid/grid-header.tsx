@@ -3,7 +3,6 @@ import React from 'react';
 import { useDateGranularity } from '../../hooks/useDateGranularity';
 import { dayjs } from '../../lib/client/dayjs';
 import getDateAsQuarter from '../../lib/client/getDateAsQuarter';
-import { TimeScaler } from '../../lib/client/TimeScaler';
 import { DateGranularityState } from '../../lib/enums';
 import { ErrorBoundary } from '../errors/ErrorBoundary';
 import styles from './Roadmap.module.css';
@@ -13,7 +12,6 @@ interface GridHeaderProps {
   tick: Date;
   index: number;
   numGridCols: number;
-  timeScaler: TimeScaler;
   numHeaderTicks: number;
 }
 

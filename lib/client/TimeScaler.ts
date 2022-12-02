@@ -5,7 +5,7 @@ import { dayjs } from './dayjs';
 /**
  * TODO: Implement using React Provider pattern
  */
-export class TimeScaler {
+class TimeScaler {
   gridColScale: ScaleTime<number, number>;
   percentageScale: ScaleTime<number, number>;
   constructor() {
@@ -20,6 +20,10 @@ export class TimeScaler {
     const domain = [minDate, maxDate];
     this.percentageScale = scaleTime().domain(domain).range([0, 1]);
     this.gridColScale = scaleTime().domain(domain).range([0, numCols]);
+  }
+
+  getDomain() {
+    return this.percentageScale.domain();
   }
 
   getPercentileInverse(num: number) {
