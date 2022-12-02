@@ -4,7 +4,7 @@ import {
 } from '../types';
 import { groupStarMapsErrors } from '../groupStarMapsErrors';
 
-class ErrorManager {
+export class ErrorManager {
   errors: StarMapsError[];
   constructor() {
     this.errors = [];
@@ -41,5 +41,3 @@ class ErrorManager {
     this.errors = [];
   }
 }
-
-export const errorManager = new ErrorManager();
