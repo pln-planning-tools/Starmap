@@ -5,14 +5,14 @@ import { checkForLabel } from '../../lib/backend/checkForLabel';
 import { convertParsedChildToGroupedIssueData } from '../../lib/backend/convertParsedChildToGroupedIssueData';
 import { ErrorManager } from '../../lib/backend/errorManager';
 import { getGithubIssueDataWithGroupAndChildren } from '../../lib/backend/getGithubIssueDataWithGroupAndChildren';
-import { GithubIssueDataWithGroup, IssueData } from '../../lib/types';
+import { GithubIssueDataWithGroup, PendingChildApiResponse } from '../../lib/types';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<IssueData | {error: Error}>
+  res: NextApiResponse<PendingChildApiResponse>
 ): Promise<void> {
   if (req.method !== 'POST') {
-    res.status(405).send({ error: new Error('Only POST requests allowed') })
+    res.status(405).send({ error: { ...new Error('Only POST requests allowed'), code: '405' } })
     return
   }
   const { owner, repo, issue_number, parent } = req.body;
@@ -29,16 +29,17 @@ export default async function handler(
       checkForLabel(issueData, errorManager);
 
       res.status(200).json({
-        ...issueData,
-      } as IssueData);
+        data: issueData,
+        errors: errorManager.flushErrors(),
+      } as PendingChildApiResponse);
     } catch (err) {
       res.status(501).json({
-        error: err as Error
-      })
+        error: { ...err as Error, code: '501' },
+      } as PendingChildApiResponse)
     }
   } catch (err) {
     res.status(502).json({
-      error: err as Error
+      error: { ...err as Error, code: '501' },
     })
   }
 
