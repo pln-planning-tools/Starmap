@@ -1,8 +1,8 @@
 import { GithubIssueDataWithGroup, ParserGetChildrenResponse } from '../types';
 import { convertParsedChildToGroupedIssueData } from './convertParsedChildToGroupedIssueData';
-import { errorManager } from './errorManager';
+import { ErrorManager } from './errorManager';
 
-export async function resolveChildren (children: ParserGetChildrenResponse[]): Promise<GithubIssueDataWithGroup[]> {
+export async function resolveChildren (children: ParserGetChildrenResponse[], errorManager: ErrorManager): Promise<GithubIssueDataWithGroup[]> {
   if (!Array.isArray(children)) {
     throw new Error('Children is not an array. Is this a root issue?');
   }
@@ -10,7 +10,7 @@ export async function resolveChildren (children: ParserGetChildrenResponse[]): P
     return await Promise.all(children.map(
       async (child: ParserGetChildrenResponse): Promise<GithubIssueDataWithGroup> => {
         try {
-          return await convertParsedChildToGroupedIssueData(child);
+          return await convertParsedChildToGroupedIssueData(child, errorManager);
         } catch (err) {
           errorManager.addError({
             issue: {

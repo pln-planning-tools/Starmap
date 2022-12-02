@@ -1,6 +1,6 @@
 import { Box, Center } from '@chakra-ui/react';
 import type { State } from '@hookstate/core';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { IssueData, StarMapsIssueErrorsGrouped } from '../../lib/types';
 import { ErrorNotificationHeader } from './ErrorNotificationHeader';
@@ -9,18 +9,24 @@ import { errorFilters } from '../../lib/client/errorFilters';
 import { useViewMode } from '../../hooks/useViewMode';
 
 interface ErrorNotificationDisplayProps {
-  errors: StarMapsIssueErrorsGrouped[];
+  errorsState: State<StarMapsIssueErrorsGrouped[]>;
   issueDataState: State<IssueData | null>;
 }
 
-export function ErrorNotificationDisplay ({ errors, issueDataState }: ErrorNotificationDisplayProps) {
+export function ErrorNotificationDisplay ({ errorsState, issueDataState }: ErrorNotificationDisplayProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const viewMode = useViewMode();
-  let filteredErrors: StarMapsIssueErrorsGrouped[] = errors;
-  if (viewMode && issueDataState.value != null) {
-    filteredErrors = errorFilters[viewMode](errors, issueDataState.value)
-  }
+  const filteredErrors: StarMapsIssueErrorsGrouped[] = useMemo(() => {
+    if (errorsState.ornull == null) {
+      return [];
+    }
+    const errors = errorsState.ornull.value;
+    if (viewMode != null && issueDataState.ornull != null) {
+      return errorFilters[viewMode](errors, issueDataState.ornull.value)
+    }
+    return errors;
+  }, [errorsState.ornull, viewMode, issueDataState.ornull]);
 
   if (filteredErrors?.length === 0) {
     return null;
@@ -33,7 +39,7 @@ export function ErrorNotificationDisplay ({ errors, issueDataState }: ErrorNotif
         width="100%"
         pr={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }}
         pl={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }}
-        pt="4rem"
+        pt="2rem"
         pb="1rem"
       >
       <ErrorNotificationHeader isExpanded={isExpanded} toggle={handleToggle} errorCount={filteredErrors.length} />

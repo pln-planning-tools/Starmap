@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, Text, Link, Flex } from '@chakra-ui/react';
+import { Box, SimpleGrid, Text, Link } from '@chakra-ui/react';
 import NextLink from 'next/link';
 
 import { StarMapsIssueErrorsGrouped } from '../../lib/types';
@@ -18,15 +18,15 @@ export function ErrorNotificationBody({ isExpanded, errors }: ErrorNotificationB
       <SimpleGrid columns={2} spacing={0} width="100%">
         <Text as="b" ml="1rem">Link</Text>
         <Text as="b">Description of Error(s)</Text>
-        {errors.map((error) => (
-            <Box className={styles.errorLineItemWrapper} width="auto">
-              <Text className={`${styles.errorIssueLinkText} ${styles.errorIssueLinkWrapper}`}>
+        {errors.map((error, index) => (
+            <Box key={index} className={styles.errorLineItemWrapper} width="auto">
+              <Box className={`${styles.errorIssueLinkText} ${styles.errorIssueLinkWrapper}`}>
                 <NextLink passHref href={error.issueUrl}>
                   <Link width="15rem" target="_blank" rel="noopener noreferrer">
-                    <Text ml="1rem"><Flex>{error.issueTitle}</Flex></Text>
+                    <Text ml="1rem">{error.issueTitle}</Text>
                   </Link>
                 </NextLink>
-              </Text>
+              </Box>
               <ErrorLineItemDescription error={error} />
             </Box>
           ))}

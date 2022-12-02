@@ -50,7 +50,7 @@ export interface IssueData extends  Omit<PostParsedIssueData, 'children' | 'pare
 
 export interface RoadmapApiResponseSuccess {
   data: IssueData;
-  errors?: StarMapsIssueErrorsGrouped[];
+  errors: StarMapsIssueErrorsGrouped[];
   pendingChildren: PendingChildren[];
 }
 
@@ -60,6 +60,9 @@ export interface RoadmapApiResponseFailure {
 }
 
 export type RoadmapApiResponse = RoadmapApiResponseSuccess | RoadmapApiResponseFailure;
+export type PendingChildApiResponseSuccess = Required<Omit<RoadmapApiResponseSuccess, 'pendingChildren'>>;
+export type PendingChildApiResponseFailure = Pick<RoadmapApiResponseFailure, 'error'>;
+export type PendingChildApiResponse = PendingChildApiResponseSuccess | PendingChildApiResponseFailure;
 
 export interface ParserGetChildrenResponse {
   html_url: string;
@@ -132,7 +135,7 @@ export interface DetailedViewGroup {
   url: string;
 }
 
-export interface GroupHeaderProps {
+export interface GroupHeaderProps extends IssueDataViewInput {
   group: State<DetailedViewGroup>;
 }
 
@@ -143,9 +146,10 @@ export interface UrlMatchSlugs {
 }
 
 export interface QueryParameters {
-  filter_group: string;
-  mode: RoadmapMode;
-  timeUnit: DateGranularityState;
+  filter_group?: string;
+  mode?: RoadmapMode;
+  timeUnit?: DateGranularityState;
+  crumbs?: string;
 }
 
 export interface IssueDataViewInput {

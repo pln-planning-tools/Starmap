@@ -18,11 +18,11 @@ function Page() {
   useEffect(() => {
     // Always do navigations after the first render
     router.push('/RoadmapNav/?rootIssue=3&parentIssue=2&currentIssue=1', '/RoadmapNav', { shallow: true });
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     console.log('router.query.currentIssue changed! | router:', router);
-  }, [router.query.currentIssue]);
+  }, [router, router.query.currentIssue]);
 }
 
 export default Page;

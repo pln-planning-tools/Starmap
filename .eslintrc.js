@@ -15,7 +15,8 @@ module.exports = {
   extends: [
     'plugin:@next/next/recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier'
+    'plugin:react-hooks/recommended',
+    'prettier',
   ],
   rules: {
     '@typescript-eslint/ban-ts-comment': 'off',

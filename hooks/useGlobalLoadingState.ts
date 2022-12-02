@@ -11,6 +11,7 @@ const wrapState = (s: State<boolean>) => ({
 })
 
 // The following 2 functions can be exported now:
+// eslint-disable-next-line import/no-unused-modules
 export const accessGlobalLoadingState = () => wrapState(globalLoadingState)
 export const useGlobalLoadingState = () => wrapState(useHookstate(globalLoadingState))
 
