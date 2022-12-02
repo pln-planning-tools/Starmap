@@ -9,21 +9,24 @@ import { errorFilters } from '../../lib/client/errorFilters';
 import { useViewMode } from '../../hooks/useViewMode';
 
 interface ErrorNotificationDisplayProps {
-  errors: StarMapsIssueErrorsGrouped[];
+  errorsState: State<StarMapsIssueErrorsGrouped[]>;
   issueDataState: State<IssueData | null>;
 }
 
-export function ErrorNotificationDisplay ({ errors, issueDataState }: ErrorNotificationDisplayProps) {
+export function ErrorNotificationDisplay ({ errorsState, issueDataState }: ErrorNotificationDisplayProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const viewMode = useViewMode();
   const filteredErrors: StarMapsIssueErrorsGrouped[] = useMemo(() => {
-
-    if (viewMode && issueDataState.value != null) {
-      return errorFilters[viewMode](errors, issueDataState.value)
+    if (errorsState.ornull == null) {
+      return [];
+    }
+    const errors = errorsState.ornull.value;
+    if (viewMode != null && issueDataState.ornull != null) {
+      return errorFilters[viewMode](errors, issueDataState.ornull.value)
     }
     return errors;
-  }, [errors, viewMode, issueDataState.value]);
+  }, [errorsState.ornull, viewMode, issueDataState.ornull]);
 
   if (filteredErrors?.length === 0) {
     return null;
@@ -38,7 +41,6 @@ export function ErrorNotificationDisplay ({ errors, issueDataState }: ErrorNotif
         pl={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }}
         pt="4rem"
         pb="1rem"
-        padding="0.25rem"
       >
       <ErrorNotificationHeader isExpanded={isExpanded} toggle={handleToggle} errorCount={filteredErrors.length} />
         <ErrorNotificationBody isExpanded={isExpanded} errors={filteredErrors} />
