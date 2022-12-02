@@ -5,7 +5,7 @@ export function Grid({ children, ticksLength, scroll = false, renderTodayLine = 
   const styleClass = scroll ? styles.scrollable : styles.grid;
   return (
     <>
-      {renderTodayLine ? <TodayMarker /> : null}
+      {renderTodayLine ? <TodayMarker ticksLength={ticksLength}/> : null}
       <div className={styleClass} style={{ gridTemplateColumns: `repeat(${ticksLength}, minmax(10px, 1fr))` }}>
         {children}
       </div>
