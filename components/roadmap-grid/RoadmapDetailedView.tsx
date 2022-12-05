@@ -2,7 +2,7 @@ import { Box, Spinner } from '@chakra-ui/react';
 import { useHookstate } from '@hookstate/core';
 import type { Dayjs } from 'dayjs';
 import _ from 'lodash';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
@@ -23,6 +23,7 @@ import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/co
 import { useRouter } from 'next/router';
 import { ErrorBoundary } from '../errors/ErrorBoundary';
 import { usePrevious } from '../../hooks/usePrevious';
+import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
 
 export function RoadmapDetailed({
   issueDataState
@@ -35,16 +36,16 @@ export function RoadmapDetailed({
   const router = useRouter();
 
   const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
-  const groupIssuesCount = issuesGroupedState.reduce((total, group) => total + (1 + group.items.length),0)
-  const groupIssuesCountPrev = usePrevious(groupIssuesCount);
+  const groupedIssuesId = getUniqIdForGroupedIssues(issuesGroupedState.value)
+  const groupedIssuesIdPrev = usePrevious(groupedIssuesId);
   const query = router.query
 
   const setIssuesGroupedState = issuesGroupedState.set
   useEffect(() => {
-    if (viewMode && groupIssuesCountPrev !== groupIssuesCount) {
+    if (viewMode && groupedIssuesIdPrev !== groupedIssuesId) {
       setIssuesGroupedState(() => convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, query))
     }
-  }, [viewMode, query, setIssuesGroupedState, issueDataState, groupIssuesCountPrev, groupIssuesCount]);
+  }, [viewMode, query, setIssuesGroupedState, issueDataState, groupedIssuesIdPrev, groupedIssuesId]);
 
   /**
    * Magic numbers that just seem to work are:
