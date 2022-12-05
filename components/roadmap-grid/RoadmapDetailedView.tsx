@@ -2,7 +2,7 @@ import { Box, Spinner } from '@chakra-ui/react';
 import { useHookstate } from '@hookstate/core';
 import type { Dayjs } from 'dayjs';
 import _ from 'lodash';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
@@ -22,6 +22,7 @@ import { globalTimeScaler } from '../../lib/client/TimeScaler';
 import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
 import { useRouter } from 'next/router';
 import { ErrorBoundary } from '../errors/ErrorBoundary';
+import { usePrevious } from '../../hooks/usePrevious';
 
 export function RoadmapDetailed({
   issueDataState
@@ -34,14 +35,16 @@ export function RoadmapDetailed({
   const router = useRouter();
 
   const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
+  const groupIssuesCount = issuesGroupedState.reduce((total, group) => total + (1 + group.items.length),0)
+  const groupIssuesCountPrev = usePrevious(groupIssuesCount);
+  const query = router.query
 
   const setIssuesGroupedState = issuesGroupedState.set
   useEffect(() => {
-    if (viewMode) {
-      setIssuesGroupedState(convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, router.query))
+    if (viewMode && groupIssuesCountPrev !== groupIssuesCount) {
+      setIssuesGroupedState(() => convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, query))
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewMode, router.query, issueDataState.children]);
+  }, [viewMode, query, setIssuesGroupedState, issueDataState, groupIssuesCountPrev, groupIssuesCount]);
 
   /**
    * Magic numbers that just seem to work are:
