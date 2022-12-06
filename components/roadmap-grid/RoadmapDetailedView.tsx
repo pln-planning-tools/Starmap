@@ -22,6 +22,8 @@ import { globalTimeScaler } from '../../lib/client/TimeScaler';
 import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
 import { useRouter } from 'next/router';
 import { ErrorBoundary } from '../errors/ErrorBoundary';
+import { usePrevious } from '../../hooks/usePrevious';
+import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
 
 export function RoadmapDetailed({
   issueDataState
@@ -34,14 +36,16 @@ export function RoadmapDetailed({
   const router = useRouter();
 
   const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
+  const groupedIssuesId = getUniqIdForGroupedIssues(issuesGroupedState.value)
+  const groupedIssuesIdPrev = usePrevious(groupedIssuesId);
+  const query = router.query
 
   const setIssuesGroupedState = issuesGroupedState.set
   useEffect(() => {
-    if (viewMode) {
-      setIssuesGroupedState(convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, router.query))
+    if (viewMode && groupedIssuesIdPrev !== groupedIssuesId) {
+      setIssuesGroupedState(() => convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, query))
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewMode, router.query, issueDataState.children]);
+  }, [viewMode, query, setIssuesGroupedState, issueDataState, groupedIssuesIdPrev, groupedIssuesId]);
 
   /**
    * Magic numbers that just seem to work are:
