@@ -14,7 +14,6 @@ import themes from '../components/theme/constants';
 
 import styles from './LandingPage.module.css'
 import PageHeader from '../components/layout/PageHeader';
-
 interface SSProps {
   markdown: string
 }

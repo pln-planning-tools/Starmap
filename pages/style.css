@@ -1,1 +1,13 @@
 html, body {margin: 0; height: 100%; overflow: hidden}
+
+.metrics-consent-container .metrics-notification-wrapper,
+.metrics-consent-container .metrics-warning-wrapper {
+  bottom: 1px;
+  left: 0;
+  top: unset;
+}
+
+.metrics-notification-container,
+.metrics-warning-container {
+  border: 1px solid black;
+}
