@@ -35,7 +35,7 @@
     "eslint-config-airbnb-typescript": "^17.0.0",
     "framer-motion": "^7.6.1",
     "jest-environment-jsdom": "^29.3.1",
-    "jsdom": "^20.0.1",
+    "jsdom": "^20.0.3",
     "knuth-shuffle": "^1.0.8",
     "linkedom": "^0.14.17",
     "lodash": "^4.17.21",
