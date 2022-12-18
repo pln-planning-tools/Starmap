@@ -20,7 +20,7 @@
     "@emotion/styled": "^11.10.4",
     "@hookstate/core": "^4.0.0-rc21",
     "@octokit/core": "^4.0.0",
-    "@octokit/graphql-schema": "^12.9.1",
+    "@octokit/graphql-schema": "^12.31.0",
     "@octokit/plugin-retry": "^3.0.9",
     "@octokit/plugin-throttling": "^4.3.1",
     "@octokit/rest": "^19.0.5",
