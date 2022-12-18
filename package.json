@@ -33,7 +33,7 @@
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.5",
     "eslint-config-airbnb-typescript": "^17.0.0",
-    "framer-motion": "^7.6.1",
+    "framer-motion": "^7.6.12",
     "jest-environment-jsdom": "^29.3.1",
     "jsdom": "^20.0.1",
     "knuth-shuffle": "^1.0.8",
