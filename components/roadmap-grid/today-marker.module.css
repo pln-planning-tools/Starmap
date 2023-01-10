@@ -1,9 +1,30 @@
-
 .todayMarkerWrapper {
-  position: relative;
-  float: left;
+  position: absolute;
   margin-top: -20px;
   height: calc(100vh - 320px);
+}
+
+.todayMarkerPointer {
+  background: #F39106;
+  display: inline-block;
+  width: 14px;
+  height: 7px;
+  position: relative;
+  z-index: 4;
+  top: -25px;
+  left: -6px;
+}
+
+.todayMarkerPointer:before {
+  border-top: 7px solid #F39106;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  content: "";
+  height: 0;
+  left: 0;
+  position: absolute;
+  bottom: -7px;
+  width: 0;
 }
 
 .todayMarker {
@@ -11,7 +32,7 @@
   height: 100%;
   /* TODO: Waiting to match the rest of the figma styles */
   /* border: 2px solid #1FA5FF; */
-  border: 1px dashed #F39106;
+  border: 1px solid #F39106;
   z-index: 3;
   position: relative;
   width: 1px;
@@ -24,7 +45,7 @@
 
 .todayMarkerText {
   font-size: 14px;
-  position:absolute;
+  position: absolute;
   /* TODO: Waiting to match the rest of the figma styles */
   /* color: #F39106; */
   color: #F39106;
@@ -44,3 +65,39 @@
   border-left: thin solid #4a6792;
   height: 0;
 }
+
+.todayMarkerToggle,
+.todayMarkerToggleDisabled {
+  height: 35px;
+  width: auto;
+  background: #F9FCFF;
+  border: 1px solid #A2D0DE;
+  color: #4987BD;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+}
+
+.todayMarkerToggle:hover,
+.todayMarkerToggleDisabled:hover {
+  background: #F9FCFF;
+  border: 1px solid #EFEFEF;
+}
+
+.todayMarkerToggleDisabled {
+  background: #FAFAFA;
+  border: 1px solid #EFEFEF;
+  color: #8D8D8D;
+}
+
+/* .todayMarkerToggleText {
+  color: #4987BD;
+}
+
+.todayMarkerToggleText
+
+.todayMarkerToggleText.disabled {
+  color: #8D8D8D;
+
+} */
