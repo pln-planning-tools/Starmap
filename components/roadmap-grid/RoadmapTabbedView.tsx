@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 import SvgDetailViewIcon from '../icons/svgr/SvgDetailViewIcon';
-import SvgOverviewIcon from '../icons/svgr/SvgListViewIcon';
+import SvgOverviewIcon from '../icons/svgr/SvgOverviewIcon';
 
 import { setViewMode, useViewMode } from '../../hooks/useViewMode';
 import { DEFAULT_INITIAL_VIEW_MODE } from '../../lib/defaults';
