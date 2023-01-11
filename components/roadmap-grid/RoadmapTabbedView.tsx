@@ -6,11 +6,14 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs
+  Tabs,
+  Center
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
+import SvgDetailViewIcon from '../icons/svgr/SvgDetailViewIcon';
+import SvgOverviewIcon from '../icons/svgr/SvgListViewIcon';
 
 import { setViewMode, useViewMode } from '../../hooks/useViewMode';
 import { DEFAULT_INITIAL_VIEW_MODE } from '../../lib/defaults';
@@ -54,17 +57,25 @@ export function RoadmapTabbedView({
     }, undefined, { shallow: true });
   }
 
-  const renderTab = (title: string, index: number) => (
-    <Tab
-      key={index}
-      _selected={{
-        fontWeight: 'bold',
-        textUnderlineOffset: '16px',
-        textDecorationLine: 'underline',
-        textDecorationThickness: '2px',
-      }}
-    >&nbsp;&nbsp;<Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>&nbsp;&nbsp;</Tab>
-  );
+  const renderTab = (title: string, index: number) => {
+    let TabIcon = SvgDetailViewIcon
+
+    if (title == "Overview") {
+      TabIcon = SvgOverviewIcon
+    }
+
+    return (
+      <Tab
+        className={styles.gridViewTab}
+        key={index}
+      >
+        <Center>
+          <TabIcon />
+          <Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>
+        </Center>
+      </Tab>
+    )
+  };
 
   const renderTabPanel = (_title: string, index: number) => (
     <TabPanel key={index}>
