@@ -34,7 +34,7 @@ export function RoadmapTabbedView({
     return (<Spinner size="lg" />);
   }
   // Defining what tabs to show and in what order
-  const tabs = ['Overview', 'Detailed View'] as const;
+  const tabs = ['Detailed View','Overview'] as const;
 
   // Mapping the views to the tabs
   const tabViewMap: Record<typeof tabs[number], ViewMode> = {
