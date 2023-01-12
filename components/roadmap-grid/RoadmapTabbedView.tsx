@@ -78,7 +78,7 @@ export function RoadmapTabbedView({
   };
 
   const renderTabPanel = (_title: string, index: number) => (
-    <TabPanel key={index}>
+    <TabPanel p={0} key={index}>
       <RoadmapDetailed issueDataState={issueDataState} />
     </TabPanel>
   );
@@ -87,7 +87,7 @@ export function RoadmapTabbedView({
     <>
       <Box className={styles.timelineBox}>
         <Header issueDataState={issueDataState} />
-        <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} isLazy>
+        <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} isLazy pt='20px'>
           <TabList>
             {tabs.map(renderTab)}
           </TabList>

@@ -51,9 +51,9 @@ export function StarmapsBreadcrumb({ currentTitle }: StarmapsBreadcrumbProps) {
     <Breadcrumb
       mr={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }}
       ml={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }}
-      mt="2rem" padding="0.25rem" separator={<span style={{ color: 'black' }}>/</span>} fontSize={16} fontWeight={600}>
+      padding={{ base: "0 0 20px 0" }} separator={<span style={{ color: 'black' }}>/</span>} fontSize={16} fontWeight={600}>
       {parents.map(({ title, url }, index) => (
-        <StarmapsBreadcrumbItem key={index} title={title} url={url} />
+        <StarmapsBreadcrumbItem key={index} title={title} url={url} lineHeight={1} />
       ))}
     </Breadcrumb>
   );

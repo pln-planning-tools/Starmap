@@ -3,13 +3,13 @@
   grid-gap: 0.5rem;
   grid-column-gap: 0;
   grid-template-columns: repeat(10, minmax(10px, 1fr));
-  margin-top: 15px;
+  margin-top: 20px;
   overflow-x: hidden;
 }
 
 .scrollable {
   extend: grid;
-  height: calc(100vh - 320px);
+  height: calc(100vh - 288px);
   overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -116,12 +116,6 @@
   border-radius: 4px;
   padding: 10px;
 }
-
-.timelineBox {
-  padding: 0.25rem;
-}
-
-.progress {}
 
 .milestoneTitleWrapper {
   text-overflow: ellipsis;
