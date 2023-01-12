@@ -38,8 +38,8 @@ export function RoadmapTabbedView({
 
   // Mapping the views to the tabs
   const tabViewMap: Record<typeof tabs[number], ViewMode> = {
-    'Overview': ViewMode.Simple,
     'Detailed View': ViewMode.Detail,
+    'Overview': ViewMode.Simple,
   };
 
   // Mapping the tabs to the views
