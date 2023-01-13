@@ -97,7 +97,7 @@ to get from this milestone.
 #### Children
 
 - A milestone may have child milestones.
-- Child milestones are simply full URL links to other GitHub milestone issues
+- Child milestones are simply full URL links to other GitHub milestone issues.
 - Child milestones can exist in any public Github repository.
 - It is expected that child milestone issues are themselves properly encoded milestones; otherwise they will be ignored by Starmap.
 - Within a parent issue, child milestones are encoded as follows (raw Markdown):
