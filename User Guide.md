@@ -2,7 +2,7 @@
 
 Starmap is a tool used to generate graphical representations of project roadmaps from GitHub issues. For the purposes of Starmap, a roadmap is represented by a single root node issue in GitHub that contains links to date-bound project milestone issues within that roadmap.
 
-The goal of Starmap is to help externalize planning, share team progress against milestones, and publicly flag dependencies. Starmap roadmaps are inter-team and user-focused.  The tool provides flexibility in terms of the level of granularity that can be viewed, enabling users to drill down into specific details or see a high-level overview of the project as a whole
+The goal of Starmap is to help externalize planning, share team progress against milestones, and publicly flag dependencies. Starmap roadmaps are inter-team and user-focused.  The tool provides flexibility in terms of the level of granularity that can be viewed, enabling users to drill down into specific details or see a high-level overview of the project as a whole.
 
 For more context around roadmapping within the Protocol Labs Network, watch the [roadmapping presentation](https://drive.google.com/file/d/130ujRG5R9TXt9UcsIGl6S343X1ispxVC/view?usp=sharing) from PL EngRes Team Summit in October 2022. This tool is introduced at 00:18:00.
 
