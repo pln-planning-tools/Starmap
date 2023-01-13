@@ -15,7 +15,7 @@ To render a roadmap in Starmap, enter the related GitHub issue URL into the Star
   - When applicable, Milestone cards will feature a green progress bar that reflects the completion status of nested child milestones.
   - To access the source GitHub issue for any milestone, users can click on the GitHub icon within each milestone card.
 - Starmap offers two rendering modes that can be set through the toggle button above the timeline:
-    - **Overview** mode displays high-level milestones plotted against a timeline
+    - **Overview** mode displays high-level milestones plotted against a timeline.
     - **Detailed view** mode organizes milestones under their respective parent milestones.
 
 GitHub issues that do not satisfy the requirements for rendering in Starmap as outlined herein may not display correctly. To add your roadmap to GitHub in a manner that will allow it to render in Starmap.site, see the section titled "Storing Roadmaps in Github" below.
