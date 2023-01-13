@@ -11,7 +11,7 @@ For more context around roadmapping within the Protocol Labs Network, watch the 
 To render a roadmap in Starmap, enter the related GitHub issue URL into the Starmap search bar. Depending on the size of the roadmap, the rendering may take a minute to load.
 
 - Project milestones will appear as fixed-width cards on the Starmap timeline. 
-  - If a milestone contains one or more nested “child” milestones, users can click on the milestone card to view that milestone and its nested child         milestone(s).
+  - If a milestone contains one or more nested “child” milestones, users can click on the milestone card to view that milestone and its nested child milestone(s).
   - When applicable, Milestone cards will feature a green progress bar that reflects the completion status of nested child milestones.
   - To access the source GitHub issue for any milestone, users can click on the GitHub icon within each milestone card.
 - Starmap offers two rendering modes that can be set through the toggle button above the timeline:
