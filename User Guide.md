@@ -58,7 +58,7 @@ eta: YYYY-MM-DD
 
 example: 2023-02-01
 ```
-- If you are linking to an existing GitHub issue as a milestone, you must edit the issue to include an ETA
+- If you are linking to an existing GitHub issue as a milestone, you must edit the issue to include an ETA.
 
 
 
