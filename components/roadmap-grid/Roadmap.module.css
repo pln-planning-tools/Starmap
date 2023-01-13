@@ -48,7 +48,7 @@
   z-index: 4;
 }
 
-.nested>.item:not(.group) {
+.nested > .item:not(.group) {
   background: #fafafa;
   padding: 5px;
   padding-left: 10px;
