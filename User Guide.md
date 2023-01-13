@@ -18,7 +18,7 @@ To render a roadmap in Starmap, enter the related GitHub issue URL into the Star
     - **Overview** mode displays high-level milestones plotted against a timeline.
     - **Detailed view** mode organizes milestones under their respective parent milestones.
 
-GitHub issues that do not satisfy the requirements for rendering in Starmap as outlined herein may not display correctly. To add your roadmap to GitHub in a manner that will allow it to render in Starmap.site, see the section titled "Storing Roadmaps in Github" below.
+GitHub issues that do not satisfy the requirements for rendering in Starmap as outlined herein may not display correctly. To add your roadmap to GitHub in a manner that will allow it to render in Starmap.site, see the section titled ["Storing Roadmaps in Github"](#storing-roadmaps-in-github) below.
 
 ## Capabilities
 
