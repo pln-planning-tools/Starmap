@@ -49,8 +49,8 @@ For any encoding, Starmap will only take the first such occurrence in the body.
 #### ETA Requirement
 
 - Milestones must have an estimated time of arrival (ETA), which is the timeframe in which the milestone is expected to be completed. The ETA is stored in the body of the issue.
-    - The ETA must be placed at the beginning of a new line in the issue body
-    - The ETA must be formatted according to the ISO 8601 standard
+    - The ETA must be placed at the beginning of a new line in the issue body.
+    - The ETA must be formatted according to the ISO 8601 standard.
 - ETAs are encoded as follows:
 
 ```
