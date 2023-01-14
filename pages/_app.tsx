@@ -10,7 +10,7 @@ function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>StarMaps</title>
+        <title>StarMap</title>
         <meta name='description' content='Roadmapping tool' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
