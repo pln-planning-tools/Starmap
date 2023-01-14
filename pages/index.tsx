@@ -19,7 +19,7 @@ interface SSProps {
   markdown: string
 }
 
-const starmapsGithubUrl = 'https://github.com/pln-planning-tools/StarMaps/blob/main/User%20Guide.md';
+const starmapsGithubUrl = 'https://github.com/pln-planning-tools/StarMap/blob/main/User%20Guide.md';
 
 export async function getServerSideProps(): Promise<{props: SSProps}> {
   const filePath = join(process.cwd(), 'User Guide.md');
