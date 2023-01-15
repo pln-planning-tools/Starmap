@@ -1350,10 +1350,10 @@
   resolved "https://registry.yarnpkg.com/@github/browserslist-config/-/browserslist-config-1.0.0.tgz#952fe6da3e6b8ed6a368f3a1a08a9d2ef84e8d04"
   integrity sha512-gIhjdJp/c2beaIWWIlsXdqXVRUz3r2BxBCpfz/F3JXHvSAQ1paMYjLH+maEATtENg+k5eLV7gA+9yPp762ieuw==
 
-"@hookstate/core@^4.0.0-rc21":
-  version "4.0.0-rc21"
-  resolved "https://registry.yarnpkg.com/@hookstate/core/-/core-4.0.0-rc21.tgz#5c7c8e1ec02d7a2eea148edf88b9c8aa3baf0fa8"
-  integrity sha512-aAiF537i9a54OlWzA/EtOa1l4bJMmpmJ4Fb/ZV8R30xD6jGMCGbCxHcb6SWIqO92T/w8dFXyl5XQbQ8reFpQrA==
+"@hookstate/core@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@hookstate/core/-/core-4.0.0.tgz#a70ffdc38b7456213b3557789aac28884ea83b97"
+  integrity sha512-l0UNUB4FK/oX+yhMY9JeI6oXlzUUGkXI9E59mFS7TR3HLJao7MQrR2dk4oriMV2Rb5l+6vzXfp1DwhGnq/IgPg==
 
 "@humanwhocodes/config-array@^0.11.6":
   version "0.11.7"
