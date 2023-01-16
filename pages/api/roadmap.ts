@@ -1,4 +1,3 @@
-import { checkForLabel } from '../../lib/backend/checkForLabel';
 import { ErrorManager } from '../../lib/backend/errorManager';
 import { getChildren } from '../../lib/parser';
 import { getIssue } from '../../lib/backend/issue';
@@ -33,7 +32,6 @@ export default async function handler(
 
   try {
     const rootIssue = await getIssue({ owner, repo, issue_number });
-    checkForLabel(rootIssue, errorManager);
 
     const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue.body_html)) || null;
     let children: Awaited<ReturnType<typeof resolveChildrenWithDepth>> = [];

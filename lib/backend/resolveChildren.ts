@@ -10,7 +10,7 @@ export async function resolveChildren (children: ParserGetChildrenResponse[], er
     return await Promise.all(children.map(
       async (child: ParserGetChildrenResponse): Promise<GithubIssueDataWithGroup> => {
         try {
-          return await convertParsedChildToGroupedIssueData(child, errorManager);
+          return await convertParsedChildToGroupedIssueData(child);
         } catch (err) {
           errorManager.addError({
             issue: {
