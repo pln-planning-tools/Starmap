@@ -3,8 +3,10 @@ name: CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
+  pull_request_target:
     branches: [ "main" ]
+
+permissions: {}
 
 jobs:
   build:
@@ -24,6 +26,5 @@ jobs:
 
     - name: Publish Code Coverage
       uses: paambaati/codeclimate-action@v3.2.0
-      secrets: inherit
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}
