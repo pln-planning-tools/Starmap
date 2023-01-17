@@ -6,11 +6,14 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs
+  Tabs,
+  Center
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
+import SvgDetailViewIcon from '../icons/svgr/SvgDetailViewIcon';
+import SvgOverviewIcon from '../icons/svgr/SvgOverviewIcon';
 
 import { setViewMode, useViewMode } from '../../hooks/useViewMode';
 import { DEFAULT_INITIAL_VIEW_MODE } from '../../lib/defaults';
@@ -31,12 +34,12 @@ export function RoadmapTabbedView({
     return (<Spinner size="lg" />);
   }
   // Defining what tabs to show and in what order
-  const tabs = ['Overview', 'Detailed View'] as const;
+  const tabs = ['Detailed View','Overview'] as const;
 
   // Mapping the views to the tabs
   const tabViewMap: Record<typeof tabs[number], ViewMode> = {
-    'Overview': ViewMode.Simple,
     'Detailed View': ViewMode.Detail,
+    'Overview': ViewMode.Simple,
   };
 
   // Mapping the tabs to the views
@@ -54,20 +57,28 @@ export function RoadmapTabbedView({
     }, undefined, { shallow: true });
   }
 
-  const renderTab = (title: string, index: number) => (
-    <Tab
-      key={index}
-      _selected={{
-        fontWeight: 'bold',
-        textUnderlineOffset: '16px',
-        textDecorationLine: 'underline',
-        textDecorationThickness: '2px',
-      }}
-    >&nbsp;&nbsp;<Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>&nbsp;&nbsp;</Tab>
-  );
+  const renderTab = (title: string, index: number) => {
+    let TabIcon = SvgDetailViewIcon
+
+    if (title == "Overview") {
+      TabIcon = SvgOverviewIcon
+    }
+
+    return (
+      <Tab
+        className={styles.gridViewTab}
+        key={index}
+      >
+        <Center>
+          <TabIcon />
+          <Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>
+        </Center>
+      </Tab>
+    )
+  };
 
   const renderTabPanel = (_title: string, index: number) => (
-    <TabPanel key={index}>
+    <TabPanel p={0} key={index}>
       <RoadmapDetailed issueDataState={issueDataState} />
     </TabPanel>
   );
@@ -76,7 +87,7 @@ export function RoadmapTabbedView({
     <>
       <Box className={styles.timelineBox}>
         <Header issueDataState={issueDataState} />
-        <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} isLazy>
+        <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} isLazy pt='20px'>
           <TabList>
             {tabs.map(renderTab)}
           </TabList>
