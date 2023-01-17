@@ -1,7 +1,11 @@
 .todayMarkerWrapper {
   position: absolute;
-  margin-top: -20px;
-  height: calc(100vh - 320px);
+  top: 16px;
+  height: calc(100% - 16px);
+}
+
+.todayMarkerWrapper:hover {
+  cursor: pointer;
 }
 
 .todayMarkerPointer {
@@ -66,8 +70,9 @@
   height: 0;
 }
 
-.todayMarkerToggle,
-.todayMarkerToggleDisabled {
+button.todayMarkerToggle,
+button.todayMarkerToggle:hover,
+button.todayMarkerToggleDisabled {
   height: 35px;
   width: auto;
   background: #F9FCFF;
@@ -79,25 +84,16 @@
   padding: 0 8px;
 }
 
-.todayMarkerToggle:hover,
-.todayMarkerToggleDisabled:hover {
-  background: #F9FCFF;
-  border: 1px solid #EFEFEF;
-}
-
-.todayMarkerToggleDisabled {
+button.todayMarkerToggleDisabled {
   background: #FAFAFA;
   border: 1px solid #EFEFEF;
   color: #8D8D8D;
 }
 
-/* .todayMarkerToggleText {
-  color: #4987BD;
+button.todayMarkerToggleDisabled:hover {
+  background: #F9FCFF;
 }
 
-.todayMarkerToggleText
-
-.todayMarkerToggleText.disabled {
-  color: #8D8D8D;
-
-} */
+button.todayMarkerToggleDisabled:hover svg path {
+  stroke: #8D8D8D;
+}

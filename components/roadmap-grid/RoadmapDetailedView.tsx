@@ -24,7 +24,7 @@ import { useRouter } from 'next/router';
 import { ErrorBoundary } from '../errors/ErrorBoundary';
 import { usePrevious } from '../../hooks/usePrevious';
 import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
-import { setShowTodayMarker, useShowTodayMarker } from '../../hooks/useShowTodayMarker';
+import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 
 export function RoadmapDetailed({
   issueDataState

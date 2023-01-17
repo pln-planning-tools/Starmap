@@ -56,10 +56,9 @@
   border-radius: 8px;
   margin: 2px 2px;
   z-index: 5;
-  /* min-height: 6rem; */
 }
 
-/* detail view first-group */
+  /* detail view first-group */
 .detailView .scrollable .item.group:first-child {
   margin-top: 20px;
 }
@@ -147,13 +146,11 @@ a.milestoneTitle {
 .timelineTick {
   background: #d5d5d5;
   justify-self: center;
-  position: relative;
+  position:relative;
   /** must align with .itemHeader left positioning. This is done in order to handle the centering of the text and grid ticks*/
   left: -1rem;
   z-index: 6;
 }
-
-.timelineHeaderLine {}
 
 .timelineHeaderLineWrapper {
   background: revert !important;
