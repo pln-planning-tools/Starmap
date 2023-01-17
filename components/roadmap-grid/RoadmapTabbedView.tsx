@@ -90,7 +90,7 @@ export function RoadmapTabbedView({
       <Box className={styles.timelineBox}>
         <Header issueDataState={issueDataState} />
         <Flex align="center" justify="space-between">
-          <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} isLazy>
+          <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} isLazy pt='20px'>
             <TabList display="flex" alignItems="center" justifyContent="space-between">
               <Flex>
                 {tabs.map(renderTab)}
