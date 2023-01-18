@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { dayjs } from '../../lib/client/dayjs';
-import { Center, Text } from '@chakra-ui/react';
 
 import { globalTimeScaler } from '../../lib/client/TimeScaler';
 import styles from './today-marker.module.css';
+import { setShowTodayMarker, useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 
 export function TodayMarker({ ticksLength }: {ticksLength:number}) {
   const today = dayjs();
   const [percentLeft, setPercentLeft] = useState(0);
-  const [isLineVisible, setIsLineVisible] = useState(true);
+  const showTodayMarker = useShowTodayMarker();
 
   useEffect(() => {
     const percentage = Number((globalTimeScaler.getPercentile(today.toDate()) * 100))
@@ -19,11 +19,9 @@ export function TodayMarker({ ticksLength }: {ticksLength:number}) {
   return (
     <div className={styles.todayMarkerWrapper} style={{
         left: `${percentLeft}%`,
-    }}>
-      {isLineVisible ? <div className={styles.todayMarker} /> : null}
-      <Center cursor="pointer" onClick={() => setIsLineVisible(!isLineVisible)}>
-        <Text className={styles.todayMarkerText} fontSize={{ sm:"16px", md:"19px", lg:"19px" }}>TODAY</Text>
-      </Center>
+    }} onClick={() => setShowTodayMarker(!showTodayMarker)}>
+      <div className={styles.todayMarkerPointer} />
+      <div className={styles.todayMarker} />
     </div>
   );
 }
