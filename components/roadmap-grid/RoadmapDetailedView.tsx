@@ -24,6 +24,7 @@ import { useRouter } from 'next/router';
 import { ErrorBoundary } from '../errors/ErrorBoundary';
 import { usePrevious } from '../../hooks/usePrevious';
 import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
+import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 
 export function RoadmapDetailed({
   issueDataState
@@ -39,6 +40,7 @@ export function RoadmapDetailed({
   const groupedIssuesId = getUniqIdForGroupedIssues(issuesGroupedState.value)
   const groupedIssuesIdPrev = usePrevious(groupedIssuesId);
   const query = router.query
+  const showTodayMarker = useShowTodayMarker();
 
   const setIssuesGroupedState = issuesGroupedState.set
   useEffect(() => {
@@ -154,7 +156,7 @@ export function RoadmapDetailed({
 
           <Headerline numGridCols={numGridCols} ticksRatio={3}/>
         </Grid>
-        <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={true} >
+        <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={showTodayMarker} >
           {issuesGroupedState.map((group, index) => (
               <ErrorBoundary key={`Fragment-${index}`} >
                 <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState}/><GroupWrapper key={`GroupWrapper-${index}`}>
