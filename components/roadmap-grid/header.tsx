@@ -20,8 +20,8 @@ export default function Header({
 
   return (
     <>
-      <Flex direction={'row'}>
-          <Text as='span' mb='8px' fontSize={40} fontWeight={600} pr="5rem">
+      <Flex direction={'row'} lineHeight={1} >
+          <Text as='span' fontSize={24} fontWeight={600} pr="5rem">
             {issueDataState.title.value} {globalLoadingState.get() ? <Spinner /> : null}
           </Text>
         <Spacer />

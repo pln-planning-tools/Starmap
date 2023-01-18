@@ -222,10 +222,10 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   return (
     <>
       <PageHeader />
-      <div style={{ overflowY: 'auto', height: 'calc(100vh - 100px)' }}>
+      <div style={{ overflowY: 'auto', height: 'calc(100vh - 120px)', paddingTop: '28px' }}>
         {issueDataState.ornull != null && <StarmapsBreadcrumb currentTitle={issueDataState.ornull.title.value} />}
         <ErrorNotificationDisplay errorsState={starMapsErrorsState} issueDataState={issueDataState}/>
-        <Box pt={5} pr={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }} pl={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }} >
+        <Box pr={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }} pl={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }} >
           {!!serverError && <Box color='red.500'>{serverError.message}</Box>}
           {roadmapLoadErrorState.ornull && <Box color='red.500'>{roadmapLoadErrorState.ornull.message.value}</Box>}
           {!!issueDataState.ornull && mode === 'd3' && <NewRoadmap issueData={issueDataState.get({ noproxy: true }) as IssueData} isLocal={isLocal} />}
