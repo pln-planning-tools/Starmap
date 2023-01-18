@@ -23,7 +23,7 @@ export default function SmallScreenModal() {
         <ModalBody p={4}>
           <Center textAlign='center'>
             <Text as='p' className={styles.modalHeader} alignSelf='center' pb={8}>
-              StarMaps is not optimized for mobile viewing.
+              StarMap is not optimized for mobile viewing.
             </Text>
           </Center>
           <Flex>
@@ -31,7 +31,7 @@ export default function SmallScreenModal() {
               <SvgDesktopIcon width={60}></SvgDesktopIcon>
             </Box>
             <Text as='p' className={styles.iconsText}>
-              Please access StarMaps using a different device.
+              Please access StarMap using a different device.
             </Text>
           </Flex>
           <Flex>
@@ -39,7 +39,7 @@ export default function SmallScreenModal() {
               <SvgRotateScreenIcon width={60}></SvgRotateScreenIcon>
             </Box>
             <Text as='p' className={styles.iconsText}>
-            If you still want to try viewing StarMaps in mobile, rotate your phone horizontally for the best experience.
+            If you still want to try viewing StarMap in mobile, rotate your phone horizontally for the best experience.
             </Text>
           </Flex>
         </ModalBody>
