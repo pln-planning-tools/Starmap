@@ -56,7 +56,6 @@
   border-radius: 8px;
   margin: 2px 2px;
   z-index: 5;
-  /* min-height: 6rem; */
 }
 
 /* detail view first-group */
@@ -117,6 +116,11 @@
   padding: 10px;
 }
 
+.timelineBox {
+  position: relative;
+  padding: 0.25rem;
+}
+
 .milestoneTitleWrapper {
   text-overflow: ellipsis;
   margin-top: 0.2rem;
@@ -153,8 +157,6 @@ a.milestoneTitle {
   z-index: 6;
 }
 
-.timelineHeaderLine {}
-
 .timelineHeaderLineWrapper {
   background: revert !important;
   border-top: 1px solid;
@@ -188,6 +190,10 @@ a.milestoneTitle {
   font-size: '16px';
   border-radius: 8px;
   margin: 0 16px 0 0;
+}
+
+button.gridViewTab {
+  height: 35px;
 }
 
 .gridViewTab a {
