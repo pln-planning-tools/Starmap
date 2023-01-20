@@ -54,7 +54,7 @@ export function GridRow({
       return null;
     }
 
-    if (milestone.labels.ornull == null || !milestone.labels.ornull.value.includes('starmaps')) {
+    if (milestone.labels.ornull == null) {
       return null;
     }
   }
