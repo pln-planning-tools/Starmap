@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { addToChildren } from '../../lib/backend/addToChildren';
 
-import { checkForLabel } from '../../lib/backend/checkForLabel';
 import { convertParsedChildToGroupedIssueData } from '../../lib/backend/convertParsedChildToGroupedIssueData';
 import { ErrorManager } from '../../lib/backend/errorManager';
 import { getGithubIssueDataWithGroupAndChildren } from '../../lib/backend/getGithubIssueDataWithGroupAndChildren';
@@ -22,11 +21,10 @@ export default async function handler(
     const issueDataWithGroup: GithubIssueDataWithGroup = await convertParsedChildToGroupedIssueData({
       html_url: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
       group: '',
-    }, errorManager)
+    })
     try {
       const issueDataWithGroupAndChildren = await getGithubIssueDataWithGroupAndChildren(issueDataWithGroup, errorManager, false)
       const issueData = addToChildren([issueDataWithGroupAndChildren], parent, errorManager)[0]
-      checkForLabel(issueData, errorManager);
 
       res.status(200).json({
         data: issueData,
