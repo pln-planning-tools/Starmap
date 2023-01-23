@@ -18,11 +18,10 @@ module.exports = {
   webpack(config, options) {
     config.experiments = config.experiments || {};
     config.experiments.topLevelAwait = true;
-    if (options.isServer) {
-      config.resolve.fallback = {
-        '@ipfs-shipyard/ignite-metrics': false,
-      }
-    }
+    // config.optimization = {
+    //   providedExports: false,
+    // };
+    // options.nextRuntime = 'edge';
 
     return config;
   },

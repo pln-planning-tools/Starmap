@@ -6,31 +6,34 @@ import React, { useEffect } from 'react';
 import { setTelemetry, useTelemetry } from '../hooks/useTelemetry';
 
 import './style.css';
-import { BrowserMetricsProvider } from '../lib/types';
+import type { BrowserMetricsProvider } from '../lib/types';
+
+/**
+ * We have to do funky imports here to satisfy nextjs since this package is cjs and ignite-metrics is esm
+ *
+ * Also, Next.js expects all dynamic imports to return react components, but we're not getting react components from
+ * ignite-metrics here; hence the 'ts-expect-error'.
+ */
+// @ts-expect-error
+const igniteMetricsModulePromise: Promise<{BrowserMetricsProvider: BrowserMetricsProvider}> = noSSR(() => import('@ipfs-shipyard/ignite-metrics/browser-vanilla'), {})
 
 function App({ Component, pageProps }) {
-  const telemetry: BrowserMetricsProvider|null = useTelemetry()
-  /**
-   * We have to do funky imports here to satisfy nextjs since this package is cjs and ignite-metrics is esm
-   */
+  const telemetry = useTelemetry()
+
   useEffect(() => {
     (async() => {
-      // @ts-expect-error
-      const { BrowserMetricsProvider } = await noSSR(() => import('@ipfs-shipyard/ignite-metrics/browser-vanilla'), {})
-
-      setTelemetry(new BrowserMetricsProvider({ appKey: '294089175b8268e44bc4e4fab572fe250d57b968' }))
+      if (telemetry == null) {
+        const { BrowserMetricsProvider } = await igniteMetricsModulePromise
+        const newTelemetry = new BrowserMetricsProvider({ appKey: '294089175b8268e44bc4e4fab572fe250d57b968' })
+        // @ts-expect-error
+        window.telemetry = newTelemetry
+        // @ts-expect-error
+        window.removeMetricsConsent = () => newTelemetry.removeConsent(['minimal'])
+        // @ts-expect-error
+        window.addMetricsConsent = () => newTelemetry.addConsent(['minimal'])
+        setTelemetry(newTelemetry)
+      }
     })()
-  }, [])
-
-  useEffect(() => {
-    if (telemetry != null) {
-      // @ts-expect-error
-      window.telemetry = telemetry
-      // @ts-expect-error
-      window.removeMetricsConsent = () => telemetry.removeConsent(['minimal'])
-      // @ts-expect-error
-      window.addMetricsConsent = () => telemetry.addConsent(['minimal'])
-    }
   }, [telemetry])
 
   return (
