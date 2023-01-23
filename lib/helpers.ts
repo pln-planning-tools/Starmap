@@ -1,7 +1,7 @@
 import { dayjs } from './client/dayjs';
 
 /**
- * Date parser based on: https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md#eta
+ * Date parser based on: https://github.com/pln-planning-tools/Starmap/blob/main/User%20Guide.md#eta-requirement
  *
  * @param {string} data - the data that contains the date.
  * @returns {string} etaDate
