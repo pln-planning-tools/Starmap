@@ -19,7 +19,7 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@hookstate/core": "^4.0.0-rc21",
-    "@ipfs-shipyard/ignite-metrics": "https://github.com/ipfs-shipyard/ignite-metrics#feat/useStorageForBrowsers-with-dist",
+    "@ipfs-shipyard/ignite-metrics": "1.2.1",
     "@octokit/core": "^4.0.0",
     "@octokit/graphql-schema": "^12.9.1",
     "@octokit/plugin-retry": "^3.0.9",
