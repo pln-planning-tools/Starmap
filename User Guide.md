@@ -1,4 +1,4 @@
-# StarMaps User Guide
+# StarMap User Guide
 
 Starmap is a tool used to generate graphical representations of project roadmaps from GitHub issues. For the purposes of Starmap, a roadmap is represented by a single root node issue in GitHub that contains links to date-bound project milestone issues within that roadmap.
 
@@ -6,12 +6,12 @@ The goal of Starmap is to help externalize planning, share team progress against
 
 For more context around roadmapping within the Protocol Labs Network, watch the [Roadmapping Presentation](https://drive.google.com/file/d/130ujRG5R9TXt9UcsIGl6S343X1ispxVC/view) from PL EngRes Team Summit in October 2022. This tool is introduced at 00:18:00.
 
-## Using Starmaps.app
+## Using Starmap.site
 
 To render a roadmap in Starmap, enter the related GitHub issue URL into the Starmap search bar. Depending on the size of the roadmap, the rendering may take a minute to load.
 
-- Project milestones will appear as fixed-width cards on the Starmap timeline. 
-   - If a milestone contains one or more nested “child” milestones, users can click on the milestone card to view that milestone and its nested child milestone(s). 
+- Project milestones will appear as fixed-width cards on the Starmap timeline.
+   - If a milestone contains one or more nested “child” milestones, users can click on the milestone card to view that milestone and its nested child milestone(s).
    - When applicable, Milestone cards will feature a green progress bar that reflects the completion status of nested child milestones.
    - To access the source GitHub issue for any milestone, users can click on the GitHub icon within each milestone card.
 - Starmap offers two rendering modes that can be set through the toggle button above the timeline:
@@ -28,7 +28,7 @@ The fundamental unit of a roadmap is a project milestone. In the context of road
 - A milestone can have multiple nested child milestones, which can also have their own child milestones, and so on.
   - In overview mode, you can only view the immediate child milestones of a milestone or root node roadmap. In detailed view mode, you can view child milestones up to two levels deep.
 - Starmap allows you to navigate through a roadmap at different levels of granularity by following the parent/child relationships. You can "zoom in" to a child milestone by clicking on its card, and "zoom out" by clicking the back button on your browser or following the breadcrumb trail.
-  - A roadmap can therefore be conceptualized as a directed acyclic graph (DAG). The root node of the DAG represents the roadmap itself, with child milestones linked as issues under this root node. These child milestones can be displayed by directing Starmap to the root issue. 
+  - A roadmap can therefore be conceptualized as a directed acyclic graph (DAG). The root node of the DAG represents the roadmap itself, with child milestones linked as issues under this root node. These child milestones can be displayed by directing Starmap to the root issue.
   - For more information on this, see the [Roadmap Root Nodes](#roadmap-root-nodes) section below.
 - Starmap allows you to easily create new roadmap visualizations by creating a new root "roadmap" node in GitHub that points to a set of existing milestones. This means that the same milestone can be included in multiple roadmaps.
 
@@ -104,7 +104,7 @@ Children:
 - https://github.com/pln-roadmap/Roadmap-Vizualizer/issues/9
 - https://github.com/pln-roadmap/Roadmap-Vizualizer/issues/8
 ```
-- Errors will be logged and displayed for the user in starmaps.app
+- Errors will be logged and displayed for the user in starmap.site
 
 ### Progress Indicators
 
@@ -146,7 +146,7 @@ Starmap Link: [Starmap Link]
 
 #### Child Milestone Issues
 ```
-Title: [Team/Project Name] [Milestone Title] 
+Title: [Team/Project Name] [Milestone Title]
 
 Description:
 This milestone is part of the [Team/Project Name] [Duration] Roadmap (link to root issue).
