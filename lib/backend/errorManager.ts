@@ -4,7 +4,7 @@ import {
 } from '../types';
 import { groupStarMapsErrors } from '../groupStarMapsErrors';
 
-class ErrorManager {
+export class ErrorManager {
   errors: StarMapsError[];
   constructor() {
     this.errors = [];
@@ -25,7 +25,7 @@ class ErrorManager {
     this.errors.push({
       issueUrl: html_url,
       issueTitle: title,
-      userGuideUrl: `https://github.com/pln-planning-tools/Starmaps/blob/main/User%20Guide.md${userGuideSection}`,
+      userGuideUrl: `https://github.com/pln-planning-tools/Starmap/blob/main/User%20Guide.md${userGuideSection}`,
       title: errorTitle,
       message: errorMessage
     });
@@ -41,5 +41,3 @@ class ErrorManager {
     this.errors = [];
   }
 }
-
-export const errorManager = new ErrorManager();

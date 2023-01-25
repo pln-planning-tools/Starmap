@@ -1,6 +1,7 @@
-import { Box, Center, Flex, Spacer, Text } from '@chakra-ui/react';
+import { Box, Center, Flex, Spacer, Spinner, Text } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronUpIcon, WarningTwoIcon } from '@chakra-ui/icons'
 import React from 'react';
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 
 interface ErrorNotificationHeaderProps {
   isExpanded: boolean;
@@ -8,6 +9,7 @@ interface ErrorNotificationHeaderProps {
   errorCount: number;
 }
 export function ErrorNotificationHeader({ isExpanded, toggle, errorCount }: ErrorNotificationHeaderProps) {
+  const globalLoadingState = useGlobalLoadingState();
 
   const iconWandH = 8;
   const icon = isExpanded
@@ -28,6 +30,7 @@ export function ErrorNotificationHeader({ isExpanded, toggle, errorCount }: Erro
         <Center>
           <WarningTwoIcon color="#F39106" ml="1rem" mr="1rem" width={iconWandH} height={iconWandH} />
           <Text fontSize="20">{errorCount} issue{errorCount > 1 && 's'} with roadmap</Text>
+          {globalLoadingState.get() ? <Spinner ml="1rem" /> : null}
         </Center>
         <Spacer />
         {icon}

@@ -1,5 +1,4 @@
-import { checkForLabel } from '../../lib/backend/checkForLabel';
-import { errorManager } from '../../lib/backend/errorManager';
+import { ErrorManager } from '../../lib/backend/errorManager';
 import { getChildren } from '../../lib/parser';
 import { getIssue } from '../../lib/backend/issue';
 import {
@@ -22,6 +21,7 @@ export default async function handler(
   // Set filter_group to a specific word to only return children under the specified word heading.
   options.filter_group = req.query.filter_group || 'children';
 
+  const errorManager = new ErrorManager();
   if (!platform || !owner || !repo || !issue_number) {
     res.status(400).json({
       errors: errorManager.flushErrors(),
@@ -32,13 +32,12 @@ export default async function handler(
 
   try {
     const rootIssue = await getIssue({ owner, repo, issue_number });
-    checkForLabel(rootIssue);
 
     const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue.body_html)) || null;
     let children: Awaited<ReturnType<typeof resolveChildrenWithDepth>> = [];
     try {
       if (childrenFromBodyHtml != null) {
-        children = await resolveChildrenWithDepth(childrenFromBodyHtml)
+        children = await resolveChildrenWithDepth(childrenFromBodyHtml, errorManager)
         if (children.length === 0) {
           throw new Error('No children found, is this a root issue?');
         }
@@ -60,7 +59,7 @@ export default async function handler(
       root_issue: true,
       group: 'root',
       children
-    }])[0];
+    }], undefined, errorManager)[0];
 
     res.status(200).json({
       errors: errorManager.flushErrors(),

@@ -15,20 +15,20 @@ export function ErrorNotificationBody({ isExpanded, errors }: ErrorNotificationB
   }
   return <Box className={styles.errorNotificationBody}>
     <Box className={styles.errorNotificationBodyHeader}>
-      <SimpleGrid columns={2} spacing={10} className="">
-        <Text as="b" width="15rem">Link</Text>
-        <Text as="b" width="15rem">Description of Error(s)</Text>
-        {errors.map((error) => (
-            <div className={styles.errorLineItemWrapper}>
-              <Text className={`${styles.errorIssueLinkText} ${styles.errorIssueLinkWrapper}`}>
+      <SimpleGrid columns={2} spacing={0} width="100%">
+        <Text as="b" ml="1rem">Link</Text>
+        <Text as="b">Description of Error(s)</Text>
+        {errors.map((error, index) => (
+            <Box key={index} className={styles.errorLineItemWrapper} width="auto">
+              <Box className={`${styles.errorIssueLinkText} ${styles.errorIssueLinkWrapper}`}>
                 <NextLink passHref href={error.issueUrl}>
                   <Link width="15rem" target="_blank" rel="noopener noreferrer">
-                    {error.issueTitle}
+                    <Text ml="1rem">{error.issueTitle}</Text>
                   </Link>
                 </NextLink>
-              </Text>
+              </Box>
               <ErrorLineItemDescription error={error} />
-            </div>
+            </Box>
           ))}
       </SimpleGrid>
     </Box>

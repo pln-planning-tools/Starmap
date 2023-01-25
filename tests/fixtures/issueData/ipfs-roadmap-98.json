@@ -1,0 +1,67 @@
+{
+  "labels": [
+    "milestone",
+    "starmaps"
+  ],
+  "completion_rate": 100,
+  "due_date": "2022-12-31",
+  "html_url": "https://github.com/ipfs/roadmap/issues/98",
+  "group": "root",
+  "title": "Theme: Engineering Excellence",
+  "node_id": "I_kwDOCYHGZs5Ut7oT",
+  "parent": {
+    "completion_rate": 100,
+    "due_date": ""
+  },
+  "children": [
+    {
+      "labels": [
+        "starmaps"
+      ],
+      "completion_rate": 100,
+      "due_date": "2023-03-31",
+      "html_url": "https://github.com/ipfs/roadmap/issues/111",
+      "group": "children:",
+      "title": "“Slimmer Kubo”: Trim out unnecessary code",
+      "node_id": "I_kwDOCYHGZs5UuWLf",
+      "parent": {
+        "group": "root",
+        "title": "Theme: Engineering Excellence",
+        "html_url": "https://github.com/ipfs/roadmap/issues/98",
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "node_id": "I_kwDOCYHGZs5Ut7oT",
+        "completion_rate": 100,
+        "due_date": "2022-12-31"
+      },
+      "children": []
+    },
+    {
+      "labels": [
+        "milestone",
+        "starmaps"
+      ],
+      "completion_rate": 100,
+      "due_date": "2023-03-31",
+      "html_url": "https://github.com/ipfs/roadmap/issues/112",
+      "group": "children:",
+      "title": "IPFS KPIs",
+      "node_id": "I_kwDOCYHGZs5U3V1h",
+      "parent": {
+        "group": "root",
+        "title": "Theme: Engineering Excellence",
+        "html_url": "https://github.com/ipfs/roadmap/issues/98",
+        "labels": [
+          "milestone",
+          "starmaps"
+        ],
+        "node_id": "I_kwDOCYHGZs5Ut7oT",
+        "completion_rate": 100,
+        "due_date": "2022-12-31"
+      },
+      "children": []
+    }
+  ]
+}

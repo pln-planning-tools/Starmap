@@ -3,13 +3,13 @@
   grid-gap: 0.5rem;
   grid-column-gap: 0;
   grid-template-columns: repeat(10, minmax(10px, 1fr));
-  margin-top: 15px;
+  margin-top: 20px;
   overflow-x: hidden;
 }
 
 .scrollable {
   extend: grid;
-  height: calc(100vh - 320px);
+  height: calc(100vh - 288px);
   overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -40,7 +40,7 @@
 .item.itemHeader {
   background: revert;
   text-align: center;
-  font-size: 16px;
+  /* font-size: 16px; */
   font-weight: 600;
   position: relative;
   /** must align with .timelineTick left positioning. This is done in order to handle the centering of the text and grid ticks*/
@@ -56,10 +56,10 @@
   border-radius: 8px;
   margin: 2px 2px;
   z-index: 5;
-  /* min-height: 6rem; */
 }
 
-.scrollable .item.group:nth-child(2) {
+/* detail view first-group */
+.detailView .scrollable .item.group:first-child {
   margin-top: 20px;
 }
 
@@ -76,7 +76,7 @@
 /* detail view GroupHeader text */
 .item.group div:first-child {
   position: relative;
-  z-index: 3;
+  z-index: 6;
 }
 
 .groupWrapper {
@@ -117,10 +117,8 @@
 }
 
 .timelineBox {
+  position: relative;
   padding: 0.25rem;
-}
-
-.progress {
 }
 
 .milestoneTitleWrapper {
@@ -153,13 +151,10 @@ a.milestoneTitle {
 .timelineTick {
   background: #d5d5d5;
   justify-self: center;
-  position:relative;
+  position: relative;
   /** must align with .itemHeader left positioning. This is done in order to handle the centering of the text and grid ticks*/
   left: -1rem;
   z-index: 6;
-}
-
-.timelineHeaderLine {
 }
 
 .timelineHeaderLineWrapper {
@@ -185,4 +180,50 @@ a.milestoneTitle {
 
 .noDecoration {
   text-decoration: none !important;
+}
+
+.gridViewTab {
+  background: #FAFAFA;
+  color: #313239;
+  border: 1px solid #EFEFEF;
+  font-weight: 300;
+  font-size: '16px';
+  border-radius: 8px;
+  margin: 0 16px 0 0;
+}
+
+button.gridViewTab {
+  height: 35px;
+}
+
+.gridViewTab a {
+  padding: 0 4px;
+}
+
+.gridViewTab svg {
+  height: 15px;
+  width: 15px;
+  margin-top: 1px;
+}
+
+.gridViewTab svg rect {
+  stroke: #313239;
+}
+
+.gridViewTab[aria-selected=true] svg rect {
+  stroke: #4987BD;
+}
+
+.gridViewTab[aria-selected=true] {
+  color: #4987BD;
+  font-weight: 500;
+  border: 1px solid #A2D0DE;
+  background: #F9FCFF;
+}
+
+.gridViewTab[aria-selected=false]:hover {
+  font-weight: 300;
+  color: #313239;
+  background: #F9FCFF;
+  border: 1px solid #A2D0DE;
 }

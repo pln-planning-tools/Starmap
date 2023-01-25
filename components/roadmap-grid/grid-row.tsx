@@ -1,15 +1,26 @@
 import NextLink from 'next/link';
 import { Flex, Text } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { State } from '@hookstate/core'
 
 import { dayjs } from '../../lib/client/dayjs';
-import { IssueData } from '../../lib/types';
+import { IssueData, IssueDataViewInput } from '../../lib/types';
 import styles from './Roadmap.module.css';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
-import { TimeScaler } from '../../lib/client/TimeScaler';
+import { globalTimeScaler } from '../../lib/client/TimeScaler';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
-import { getLinkForRoadmapChild } from '../../lib/client/linkUtils';
+import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
+import { useRouter } from 'next/router';
+import { useViewMode } from '../../hooks/useViewMode';
+import { paramsFromUrl } from '../../lib/paramsFromUrl';
+
+interface GridRowProps extends IssueDataViewInput {
+  milestone: State<IssueData>;
+  index: number;
+  timelineTicks: Date[];
+  numGridCols: number;
+  numHeaderItems: number;
+}
 
 export function GridRow({
   milestone,
@@ -17,22 +28,24 @@ export function GridRow({
   timelineTicks,
   numGridCols,
   numHeaderItems,
-  timeScaler
-}: {
-  milestone: State<IssueData>;
-  index: number;
-  timelineTicks: Date[];
-  numGridCols: number;
-  numHeaderItems: number;
-  timeScaler: TimeScaler;
-}): ReactElement | null {
-  const closestDateIdx = Math.round(timeScaler.getColumn(dayjs.utc(milestone.due_date.get()).toDate()));
+  issueDataState
+}: GridRowProps): ReactElement | null {
+  const viewMode = useViewMode();
+  const routerQuery = useRouter().query;
+  const [closestDateIdx, setClosestDateIdx] = useState(Math.round(globalTimeScaler.getColumn(dayjs.utc(milestone.due_date.get()).toDate())));
+  useEffect(() => {
+    setClosestDateIdx(Math.round(globalTimeScaler.getColumn(dayjs.utc(milestone.due_date.get()).toDate())));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [milestone.due_date, globalTimeScaler.getDomain()]);
   const span = Math.max(4, numGridCols / timelineTicks.length);
   const closest = span * (closestDateIdx - 1);
 
-  const childLink = getLinkForRoadmapChild(milestone.get());
+  const childLink = useMemo(() => getLinkForRoadmapChild({ viewMode, issueData: milestone.get(), query: routerQuery, currentRoadmapRoot: issueDataState.value }), [issueDataState.value, milestone, routerQuery, viewMode]);
   const clickable = milestone.children.length > 0;
 
+  if (milestone == null || milestone.ornull == null) {
+    return null;
+  }
   /**
    * Do not render milestone items if their ETAs are invalid.
    */
@@ -41,7 +54,7 @@ export function GridRow({
       return null;
     }
 
-    if (!milestone.labels.get().includes('starmaps')) {
+    if (milestone.labels.ornull == null) {
       return null;
     }
   }
@@ -60,6 +73,12 @@ export function GridRow({
     console.error('closestDateIdx is greater than numGridCols', milestone.get({ noproxy: true }))
   }
 
+  let className = '';
+  try {
+    const { owner, repo, issue_number } = paramsFromUrl(milestone.html_url.value);
+    className = `js-milestoneCard-${owner}-${repo}-${issue_number}`
+  } catch {}
+
   const rowItem = (
     <div
       key={index}
@@ -70,7 +89,7 @@ export function GridRow({
           milestone.completion_rate.toString(),
         )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString())}%)`,
       }}
-      className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink}`}
+      className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink} js-milestoneCard ${clickable && className}`}
 
     >
       <Flex direction={{ base:"column", md:"column", lg:"row" }} justify="space-between" position="relative">
