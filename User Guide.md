@@ -133,10 +133,10 @@ Title: [Team/Project Name] [Duration] Roadmap
 Description (optional):
 The goal of this roadmap is to outline the key milestones and deliverables for our team/project over the next [Duration].
 
-Milestones:
-[GitHub Milestone Link 1] - [Date (ISO format)]
-[GitHub Milestone Link 2] - [Date (ISO format)]
-[GitHub Milestone Link 3] - [Date (ISO format)]
+Children:
+[GitHub Milestone Link 1]
+[GitHub Milestone Link 2]
+[GitHub Milestone Link 3]
 
 Note: This roadmap is subject to change as priorities and circumstances evolve.
 
