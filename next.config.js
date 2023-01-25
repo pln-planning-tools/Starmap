@@ -1,28 +1,30 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { StaleWhileRevalidate } = require('workbox-strategies')
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+  runtimeCaching: [new StaleWhileRevalidate()]
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // swcMinify: true,
   poweredByHeader: false,
   images: {
     dangerouslyAllowSVG: true,
   },
-  // experimental: {
-  //   esmExternals: false,
-  // },
 };
 
-module.exports = {
+module.exports = withPWA({
   ...nextConfig,
   productionBrowserSourceMaps: true,
 
-  webpack(config, options) {
+  webpack(config) {
     config.experiments = config.experiments || {};
     config.experiments.topLevelAwait = true;
-    // config.optimization = {
-    //   providedExports: false,
-    // };
-    // options.nextRuntime = 'edge';
 
     return config;
-  },
-};
+  }
+});
