@@ -157,3 +157,5 @@ export interface IssueDataViewInput {
   // isRootIssueLoading: boolean;
   // isPendingChildrenLoading: boolean;
 }
+
+export type BrowserMetricsProvider = typeof import('@ipfs-shipyard/ignite-metrics').BrowserMetricsProvider
