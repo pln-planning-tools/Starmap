@@ -88,14 +88,14 @@ export function GridRow({
       }}
       className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink} js-milestoneCard ${clickable && className}`}
     >
-      <Flex direction={{ base:"column", md:"column", lg:"column" }} justify="space-between" position="relative" w="100%">
+      <Flex direction={{ base:"column" }} justify="space-between" position="relative" w="100%">
         <Flex direction="column" w="100%">
           <Text as="b" className={`${styles.milestoneTitleWrapper} ${clickable && styles.milestoneTitleWrapperLink}`}>{milestone.title.value}</Text>
           <Flex h='8px' w="100%" borderRadius="20px" bgColor="#F1F4F8">
             <Box w={`${parseInt(milestone.completion_rate.value.toString())}%`} h="100%" borderRadius="20px" bg="#7DE087" />
           </Flex>
         </Flex>
-        <Flex flexDirection="row" align="flex-end" justify="space-between" pt={{ base: "8px" }} m={{ base: "0", sm: "8px 0", md: "8px 0", lg: "0" }}>
+        <Flex flexDirection="row" align="flex-end" justify="space-between" mt={{ base: "8px" }}>
           <p className={styles.milestoneDate}>{dayjs(milestone.due_date.value).format('DD-MMM-YY')}</p>
           <Center>
             <SvgGitHubLogoWithTooltip githuburl={milestone.html_url.value} />
