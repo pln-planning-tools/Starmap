@@ -92,7 +92,7 @@ export function GridRow({
         <Flex direction="column" w="100%">
           <Text as="b" className={`${styles.milestoneTitleWrapper} ${clickable && styles.milestoneTitleWrapperLink}`}>{milestone.title.value}</Text>
           <Flex h='8px' w="100%" borderRadius="20px" bgColor="#F1F4F8">
-            <Box w={`${parseInt(milestone.completion_rate.value.toString())}%`} h="100%" borderRadius="20px" bg="#7DE087" />
+            <Box w={`${milestone.completion_rate.value}%`} h="100%" borderRadius="20px" bg="#7DE087" />
           </Flex>
         </Flex>
         <Flex flexDirection="row" align="flex-end" justify="space-between" mt={{ base: "8px" }}>
