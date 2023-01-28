@@ -1,5 +1,5 @@
 import NextLink from 'next/link';
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, Box, Center } from '@chakra-ui/react';
 import React, { useEffect, useMemo, useState } from 'react';
 import type { State } from '@hookstate/core'
 
@@ -39,7 +39,6 @@ export function GridRow({
   }, [milestone.due_date, globalTimeScaler.getDomain()]);
   const span = Math.max(4, numGridCols / timelineTicks.length);
   const closest = span * (closestDateIdx - 1);
-
   const childLink = useMemo(() => getLinkForRoadmapChild({ viewMode, issueData: milestone.get(), query: routerQuery, currentRoadmapRoot: issueDataState.value }), [issueDataState.value, milestone, routerQuery, viewMode]);
   const clickable = milestone.children.length > 0;
 
@@ -85,20 +84,22 @@ export function GridRow({
       style={{
         gridColumnStart: `span ${numGridCols / numHeaderItems}`,
         gridColumnEnd: `${closestDateIdx}`,
-        background: `linear-gradient(90deg, rgba(125, 224, 135, 0.6) ${parseInt(
-          milestone.completion_rate.toString(),
-        )}%, white 0%, white ${100 - parseInt(milestone.completion_rate.toString())}%)`,
+        background: '#ffffff',
       }}
       className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink} js-milestoneCard ${clickable && className}`}
-
     >
-      <Flex direction={{ base:"column", md:"column", lg:"row" }} justify="space-between" position="relative">
-        <Flex direction="column" maxW={{ base: "100%", sm: "100%", md:"100%", lg:"85%" }}>
-          <Text as="b" className={styles.milestoneTitleWrapper}>{milestone.title.value}</Text>
-          <p className={styles.milestoneDate}>{milestone.due_date.value}</p>
+      <Flex direction={{ base:"column" }} justify="space-between" position="relative" w="100%">
+        <Flex direction="column" w="100%">
+          <Text as="b" className={`${styles.milestoneTitleWrapper} ${clickable && styles.milestoneTitleWrapperLink}`}>{milestone.title.value}</Text>
+          <Flex h='8px' w="100%" borderRadius="20px" bgColor="#F1F4F8">
+            <Box w={`${milestone.completion_rate.value}%`} h="100%" borderRadius="20px" bg="#7DE087" />
+          </Flex>
         </Flex>
-        <Flex m={{ base: "0", sm: "8px 0", md: "8px 0", lg: "0" }}>
-          <SvgGitHubLogoWithTooltip githuburl={milestone.html_url.value}/>
+        <Flex flexDirection="row" align="flex-end" justify="space-between" mt={{ base: "8px" }}>
+          <p className={styles.milestoneDate}>{dayjs(milestone.due_date.value).format('DD-MMM-YY')}</p>
+          <Center>
+            <SvgGitHubLogoWithTooltip githuburl={milestone.html_url.value} />
+          </Center>
         </Flex>
 
       </Flex>
