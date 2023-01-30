@@ -40,7 +40,7 @@ export function GridHeader({ tick, index, numGridCols, numHeaderTicks }: GridHea
       <div key={index} className={`${styles.item} ${styles.itemHeader}`} style={{
         gridColumnEnd: `span ${numGridCols / numHeaderTicks}`,
       }} >
-        <Text fontSize={{ sm:"15px", md:"16px", lg:"16px" }}>{label}</Text>
+        <Text fontSize={{ sm:"15px", md:"16px", lg:"16px" }} zIndex="5" position="relative">{label}</Text>
       </div>
     </ErrorBoundary>
   );
