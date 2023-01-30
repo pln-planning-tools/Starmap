@@ -97,7 +97,7 @@ export function RoadmapTabbedView({
               </Flex>
               <TodayMarkerToggle />
             </TabList>
-            <TabPanels>
+            <TabPanels className={styles.tabPanels}>
               {tabs.map(renderTabPanel)}
             </TabPanels>
           </Tabs>
