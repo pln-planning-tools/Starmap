@@ -23,7 +23,7 @@ export function ErrorNotificationDisplay ({ errorsState, issueDataState }: Error
     }
     const errors = errorsState.ornull.value;
     if (viewMode != null && issueDataState.ornull != null) {
-      return errorFilters[viewMode](errors, issueDataState.ornull.value)
+      return errorFilters[viewMode]?.(errors, issueDataState.ornull.value) ?? errors
     }
     return errors;
   }, [errorsState.ornull, viewMode, issueDataState.ornull]);
