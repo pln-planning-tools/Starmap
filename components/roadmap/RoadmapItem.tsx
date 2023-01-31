@@ -20,7 +20,6 @@ function RoadmapItem({
   index: number;
 }) {
   const maxSvgHeight = useMaxHeight();
-  console.log('index:', index);
   const y = 50;
   const yPadding = 5;
   const etaX = scale(dayjs(childIssue.due_date).toDate());
