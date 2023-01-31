@@ -54,10 +54,8 @@ export default function NewRoadmapHeader({ scale, transform, dates }: AxisTopPro
   let monthEnd = monthEndAfterZero
   let middleOfMonth = dayjs(monthStart).add(15, 'day')
   const newTicks: Date[] = []
-  let i = 0
   // add a single tick for each month while xValue is less than maxX
-  while(i < 20) {
-    i++
+  while(xValue <= maxX) {
     newTicks.push(middleOfMonth.toDate())
     middleOfMonth = dayjs(monthEnd).add(15, 'day')
     monthStart = middleOfMonth.startOf('month')
@@ -65,10 +63,12 @@ export default function NewRoadmapHeader({ scale, transform, dates }: AxisTopPro
     xValue = scale(monthEnd.toDate())
     console.log(`newTicks xValue vs maxX(${maxX}): `, xValue);
   }
-  console.log(`newTicks: `, newTicks);
+  newTicks.push(middleOfMonth.toDate())
 
   return <g transform={transform}>
     {newTicks.map((date,i) => (<NewRoadmapHeaderTick key={i} date={date} scale={scale} y={-30} maxX={maxX} numberOfTicks={numberOfMonths} height={30} />))}
+    {/* Render a border on the bottom of all of the labels */}
+    <path d={`M0 0 L${maxX} 0`} style={{ fill: 'none', strokeWidth:2, stroke:'#A2D0DE' }} />
   </g>
 }
 

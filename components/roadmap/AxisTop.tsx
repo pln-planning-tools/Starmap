@@ -10,21 +10,30 @@ interface AxisTopProps {
   dates?: Date[];
 }
 
-function AxisTop({ scale, transform }: AxisTopProps) {
+function AxisTop({ scale, transform, dates }: AxisTopProps) {
   const ref = useRef<SVGGElement>(null);
   const numWeeks = useWeekTicks();
 
+  console.log(`dates?.length: `, dates?.length);
+  dates?.forEach((date) => {
+    console.log(`date: `, dayjs(date).format('YYYY MMM DD'));
+    console.log('scale for date: ', scale(date))
+  })
   useEffect(() => {
     if (ref.current) {
       const axis = axisTop(scale)
         .tickSizeInner(-20)
-        .ticks(timeWeek.every(12))
-        .tickFormat((d) => dayjs(d.toString()).format('YYYY MMM DD'));
+        .ticks(3)
+        .tickFormat((d, i) => i > 0 ? dayjs(d.toString()).format('YYYY MMM DD'):'')
+        .tickSizeOuter(0)
+        .tickPadding(10);
+      // console.log(`axis: `, axis);
       // change size of ticks text
 
       select(ref.current).call(axis);
     }
   }, [scale, numWeeks]);
+  console.log(`scale: `, scale);
 
   return <g ref={ref} transform={transform} />;
 }

@@ -21,11 +21,22 @@ export default function NewRoadmapHeaderTick({ date,  y,  height, scale, maxX, n
   const endX = scale(dayjs(date).endOf('month'))
   // const width = maxX / numberOfTicks + 1
   const width = endX - startX
+  let dateLabel = dayjs(date).format('MMM YYYY')
+
+  // do not render if we're out of bounds
+  if (startX > maxX || endX < 0) return null
+
+  // if part of the label will be out of bounds, set dateLabel to month only
+  if (startX < 0 || endX > maxX) {
+    dateLabel = dayjs(date).format('MMM')
+  }
+
   return <g x={startX} y={y} x2={endX}>
-    <text x={startX + width/2} y={y + height/2} dominantBaseline='middle' textAnchor='middle'>
-      {dayjs(date).format('MMM YYYY')}
+    <text x={startX + width/2} y={y + height/2 + 2} height={height} dominantBaseline='middle' textAnchor='middle'>
+      {dateLabel}
     </text>
-    <rect x={startX} y={y} width={width} height={height} style={{ fill: 'none', strokeWidth:1, stroke:'rgb(0,0,0)' }} />
+    <rect x={startX} y={y} width={width} height={height} style={{ fill: 'none', strokeWidth:0, stroke:'#A2D0DE' }} />
+    <path d={`M${startX} ${y+height*.75} L${startX} ${y + height}`} style={{ fill: 'none', strokeWidth:1, stroke:'#A2D0DE' }} />
   </g>
 }
 
