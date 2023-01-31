@@ -228,9 +228,8 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         <Box pr={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }} pl={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }} >
           {!!serverError && <Box color='red.500'>{serverError.message}</Box>}
           {roadmapLoadErrorState.ornull && <Box color='red.500'>{roadmapLoadErrorState.ornull.message.value}</Box>}
-          {!!issueDataState.ornull && mode === 'd3' && <NewRoadmap issueData={issueDataState.get({ noproxy: true }) as IssueData} isLocal={isLocal} />}
-          {!!issueDataState.ornull && mode === 'grid' && (
-            <RoadmapTabbedView issueDataState={issueDataState as State<IssueData>} />
+          {!!issueDataState.ornull && (
+            <RoadmapTabbedView issueDataState={issueDataState as State<IssueData>} mode={mode} />
           )}
         </Box>
       </div>

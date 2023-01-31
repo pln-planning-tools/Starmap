@@ -19,16 +19,18 @@ import SvgOverviewIcon from '../icons/svgr/SvgOverviewIcon';
 import { TodayMarkerToggle } from './today-marker-toggle';
 import { setViewMode, useViewMode } from '../../hooks/useViewMode';
 import { DEFAULT_INITIAL_VIEW_MODE } from '../../lib/defaults';
-import { ViewMode } from '../../lib/enums';
+import { RoadmapMode, ViewMode } from '../../lib/enums';
 import { IssueDataViewInput } from '../../lib/types';
 import Header from './header';
 import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
+import NewRoadmap from '../roadmap/NewRoadmap';
 
 export function RoadmapTabbedView({
   issueDataState,
-}: IssueDataViewInput): ReactElement {
+  mode
+}: IssueDataViewInput & { mode: RoadmapMode }): ReactElement {
   const globalLoadingState = useGlobalLoadingState();
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
   const router = useRouter();
@@ -81,7 +83,7 @@ export function RoadmapTabbedView({
 
   const renderTabPanel = (_title: string, index: number) => (
     <TabPanel p={0} key={index}>
-      <RoadmapDetailed issueDataState={issueDataState} />
+      {mode === RoadmapMode.grid ? <RoadmapDetailed issueDataState={issueDataState} /> : <NewRoadmap issueDataState={issueDataState} />}
     </TabPanel>
   );
 
