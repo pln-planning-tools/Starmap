@@ -82,7 +82,7 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
         <svg ref={ref} width='100%' height='100%'>
           <rect x={0} y={50} width={maxW} height={maxH} fill={'#F8FCFF'}></rect>
           <AxisTop scale={scaleX} transform={`translate(0, ${margin.top + 50})`} />
-          <TodayLine scale={scaleX} height={height} />
+          {showTodayMarker && <TodayLine scale={scaleX} height={height} />}
           {issueData.children.map((childIssue, index) => (
             <RoadmapItem index={index} scale={scaleX} childIssue={childIssue} />
           ))}
