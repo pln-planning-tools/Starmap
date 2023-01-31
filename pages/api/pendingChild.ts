@@ -22,7 +22,7 @@ export default async function handler(
     try {
       const issueData = await checkForSavedIssueData({ owner, repo, issue_number });
       console.log(`Returning saved issueData for ${owner}/${repo}#${issue_number}`);
-      res.status(200).json(issueData);
+      res.status(200).json({ data: issueData });
       return;
     } catch {
       console.log(`NOT_FOUND: saved issueData for ${owner}/${repo}#${issue_number}`);
