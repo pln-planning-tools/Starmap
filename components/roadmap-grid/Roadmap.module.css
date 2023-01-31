@@ -39,14 +39,13 @@
 }
 
 .item.itemHeader {
-  background: revert;
+  background: #F9FCFF;
   text-align: center;
   /* font-size: 16px; */
   font-weight: 600;
   position: relative;
   /** must align with .timelineTick left positioning. This is done in order to handle the centering of the text and grid ticks*/
   left: -1rem;
-  z-index: 4;
   padding: 4px 0;
 }
 
@@ -64,7 +63,6 @@
 }
 
 .item.group {
-  background: revert;
   grid-row: 1 / -1;
   font-weight: 500;
   grid-column: 1 / span 2;
