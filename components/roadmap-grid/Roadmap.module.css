@@ -50,9 +50,7 @@
 
 .nested > .item:not(.group) {
   background: #fafafa;
-  padding: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 8px;
   border-radius: 8px;
   margin: 2px 2px;
   z-index: 5;
@@ -111,9 +109,10 @@
 
 .issueItem {
   display: grid;
-  border: 1px solid #a0aec0;
+  border: 1px solid rgba(239, 239, 239, 1);
   border-radius: 4px;
   padding: 10px;
+  background: #ffffff;
 }
 
 .timelineBox {
@@ -123,12 +122,21 @@
 
 .milestoneTitleWrapper {
   text-overflow: ellipsis;
-  margin-top: 0.2rem;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-break: break-word;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: .5rem;
+  color: #313239;
+}
+
+.milestoneTitleWrapperLink {
+  color: #4987bd;
+  cursor: pointer;
 }
 
 .milestoneTitle {
@@ -142,10 +150,9 @@ a.milestoneTitle {
 
 .milestoneDate {
   font-size: 13px;
-  justify-self: right;
-  padding-top: 25px;
-  /* position: relative;
-  bottom: 1rempx; */
+  color: #A3A3A3;
+  font-weight: 300;
+  line-height: 1;
 }
 
 .timelineTick {
@@ -171,11 +178,11 @@ a.milestoneTitle {
 
 .wrapperLink {
   cursor: pointer;
-  border-width: 2px;
+  border-width: 1px;
 }
 
 .wrapperLink:hover {
-  border: 2px solid #1FA5FF;
+  border: 1px solid #1FA5FF;
 }
 
 .noDecoration {
