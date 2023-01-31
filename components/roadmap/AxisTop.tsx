@@ -18,7 +18,7 @@ function AxisTop({ scale, transform }: AxisTopProps) {
     if (ref.current) {
       const axis = axisTop(scale)
         .tickSizeInner(-20)
-        .ticks(timeWeek.every(numWeeks))
+        .ticks(timeWeek.every(12))
         .tickFormat((d) => dayjs(d.toString()).format('YYYY MMM DD'));
       // change size of ticks text
 
