@@ -6,9 +6,10 @@ import dayjs from 'dayjs';
 import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
 import { IssueData } from '../../lib/types';
 import { useMaxHeight, setMaxHeight } from '../../hooks/useMaxHeight';
-import { useEffect, useRef } from 'react';
+import { useEffect, useId, useRef } from 'react';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useMilestoneBoundingRects, setMilestoneBoundingRects } from '../../hooks/useMilestoneBoundingRects';
 
 function RoadmapItem({
   childIssue,
@@ -20,9 +21,32 @@ function RoadmapItem({
   index: number;
 }) {
   const itemRef = useRef<SVGGElement>(null);
-  console.log(`itemRef.current: `, itemRef.current);
-  console.log(`itemRef.current?.getBoundingClientRect?.(): `, itemRef.current?.getBoundingClientRect?.());
-  const boundingRect = itemRef.current?.getBoundingClientRect?.()
+  const allBoundingRects = useMilestoneBoundingRects();
+  const uniqId = useId();
+  // console.log(`allBoundingRects: `, allBoundingRects);
+  // console.log(`itemRef.current: `, itemRef.current);
+  // console.log(`itemRef.current?.getBoundingClientRect?.(): `, itemRef.current?.getBoundingClientRect?.());
+  const boundingRect = itemRef.current?.getBoundingClientRect()
+  useEffect(() => {
+    if (boundingRect) {
+      const existingRect = allBoundingRects.find((rect) => rect.id === uniqId)
+      const newRect = boundingRect as DOMRect & {id: string}
+      newRect.id = uniqId
+      if (!existingRect) {
+        // bounding rect not added yet; add it (it will update the array and trigger a re-render)
+        setMilestoneBoundingRects([...allBoundingRects, newRect])
+      } else if (JSON.stringify(existingRect) !== JSON.stringify(newRect)) {
+        // bounding rect has been added, but is different; update it (it will update the array and trigger a re-render)
+        setMilestoneBoundingRects([...allBoundingRects.map((rect) => {
+          if (rect.id === uniqId) {
+            return newRect
+          }
+          return rect
+        })])
+      }
+    }
+  }, [allBoundingRects, uniqId, boundingRect]);
+
   const maxSvgHeight = useMaxHeight();
   const y = -20;
   const yPadding = 5;
