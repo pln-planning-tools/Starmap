@@ -22,8 +22,9 @@ function RoadmapItem({
   const itemRef = useRef<SVGGElement>(null);
   console.log(`itemRef.current: `, itemRef.current);
   console.log(`itemRef.current?.getBoundingClientRect?.(): `, itemRef.current?.getBoundingClientRect?.());
+  const boundingRect = itemRef.current?.getBoundingClientRect?.()
   const maxSvgHeight = useMaxHeight();
-  const y = 50;
+  const y = -20;
   const yPadding = 5;
   const etaX = scale(dayjs(childIssue.due_date).toDate());
   const ySpacingBetweenItems = 20;
@@ -35,6 +36,7 @@ function RoadmapItem({
   const minimumY = 20;
   // TODO: sgtpooki: increase distance of first item from top axis
   const yLocation = Math.max(y + yPadding + ((rectConfig.height + ySpacingBetweenItems) * index + 1), minimumY);
+  // const yLocation = Math.max(y + yPadding + ((rectConfig.height + ySpacingBetweenItems)), minimumY);
   const textPadding = 10;
   const rxSize = 10;
 
@@ -44,14 +46,16 @@ function RoadmapItem({
     setMaxHeight(mH)
   }, [maxSvgHeight, rectConfig.height, yLocation])
 
+  const calculatedWidth = Math.max(rectConfig.width, boundingRect?.width || rectConfig.width)
+
   // TODO: Add on hover to show clickability
   return (
     <NextLink key={`roadmapItem-${index}`} href={getLinkForRoadmapChild({ issueData: childIssue, query: useRouter().query })} passHref>
       <g cursor={'pointer'} ref={itemRef}>
         <rect
-          x={etaX - rectConfig.width}
+          x={etaX - calculatedWidth}
           y={yLocation}
-          width={rectConfig.width}
+          width={calculatedWidth}
           height={rectConfig.height}
           fill='white'
           opacity={0.5}
@@ -60,10 +64,10 @@ function RoadmapItem({
           stroke='darkblue'
         />
         {/* <rect
-          x={etaX - rectConfig.width}
+          x={etaX - calculatedWidth}
           y={yLocation}
-          // width={rectConfig.width * (randomIntFromInterval(0, 100) / 100)}
-          width={rectConfig.width * (childIssue.completion_rate / 100)}
+          // width={calculatedWidth * (randomIntFromInterval(0, 100) / 100)}
+          width={calculatedWidth * (childIssue.completion_rate / 100)}
           height={rectConfig.height}
           fill='#93DEFF'
           // fill={'lightgreen'}
@@ -74,10 +78,10 @@ function RoadmapItem({
           // stroke="black"
         /> */}
         {/* <text dominantBaseline="text-before-edge" x={etaX-rectConfig.strokeWidth-textPadding} y={yLocation+yPadding} dy={'.05em'} fontSize={12} textAnchor="end">{childIssue.completion_rate}% complete</text> */}
-        {/* <text dominantBaseline="text-before-edge" x={etaX-rectConfig.width + rectConfig.width * (childIssue.completion_rate / 100)+ 15} y={yLocation+yPadding+30} dy={'.05em'} fontSize={12} textAnchor="end">{childIssue.completion_rate}%</text> */}
+        {/* <text dominantBaseline="text-before-edge" x={etaX-calculatedWidth + calculatedWidth * (childIssue.completion_rate / 100)+ 15} y={yLocation+yPadding+30} dy={'.05em'} fontSize={12} textAnchor="end">{childIssue.completion_rate}%</text> */}
         <text
           dominantBaseline='text-before-edge'
-          x={etaX - rectConfig.width + rectConfig.strokeWidth + textPadding}
+          x={etaX - calculatedWidth + rectConfig.strokeWidth + textPadding}
           y={yLocation + yPadding}
           dy={'.05em'}
           fontSize={20}
@@ -85,7 +89,7 @@ function RoadmapItem({
         >
           {childIssue.title}
         </text>
-        {/* <text dominantBaseline="text-before-edge" x={etaX-rectConfig.width+rectConfig.strokeWidth+textPadding} y={yLocation+yPadding*6} dy={'.05em'} fontSize={16} textAnchor="start">state: {childIssue.state}</text> */}
+        {/* <text dominantBaseline="text-before-edge" x={etaX-calculatedWidth+rectConfig.strokeWidth+textPadding} y={yLocation+yPadding*6} dy={'.05em'} fontSize={16} textAnchor="start">state: {childIssue.state}</text> */}
 
         <text
           dominantBaseline='text-before-edge'
