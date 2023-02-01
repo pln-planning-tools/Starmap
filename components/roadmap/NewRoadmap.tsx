@@ -2,7 +2,7 @@
 import { Center, Spinner, usePrevious } from '@chakra-ui/react';
 import { State, useHookstate } from '@hookstate/core';
 
-import { scaleTime } from 'd3';
+import { D3ZoomEvent, scaleTime, select, zoom as d3Zoom } from 'd3';
 import { ManipulateType } from 'dayjs';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -52,9 +52,32 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
   const dateGranularity = useDateGranularity()
 
   useEffect(() => {
+  //   console.log('height NewRoadmap setting maxW and maxH', maxH)
     setMaxW(window.innerWidth);
-    setMaxHeight(window.innerHeight / 2);
-  }, []);
+  //   setMaxHeight(Math.max(maxH, window.innerHeight / 2));
+  }, [maxH]);
+
+  // useEffect(() => {
+
+  //   if (ref.current) {
+  //   //   const zoom = d3Zoom()
+  //   //     .extent([[0, 0], [maxW, 1]])
+  //   //     .scaleExtent([0, 1])
+  //   //     .translateExtent([[0, 0], [maxW, 1]])
+  //   //     .on('zoom', (event) => {
+  //   //       // console.log(`el, event, d: `, el, event, d);
+  //   //       const t = (event as D3ZoomEvent<SVGElement, any>).transform
+  //   //       const { k, x, y } = t
+  //   //       console.log(`k, x, y: `, k, x, y);
+  //   //       select(ref.current).attr('transform', `translate([${x},0]) scale([${k},1])`)
+  //   //       // scaleX.scale(t.rescaleX(scaleX).domain())
+  //   //       // eventLabels.attr('transform', ({time}) => 'translate(' + (x + time * k) + ' '+ 10 +')')
+  //   //       // timeLabels.attr('transform', ({time}) => 'translate(' + (x + time * k) + ' '+ 10 +')')
+  //   //     })
+
+  //     select(ref.current).attr('style', `width: ${maxW}px; height: ${maxH}px;`)
+  //   }
+  // }, [maxW, maxH])
 
   const dayjsDates = getDates({ issuesGroupedState, issuesGroupedId: 'test' });
   // const startDate = dayjs.min(dayjsDates) ?? dayjs().subtract(3, 'months')
@@ -69,7 +92,8 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
   // const minMaxDiff = Math.max(latestEta.diff(earliestEta, 'days'), 10);
   const margin = { top: 0, right: 0, bottom: 20, left: 0 };
   const width = maxW * .9;
-  const height = maxH - margin.top - margin.bottom;
+  const height = useMemo(() => maxH - margin.top - margin.bottom, [margin.bottom, margin.top, maxH]);
+  console.log(`height: `, height);
   const globalLoadingState = useGlobalLoadingState();
   const dates = useMemo(() => dayjsDates
     .map((date) => date.toDate())
@@ -93,10 +117,15 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
       </Center>
     );
   }
+  // function onScroll(event) {
+  //   const { scrollLeft } = event.target;
+  //   scaleX.
+  // }
 
+  console.log(`height maxH: `, maxH);
   return (
     <>
-      <div style={{ height, width }}>
+      <div style={{ height: `${height}px`, width }}>
       {/* {isLocal && <WeekTicksSelector />} */}
         <svg ref={ref} width='100%' height='100%'>
           <rect x={0} y={50} width={maxW} height={maxH} fill={'#F8FCFF'}></rect>

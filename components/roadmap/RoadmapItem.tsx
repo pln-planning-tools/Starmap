@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
 import { IssueData } from '../../lib/types';
 import { useMaxHeight, setMaxHeight } from '../../hooks/useMaxHeight';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -19,6 +19,9 @@ function RoadmapItem({
   scale: ScaleTime<number, number>;
   index: number;
 }) {
+  const itemRef = useRef<SVGGElement>(null);
+  console.log(`itemRef.current: `, itemRef.current);
+  console.log(`itemRef.current?.getBoundingClientRect?.(): `, itemRef.current?.getBoundingClientRect?.());
   const maxSvgHeight = useMaxHeight();
   const y = 50;
   const yPadding = 5;
@@ -37,13 +40,14 @@ function RoadmapItem({
 
   // const randomIntFromInterval = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
   useEffect(() => {
-    setMaxHeight(Math.max(rectConfig.height + yLocation, maxSvgHeight))
+    const mH = Math.max(rectConfig.height + yLocation + 50, maxSvgHeight)
+    setMaxHeight(mH)
   }, [maxSvgHeight, rectConfig.height, yLocation])
 
   // TODO: Add on hover to show clickability
   return (
     <NextLink key={`roadmapItem-${index}`} href={getLinkForRoadmapChild({ issueData: childIssue, query: useRouter().query })} passHref>
-      <g cursor={'pointer'}>
+      <g cursor={'pointer'} ref={itemRef}>
         <rect
           x={etaX - rectConfig.width}
           y={yLocation}
@@ -55,7 +59,7 @@ function RoadmapItem({
           strokeWidth={rectConfig.strokeWidth}
           stroke='darkblue'
         />
-        <rect
+        {/* <rect
           x={etaX - rectConfig.width}
           y={yLocation}
           // width={rectConfig.width * (randomIntFromInterval(0, 100) / 100)}
@@ -68,7 +72,7 @@ function RoadmapItem({
           ry={rxSize}
           // strokeWidth={rectConfig.strokeWidth}
           // stroke="black"
-        />
+        /> */}
         {/* <text dominantBaseline="text-before-edge" x={etaX-rectConfig.strokeWidth-textPadding} y={yLocation+yPadding} dy={'.05em'} fontSize={12} textAnchor="end">{childIssue.completion_rate}% complete</text> */}
         {/* <text dominantBaseline="text-before-edge" x={etaX-rectConfig.width + rectConfig.width * (childIssue.completion_rate / 100)+ 15} y={yLocation+yPadding+30} dy={'.05em'} fontSize={12} textAnchor="end">{childIssue.completion_rate}%</text> */}
         <text

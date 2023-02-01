@@ -1,6 +1,7 @@
 import { ScaleTime, axisTop, select } from 'd3';
 import dayjs from 'dayjs';
 import { useEffect, useRef } from 'react';
+import { useMaxHeight } from '../../hooks/useMaxHeight';
 
 import { useWeekTicks } from '../../hooks/useWeekTicks';
 
@@ -17,6 +18,7 @@ interface NewRoadmapHeaderTickProps {
 
 export default function NewRoadmapHeaderTick({ date,  y,  height, scale, maxX, numberOfTicks }: NewRoadmapHeaderTickProps) {
   // const x= scale(date)
+  const maxH = useMaxHeight()
   const startX = scale(dayjs(date).startOf('month'))
   const endX = scale(dayjs(date).endOf('month'))
   // const width = maxX / numberOfTicks + 1
@@ -36,7 +38,12 @@ export default function NewRoadmapHeaderTick({ date,  y,  height, scale, maxX, n
       {dateLabel}
     </text>
     <rect x={startX} y={y} width={width} height={height} style={{ fill: 'none', strokeWidth:0, stroke:'#A2D0DE' }} />
+    {/* Render a small line at the start of each month */}
     <path d={`M${startX} ${y+height*.75} L${startX} ${y + height}`} style={{ fill: 'none', strokeWidth:1, stroke:'#A2D0DE' }} />
+    {/* Render a small line at the end of each month */}
+    <path d={`M${endX} ${y+height*.75} L${endX} ${y + height}`} style={{ fill: 'none', strokeWidth:1, stroke:'#A2D0DE' }} />
+    {/* Render a dotted line spanning the full height of the svg */}
+    <path d={`M${startX} ${y + height} L${startX} ${maxH}`} style={{ fill: 'none', strokeWidth:1, stroke:'#A2D0DE', strokeDasharray: '2,2' }} />
   </g>
 }
 
