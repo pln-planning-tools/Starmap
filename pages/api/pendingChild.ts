@@ -4,6 +4,7 @@ import { addToChildren } from '../../lib/backend/addToChildren';
 import { convertParsedChildToGroupedIssueData } from '../../lib/backend/convertParsedChildToGroupedIssueData';
 import { ErrorManager } from '../../lib/backend/errorManager';
 import { getGithubIssueDataWithGroupAndChildren } from '../../lib/backend/getGithubIssueDataWithGroupAndChildren';
+import { checkForSavedIssueData, saveIssueDataToFile } from '../../lib/backend/saveIssueDataToFile';
 import { GithubIssueDataWithGroup, PendingChildApiResponse } from '../../lib/types';
 
 export default async function handler(
@@ -17,6 +18,17 @@ export default async function handler(
   const { owner, repo, issue_number, parent } = req.body;
   const errorManager = new ErrorManager();
 
+  if (process.env.IS_LOCAL === 'true') {
+    try {
+      const issueData = await checkForSavedIssueData({ owner, repo, issue_number });
+      console.log(`Returning saved issueData for ${owner}/${repo}#${issue_number}`);
+      res.status(200).json({ data: issueData, errors: [] });
+      return;
+    } catch {
+      console.log(`NOT_FOUND: saved issueData for ${owner}/${repo}#${issue_number}`);
+    }
+  }
+
   try {
     const issueDataWithGroup: GithubIssueDataWithGroup = await convertParsedChildToGroupedIssueData({
       html_url: `https://github.com/${owner}/${repo}/issues/${issue_number}`,
@@ -25,6 +37,10 @@ export default async function handler(
     try {
       const issueDataWithGroupAndChildren = await getGithubIssueDataWithGroupAndChildren(issueDataWithGroup, errorManager, false)
       const issueData = addToChildren([issueDataWithGroupAndChildren], parent, errorManager)[0]
+
+      if (process.env.IS_LOCAL === 'true') {
+        saveIssueDataToFile(issueData);
+      }
 
       res.status(200).json({
         data: issueData,

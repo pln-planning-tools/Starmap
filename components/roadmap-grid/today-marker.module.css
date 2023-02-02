@@ -1,7 +1,7 @@
 .todayMarkerWrapper {
   position: absolute;
-  top: 16px;
-  height: calc(100% - 16px);
+  top: 24px;
+  height: calc(100% - 24px);
 }
 
 .todayMarkerWrapper:hover {
