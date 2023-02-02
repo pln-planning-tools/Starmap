@@ -1,4 +1,4 @@
-# StarMap User Guide
+# Starmap User Guide
 
 Starmap is a tool used to generate graphical representations of project roadmaps from GitHub issues. For the purposes of Starmap, a roadmap is represented by a single root node issue in GitHub that contains links to date-bound project milestone issues within that roadmap.
 
