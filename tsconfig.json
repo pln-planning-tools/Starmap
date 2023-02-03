@@ -25,7 +25,8 @@
     ".eslintrc.js",
     "**/*.ts",
     "**/*.tsx",
-    "*.config.js"
+    "*.config.js",
+    "service-worker.js"
   ],
   "exclude": [
     "node_modules"

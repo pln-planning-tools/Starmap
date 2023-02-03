@@ -36,3 +36,7 @@ yarn-error.log*
 
 .yarn
 test-results
+
+# Fixtures
+fixtures/issueData
+public/sw*

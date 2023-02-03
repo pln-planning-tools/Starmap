@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { StaleWhileRevalidate } = require('workbox-strategies')
 const withPWA = require('next-pwa')({
   dest: 'public',
   register: true,
   skipWaiting: true,
-  runtimeCaching: [new StaleWhileRevalidate()]
+  swSrc: 'service-worker.js',
 });
 
 /** @type {import('next').NextConfig} */
