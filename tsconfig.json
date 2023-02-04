@@ -26,7 +26,7 @@
     "**/*.ts",
     "**/*.tsx",
     "*.config.js",
-    "service-worker.js"
+    "sw/*.ts"
   ],
   "exclude": [
     "node_modules"

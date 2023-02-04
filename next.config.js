@@ -4,7 +4,7 @@ const withPWA = require('next-pwa')({
   dest: 'public',
   register: true,
   skipWaiting: true,
-  swSrc: 'service-worker.js',
+  swSrc: 'sw/service-worker.ts',
 });
 
 /** @type {import('next').NextConfig} */
