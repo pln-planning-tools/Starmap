@@ -9,7 +9,7 @@ import { CacheChildren } from './CacheChildrenStrategy';
 // Setting the default expiration options for the caches.
 const DEFAULT_EXPIRATION_OPTIONS = {
   maxEntries: 128,
-  maxAgeSeconds: 60 * 60 * 24,
+  maxAgeSeconds: 60 * 60 * 24 * 7,   // 7 days, making sure we don't end up with sticky caches.
   purgeOnQuotaError: true,
 };
 
@@ -41,7 +41,7 @@ registerRoute(
       new ExpirationPlugin({
         ...DEFAULT_EXPIRATION_OPTIONS,
         // Making sure we don't cache the assets for more than 1 hour. In case we need to update them.
-        maxAgeSeconds: 60 * 60 * 1
+        maxAgeSeconds: 60 * 60 * 24
       }),
     ],
   }),
