@@ -48,7 +48,7 @@ registerRoute(
   'GET'
 );
 
-// API Route for pending children
+// API Route for roadmap
 registerRoute(
   /\/api\/roadmap$/i,
   new StaleWhileRevalidate({
@@ -63,6 +63,7 @@ registerRoute(
   'GET'
 );
 
+// API Route for pending children
 registerRoute(
   /\/api\/pendingChild$/i,
   new CacheChildren({
