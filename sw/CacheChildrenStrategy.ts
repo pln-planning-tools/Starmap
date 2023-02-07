@@ -30,9 +30,9 @@ export class CacheChildren extends Strategy implements Strategy {
     try {
 
       // Cloning ensures we don't consume the request here.
-      const { issue_number, owner } = await request.clone().json()
-      // We are using the owner and issue number as the cache key.
-      const cacheKey = `child-${owner}-${issue_number}`
+      const { issue_number, owner, repo } = await request.clone().json()
+      // We are using the owner, repo and issue number as the cache key.
+      const cacheKey = `${owner}/${repo}/${issue_number}`
       // Checking if the cache already has the response.
       const cachedResponse = await handler.cacheMatch(cacheKey)
       if (cachedResponse) {
