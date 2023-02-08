@@ -13,10 +13,6 @@ const nextConfig = {
   images: {
     dangerouslyAllowSVG: true,
   },
-};
-
-module.exports = withPWA({
-  ...nextConfig,
   productionBrowserSourceMaps: true,
 
   webpack(config) {
@@ -25,4 +21,6 @@ module.exports = withPWA({
 
     return config;
   }
-});
+};
+
+module.exports = process.env.IS_LOCAL ? nextConfig : withPWA(nextConfig);
