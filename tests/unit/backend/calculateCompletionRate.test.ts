@@ -1,4 +1,4 @@
-import { calculateCompletionRate, CalculateCompletionRateOptions } from '../../../lib/backend/calculateCompletionRate'
+import { calculateCompletionRate, CalculateCompletionRateOptions } from '../../../lib/calculateCompletionRate'
 import { IssueStates } from '../../../lib/enums';
 import { IssueData } from '../../../lib/types';
 
