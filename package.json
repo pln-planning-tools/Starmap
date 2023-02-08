@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NO_SW=true next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "test": "jest",
-    "test:ci": "yarn lint && jest --ci --coverage && yarn test:e2e",
+    "test:ci": "NO_SW=true yarn lint && jest --ci --coverage && yarn test:e2e",
     "test:e2e": "playwright test"
   },
   "dependencies": {
