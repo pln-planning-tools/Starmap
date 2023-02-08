@@ -29,7 +29,6 @@ function getIssueCounts(issueStatesMap: Map<string, IssueStates>): GetIssueCount
   let open = 0;
   let closed = 0;
   issueStatesMap.forEach((value) => {
-    console.log(`value: `, value);
     if (value === IssueStates.OPEN) {
       open++;
     } else {
@@ -47,10 +46,7 @@ function getIssueCounts(issueStatesMap: Map<string, IssueStates>): GetIssueCount
 
 export function calculateCompletionRate (issue: CalculateCompletionRateOptions): number {
   const issueStatesMap = getIssueStatesMap(issue);
-  console.log(`issue.html_url: `, issue.html_url);
-  const issueCounts = getIssueCounts(issueStatesMap);
-  console.log(`issueCounts: `, issueCounts);
-  const { percentClosed } = issueCounts;
+  const { percentClosed } = getIssueCounts(issueStatesMap);
   return percentClosed;
 };
 
