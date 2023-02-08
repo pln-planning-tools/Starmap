@@ -1,4 +1,4 @@
-import { PlaywrightTestConfig, devices } from '@playwright/test'
+import { PlaywrightTestConfig } from '@playwright/test'
 import path from 'path'
 
 // Use process.env.PORT by default and fallback to port 3000
@@ -21,7 +21,7 @@ const config: PlaywrightTestConfig = {
   // Run your local dev server before starting the tests:
   // https://playwright.dev/docs/test-advanced#launching-a-development-web-server-during-the-tests
   webServer: {
-    command: 'yarn dev',
+    command: `PLN_ADMIN_GITHUB_TOKEN=${process.env.PLN_ADMIN_GITHUB_TOKEN} yarn dev`,
     url: baseURL,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
