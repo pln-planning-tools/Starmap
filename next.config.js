@@ -23,4 +23,4 @@ const nextConfig = {
   }
 };
 
-module.exports = process.env.IS_LOCAL ? nextConfig : withPWA(nextConfig);
+module.exports = process.env.NO_SW === 'true' ? nextConfig : withPWA(nextConfig);
