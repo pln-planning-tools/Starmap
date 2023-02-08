@@ -1,6 +1,6 @@
-import { calculateCompletionRate, CalculateCompletionRateOptions } from '../../../lib/calculateCompletionRate'
-import { IssueStates } from '../../../lib/enums';
-import { IssueData } from '../../../lib/types';
+import { calculateCompletionRate, CalculateCompletionRateOptions } from '../../lib/calculateCompletionRate'
+import { IssueStates } from '../../lib/enums';
+import { IssueData } from '../../lib/types';
 
 const closed = IssueStates.CLOSED;
 const open = IssueStates.OPEN;
