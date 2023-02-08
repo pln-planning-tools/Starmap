@@ -24,7 +24,7 @@ export async function getIssue ({ owner, repo, issue_number }): Promise<GithubIs
     const result: GithubIssueData = {
       html_url: data.html_url,
       title: data.title,
-      state: IssueStates[data.state],
+      state: data.state as IssueStates,
       node_id: data.node_id,
       body_html: data.body_html || '',
       labels: data.labels
