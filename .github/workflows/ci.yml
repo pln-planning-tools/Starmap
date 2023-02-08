@@ -14,10 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        # DANGER!!!! this might check out a stale commit
-        ref: ${{ github.event.pull_request.merge_commit_sha }}
+    - uses: actions/checkout@v3
 
     - name: Use Node.js v18
       uses: actions/setup-node@v3
