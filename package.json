@@ -9,8 +9,8 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "test": "jest",
-    "test:ci": "yarn lint && jest --ci --coverage && yarn test:e2e",
-    "test:e2e": "playwright test"
+    "test:ci": "NO_SW=true yarn lint && jest --ci --coverage && yarn test:e2e",
+    "test:e2e": "NO_SW=true playwright test"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.12",
