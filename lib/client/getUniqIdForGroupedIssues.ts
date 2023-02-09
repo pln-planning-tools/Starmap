@@ -6,7 +6,14 @@ interface GetUniqIdForGroupedIssuesArgs extends Omit<DetailedViewGroup, 'items'>
 }
 export default function getUniqIdForGroupedIssues (groupedIssues: GetUniqIdForGroupedIssuesArgs[]): string {
   return groupedIssues.map((group) => {
-    const groupChildrenId = group.items.map(({ node_id }) => node_id).join('-')
+    const groupChildrenId = group.items.map((item) => {
+      try {
+        return item.node_id;
+      } catch (e) {
+        console.error(e)
+        return '';
+      }
+    }).join('-')
     return `${group.groupName}${groupChildrenId}`
   }).join('--')
 }
