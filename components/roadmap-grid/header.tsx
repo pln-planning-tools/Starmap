@@ -1,4 +1,4 @@
-import { Center, Flex, Link, Spacer, Spinner, Text } from '@chakra-ui/react';
+import { Center, Flex, Link, Skeleton, Spacer, Spinner, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import React from 'react';
@@ -19,7 +19,7 @@ export default function Header({
   }
 
   return (
-    <>
+    <Skeleton isLoaded={!globalLoadingState.get()} >
       <Flex direction={'row'} lineHeight={1} >
         <Text as='span' fontSize={24} fontWeight={600} pr="5rem">
           {issueDataState.title.value} {globalLoadingState.get() ? <Spinner /> : null}
@@ -36,6 +36,6 @@ export default function Header({
           </NextLink>
         </Center>
       </Flex>
-    </>
+    </Skeleton>
   );
 }
