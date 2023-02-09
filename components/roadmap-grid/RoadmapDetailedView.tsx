@@ -1,4 +1,4 @@
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, Spinner, Stack, Skeleton } from '@chakra-ui/react';
 import { useHookstate } from '@hookstate/core';
 import type { Dayjs } from 'dayjs';
 import _ from 'lodash';
@@ -25,6 +25,7 @@ import { ErrorBoundary } from '../errors/ErrorBoundary';
 import { usePrevious } from '../../hooks/usePrevious';
 import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
 import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 
 export function RoadmapDetailed({
   issueDataState
@@ -62,6 +63,7 @@ export function RoadmapDetailed({
    */
   const [numHeaderTicks, setNumHeaderTicks] = useState(5);
   const [numGridCols, setNumGridCols] = useState(45);
+  const globalLoadingState = useGlobalLoadingState();
 
   // for preventing dayjsDates from being recalculated if it doesn't need to be
   const issuesGroupedId = issuesGroupedState.value.map((g) => g.groupName).join(',');
@@ -147,7 +149,15 @@ export function RoadmapDetailed({
       {isDevMode && <NumSlider msg="how many header ticks" value={numHeaderTicks} min={5} max={60} setValue={setNumHeaderTicks}/>}
       {isDevMode && <NumSlider msg="how many grid columns" value={numGridCols} min={20} max={60} step={numHeaderTicks} setValue={setNumGridCols}/>}
 
-      <Box className={`${styles.timelineBox} ${ viewMode=='detail' ? styles.detailView : '' }`} >
+      <Stack pt={"20px"} hidden={!globalLoadingState.get()}>
+        <Skeleton isLoaded={!globalLoadingState.get()} height='60px' />
+        <Skeleton isLoaded={!globalLoadingState.get()} height='150px' />
+        <Skeleton isLoaded={!globalLoadingState.get()} height='150px' />
+        <Skeleton isLoaded={!globalLoadingState.get()} height='150px' />
+        <Skeleton isLoaded={!globalLoadingState.get()} height='150px' />
+      </Stack>
+
+      <Box hidden={globalLoadingState.get()} className={`${styles.timelineBox} ${viewMode == 'detail' ? styles.detailView : ''}`} >
         <Grid ticksLength={numGridCols}>
           {ticksHeader.map((tick, index) => (
 
