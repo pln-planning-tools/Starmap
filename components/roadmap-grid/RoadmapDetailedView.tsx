@@ -168,13 +168,13 @@ export function RoadmapDetailed({
         </Grid>
         <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={showTodayMarker} >
           {issuesGroupedState.map((group, index) => (
-              <ErrorBoundary key={`Fragment-${index}`} >
-                <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState}/><GroupWrapper key={`GroupWrapper-${index}`}>
-                  {group.ornull != null && group.items.ornull != null &&
-                    _.sortBy(group.items.ornull, ['title']).map((item, index) => <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
-                </GroupWrapper>
-              </ErrorBoundary>
-            ))}
+            <ErrorBoundary key={`Fragment-${index}`} >
+              <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState}/><GroupWrapper key={`GroupWrapper-${index}`}>
+                {group.ornull != null && group.items.ornull != null &&
+                  _.sortBy(group.items.ornull, ['title']).map((item, index) => <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
+              </GroupWrapper>
+            </ErrorBoundary>
+          ))}
         </Grid>
       </Box>
     </>
