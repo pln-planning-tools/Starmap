@@ -68,13 +68,13 @@ export function RoadmapTabbedView({
     return (
       <Skeleton isLoaded={!globalLoadingState.get()}>
         <Tab
-        className={styles.gridViewTab}
-        key={index}
-      >
-        <Center>
-          <TabIcon />
-          <Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>
-        </Center>
+          className={styles.gridViewTab}
+          key={index}
+        >
+          <Center>
+            <TabIcon />
+            <Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>
+          </Center>
         </Tab>
       </Skeleton>
     )
