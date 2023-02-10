@@ -1,0 +1,28 @@
+{
+  "name": "Starmap",
+  "short_name": "Starmap",
+  "decription": "Roadmap tooling for the Protocol Labs Network",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#27292C",
+  "background_color": "#FFFFFF",
+  "id": "/",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "landscape"
+}
