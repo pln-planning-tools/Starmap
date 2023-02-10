@@ -18,11 +18,8 @@ export function TodayMarkerToggle() {
       <Button
         className={showTodayMarker ? styles.todayMarkerToggle : styles.todayMarkerToggleDisabled}
         onClick={() => setShowTodayMarker(!showTodayMarker)}
-      >{
-        showTodayMarker ?
-          <SvgEyeOpenIcon /> :
-          <SvgEyeClosedIcon />
-      }
+      >
+        { showTodayMarker ? <SvgEyeOpenIcon /> : <SvgEyeClosedIcon /> }
       <Text fontSize={"16px"} pl={'4px'} fontWeight={500}>Today</Text>
       </Button>
     </Skeleton>
