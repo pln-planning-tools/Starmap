@@ -3475,6 +3475,13 @@
   resolved "https://registry.npmjs.org/@types/unist/-/unist-2.0.6.tgz"
   integrity sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==
 
+"@types/workbox-strategies@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.npmjs.org/@types/workbox-strategies/-/workbox-strategies-5.0.0.tgz#acec3dc36889bb4c21127f1c2e76c9e7d3f7f517"
+  integrity sha512-uW1mZ++ZOGEHafE4OWbfVqJ4I+6zWJfoWeepz49a9Zhxm0GtyQ1amTMXTCprhaI+ueYypbUN/pVrnfhFJTig9Q==
+  dependencies:
+    workbox-strategies "*"
+
 "@types/yargs-parser@*":
   version "21.0.0"
   resolved "https://registry.npmjs.org/@types/yargs-parser/-/yargs-parser-21.0.0.tgz"
@@ -9645,7 +9652,7 @@ workbox-routing@6.5.4:
   dependencies:
     workbox-core "6.5.4"
 
-workbox-strategies@6.5.4:
+workbox-strategies@*, workbox-strategies@6.5.4:
   version "6.5.4"
   resolved "https://registry.npmjs.org/workbox-strategies/-/workbox-strategies-6.5.4.tgz"
   integrity sha512-DEtsxhx0LIYWkJBTQolRxG4EI0setTJkqR4m7r4YpBdxtWJH1Mbg01Cj8ZjNOO8etqfA3IZaOPHUxCs8cBsKLw==
