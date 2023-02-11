@@ -1,5 +1,6 @@
 import { parseHTML } from 'linkedom';
 import { ErrorManager } from './backend/errorManager';
+import { getValidUrlFromInput } from './getValidUrlFromInput';
 import { getEtaDate, isValidChildren } from './helpers';
 import { GithubIssueDataWithChildren, ParserGetChildrenResponse } from './types';
 
@@ -27,8 +28,60 @@ export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' |
   };
 };
 
-export const getChildren = (issue: string): ParserGetChildrenResponse[] => {
-  const { document } = parseHTML(issue);
+/**
+ * A new version of getchildren which parses the issue body_text instead of issue body_html
+ *
+ * This function must support recognizing the current issue's organization and repo, because some children may simply be "#43" instead of a github short-id such as "org/repo#43"
+ * @param {string} issue
+ */
+export function getChildrenNew(issue_text: string): ParserGetChildrenResponse[] {
+  // first we need to ensure that the issue contains "children: " in the body
+  const childrenIndex = issue_text.indexOf('children:');
+  if (childrenIndex === -1) {
+    throw new Error('No children found in body_text');
+  }
+  const children: ParserGetChildrenResponse[] = []
+  const lines = issue_text.substring(childrenIndex).split(/\n/).slice(1)
+
+  for (let i = 0; i < lines.length; i++) {
+    const currentLine = lines[i]
+    if (currentLine.length <= 0) {
+      if (children.length === 0) {
+        // skip empty lines between children header and children
+        continue
+      } else {
+        // end of children if empty line is found and children is not empty
+        break
+      }
+    }
+    // guard against HTML tags (covers cases where this method is called with issue.body_html instead of issue.body_text)
+    if (currentLine.startsWith('<')) {
+      throw new Error('HTML tags found in body_text');
+    }
+
+    try {
+      const url = getValidUrlFromInput(currentLine)
+      children.push({
+        group: 'children:',
+        html_url: url.href
+      })
+    } catch {
+      // invalid URL or child issue identifier, exit and return what we have
+      break
+    }
+  }
+
+  return children
+
+}
+
+export const getChildren = (issue_html: string): ParserGetChildrenResponse[] => {
+  try {
+    return getChildrenNew(issue_html);
+  } catch (e) {
+    // ignore failures for now, fallback to old method.
+  }
+  const { document } = parseHTML(issue_html);
   const ulLists = [...document.querySelectorAll('ul')];
   const filterListByTitle = (ulLists) =>
     ulLists.filter((list) => {
