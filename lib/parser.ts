@@ -10,7 +10,7 @@ export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' |
   const issueText = [...document.querySelectorAll('*')].map((v) => v.textContent).join('\n');
   let eta: string | null = null;
   try {
-    eta = getEtaDate(issueText)
+    eta = getEtaDate(issueText, { addError: errorManager.addError, issue })
   } catch (e) {
     if (issue.html_url != null && issue.root_issue !== true) {
       errorManager.addError({
