@@ -71,7 +71,7 @@ function getChildrenFromTaskList(issue: Pick<GithubIssueData, 'body' | 'html_url
  * This function must support recognizing the current issue's organization and repo, because some children may simply be "#43" instead of a github short-id such as "org/repo#43"
  * @param {string} issue
  */
-export function getChildrenNew(issue: Pick<GithubIssueData, 'body' | 'html_url'>): ParserGetChildrenResponse[] {
+function getChildrenNew(issue: Pick<GithubIssueData, 'body' | 'html_url'>): ParserGetChildrenResponse[] {
 
   try {
     return getChildrenFromTaskList(issue);
