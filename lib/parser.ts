@@ -2,7 +2,8 @@ import { parseHTML } from 'linkedom';
 import { ErrorManager } from './backend/errorManager';
 import { getValidUrlFromInput } from './getValidUrlFromInput';
 import { getEtaDate, isValidChildren } from './helpers';
-import { GithubIssueDataWithChildren, ParserGetChildrenResponse } from './types';
+import { paramsFromUrl } from './paramsFromUrl';
+import { GithubIssueData, GithubIssueDataWithChildren, ParserGetChildrenResponse } from './types';
 
 export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' | 'body_html' | 'root_issue' | 'title'>, errorManager: ErrorManager) => {
   const { body_html: issueBodyHtml } = issue;
@@ -28,20 +29,59 @@ export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' |
   };
 };
 
+function getSectionLines(text: string, sectionHeader: string) {
+  const sectionIndex = text.indexOf(sectionHeader);
+  if (sectionIndex === -1) {
+    return [];
+  }
+  const lines = text.substring(sectionIndex).split(/\r\n|\r|\n/).slice(1);
+  return lines;
+}
+
+/**
+ * We attempt to parse the issue.body for children included in 'tasklist' format
+ * @see https://github.com/pln-planning-tools/Starmap/issues/245
+ *
+ * @param {string} issue_body
+ */
+function getChildrenFromTaskList(issue: Pick<GithubIssueData, 'body' | 'html_url'>): ParserGetChildrenResponse[] {
+  // tasklists require the checkbox style format to recognize children
+  const lines = getSectionLines(issue.body, '```[tasklist]').filter((line) => line.trim().indexOf('-') === 0).map((line) => line.trim().split(' ').slice(-1)[0]).filter(Boolean);
+  if (lines.length === 0) {
+    throw new Error('Section missing or has no children')
+  }
+  const { owner, repo } = paramsFromUrl(issue.html_url)
+  const children: ParserGetChildrenResponse[] = lines.map((line) => {
+    if (/^#\d+$/.test(line)) {
+      line = `${owner}/${repo}${line}`
+    }
+    return ({
+      group: 'tasklist',
+      html_url: getValidUrlFromInput(line).href,
+    })
+  });
+  return children
+}
+
 /**
  * A new version of getchildren which parses the issue body_text instead of issue body_html
  *
  * This function must support recognizing the current issue's organization and repo, because some children may simply be "#43" instead of a github short-id such as "org/repo#43"
  * @param {string} issue
  */
-export function getChildrenNew(issue_text: string): ParserGetChildrenResponse[] {
-  // first we need to ensure that the issue contains "children: " in the body
-  const childrenIndex = issue_text.indexOf('children:');
-  if (childrenIndex === -1) {
-    throw new Error('No children found in body_text');
+export function getChildrenNew(issue: Pick<GithubIssueData, 'body' | 'html_url'>): ParserGetChildrenResponse[] {
+
+  try {
+    return getChildrenFromTaskList(issue);
+  } catch (e) {
+    // Could not find children using new tasklist format,
+    // try to look for "children:" section
+  }
+  const lines = getSectionLines(issue.body, 'children:').map((line) => line.trim().split(' ').slice(-1)[0]).filter(Boolean);
+  if (lines.length === 0) {
+    throw new Error('Section missing or has no children')
   }
   const children: ParserGetChildrenResponse[] = []
-  const lines = issue_text.substring(childrenIndex).split(/\n/).slice(1)
 
   for (let i = 0; i < lines.length; i++) {
     const currentLine = lines[i]
@@ -75,13 +115,13 @@ export function getChildrenNew(issue_text: string): ParserGetChildrenResponse[] 
 
 }
 
-export const getChildren = (issue_html: string): ParserGetChildrenResponse[] => {
+export const getChildren = (issue: Pick<GithubIssueData, 'body_html' | 'body' | 'html_url'>): ParserGetChildrenResponse[] => {
   try {
-    return getChildrenNew(issue_html);
+    return getChildrenNew(issue);
   } catch (e) {
     // ignore failures for now, fallback to old method.
   }
-  const { document } = parseHTML(issue_html);
+  const { document } = parseHTML(issue.body_html);
   const ulLists = [...document.querySelectorAll('ul')];
   const filterListByTitle = (ulLists) =>
     ulLists.filter((list) => {
