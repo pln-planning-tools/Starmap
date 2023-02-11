@@ -38,6 +38,13 @@ function getSectionLines(text: string, sectionHeader: string) {
   return lines;
 }
 
+function getUrlStringForChildrenLine(line: string, issue: Pick<GithubIssueData, 'html_url'>) {
+  if (/^#\d+$/.test(line)) {
+    const { owner, repo } = paramsFromUrl(issue.html_url)
+    line = `${owner}/${repo}${line}`
+  }
+  return getValidUrlFromInput(line).href
+}
 /**
  * We attempt to parse the issue.body for children included in 'tasklist' format
  * @see https://github.com/pln-planning-tools/Starmap/issues/245
@@ -50,16 +57,11 @@ function getChildrenFromTaskList(issue: Pick<GithubIssueData, 'body' | 'html_url
   if (lines.length === 0) {
     throw new Error('Section missing or has no children')
   }
-  const { owner, repo } = paramsFromUrl(issue.html_url)
-  const children: ParserGetChildrenResponse[] = lines.map((line) => {
-    if (/^#\d+$/.test(line)) {
-      line = `${owner}/${repo}${line}`
-    }
-    return ({
+
+  const children: ParserGetChildrenResponse[] = lines.map((line) => ({
       group: 'tasklist',
-      html_url: getValidUrlFromInput(line).href,
-    })
-  });
+      html_url: getUrlStringForChildrenLine(line, issue),
+    }));
   return children
 }
 
@@ -100,10 +102,9 @@ export function getChildrenNew(issue: Pick<GithubIssueData, 'body' | 'html_url'>
     }
 
     try {
-      const url = getValidUrlFromInput(currentLine)
       children.push({
         group: 'children:',
-        html_url: url.href
+        html_url: getUrlStringForChildrenLine(currentLine, issue)
       })
     } catch {
       // invalid URL or child issue identifier, exit and return what we have
