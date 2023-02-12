@@ -18,7 +18,7 @@
     "@chakra-ui/system": "^2.3.3",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
-    "@hookstate/core": "^4.0.0-rc21",
+    "@hookstate/core": "^4.0.0",
     "@ipfs-shipyard/ignite-metrics": "1.2.1",
     "@octokit/core": "^4.0.0",
     "@octokit/graphql-schema": "^12.9.1",
