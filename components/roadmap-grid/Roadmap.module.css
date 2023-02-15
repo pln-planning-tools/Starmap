@@ -4,21 +4,21 @@
   grid-column-gap: 0;
   grid-template-columns: repeat(10, minmax(10px, 1fr));
   margin-top: 20px;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 .scrollable {
-  extend: grid;
-  height: calc(100vh - 288px);
-  overflow-y: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  /* extend: grid; */
+  /* height: calc(100vh - 288px); */
+  /* overflow-y: auto; */
+  /* -ms-overflow-style: none; */
+  /* scrollbar-width: none; */
   margin-top: -20px
 }
 
-.scrollable::-webkit-scrollbar {
+/* .scrollable::-webkit-scrollbar {
   display: none;
-}
+} */
 
 .subgrid {
   display: grid;
@@ -122,11 +122,11 @@
 
 .milestoneTitleWrapper {
   text-overflow: ellipsis;
-  display: -webkit-box;
+  /* display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  word-break: break-word;
+  word-break: break-word; */
   font-size: 16px;
   font-weight: 500;
   line-height: 1.1;

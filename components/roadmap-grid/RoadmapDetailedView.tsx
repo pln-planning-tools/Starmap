@@ -1,13 +1,25 @@
+import { useRouter } from 'next/router';
+
 import { Box, Spinner } from '@chakra-ui/react';
 import { useHookstate } from '@hookstate/core';
+
 import type { Dayjs } from 'dayjs';
 import _ from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 
+import { DEFAULT_TICK_COUNT } from '../../config/constants';
+import { usePrevious } from '../../hooks/usePrevious';
+import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
+import { useViewMode } from '../../hooks/useViewMode';
+import { globalTimeScaler } from '../../lib/client/TimeScaler';
+import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
+import { dayjs } from '../../lib/client/dayjs';
 import { getTicks } from '../../lib/client/getTicks';
+import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
 import { ViewMode } from '../../lib/enums';
 import { DetailedViewGroup, IssueDataViewInput } from '../../lib/types';
-import { useViewMode } from '../../hooks/useViewMode';
+import { ErrorBoundary } from '../errors/ErrorBoundary';
+import NumSlider from '../inputs/NumSlider';
 import styles from './Roadmap.module.css';
 import { Grid } from './grid';
 import { GridHeader } from './grid-header';
@@ -15,20 +27,8 @@ import { GridRow } from './grid-row';
 import { GroupHeader } from './group-header';
 import { GroupWrapper } from './group-wrapper';
 import { Headerline } from './headerline';
-import NumSlider from '../inputs/NumSlider';
-import { dayjs } from '../../lib/client/dayjs';
-import { DEFAULT_TICK_COUNT } from '../../config/constants';
-import { globalTimeScaler } from '../../lib/client/TimeScaler';
-import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
-import { useRouter } from 'next/router';
-import { ErrorBoundary } from '../errors/ErrorBoundary';
-import { usePrevious } from '../../hooks/usePrevious';
-import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
-import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 
-export function RoadmapDetailed({
-  issueDataState
-}: IssueDataViewInput) {
+export function RoadmapDetailed({ issueDataState }: IssueDataViewInput) {
   /**
    * Don't commit setting this to true.. just a simple toggle so we can debug things.
    */
@@ -37,15 +37,15 @@ export function RoadmapDetailed({
   const router = useRouter();
 
   const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
-  const groupedIssuesId = getUniqIdForGroupedIssues(issuesGroupedState.value)
+  const groupedIssuesId = getUniqIdForGroupedIssues(issuesGroupedState.value);
   const groupedIssuesIdPrev = usePrevious(groupedIssuesId);
-  const query = router.query
+  const query = router.query;
   const showTodayMarker = useShowTodayMarker();
 
-  const setIssuesGroupedState = issuesGroupedState.set
+  const setIssuesGroupedState = issuesGroupedState.set;
   useEffect(() => {
     if (viewMode && groupedIssuesIdPrev !== groupedIssuesId) {
-      setIssuesGroupedState(() => convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, query))
+      setIssuesGroupedState(() => convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, query));
     }
   }, [viewMode, query, setIssuesGroupedState, issueDataState, groupedIssuesIdPrev, groupedIssuesId]);
 
@@ -70,13 +70,13 @@ export function RoadmapDetailed({
    */
   const dayjsDates: Dayjs[] = useMemo(() => {
     const today = dayjs();
-    let innerDayjsDates: Dayjs[] = []
+    let innerDayjsDates: Dayjs[] = [];
     try {
       innerDayjsDates = issuesGroupedState.value
         .flatMap((group) => group.items.map((item) => dayjs(item.due_date).utc()))
         .filter((d) => d.isValid());
     } catch {
-      innerDayjsDates = []
+      innerDayjsDates = [];
     }
     /**
      * Add today
@@ -88,13 +88,13 @@ export function RoadmapDetailed({
      */
     let minDate = dayjs.min([...innerDayjsDates, today.subtract(1, 'month')]);
     let maxDate = dayjs.max([...innerDayjsDates, today.add(1, 'month')]);
-    let incrementMax = false
+    let incrementMax = false;
 
     /**
      * This is a hack to make sure that the first and last ticks are always visible.
      * TODO: Perform in constant time based on current DateGranularity
      */
-    while (maxDate.diff(minDate, 'months') < (3 * DEFAULT_TICK_COUNT)) {
+    while (maxDate.diff(minDate, 'months') < 3 * DEFAULT_TICK_COUNT) {
       if (incrementMax) {
         maxDate = maxDate.add(1, 'quarter');
       } else {
@@ -106,11 +106,11 @@ export function RoadmapDetailed({
     /**
      * Add minDate and maxDate so that the grid is not cut off.
      */
-    innerDayjsDates.push(minDate)
-    innerDayjsDates.push(maxDate)
+    innerDayjsDates.push(minDate);
+    innerDayjsDates.push(maxDate);
 
     return innerDayjsDates;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [issuesGroupedState.length, issuesGroupedId]);
 
   /**
@@ -118,15 +118,16 @@ export function RoadmapDetailed({
    *  * converted back to JS Date objects.
    *  * sorted - d3 timescale requires it to function properly
    */
-  const dates = useMemo(() => dayjsDates
-    .map((date) => date.toDate())
-    .sort((a, b) => a.getTime() - b.getTime()),  [dayjsDates]);
+  const dates = useMemo(
+    () => dayjsDates.map((date) => date.toDate()).sort((a, b) => a.getTime() - b.getTime()),
+    [dayjsDates],
+  );
 
   useEffect(() => {
     globalTimeScaler.setScale(dates, numGridCols * 1.09);
   }, [dates, numGridCols]);
 
-  const invalidGroups = issuesGroupedState.filter((group) => group.ornull == null || group.items.ornull == null)
+  const invalidGroups = issuesGroupedState.filter((group) => group.ornull == null || group.items.ornull == null);
   if (issuesGroupedState.value.length === 0 || invalidGroups.length > 0) {
     if (invalidGroups.length > 0) {
       invalidGroups.forEach((g) => {
@@ -142,29 +143,77 @@ export function RoadmapDetailed({
   const ticks = getTicks(dates, numGridCols - 1);
   const ticksHeader = getTicks(dates, numHeaderTicks - 1);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function fetchAndShow() {
+    const repo = 'pln-planning-tools/Starmap';
+
+    fetch(`https://api.github.com/repos/${repo}`, { headers: { 'Content-Type': 'application/vnd.github.html+json' } })
+      .then((response) => {
+        if (!response.ok) throw Error(response.statusText);
+        return response.json();
+      })
+      .then((data) => {
+        console.log('data:', data);
+      })
+      .catch((error) => {
+        const msg = error.toString().indexOf('Forbidden') >= 0 ? 'Error: API Rate Limit Exceeded' : error;
+        console.log(`${msg}. Additional info in console`, 'danger');
+        console.error(error);
+      });
+  }
+
   return (
     <>
-      {isDevMode && <NumSlider msg="how many header ticks" value={numHeaderTicks} min={5} max={60} setValue={setNumHeaderTicks}/>}
-      {isDevMode && <NumSlider msg="how many grid columns" value={numGridCols} min={20} max={60} step={numHeaderTicks} setValue={setNumGridCols}/>}
+      {/* {fetchAndShow()} */}
+      {isDevMode && (
+        <NumSlider msg='how many header ticks' value={numHeaderTicks} min={5} max={60} setValue={setNumHeaderTicks} />
+      )}
+      {isDevMode && (
+        <NumSlider
+          msg='how many grid columns'
+          value={numGridCols}
+          min={20}
+          max={60}
+          step={numHeaderTicks}
+          setValue={setNumGridCols}
+        />
+      )}
 
-      <Box className={`${styles.timelineBox} ${ viewMode=='detail' ? styles.detailView : '' }`} >
+      <Box className={`${styles.timelineBox} ${viewMode == 'detail' ? styles.detailView : ''}`}>
         <Grid ticksLength={numGridCols}>
           {ticksHeader.map((tick, index) => (
-
-            <GridHeader key={index} tick={tick} index={index} numHeaderTicks={numHeaderTicks} numGridCols={numGridCols}/>
+            <GridHeader
+              key={index}
+              tick={tick}
+              index={index}
+              numHeaderTicks={numHeaderTicks}
+              numGridCols={numGridCols}
+            />
           ))}
 
-          <Headerline numGridCols={numGridCols} ticksRatio={3}/>
+          <Headerline numGridCols={numGridCols} ticksRatio={3} />
         </Grid>
-        <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={showTodayMarker} >
+        <Grid ticksLength={numGridCols} scroll={true} renderTodayLine={showTodayMarker}>
           {issuesGroupedState.map((group, index) => (
-              <ErrorBoundary key={`Fragment-${index}`} >
-                <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState}/><GroupWrapper key={`GroupWrapper-${index}`}>
-                  {group.ornull != null && group.items.ornull != null &&
-                    _.sortBy(group.items.ornull, ['title']).map((item, index) => <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
-                </GroupWrapper>
-              </ErrorBoundary>
-            ))}
+            <ErrorBoundary key={`Fragment-${index}`}>
+              <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState} />
+              <GroupWrapper key={`GroupWrapper-${index}`}>
+                {group.ornull != null &&
+                  group.items.ornull != null &&
+                  _.sortBy(group.items.ornull, ['title']).map((item, index) => (
+                    <GridRow
+                      key={index}
+                      milestone={item}
+                      index={index}
+                      timelineTicks={ticks}
+                      numGridCols={numGridCols}
+                      numHeaderItems={numHeaderTicks}
+                      issueDataState={issueDataState}
+                    />
+                  ))}
+              </GroupWrapper>
+            </ErrorBoundary>
+          ))}
         </Grid>
       </Box>
     </>

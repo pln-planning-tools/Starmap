@@ -4,17 +4,18 @@ import { getOctokit } from './octokit';
 
 const cache = new Map<string, GithubIssueData>();
 
-export async function getIssue ({ owner, repo, issue_number }): Promise<GithubIssueData> {
+export async function getIssue({ owner, repo, issue_number }): Promise<GithubIssueData> {
   const cacheKey = `${owner}${repo}${issue_number}`;
   if (process.env.IS_LOCAL === 'true') {
     if (cache.has(cacheKey)) {
+      console.log('getIssue() cache');
       return cache.get(cacheKey) as GithubIssueData;
     }
   }
   try {
     const { data } = await getOctokit().rest.issues.get({
       mediaType: {
-        format: 'full',
+        format: 'html',
       },
       owner,
       repo,
@@ -27,16 +28,15 @@ export async function getIssue ({ owner, repo, issue_number }): Promise<GithubIs
       state: data.state as IssueStates,
       node_id: data.node_id,
       body_html: data.body_html || '',
-      labels: data.labels
-        .map((label) => (typeof label !== 'string' ? label.name : label)) as string[],
+      labels: data.labels.map((label) => (typeof label !== 'string' ? label.name : label)) as string[],
     };
 
     if (process.env.IS_LOCAL === 'true') {
-      cache.set(cacheKey, result)
+      // cache.set(cacheKey, result);
     }
     return result;
   } catch (err) {
     console.error('error:', err);
     throw new Error(`Error getting issue: ${err}`);
   }
-};
+}
