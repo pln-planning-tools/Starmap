@@ -34,7 +34,7 @@ function getSectionLines(text: string, sectionHeader: string) {
   if (sectionIndex === -1) {
     return [];
   }
-  const lines = text.substring(sectionIndex).split(/\r\n|\r|\n/).slice(1);
+  const lines = text.substring(sectionIndex).split(/[\r\n]+/).slice(1);
   return lines;
 }
 
