@@ -38,6 +38,9 @@ function getSectionLines(text: string, sectionHeader: string) {
   return lines;
 }
 
+const splitAndGetLastItem = (line: string) => line.trim().split(' ').slice(-1)[0]
+const ensureTaskListChild = (line: string) => line.trim().indexOf('-') === 0
+
 function getUrlStringForChildrenLine(line: string, issue: Pick<GithubIssueData, 'html_url'>) {
   if (/^#\d+$/.test(line)) {
     const { owner, repo } = paramsFromUrl(issue.html_url)
@@ -53,7 +56,11 @@ function getUrlStringForChildrenLine(line: string, issue: Pick<GithubIssueData, 
  */
 function getChildrenFromTaskList(issue: Pick<GithubIssueData, 'body' | 'html_url'>): ParserGetChildrenResponse[] {
   // tasklists require the checkbox style format to recognize children
-  const lines = getSectionLines(issue.body, '```[tasklist]').filter((line) => line.trim().indexOf('-') === 0).map((line) => line.trim().split(' ').slice(-1)[0]).filter(Boolean);
+  const lines = getSectionLines(issue.body, '```[tasklist]')
+    .filter(ensureTaskListChild)
+    .map(splitAndGetLastItem)
+    .filter(Boolean);
+
   if (lines.length === 0) {
     throw new Error('Section missing or has no children')
   }
@@ -83,6 +90,12 @@ function getChildrenNew(issue: Pick<GithubIssueData, 'body' | 'html_url'>): Pars
   if (lines.length === 0) {
     throw new Error('Section missing or has no children')
   }
+
+  // guard against HTML tags (covers cases where this method is called with issue.body_html instead of issue.body_text)
+  if (lines.some((line) => line.startsWith('<'))) {
+    throw new Error('HTML tags found in body_text');
+  }
+
   const children: ParserGetChildrenResponse[] = []
 
   for (let i = 0; i < lines.length; i++) {
@@ -95,10 +108,6 @@ function getChildrenNew(issue: Pick<GithubIssueData, 'body' | 'html_url'>): Pars
         // end of children if empty line is found and children is not empty
         break
       }
-    }
-    // guard against HTML tags (covers cases where this method is called with issue.body_html instead of issue.body_text)
-    if (currentLine.startsWith('<')) {
-      throw new Error('HTML tags found in body_text');
     }
 
     try {
