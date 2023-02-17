@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, Skeleton, Spinner, Stack } from '@chakra-ui/react';
 import { useHookstate } from '@hookstate/core';
 
 import type { Dayjs } from 'dayjs';
@@ -8,6 +8,7 @@ import _ from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { DEFAULT_TICK_COUNT } from '../../config/constants';
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { usePrevious } from '../../hooks/usePrevious';
 import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 import { useViewMode } from '../../hooks/useViewMode';
@@ -62,6 +63,7 @@ export function RoadmapDetailed({ issueDataState }: IssueDataViewInput) {
    */
   const [numHeaderTicks, setNumHeaderTicks] = useState(5);
   const [numGridCols, setNumGridCols] = useState(45);
+  const globalLoadingState = useGlobalLoadingState();
 
   // for preventing dayjsDates from being recalculated if it doesn't need to be
   const issuesGroupedId = issuesGroupedState.value.map((g) => g.groupName).join(',');
@@ -137,34 +139,27 @@ export function RoadmapDetailed({ issueDataState }: IssueDataViewInput) {
     return <Spinner />;
   }
 
+  // return early while loading.
+  if (globalLoadingState.get()) {
+    return (
+      <Stack pt={'20px'}>
+        <Skeleton height='60px' />
+        <Skeleton height='150px' />
+        <Skeleton height='150px' />
+        <Skeleton height='150px' />
+        <Skeleton height='150px' />
+      </Stack>
+    );
+  }
+
   /**
    * Current getTicks function returns 1 less than the number of ticks we want.
    */
   const ticks = getTicks(dates, numGridCols - 1);
   const ticksHeader = getTicks(dates, numHeaderTicks - 1);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function fetchAndShow() {
-    const repo = 'pln-planning-tools/Starmap';
-
-    fetch(`https://api.github.com/repos/${repo}`, { headers: { 'Content-Type': 'application/vnd.github.html+json' } })
-      .then((response) => {
-        if (!response.ok) throw Error(response.statusText);
-        return response.json();
-      })
-      .then((data) => {
-        console.log('data:', data);
-      })
-      .catch((error) => {
-        const msg = error.toString().indexOf('Forbidden') >= 0 ? 'Error: API Rate Limit Exceeded' : error;
-        console.log(`${msg}. Additional info in console`, 'danger');
-        console.error(error);
-      });
-  }
-
   return (
     <>
-      {/* {fetchAndShow()} */}
       {isDevMode && (
         <NumSlider msg='how many header ticks' value={numHeaderTicks} min={5} max={60} setValue={setNumHeaderTicks} />
       )}

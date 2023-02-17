@@ -15,6 +15,7 @@ import { BASE_PROTOCOL } from '../../config/constants';
 import { setDateGranularity } from '../../hooks/useDateGranularity';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { setViewMode } from '../../hooks/useViewMode';
+import getRoadmap from '../../lib/backend/roadmap';
 import { assignCompletionRateToIssues } from '../../lib/calculateCompletionRate';
 import { DateGranularityState, RoadmapMode, ViewMode } from '../../lib/enums';
 import { findIssueDataByUrl } from '../../lib/findIssueDataByUrl';
@@ -74,15 +75,12 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         return;
       }
       // const roadmapApiUrl = `${window.location.origin}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`;
-      const roadmapApiUrl = `https://api.github.com/repos/${owner}/${repo}/issues/${issue_number}`;
       try {
-        const apiResult = await fetch(new URL(roadmapApiUrl), {
-          headers: { 'Content-Type': 'application/vnd.github.html+json' },
-          signal: controller.signal,
-        });
-        // console.log('apiResult.json():', apiResult.json());
-        const roadmapResponse: RoadmapApiResponse = await apiResult.json();
-        console.log('roadmapResponse:', roadmapResponse);
+        // const apiResult = await fetch(new URL(roadmapApiUrl), { signal: controller.signal });
+        // const roadmapResponse: RoadmapApiResponse = await apiResult.json();
+
+        const apiResult = await getRoadmap({ owner, repo, issue_number });
+        const roadmapResponse: RoadmapApiResponse = await apiResult;
 
         const roadmapResponseSuccess = roadmapResponse as RoadmapApiResponseSuccess;
         const roadmapResponseFailure = roadmapResponse as RoadmapApiResponseFailure;
@@ -99,8 +97,8 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       } catch (err) {
         if (!(err as Error).toString().includes('AbortError')) {
           roadmapLoadErrorState.set({
-            code: `Error fetching ${roadmapApiUrl}`,
-            message: `Error fetching ${roadmapApiUrl}: ${(err as Error).toString()}`,
+            code: `Error fetching roadmap`,
+            message: `Error fetching roadmap: ${(err as Error).toString()}`,
           });
         }
       }
@@ -242,13 +240,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   return (
     <>
       <PageHeader />
-      <div
-        style={{
-          // overflowY: 'auto',
-          // height: 'calc(100vh - 120px)',
-          paddingTop: '28px',
-        }}
-      >
+      <div style={{ overflowY: 'auto', height: 'calc(100vh - 120px)', paddingTop: '28px' }}>
         {issueDataState.ornull != null && <StarmapsBreadcrumb currentTitle={issueDataState.ornull.title.value} />}
         <ErrorNotificationDisplay errorsState={starMapsErrorsState} issueDataState={issueDataState} />
         <Box
