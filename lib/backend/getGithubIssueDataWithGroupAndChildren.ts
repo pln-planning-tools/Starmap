@@ -5,7 +5,7 @@ import { resolveChildren } from './resolveChildren';
 import { resolveChildrenWithDepth } from './resolveChildrenWithDepth';
 
 export async function getGithubIssueDataWithGroupAndChildren (issueData: GithubIssueDataWithGroup, errorManager: ErrorManager, usePendingChildren = false): Promise<GithubIssueDataWithGroupAndChildren> {
-  const childrenParsed: ParserGetChildrenResponse[] = getChildren(issueData);
+  const childrenParsed: ParserGetChildrenResponse[] = getChildren(issueData.body_html);
   let pendingChildren: PendingChildren[] | undefined = undefined;
   let children: GithubIssueDataWithGroupAndChildren[] = [];
 
