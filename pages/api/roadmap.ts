@@ -33,7 +33,7 @@ export default async function handler(
   try {
     const rootIssue = await getIssue({ owner, repo, issue_number });
 
-    const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue)) || null;
+    const childrenFromBodyHtml = (!!rootIssue && rootIssue.body_html && getChildren(rootIssue.body_html)) || null;
     let children: Awaited<ReturnType<typeof resolveChildrenWithDepth>> = [];
     try {
       if (childrenFromBodyHtml != null) {
