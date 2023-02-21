@@ -4,6 +4,7 @@ import type { RoadmapMode, IssueStates, DateGranularityState } from './enums'
 
 export interface GithubIssueData {
   body_html: string;
+  body: string;
   html_url: string;
   labels: string[];
   node_id: string;
