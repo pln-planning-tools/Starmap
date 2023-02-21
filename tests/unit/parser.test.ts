@@ -132,5 +132,21 @@ describe('parser', function() {
         { group: 'tasklist', html_url: 'https://github.com/ipfs/ipfs-gui/issues/124' }
       ])
     })
+
+    /**
+     * To address https://github.com/pln-planning-tools/Starmap/issues/324
+     */
+    it('Can parse children from issue.body_text with extraneous link', function() {
+      const children = getChildren({ body_html: '', body: 'eta: 2023Q4\r\n\r\nchildren:\r\n- https://github.com/filecoin-station/roadmap/issues/5\r\n- https://github.com/filecoin-station/roadmap/issues/7\r\n- https://github.com/filecoin-station/roadmap/issues/3\r\n- #10 \r\n- #11\r\n\r\nView the roadmap here: https://starmap.site/roadmap/github.com/filecoin-station/roadmap/issues/1\r\n', html_url: 'https://github.com/filecoin-station/roadmap/issues/1' });
+      expect(Array.isArray(children)).toBe(true);
+      expect(children).toHaveLength(5);
+      expect(children).toStrictEqual([
+        { group: 'children:', html_url: 'https://github.com/filecoin-station/roadmap/issues/5' },
+        { group: 'children:', html_url: 'https://github.com/filecoin-station/roadmap/issues/7' },
+        { group: 'children:', html_url: 'https://github.com/filecoin-station/roadmap/issues/3' },
+        { group: 'children:', html_url: 'https://github.com/filecoin-station/roadmap/issues/10' },
+        { group: 'children:', html_url: 'https://github.com/filecoin-station/roadmap/issues/11' }
+      ])
+    })
   })
 })
