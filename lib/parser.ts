@@ -69,11 +69,7 @@ function getChildrenFromTaskList(issue: Pick<GithubIssueData, 'body' | 'html_url
     throw new Error('Section missing or has no children')
   }
 
-  const children: ParserGetChildrenResponse[] = lines.map((line) => ({
-      group: 'tasklist',
-      html_url: getUrlStringForChildrenLine(line, issue),
-    }));
-  return children
+  return convertLinesToChildren(lines, issue, 'tasklist')
 }
 
 /**
@@ -100,33 +96,22 @@ function getChildrenNew(issue: Pick<GithubIssueData, 'body' | 'html_url'>): Pars
     throw new Error('HTML tags found in body_text');
   }
 
-  const children: ParserGetChildrenResponse[] = []
+  return convertLinesToChildren(lines, issue, 'children:')
+}
 
-  for (let i = 0; i < lines.length; i++) {
-    const currentLine = lines[i]
-    if (currentLine.length <= 0) {
-      if (children.length === 0) {
-        // skip empty lines between children header and children
-        continue
-      } else {
-        // end of children if empty line is found and children is not empty
-        break
-      }
-    }
-
+function convertLinesToChildren(lines: string[], issue: Pick<GithubIssueData, 'html_url'>, group: string): ParserGetChildrenResponse[] {
+  return lines.map((currentLine) => {
     try {
-      children.push({
-        group: 'children:',
-        html_url: getUrlStringForChildrenLine(currentLine, issue)
-      })
+      return getUrlStringForChildrenLine(currentLine, issue)
     } catch {
-      // invalid URL or child issue identifier, exit and return what we have
-      break
+      return null
     }
-  }
-
-  return children
-
+  })
+    .filter((url): url is string => url !== null)
+    .map((html_url): ParserGetChildrenResponse => ({
+      group,
+      html_url,
+    }))
 }
 
 export const getChildren = (issue: Pick<GithubIssueData, 'body_html' | 'body' | 'html_url'>): ParserGetChildrenResponse[] => {
