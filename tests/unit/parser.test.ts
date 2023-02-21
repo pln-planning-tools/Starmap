@@ -136,7 +136,7 @@ describe('parser', function() {
     /**
      * To address https://github.com/pln-planning-tools/Starmap/issues/324
      */
-    it('Can parse children from issue.body_text with extraneous link', function() {
+    it('Can parse children from issue.body with extraneous link', function() {
       const children = getChildren({ body_html: '', body: 'eta: 2023Q4\r\n\r\nchildren:\r\n- https://github.com/filecoin-station/roadmap/issues/5\r\n- https://github.com/filecoin-station/roadmap/issues/7\r\n- https://github.com/filecoin-station/roadmap/issues/3\r\n- #10 \r\n- #11\r\n\r\nView the roadmap here: https://starmap.site/roadmap/github.com/filecoin-station/roadmap/issues/1\r\n', html_url: 'https://github.com/filecoin-station/roadmap/issues/1' });
       expect(Array.isArray(children)).toBe(true);
       expect(children).toHaveLength(5);
@@ -152,12 +152,29 @@ describe('parser', function() {
     /**
      * To address https://github.com/pln-planning-tools/Starmap/issues/324
      */
-    it('Can parse children from issue.body_text with extraneous markdown link', function() {
+    it('Can parse children from issue.body with extraneous markdown link', function() {
       const children = getChildren({ body_html: '', body: 'children:\r\n - https://github.com/filecoin-project/rust-fil-proofs/issues/1644\r\n\r\n[Rendered StarMaps view](https://www.starmaps.app/roadmap/github.com/filecoin-project/rust-fil-proofs/issues/1640#detail).', html_url: 'https://github.com/filecoin-project/rust-fil-proofs/issues/1640' });
       expect(Array.isArray(children)).toBe(true);
       expect(children).toHaveLength(1);
       expect(children).toStrictEqual([
         { group: 'children:', html_url: 'https://github.com/filecoin-project/rust-fil-proofs/issues/1644' }
+      ])
+    })
+
+    /**
+     * To address https://github.com/pln-planning-tools/Starmap/issues/324
+     */
+    it('Can parse children from issue.body with a lot of additional text and non-children links', function() {
+      const children = getChildren({ body_html: '', body: `eta: 2023-10\r\ndescription:\r\nThis issue is intended to capture discussion around Testground's Roadmap\r\nBecause GitHub doesn't have any feature to comment on Markdown files, please use this issue to leave any feedback, proposals, etc.\r\n\r\nchildren:\r\n- https://github.com/testground/testground/issues/1533\r\n- https://github.com/testground/testground/issues/1512\r\n- https://github.com/testground/testground/issues/1514\r\n- https://github.com/testground/testground/issues/1524\r\n- https://github.com/testground/testground/issues/1529\r\n- https://github.com/testground/testground/issues/1523\r\n\r\n---\r\n\r\n# Current Roadmap\r\n\r\n🛣🗺 Roadmap document: https://github.com/testground/testground/blob/master/ROADMAP.md\r\n\r\nStarmap viewer for this roadmap: https://www.starmaps.app/roadmap/github.com/testground/testground/issues/1491#simple\r\n\r\n# Current Status of the Roadmap:\r\n\r\n- 2022-10-10: We don't have full maintainer alignment on Roadmap items and priorities. As we resolve these, we will update the roadmap.\r\n\r\n## Unresolved questions:\r\n\r\n- [ ] https://github.com/testground/testground/pull/1484#discussion_r992168145\r\n\r\n## Roadmap drafts:\r\n- 1st draft: https://github.com/testground/testground/pull/1484`, html_url: 'https://github.com/testground/testground/issues/1491' });
+      expect(Array.isArray(children)).toBe(true);
+      expect(children).toHaveLength(6);
+      expect(children).toStrictEqual([
+        { group: 'children:', html_url: 'https://github.com/testground/testground/issues/1533' },
+        { group: 'children:', html_url: 'https://github.com/testground/testground/issues/1512' },
+        { group: 'children:', html_url: 'https://github.com/testground/testground/issues/1514' },
+        { group: 'children:', html_url: 'https://github.com/testground/testground/issues/1524' },
+        { group: 'children:', html_url: 'https://github.com/testground/testground/issues/1529' },
+        { group: 'children:', html_url: 'https://github.com/testground/testground/issues/1523' },
       ])
     })
   })
