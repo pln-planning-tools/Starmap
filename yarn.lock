@@ -3935,6 +3935,11 @@ at-least-node@^1.0.0:
   resolved "https://registry.npmjs.org/at-least-node/-/at-least-node-1.0.0.tgz"
   integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
 
+awesome-toast-component@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/awesome-toast-component/-/awesome-toast-component-2.0.6.tgz#d80db624cdb9f3aa245f5ce7b47c5ac09a71e552"
+  integrity sha512-6RjeS+vdlpjyTkGeTDvDwUUghQbcpcbCI68Uy8YoqSclnZyaUIQvIGjNQHWVejYSFyQjlN7nG/ifrwBPCeCd1g==
+
 axe-core@^4.4.3:
   version "4.5.2"
   resolved "https://registry.npmjs.org/axe-core/-/axe-core-4.5.2.tgz"
@@ -4924,6 +4929,11 @@ detect-node-es@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/detect-node-es/-/detect-node-es-1.1.0.tgz"
   integrity sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ==
+
+dexie@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.npmjs.org/dexie/-/dexie-3.2.3.tgz#f35c91ca797599df8e771b998e9ae9669c877f8c"
+  integrity sha512-iHayBd4UYryDCVUNa3PMsJMEnd8yjyh5p7a+RFeC8i8n476BC9wMhVvqiImq5zJZJf5Tuer+s4SSj+AA3x+ZbQ==
 
 diff-sequences@^29.3.1:
   version "29.3.1"
@@ -9530,7 +9540,7 @@ workbox-background-sync@6.5.4:
     idb "^7.0.1"
     workbox-core "6.5.4"
 
-workbox-broadcast-update@6.5.4:
+workbox-broadcast-update@6.5.4, workbox-broadcast-update@^6.5.4:
   version "6.5.4"
   resolved "https://registry.npmjs.org/workbox-broadcast-update/-/workbox-broadcast-update-6.5.4.tgz"
   integrity sha512-I/lBERoH1u3zyBosnpPEtcAVe5lwykx9Yg1k6f8/BGEPGaMMgZrwVrqL1uA9QZ1NGGFoyE6t9i7lBjOlDhFEEw==

@@ -27,12 +27,14 @@
     "@octokit/rest": "^19.0.5",
     "@types/d3": "^7.4.0",
     "@types/lodash": "^4.14.186",
+    "awesome-toast-component": "^2.0.6",
     "chakra-ui-markdown-renderer": "^4.1.0",
     "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
     "d3": "^7.6.1",
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.5",
+    "dexie": "^3.2.3",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "framer-motion": "^7.6.1",
     "jest-environment-jsdom": "^29.3.1",
@@ -50,7 +52,8 @@
     "react-is": "^18.2.0",
     "react-markdown": "^8.0.3",
     "remark-gfm": "^3.0.1",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "workbox-broadcast-update": "^6.5.4"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
