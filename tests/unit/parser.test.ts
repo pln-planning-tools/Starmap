@@ -148,5 +148,17 @@ describe('parser', function() {
         { group: 'children:', html_url: 'https://github.com/filecoin-station/roadmap/issues/11' }
       ])
     })
+
+    /**
+     * To address https://github.com/pln-planning-tools/Starmap/issues/324
+     */
+    it('Can parse children from issue.body_text with extraneous markdown link', function() {
+      const children = getChildren({ body_html: '', body: 'children:\r\n - https://github.com/filecoin-project/rust-fil-proofs/issues/1644\r\n\r\n[Rendered StarMaps view](https://www.starmaps.app/roadmap/github.com/filecoin-project/rust-fil-proofs/issues/1640#detail).', html_url: 'https://github.com/filecoin-project/rust-fil-proofs/issues/1640' });
+      expect(Array.isArray(children)).toBe(true);
+      expect(children).toHaveLength(1);
+      expect(children).toStrictEqual([
+        { group: 'children:', html_url: 'https://github.com/filecoin-project/rust-fil-proofs/issues/1644' }
+      ])
+    })
   })
 })
