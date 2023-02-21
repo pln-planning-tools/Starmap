@@ -101,20 +101,22 @@ function getChildrenNew(issue: Pick<GithubIssueData, 'body' | 'html_url'>): Pars
   return convertLinesToChildren(lines, issue, 'children:')
 }
 
-function convertLinesToChildren(lines: string[], issue: Pick<GithubIssueData, 'html_url'>, group: string): ParserGetChildrenResponse[] {
-  const childrenUrlOrNull = lines.map((currentLine) => {
+function getValidChildrenLinks(lines: string[], issue: Pick<GithubIssueData, 'html_url'>): string[] {
+  const validChildrenLinks: string[] = []
+  for (const line of lines) {
     try {
-      return getUrlStringForChildrenLine(currentLine, issue)
-    } catch {
-      return null
+      validChildrenLinks.push(getUrlStringForChildrenLine(line, issue))
+    } catch (e) {
+      break
     }
-  })
-  const firstNullIndex = childrenUrlOrNull.findIndex((url) => url === null)
+  }
+  return validChildrenLinks
+}
 
-  const validChildren = firstNullIndex === -1 ? childrenUrlOrNull : childrenUrlOrNull.slice(0, firstNullIndex)
+function convertLinesToChildren(lines: string[], issue: Pick<GithubIssueData, 'html_url'>, group: string): ParserGetChildrenResponse[] {
+  const validChildrenLinks = getValidChildrenLinks(lines, issue)
 
-  return validChildren
-    .filter((url): url is string => url !== null) // appease typescript
+  return validChildrenLinks
     .map((html_url): ParserGetChildrenResponse => ({
       group,
       html_url,
