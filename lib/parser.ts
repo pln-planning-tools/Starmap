@@ -46,7 +46,11 @@ function getUrlStringForChildrenLine(line: string, issue: Pick<GithubIssueData, 
     const { owner, repo } = paramsFromUrl(issue.html_url)
     line = `${owner}/${repo}${line}`
   }
-  return getValidUrlFromInput(line).href
+  const url = getValidUrlFromInput(line)
+  if (!url.host.includes('github.com')) {
+    throw new Error('Invalid host for children item')
+  }
+  return url.href
 }
 /**
  * We attempt to parse the issue.body for children included in 'tasklist' format
