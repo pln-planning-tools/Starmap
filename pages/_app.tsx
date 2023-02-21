@@ -44,8 +44,6 @@ function App({ Component, pageProps }) {
         <meta name='description' content='Roadmapping tool' />
         <link rel='icon' href='/favicon.ico' />
         <link rel='manifest' href='/manifest.webmanifest' />
-        <link rel="preconnect" href="//github.com" />
-        <link rel="dns-prefetch" href="//github.com" />
         <link rel="preconnect" href="//api.github.com" />
         <link rel="dns-prefetch" href="//api.github.com" />
       </Head>
