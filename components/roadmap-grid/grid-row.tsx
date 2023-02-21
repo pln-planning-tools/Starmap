@@ -39,6 +39,7 @@ export function GridRow({
   }, [milestone.due_date, globalTimeScaler.getDomain()]);
   const span = Math.max(4, numGridCols / timelineTicks.length);
   const closest = span * (closestDateIdx - 1);
+  // @ts-ignore (TODO: fix types below and remove this)
   const childLink = useMemo(() => getLinkForRoadmapChild({ viewMode, issueData: milestone.get(), query: routerQuery, currentRoadmapRoot: issueDataState.value }), [issueDataState.value, milestone, routerQuery, viewMode]);
   const clickable = milestone.children.length > 0;
 
@@ -88,6 +89,7 @@ export function GridRow({
       }}
       className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink} js-milestoneCard ${clickable && className}`}
     >
+      {/* @ts-ignore (TODO: fix types below and remove this) */}
       <Flex direction={{ base:"column" }} justify="space-between" position="relative" w="100%">
         <Flex direction="column" w="100%">
           <Text as="b" className={`${styles.milestoneTitleWrapper} ${clickable && styles.milestoneTitleWrapperLink}`}>{milestone.title.value}</Text>

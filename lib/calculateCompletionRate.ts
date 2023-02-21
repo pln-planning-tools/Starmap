@@ -57,7 +57,8 @@ export function assignCompletionRateToIssues (issue: State<IssueData> | State<Is
   const completion_rate = calculateCompletionRate({
     html_url: issue.ornull.html_url.value,
     state: issue.ornull.state.value,
-    children: issue.ornull.children.value 
+    // @ts-ignore (TODO: fix types below and remove this)
+    children: issue.ornull.children.value
   });
   issue.merge((issue) => ({ ...issue, completion_rate })) // = completionRate
   issue.ornull.children.forEach(assignCompletionRateToIssues)

@@ -28,12 +28,15 @@ export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: Stat
     ([key, value]) => ({
       groupName: key,
       items: value,
+      // @ts-ignore (TODO: fix types below and remove this)
       url: getLinkForRoadmapChild({ issueData: newIssueData.find((i) => i.title === key), query: parsedQuery }),
     }),
   );
 
+  // @ts-ignore (TODO: fix types below and remove this)
   const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, children: [v], group: v.title }));
 
+  // @ts-ignore (TODO: fix types below and remove this)
   const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
   const issueDataLevelOneGrouped: DetailedViewGroup[] = getGroupedIssues(issueDataLevelOne);
   const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = getGroupedIssues(issueDataLevelOneIfNoChildren);
@@ -51,6 +54,7 @@ export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: Stat
       ([key, value]) => ({
         groupName: key,
         items: value,
+        // @ts-ignore (TODO: fix types below and remove this)
         url: getLinkForRoadmapChild({ issueData: newIssueData.find((i) => i.title === key), query: parsedQuery }),
       }),
     );
