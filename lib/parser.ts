@@ -34,12 +34,14 @@ function getSectionLines(text: string, sectionHeader: string) {
   if (sectionIndex === -1) {
     return [];
   }
-  const lines = text.substring(sectionIndex).split(/[\r\n]+/).slice(1);
-  return lines;
+  return text.substring(sectionIndex)
+    .split(/[\r\n]+/).slice(1)
+    .map(getUrlFromMarkdownText)
 }
 
 const splitAndGetLastItem = (line: string) => line.trim().split(' ').slice(-1)[0]
 const ensureTaskListChild = (line: string) => line.trim().indexOf('-') === 0
+const getUrlFromMarkdownText = (line: string) => line.trim().split('](').slice(-1)[0].replace(')', '')
 
 function getUrlStringForChildrenLine(line: string, issue: Pick<GithubIssueData, 'html_url'>) {
   if (/^#\d+$/.test(line)) {
@@ -86,7 +88,7 @@ function getChildrenNew(issue: Pick<GithubIssueData, 'body' | 'html_url'>): Pars
     // Could not find children using new tasklist format,
     // try to look for "children:" section
   }
-  const lines = getSectionLines(issue.body, 'children:').map((line) => line.trim().split(' ').slice(-1)[0]).filter(Boolean);
+  const lines = getSectionLines(issue.body, 'children:').map(splitAndGetLastItem).filter(Boolean);
   if (lines.length === 0) {
     throw new Error('Section missing or has no children')
   }
