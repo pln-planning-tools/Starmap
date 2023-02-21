@@ -5,7 +5,7 @@ import Dexie from 'dexie';
 // Based on Java's hashCode implementation: https://stackoverflow.com/a/7616484/104380
 const generateHashCode = str => [...str].reduce((hash, chr) => 0 | (31 * hash + chr.charCodeAt(0)), 0)
 
-const contentHashDB = new Dexie('contentHashDB')
+const contentHashDB: {hashes?: Dexie.Table} & Dexie = new Dexie('contentHashDB')
 contentHashDB.version(1).stores({
   hashes: `cacheKey, hashCode`
 });
@@ -28,12 +28,12 @@ export class CacheChildren extends Strategy implements Strategy {
     if (!response.ok) {
       return
     }
-    const hashCodeStoredValue = await contentHashDB.hashes.get({ cacheKey })
+    const hashCodeStoredValue = await contentHashDB.hashes?.get({ cacheKey })
     const previousResponseHash = hashCodeStoredValue?.hashCode ?? ''
     const currentResponseHash = generateHashCode(JSON.stringify(await response.clone().json()))
 
     if (previousResponseHash !== currentResponseHash) {
-      contentHashDB.hashes.put({ cacheKey, hashCode: currentResponseHash })
+      contentHashDB.hashes?.put({ cacheKey, hashCode: currentResponseHash })
       await handler.cachePut(cacheKey, response.clone())
     }
   }
