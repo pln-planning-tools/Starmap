@@ -3,7 +3,6 @@ import {
   Center,
   Flex,
   Link,
-  Skeleton,
   Tab,
   TabList,
   TabPanel,
@@ -25,12 +24,10 @@ import { IssueDataViewInput } from '../../lib/types';
 import Header from './header';
 import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
-import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 
 export function RoadmapTabbedView({
   issueDataState,
 }: IssueDataViewInput): ReactElement {
-  const globalLoadingState = useGlobalLoadingState();
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
   const router = useRouter();
 
@@ -66,17 +63,15 @@ export function RoadmapTabbedView({
     }
 
     return (
-      <Skeleton isLoaded={!globalLoadingState.get()}>
-        <Tab
-          className={styles.gridViewTab}
-          key={index}
-        >
-          <Center>
-            <TabIcon />
-            <Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>
-          </Center>
-        </Tab>
-      </Skeleton>
+      <Tab
+        className={styles.gridViewTab}
+        key={index}
+      >
+        <Center>
+          <TabIcon />
+          <Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>
+        </Center>
+      </Tab>
     )
   };
 
