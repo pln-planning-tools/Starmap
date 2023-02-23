@@ -10,7 +10,6 @@ contentHashDB.version(1).stores({
   hashes: `cacheKey, hashCode`
 });
 
-
 /**
  * This is a custom strategy to cache the milestone children of a Starmap.
  * The benefit of writing this as a workbox strategy is we can use other workbox plugins like expiration.
@@ -33,7 +32,7 @@ export class CacheChildren extends Strategy implements Strategy {
     const currentResponseHash = generateHashCode(JSON.stringify(await response.clone().json()))
 
     if (previousResponseHash !== currentResponseHash) {
-      contentHashDB.hashes?.put({ cacheKey, hashCode: currentResponseHash })
+      await contentHashDB.hashes?.put({ cacheKey, hashCode: currentResponseHash })
       await handler.cachePut(cacheKey, response.clone())
     }
   }
@@ -47,9 +46,12 @@ export class CacheChildren extends Strategy implements Strategy {
   async _handle(request: Request, handler: StrategyHandler): Promise<Response | undefined> {
     try {
       // Cloning ensures we don't consume the request here.
-      const { issue_number, owner, repo } = await request.clone().json()
+      const { issue_number, owner, repo, parent: { node_id = '' } } = await request.clone().json()
       // We are using the owner, repo and issue number as the cache key.
-      const cacheKey = `${owner}/${repo}/${issue_number}`
+      // We are also using the parent node_id as part of the cache key.
+      // This is because the children can have multiple parents.
+      // That will cause cachce collisions.
+      const cacheKey = `${owner}/${repo}/${issue_number}/${node_id}`
       // Checking if the cache already has the response.
       let cachedResponse = await handler.cacheMatch(cacheKey)
       // WARNING: We're not awaiting this call deliberately. We want to populate the cache in the background.
