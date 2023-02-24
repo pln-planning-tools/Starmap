@@ -18,7 +18,7 @@ export class CacheChildren extends Strategy implements Strategy {
 
   async populateCacheAsync(cacheKey: string, request: Request, handler: StrategyHandler): Promise<void> {
     const response = await handler.fetch(request.clone())
-    console.log(`${response.url} x-vercel-cache: `, response.headers.get('x-vercel-cache'))
+    console.log(`SW NEW: ${cacheKey} - x-vercel-cache: `, response.headers.get('x-vercel-cache'))
     if (!response.ok) {
       return
     }
@@ -50,6 +50,8 @@ export class CacheChildren extends Strategy implements Strategy {
       if (!cachedResponse) {
         await handler.doneWaiting()
         cachedResponse = await handler.cacheMatch(cacheKey)
+      } else {
+        console.log(`SW CACHED: ${cacheKey} - x-vercel-cache: `, cachedResponse.headers.get('x-vercel-cache'))
       }
 
       return cachedResponse
