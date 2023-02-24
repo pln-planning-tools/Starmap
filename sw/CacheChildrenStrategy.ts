@@ -15,7 +15,11 @@ contentHashDB.version(1).stores({
  * The benefit of writing this as a workbox strategy is we can use other workbox plugins like expiration.
  */
 export class CacheChildren extends Strategy implements Strategy {
-
+  fetchOptions?: RequestInit  = {
+    headers: {
+      'cache-control': 's-maxage=30, stale-while-revalidate=86400'
+    }
+  }
   async populateCacheAsync(cacheKey: string, request: Request, handler: StrategyHandler): Promise<void> {
     const response = await handler.fetch(request.clone())
     console.log(`SW NEW: ${cacheKey} - x-vercel-cache: `, response.headers.get('x-vercel-cache'))
