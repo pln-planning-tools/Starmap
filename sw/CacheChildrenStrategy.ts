@@ -16,6 +16,7 @@ contentHashDB.version(1).stores({
  */
 export class CacheChildren extends Strategy implements Strategy {
   fetchOptions?: RequestInit  = {
+    method: 'GET',
     headers: {
       'cache-control': 's-maxage=30, stale-while-revalidate=86400'
     }
