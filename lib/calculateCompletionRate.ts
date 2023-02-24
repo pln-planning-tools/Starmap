@@ -1,5 +1,6 @@
-import { IssueStates } from '../enums';
-import { IssueData } from '../types';
+import { State } from '@hookstate/core';
+import { IssueStates } from './enums';
+import { IssueData } from './types';
 
 export type CalculateCompletionRateOptions = Pick<IssueData, 'html_url' | 'state'> & { children: CalculateCompletionRateOptions[] };
 
@@ -48,3 +49,16 @@ export function calculateCompletionRate (issue: CalculateCompletionRateOptions):
   const { percentClosed } = getIssueCounts(issueStatesMap);
   return percentClosed;
 };
+
+export function assignCompletionRateToIssues (issue: State<IssueData> | State<IssueData | null>): void {
+  if (issue.ornull === null) {
+    return
+  }
+  const completion_rate = calculateCompletionRate({
+    html_url: issue.ornull.html_url.value,
+    state: issue.ornull.state.value,
+    children: issue.ornull.children.value 
+  });
+  issue.merge((issue) => ({ ...issue, completion_rate })) // = completionRate
+  issue.ornull.children.forEach(assignCompletionRateToIssues)
+}

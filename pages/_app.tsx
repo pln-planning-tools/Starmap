@@ -39,9 +39,10 @@ function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>StarMap</title>
+        <title>Starmap</title>
         <meta name='description' content='Roadmapping tool' />
         <link rel='icon' href='/favicon.ico' />
+        <link rel='manifest' href='/manifest.webmanifest' />
       </Head>
       <ChakraProvider>
         <Component {...pageProps} />

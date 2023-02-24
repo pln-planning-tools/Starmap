@@ -13,6 +13,7 @@ import { BASE_PROTOCOL } from '../../config/constants';
 import { setDateGranularity } from '../../hooks/useDateGranularity';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { setViewMode } from '../../hooks/useViewMode';
+import { assignCompletionRateToIssues } from '../../lib/calculateCompletionRate';
 import { DateGranularityState, RoadmapMode, ViewMode } from '../../lib/enums';
 import { findIssueDataByUrl } from '../../lib/findIssueDataByUrl';
 import { mergeStarMapsErrorGroups } from '../../lib/mergeStarMapsErrorGroups';
@@ -201,6 +202,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
    */
   useEffect(() => {
     if (!isRootIssueLoading && pendingChildrenState.length === 0 && asyncIssueDataState.length === 0) {
+      assignCompletionRateToIssues(issueDataState)
       globalLoadingState.stop();
     } else {
       globalLoadingState.start();
