@@ -1,4 +1,5 @@
 import { Box, SimpleGrid, Text, Link } from '@chakra-ui/react';
+import { ImmutableArray } from '@hookstate/core';
 import NextLink from 'next/link';
 
 import { StarMapsIssueErrorsGrouped } from '../../lib/types';
@@ -7,7 +8,7 @@ import styles from './ErrorNotificationBody.module.css';
 
 interface ErrorNotificationBodyProps {
   isExpanded: boolean;
-  errors: StarMapsIssueErrorsGrouped[];
+  errors: ImmutableArray<StarMapsIssueErrorsGrouped>;
 }
 export function ErrorNotificationBody({ isExpanded, errors }: ErrorNotificationBodyProps) {
   if (!isExpanded) {

@@ -1,9 +1,10 @@
-import type { State } from '@hookstate/core'
+import type { ImmutableArray, State } from '@hookstate/core'
 
 import type { RoadmapMode, IssueStates, DateGranularityState } from './enums'
 
 export interface GithubIssueData {
   body_html: string;
+  body: string;
   html_url: string;
   labels: string[];
   node_id: string;
@@ -131,7 +132,7 @@ export interface RoadmapServerSidePropsResult {
 
 export interface DetailedViewGroup {
   groupName: string;
-  items: IssueData[];
+  items: ImmutableArray<IssueData>;
   url: string;
 }
 
@@ -159,3 +160,16 @@ export interface IssueDataViewInput {
 }
 
 export type BrowserMetricsProvider = typeof import('@ipfs-shipyard/ignite-metrics').BrowserMetricsProvider
+
+interface StarmapContentUpdatedEvent extends Event {
+  detail: {
+    cacheName: string;
+    updatedURL: string;
+  }
+}
+
+declare global {
+  interface DocumentEventMap {
+    'starmap:content:updated': StarmapContentUpdatedEvent;
+  }
+}

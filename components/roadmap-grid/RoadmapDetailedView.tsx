@@ -1,4 +1,4 @@
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, Spinner, Stack, Skeleton } from '@chakra-ui/react';
 import { useHookstate } from '@hookstate/core';
 import type { Dayjs } from 'dayjs';
 import _ from 'lodash';
@@ -25,6 +25,7 @@ import { ErrorBoundary } from '../errors/ErrorBoundary';
 import { usePrevious } from '../../hooks/usePrevious';
 import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
 import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 
 export function RoadmapDetailed({
   issueDataState
@@ -62,6 +63,8 @@ export function RoadmapDetailed({
    */
   const [numHeaderTicks, setNumHeaderTicks] = useState(5);
   const [numGridCols, setNumGridCols] = useState(45);
+  const globalLoadingState = useGlobalLoadingState();
+
 
   // for preventing dayjsDates from being recalculated if it doesn't need to be
   const issuesGroupedId = issuesGroupedState.value.map((g) => g.groupName).join(',');
@@ -136,6 +139,19 @@ export function RoadmapDetailed({
     return <Spinner />;
   }
 
+  // return early while loading.
+  if (globalLoadingState.get()) {
+    return (
+      <Stack pt={"20px"}>
+        <Skeleton height='60px' />
+        <Skeleton height='150px' />
+        <Skeleton height='150px' />
+        <Skeleton height='150px' />
+        <Skeleton height='150px' />
+      </Stack>
+    )
+  }
+
   /**
    * Current getTicks function returns 1 less than the number of ticks we want.
    */
@@ -145,26 +161,26 @@ export function RoadmapDetailed({
   return (
     <>
       {isDevMode && <NumSlider msg="how many header ticks" value={numHeaderTicks} min={5} max={60} setValue={setNumHeaderTicks}/>}
-      {isDevMode && <NumSlider msg="how many grid columns" value={numGridCols} min={20} max={60} step={numHeaderTicks} setValue={setNumGridCols}/>}
+      {isDevMode && <NumSlider msg="how many grid columns" value={numGridCols} min={20} max={60} step={numHeaderTicks} setValue={setNumGridCols} />}
 
-      <Box className={`${styles.timelineBox} ${ viewMode=='detail' ? styles.detailView : '' }`} >
+      <Box className={`${styles.timelineBox} ${viewMode == 'detail' ? styles.detailView : ''}`} >
         <Grid ticksLength={numGridCols}>
           {ticksHeader.map((tick, index) => (
 
-            <GridHeader key={index} tick={tick} index={index} numHeaderTicks={numHeaderTicks} numGridCols={numGridCols}/>
+            <GridHeader key={index} tick={tick} index={index} numHeaderTicks={numHeaderTicks} numGridCols={numGridCols} />
           ))}
 
-          <Headerline numGridCols={numGridCols} ticksRatio={3}/>
+          <Headerline numGridCols={numGridCols} ticksRatio={3} />
         </Grid>
-        <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={showTodayMarker} >
+        <Grid ticksLength={numGridCols} scroll={true} renderTodayLine={showTodayMarker} >
           {issuesGroupedState.map((group, index) => (
-              <ErrorBoundary key={`Fragment-${index}`} >
-                <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState}/><GroupWrapper key={`GroupWrapper-${index}`}>
-                  {group.ornull != null && group.items.ornull != null &&
-                    _.sortBy(group.items.ornull, ['title']).map((item, index) => <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
-                </GroupWrapper>
-              </ErrorBoundary>
-            ))}
+            <ErrorBoundary key={`Fragment-${index}`} >
+              <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState} /><GroupWrapper key={`GroupWrapper-${index}`}>
+                {group.ornull != null && group.items.ornull != null &&
+                  _.sortBy(group.items.ornull, ['title']).map((item, index) => <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
+              </GroupWrapper>
+            </ErrorBoundary>
+          ))}
         </Grid>
       </Box>
     </>
