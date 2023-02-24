@@ -4,6 +4,7 @@ import type { RoadmapMode, IssueStates, DateGranularityState } from './enums'
 
 export interface GithubIssueData {
   body_html: string;
+  body: string;
   html_url: string;
   labels: string[];
   node_id: string;
@@ -157,3 +158,5 @@ export interface IssueDataViewInput {
   // isRootIssueLoading: boolean;
   // isPendingChildrenLoading: boolean;
 }
+
+export type BrowserMetricsProvider = typeof import('@ipfs-shipyard/ignite-metrics').BrowserMetricsProvider
