@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { ChakraProvider } from '@chakra-ui/react';
 import { noSSR } from 'next/dynamic';
 import React, { useEffect } from 'react';
+import { onCLS, onFID, onLCP } from 'web-vitals';
 
 import { setTelemetry, useTelemetry } from '../hooks/useTelemetry';
 
@@ -17,8 +18,19 @@ import type { BrowserMetricsProvider } from '../lib/types';
 // @ts-expect-error
 const igniteMetricsModulePromise: Promise<{BrowserMetricsProvider: BrowserMetricsProvider}> = noSSR(() => import('@ipfs-shipyard/ignite-metrics/browser-vanilla'), {})
 
+function logDelta({ name, id, delta, value, rating }) {
+  console.log(`${name} (${rating}): ID ${id}: ${value} - changed by ${delta}`);
+}
+let webVitalsRegistered = false
 function App({ Component, pageProps }) {
   const telemetry = useTelemetry()
+  useEffect(() => {
+    if (webVitalsRegistered) return
+    webVitalsRegistered = true
+    onCLS(logDelta, { reportAllChanges: true });
+    onFID(logDelta, { reportAllChanges: true });
+    onLCP(logDelta, { reportAllChanges: true });
+  }, [])
 
   useEffect(() => {
     (async() => {
