@@ -1,10 +1,14 @@
+import { ImmutableObject } from '@hookstate/core';
 import { paramsFromUrl } from '../paramsFromUrl';
 import { IssueData, QueryParameters } from '../types';
 import { appendCrumbArrayData, convertCrumbDataArraysToCrumbDataString, getCrumbDataArrayFromIssueData, routerQueryToCrumbArrayData } from '../breadcrumbs';
 import { ViewMode } from '../enums';
 
+type childrenAndUrl = Pick<IssueData, 'html_url' | 'children'>;
+type parentAndChildren = Pick<IssueData, 'parent' | 'children'>;
+type parentAndChildrenAndUrl = childrenAndUrl & Partial<parentAndChildren>;
 interface GetLinkForRoadmapChildOptions {
-  issueData?: Pick<IssueData, 'html_url' | 'children'> & Partial<Pick<IssueData, 'children' | 'parent'>>;
+  issueData?: ImmutableObject<parentAndChildrenAndUrl>;
   query?: QueryParameters;
   currentRoadmapRoot?: Pick<IssueData, 'html_url' | 'title'>;
   viewMode?: ViewMode;
