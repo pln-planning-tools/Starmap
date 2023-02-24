@@ -32,6 +32,18 @@ import {
   StarMapsIssueErrorsGrouped
 } from '../../lib/types';
 
+/**
+ * From https://vercel.com/docs/concepts/edge-network/caching#stale-while-revalidate
+ * This tells our Vercel Edge Network cache the value is fresh for 30 seconds. If a request is repeated within the
+ * next 30 seconds, the previously cached value is still fresh. The header x-vercel-cache present in the response will
+ * show the value HIT. If the request is repeated between 30 and 86400 seconds later, the cached value will be stale but
+ * still render. In the background, a revalidation request will be made to populate the cache with a fresh value.
+ * x-vercel-cache will have the value STALE until the cache is refreshed.
+ */
+const fetchHeaders = {
+  'Cache-Control': 's-maxage=30, stale-while-revalidate=86400' // 5 second cache, then revalidate every 24 hours
+}
+
 export async function getServerSideProps(context): Promise<RoadmapServerSidePropsResult> {
   const [_hostname, owner, repo, _, issue_number] = context.query.slug;
   const { filter_group, mode, timeUnit }: QueryParameters = context.query;
@@ -73,7 +85,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       }
       const roadmapApiUrl = `${window.location.origin}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
       try {
-        const apiResult = await fetch(new URL(roadmapApiUrl), { signal: controller.signal })
+        const apiResult = await fetch(new URL(roadmapApiUrl), { signal: controller.signal, headers: fetchHeaders })
         const roadmapResponse: RoadmapApiResponse = await apiResult.json();
 
         const roadmapResponseSuccess = roadmapResponse as RoadmapApiResponseSuccess;
@@ -136,7 +148,8 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
           signal: controller.signal,
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            ...fetchHeaders
           },
           body: JSON.stringify(requestBody)
         });

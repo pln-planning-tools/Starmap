@@ -16,12 +16,6 @@ contentHashDB.version(1).stores({
  */
 export class CacheChildren extends Strategy implements Strategy {
 
-  /**
-   *
-   * @param {string} cacheKey
-   * @param {object} request
-   * @param {object} handler
-   */
   async populateCacheAsync(cacheKey: string, request: Request, handler: StrategyHandler): Promise<void> {
     const response = await handler.fetch(request.clone())
     if (!response.ok) {
@@ -37,12 +31,6 @@ export class CacheChildren extends Strategy implements Strategy {
     }
   }
 
-  /**
-   *
-   * @param {object} request
-   * @param {object} handler
-   * @returns
-   */
   async _handle(request: Request, handler: StrategyHandler): Promise<Response | undefined> {
     try {
       // Cloning ensures we don't consume the request here.
