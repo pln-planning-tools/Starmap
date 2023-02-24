@@ -160,3 +160,16 @@ export interface IssueDataViewInput {
 }
 
 export type BrowserMetricsProvider = typeof import('@ipfs-shipyard/ignite-metrics').BrowserMetricsProvider
+
+interface StarmapContentUpdatedEvent extends Event {
+  detail: {
+    cacheName: string;
+    updatedURL: string;
+  }
+}
+
+declare global {
+  interface DocumentEventMap {
+    'starmap:content:updated': StarmapContentUpdatedEvent;
+  }
+}

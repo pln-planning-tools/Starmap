@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     "*.config.js",
-    "sw/*.ts"
+    "sw/*.ts",
+    "public/update-listener.js"
   ],
   "exclude": [
     "node_modules"
