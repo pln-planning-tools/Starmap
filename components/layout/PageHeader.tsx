@@ -8,8 +8,10 @@ import { RoadmapForm } from '../RoadmapForm';
 import theme from '../theme/constants';
 import styles from './PageHeader.module.css';
 import SmallScreenModal from '../modal/SmallScreenModal';
+import useStarmapContentUpdated from '../../hooks/useStarmapContentUpdated';
 
 function PageHeader() {
+  useStarmapContentUpdated();
   return (
     <>
       <SmallScreenModal></SmallScreenModal>

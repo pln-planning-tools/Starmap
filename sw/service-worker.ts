@@ -1,3 +1,4 @@
+import { BroadcastUpdatePlugin } from 'workbox-broadcast-update';
 import { clientsClaim, skipWaiting } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching';
@@ -11,6 +12,9 @@ const DEFAULT_EXPIRATION_OPTIONS = {
   maxEntries: 128,
   maxAgeSeconds: 60 * 60 * 24 * 7,   // 7 days, making sure we don't end up with sticky caches.
   purgeOnQuotaError: true,
+  matchOptions: {
+    ignoreVary: true
+  }
 };
 
 // boilerplate
@@ -25,6 +29,9 @@ registerRoute(
   /\.(?:jpg|jpeg|gif|png|svg|ico|webp)$/i,
   new CacheFirst({
     cacheName: 'static-assets',
+    matchOptions: {
+      ignoreVary: true
+    },
     plugins: [
       new ExpirationPlugin(DEFAULT_EXPIRATION_OPTIONS),
     ],
@@ -37,6 +44,9 @@ registerRoute(
   /\.(?:css|js)$/i,
   new StaleWhileRevalidate({
     cacheName: 'static-assets',
+    matchOptions: {
+      ignoreVary: true
+    },
     plugins: [
       new ExpirationPlugin({
         ...DEFAULT_EXPIRATION_OPTIONS,
@@ -50,14 +60,18 @@ registerRoute(
 
 // API Route for roadmap
 registerRoute(
-  /\/api\/roadmap$/i,
+  ({ url }) => url.pathname === '/api/roadmap',
   new StaleWhileRevalidate({
     cacheName: 'roadmap',
+    matchOptions: {
+      ignoreVary: true
+    },
     plugins: [
       new ExpirationPlugin({
         ...DEFAULT_EXPIRATION_OPTIONS,
         maxEntries: 256
       }),
+      new BroadcastUpdatePlugin()
     ],
   }),
   'GET'
@@ -65,17 +79,18 @@ registerRoute(
 
 // API Route for pending children
 registerRoute(
-  /\/api\/pendingChild$/i,
+  ({ url }) => url.pathname === '/api/pendingChild',
   new CacheChildren({
     cacheName: 'milestones',
+    matchOptions: {
+      ignoreVary: true
+    },
     plugins: [
       new ExpirationPlugin({
         ...DEFAULT_EXPIRATION_OPTIONS,
-        maxEntries: 1000,
-        matchOptions: {
-          ignoreVary: true
-        }
+        maxEntries: 1000
       }),
+      new BroadcastUpdatePlugin()
     ],
   }),
   'POST'
