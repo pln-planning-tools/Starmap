@@ -93,7 +93,7 @@ registerRoute(
       new BroadcastUpdatePlugin()
     ],
   }),
-  'POST'
+  'GET'
 );
 
 cleanupOutdatedCaches();
