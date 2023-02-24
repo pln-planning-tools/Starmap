@@ -1,4 +1,4 @@
-import type { State } from '@hookstate/core'
+import type { ImmutableArray, State } from '@hookstate/core'
 
 import type { RoadmapMode, IssueStates, DateGranularityState } from './enums'
 
@@ -132,7 +132,7 @@ export interface RoadmapServerSidePropsResult {
 
 export interface DetailedViewGroup {
   groupName: string;
-  items: IssueData[];
+  items: ImmutableArray<IssueData>;
   url: string;
 }
 
