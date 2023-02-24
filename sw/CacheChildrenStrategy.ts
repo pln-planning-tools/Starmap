@@ -17,8 +17,7 @@ contentHashDB.version(1).stores({
 export class CacheChildren extends Strategy implements Strategy {
   fetchOptions?: RequestInit  = {
     headers: {
-      // ensure service worker requests latest, always
-      'cache-control': 'no-cache'
+      'cache-control': 's-maxage=30, stale-while-revalidate=86400'
     }
   }
   async populateCacheAsync(cacheKey: string, request: Request, handler: StrategyHandler): Promise<void> {
