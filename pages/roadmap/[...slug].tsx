@@ -86,6 +86,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       const roadmapApiUrl = `${window.location.origin}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
       try {
         const apiResult = await fetch(new URL(roadmapApiUrl), { signal: controller.signal, headers: fetchHeaders })
+        console.log(`${apiResult.url} x-vercel-cache: `, apiResult.headers.get('x-vercel-cache'))
         const roadmapResponse: RoadmapApiResponse = await apiResult.json();
 
         const roadmapResponseSuccess = roadmapResponse as RoadmapApiResponseSuccess;
@@ -153,6 +154,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
           },
           body: JSON.stringify(requestBody)
         });
+        console.log(`${apiResult.url} x-vercel-cache: `, apiResult.headers.get('x-vercel-cache'))
         const pendingChildResponse: PendingChildApiResponse = await apiResult.json();
         const pendingChildFailure = pendingChildResponse as PendingChildApiResponseFailure;
         const pendingChildSuccess = pendingChildResponse as PendingChildApiResponseSuccess;

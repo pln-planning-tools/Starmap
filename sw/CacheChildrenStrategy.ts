@@ -18,6 +18,7 @@ export class CacheChildren extends Strategy implements Strategy {
 
   async populateCacheAsync(cacheKey: string, request: Request, handler: StrategyHandler): Promise<void> {
     const response = await handler.fetch(request.clone())
+    console.log(`${response.url} x-vercel-cache: `, response.headers.get('x-vercel-cache'))
     if (!response.ok) {
       return
     }
