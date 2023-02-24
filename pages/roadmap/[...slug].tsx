@@ -85,7 +85,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       }
       const roadmapApiUrl = `${window.location.origin}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
       try {
-        const apiResult = await fetch(new URL(roadmapApiUrl), { signal: controller.signal, headers: fetchHeaders })
+        const apiResult = await fetch(new URL(roadmapApiUrl), { method: 'GET', signal: controller.signal, headers: fetchHeaders })
         console.log(`roadmap: ${owner}/${repo}/${issue_number} - x-vercel-cache: `, apiResult.headers.get('x-vercel-cache'))
 
         const roadmapResponse: RoadmapApiResponse = await apiResult.json();
@@ -136,24 +136,22 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       }
       setIsPendingChildrenLoading(true);
 
+      const parent = findIssueDataByUrl(issueDataState.value as IssueData, typedPendingChild.parentHtmlUrl.value)
+      // we can reduce the size of the parent, because we have the parent on the client and use the one we have when adding the success response
+      const parentJson = JSON.stringify({ ...parent, children: [] })
+
+      const encodedParentJson = encodeURIComponent(parentJson)
       const { issue_number, owner, repo } = paramsFromUrl(typedPendingChild.html_url.value)
-      const requestBody = {
-        issue_number,
-        owner,
-        repo,
-        parent: findIssueDataByUrl(issueDataState.get() as IssueData, typedPendingChild.parentHtmlUrl.value)
-      };
-      const pendingChildApiUrl = new URL(`${window.location.origin}/api/pendingChild`);
+      const pendingChildApiUrl = new URL(`${window.location.origin}/api/pendingChild?owner=${owner}&repo=${repo}&issue_number=${issue_number}&parentJson=${encodedParentJson}`);
 
       try {
         const apiResult = await fetch(pendingChildApiUrl, {
           signal: controller.signal,
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             ...fetchHeaders
           },
-          body: JSON.stringify(requestBody)
         });
         console.log(`pendingChild: ${owner}/${repo}/${issue_number} - x-vercel-cache: `, apiResult.headers.get('x-vercel-cache'))
         const pendingChildResponse: PendingChildApiResponse = await apiResult.json();
@@ -162,7 +160,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         if (pendingChildFailure.error != null) {
           roadmapLoadErrorState.set(pendingChildFailure.error);
         } else {
-          asyncIssueDataState.merge([pendingChildSuccess.data]);
+          asyncIssueDataState.merge([{ ...pendingChildSuccess.data, parent: parent as IssueData }]);
           if (pendingChildSuccess.errors.length !== 0) {
             starMapsErrorsState.set((currentErrors) => mergeStarMapsErrorGroups(currentErrors, pendingChildSuccess.errors))
           }
