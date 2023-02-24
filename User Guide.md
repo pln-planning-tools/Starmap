@@ -1,4 +1,4 @@
-# StarMaps User Guide
+# Starmap User Guide
 
 Starmap is a tool used to generate graphical representations of project roadmaps from GitHub issues. For the purposes of Starmap, a roadmap is represented by a single root node issue in GitHub that contains links to date-bound project milestone issues within that roadmap.
 
@@ -6,12 +6,12 @@ The goal of Starmap is to help externalize planning, share team progress against
 
 For more context around roadmapping within the Protocol Labs Network, watch the [Roadmapping Presentation](https://drive.google.com/file/d/130ujRG5R9TXt9UcsIGl6S343X1ispxVC/view) from PL EngRes Team Summit in October 2022. This tool is introduced at 00:18:00.
 
-## Using Starmaps.app
+## Using Starmap.site
 
 To render a roadmap in Starmap, enter the related GitHub issue URL into the Starmap search bar. Depending on the size of the roadmap, the rendering may take a minute to load.
 
-- Project milestones will appear as fixed-width cards on the Starmap timeline. 
-   - If a milestone contains one or more nested “child” milestones, users can click on the milestone card to view that milestone and its nested child milestone(s). 
+- Project milestones will appear as fixed-width cards on the Starmap timeline.
+   - If a milestone contains one or more nested “child” milestones, users can click on the milestone card to view that milestone and its nested child milestone(s).
    - When applicable, Milestone cards will feature a green progress bar that reflects the completion status of nested child milestones.
    - To access the source GitHub issue for any milestone, users can click on the GitHub icon within each milestone card.
 - Starmap offers two rendering modes that can be set through the toggle button above the timeline:
@@ -28,7 +28,7 @@ The fundamental unit of a roadmap is a project milestone. In the context of road
 - A milestone can have multiple nested child milestones, which can also have their own child milestones, and so on.
   - In overview mode, you can only view the immediate child milestones of a milestone or root node roadmap. In detailed view mode, you can view child milestones up to two levels deep.
 - Starmap allows you to navigate through a roadmap at different levels of granularity by following the parent/child relationships. You can "zoom in" to a child milestone by clicking on its card, and "zoom out" by clicking the back button on your browser or following the breadcrumb trail.
-  - A roadmap can therefore be conceptualized as a directed acyclic graph (DAG). The root node of the DAG represents the roadmap itself, with child milestones linked as issues under this root node. These child milestones can be displayed by directing Starmap to the root issue. 
+  - A roadmap can therefore be conceptualized as a directed acyclic graph (DAG). The root node of the DAG represents the roadmap itself, with child milestones linked as issues under this root node. These child milestones can be displayed by directing Starmap to the root issue.
   - For more information on this, see the [Roadmap Root Nodes](#roadmap-root-nodes) section below.
 - Starmap allows you to easily create new roadmap visualizations by creating a new root "roadmap" node in GitHub that points to a set of existing milestones. This means that the same milestone can be included in multiple roadmaps.
 
@@ -40,6 +40,7 @@ The fundamental unit of a roadmap is a project milestone. In the context of road
 - Roadmaps are represented by a single root node, or GitHub issue, which contains links to milestones contained within that roadmap.
 - The roadmap root node and child milestones can be in any public repository as long as the issues satisfy the requirements outlined in this document.
   - This means that you can link to existing GitHub issues as child milestones.
+- Errors will be logged and displayed for the user in starmap.site
 
 ### Milestone Encodings
 
@@ -93,10 +94,31 @@ can expect to get from this milestone.
 #### Children
 
 - A milestone may have child milestones.
-- Child milestones are simply full URL links to other GitHub milestone issues.
-- Child milestones can exist in any public Github repository.
+- Child milestones are simply GitHub issue identifiers (#<issue_number>, <org>/<repo>#<issue_number>, or full URLs) to other GitHub milestone issues.
+- Child milestones can exist in any public GitHub repository.
 - It is expected that child milestone issues are themselves properly encoded milestones; otherwise they will be ignored by Starmap.
 - Within a parent issue, child milestones are encoded as follows (raw Markdown):
+
+##### Tasklist syntax
+
+Tasklists allow for "taskifying" of strings, and we have no way to link a random string to a GitHub issue. You must convert any [tasks to issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-tasklists#converting-draft-issues-to-issues-in-a-tasklist) for them to show up as a child milestone.
+
+We will do our best to support the expected syntax of GitHub's tasklist functionality.
+
+See https://docs.github.com/en/issues/tracking-your-work-with-issues/about-tasklists#creating-tasklists and https://github.com/pln-planning-tools/Starmap/issues/245 for more details.
+
+```
+```[tasklist]
+### Tasks
+- [ ] https://github.com/pln-roadmap/Roadmap-Vizualizer/issues/10
+- [ ] https://github.com/pln-roadmap/Roadmap-Vizualizer/issues/9
+- [ ] https://github.com/pln-roadmap/Roadmap-Vizualizer/issues/8
+\```
+```
+
+##### "Children:" syntax
+
+This syntax is deprecated. Please see https://github.com/pln-planning-tools/Starmap/issues/245 for more details.
 
 ```
 Children:
@@ -104,7 +126,6 @@ Children:
 - https://github.com/pln-roadmap/Roadmap-Vizualizer/issues/9
 - https://github.com/pln-roadmap/Roadmap-Vizualizer/issues/8
 ```
-- Errors will be logged and displayed for the user in starmaps.app
 
 ### Progress Indicators
 
@@ -127,16 +148,49 @@ Children:
 ### Templates
 
 #### Root Node Issue
+
+##### Using GitHub Tasklists
+
 ```
 Title: [Team/Project Name] [Duration] Roadmap
 
 Description (optional):
 The goal of this roadmap is to outline the key milestones and deliverables for our team/project over the next [Duration].
 
-Milestones:
-[GitHub Milestone Link 1] - [Date (ISO format)]
-[GitHub Milestone Link 2] - [Date (ISO format)]
-[GitHub Milestone Link 3] - [Date (ISO format)]
+```[tasklist]
+### Any descriptor or other text
+- [ ] #123 <!-- will be recognized by starmap -->
+- [ ] org/repo#123 <!-- will be recognized by starmap -->
+- [ ] some non-link description <!-- will NOT be recognized by starmap -->
+- [ ] https://github.com/org/repo/issue/987 <!-- will be recognized by starmap -->
+
+### Any text
+- [ ] #456 <!-- will be recognized by starmap -->
+- [ ] org/repo#567 <!-- will be recognized by starmap -->
+- [ ] https://github.com/other-org/other-repo/issue/987 <!-- will be recognized by starmap -->
+
+\```
+
+Note: This roadmap is subject to change as priorities and circumstances evolve.
+
+Starmap Link: [Starmap Link]
+
+```
+
+##### Using "Children:"
+
+**NOTE:** The children: section is deprecated. Please see https://github.com/pln-planning-tools/Starmap/issues/245 for more details
+
+```
+Title: [Team/Project Name] [Duration] Roadmap
+
+Description (optional):
+The goal of this roadmap is to outline the key milestones and deliverables for our team/project over the next [Duration].
+
+Children:
+[GitHub Milestone Link 1]
+[GitHub Milestone Link 2]
+[GitHub Milestone Link 3]
 
 Note: This roadmap is subject to change as priorities and circumstances evolve.
 
@@ -146,7 +200,7 @@ Starmap Link: [Starmap Link]
 
 #### Child Milestone Issues
 ```
-Title: [Team/Project Name] [Milestone Title] 
+Title: [Team/Project Name] [Milestone Title]
 
 Description:
 This milestone is part of the [Team/Project Name] [Duration] Roadmap (link to root issue).
