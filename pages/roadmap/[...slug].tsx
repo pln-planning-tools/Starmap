@@ -41,7 +41,7 @@ import {
  * x-vercel-cache will have the value STALE until the cache is refreshed.
  */
 const fetchHeaders = {
-  'Cache-Control': 's-maxage=30, stale-while-revalidate=86400' // 5 second cache, then revalidate every 24 hours
+  'Cache-Control': 's-maxage=30, stale-while-revalidate=86400' // 30 second cache, hold for 24 hours, revalidate after 30 seconds
 }
 
 export async function getServerSideProps(context): Promise<RoadmapServerSidePropsResult> {
@@ -86,7 +86,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       const roadmapApiUrl = `${window.location.origin}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
       try {
         const apiResult = await fetch(new URL(roadmapApiUrl), { method: 'GET', signal: controller.signal, headers: fetchHeaders })
-        console.log(`roadmap: ${owner}/${repo}/${issue_number} - x-vercel-cache: `, apiResult.headers.get('x-vercel-cache'))
+        // console.log(`roadmap: ${owner}/${repo}/${issue_number} - x-vercel-cache: `, apiResult.headers.get('x-vercel-cache'))
 
         const roadmapResponse: RoadmapApiResponse = await apiResult.json();
 
@@ -153,7 +153,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
             ...fetchHeaders
           },
         });
-        console.log(`pendingChild: ${owner}/${repo}/${issue_number} - x-vercel-cache: `, apiResult.headers.get('x-vercel-cache'))
+        // console.log(`pendingChild: ${owner}/${repo}/${issue_number} - x-vercel-cache: `, apiResult.headers.get('x-vercel-cache'))
         const pendingChildResponse: PendingChildApiResponse = await apiResult.json();
         const pendingChildFailure = pendingChildResponse as PendingChildApiResponseFailure;
         const pendingChildSuccess = pendingChildResponse as PendingChildApiResponseSuccess;

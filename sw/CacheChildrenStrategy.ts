@@ -23,7 +23,7 @@ export class CacheChildren extends Strategy implements Strategy {
   }
   async populateCacheAsync(cacheKey: string, request: Request, handler: StrategyHandler): Promise<void> {
     const response = await handler.fetch(request.clone())
-    console.log(`SW NEW: ${cacheKey} - x-vercel-cache: `, response.headers.get('x-vercel-cache'))
+    // console.log(`SW NEW: ${cacheKey} - x-vercel-cache: `, response.headers.get('x-vercel-cache'))
     if (!response.ok) {
       return
     }
@@ -52,7 +52,7 @@ export class CacheChildren extends Strategy implements Strategy {
       const parent = parentJson ? JSON.parse(parentJson) : null
       const node_id = parent?.node_id || ''
 
-      // We are using the owner, repo, issue_number, and node_id as the cache key.
+      // We are using the owner, repo and issue number as the cache key.
       // We are also using the parent node_id as part of the cache key.
       // This is because the children can have multiple parents.
       // That will cause cachce collisions.
@@ -67,7 +67,7 @@ export class CacheChildren extends Strategy implements Strategy {
         await handler.doneWaiting()
         cachedResponse = await handler.cacheMatch(cacheKey)
       } else {
-        console.log(`SW CACHED: ${cacheKey} - x-vercel-cache: `, cachedResponse.headers.get('x-vercel-cache'))
+        // console.log(`SW CACHED: ${cacheKey} - x-vercel-cache: `, cachedResponse.headers.get('x-vercel-cache'))
       }
 
       return cachedResponse

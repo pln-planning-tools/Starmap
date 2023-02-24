@@ -27,7 +27,6 @@ function App({ Component, pageProps }) {
   useEffect(() => {
     if (webVitalsRegistered) return
     webVitalsRegistered = true
-    console.log('web-vitals registration')
     onCLS(logDelta, { reportAllChanges: true });
     onFID(logDelta, { reportAllChanges: true });
     onLCP(logDelta, { reportAllChanges: true });
