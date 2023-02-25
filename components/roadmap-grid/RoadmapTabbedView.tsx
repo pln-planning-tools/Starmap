@@ -27,6 +27,7 @@ import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import SvgListViewIcon from '../icons/svgr/SvgListViewIcon';
+import RoadmapList from '../RoadmapList';
 
 export function RoadmapTabbedView({
   issueDataState,
@@ -84,11 +85,17 @@ export function RoadmapTabbedView({
     )
   };
 
-  const renderTabPanel = (_title: string, index: number) => (
-    <TabPanel p={0} key={index}>
-      <RoadmapDetailed issueDataState={issueDataState} />
-    </TabPanel>
-  );
+  const renderTabPanel = (title: typeof tabs[number], index: number) => {
+    let component = <RoadmapDetailed issueDataState={issueDataState} />
+    if (title === 'List') {
+      component = <RoadmapList issueDataState={issueDataState} />
+    }
+    return (
+      <TabPanel p={0} key={index}>
+        {component}
+      </TabPanel>
+    )
+  };
 
   return (
     <>
