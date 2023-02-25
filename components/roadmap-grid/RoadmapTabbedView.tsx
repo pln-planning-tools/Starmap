@@ -26,6 +26,7 @@ import Header from './header';
 import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
+import SvgListViewIcon from '../icons/svgr/SvgListViewIcon';
 
 export function RoadmapTabbedView({
   issueDataState,
@@ -35,12 +36,13 @@ export function RoadmapTabbedView({
   const router = useRouter();
 
   // Defining what tabs to show and in what order
-  const tabs = ['Detailed View','Overview'] as const;
+  const tabs = ['Detailed View', 'Overview', 'List'] as const;
 
   // Mapping the views to the tabs
   const tabViewMap: Record<typeof tabs[number], ViewMode> = {
     'Detailed View': ViewMode.Detail,
     'Overview': ViewMode.Simple,
+    'List': ViewMode.List,
   };
 
   // Mapping the tabs to the views
@@ -58,11 +60,13 @@ export function RoadmapTabbedView({
     }, undefined, { shallow: true });
   }
 
-  const renderTab = (title: string, index: number) => {
+  const renderTab = (title: typeof tabs[number], index: number) => {
     let TabIcon = SvgDetailViewIcon
 
     if (title == "Overview") {
       TabIcon = SvgOverviewIcon
+    } else if (title == "List") {
+      TabIcon = SvgListViewIcon
     }
 
     return (
