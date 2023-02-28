@@ -37,7 +37,7 @@
 }
 
 .bulletIcon.notStarted {
-  border: 2px solid var(--chakra-colors-inactive);
+  border: 1px solid var(--chakra-colors-inactive);
 }
 
 .bulletIcon.inProgress {
