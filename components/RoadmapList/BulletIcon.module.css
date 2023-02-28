@@ -1,20 +1,50 @@
-.bulletIcon {
+.bulletIcon_Wrapper {
+  background: white;
   height: 32px;
   width: 32px;
   border-radius: 100%;
   flex-shrink: 0;
-  font-size: 14px;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   position: relative;
   z-index: 1;
-  border: 2px solid #282f4d;
-  color: #000;
-  background: #1e58de;
 }
 
-.bulletIcon .bulletIcon_notStarted {
-  background: #282f4d;
+.bulletIcon_Wrapper.notStarted {
+  border: 6px solid var(--chakra-colors-inactiveAccent);
+
+}
+.bulletIcon_Wrapper.inProgress {
+  border: 6px solid var(--chakra-colors-progressGreenAccent);
+}
+.bulletIcon_Wrapper.completed {
+  border: 6px solid var(--chakra-colors-progressGreenAccent);
+}
+
+.bulletIcon {
+  height: 24px;
+  width: 24px;
+  border-radius: 100%;
+  flex-shrink: 0;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.bulletIcon.notStarted {
+  border: 2px solid var(--chakra-colors-inactive);
+}
+
+.bulletIcon.inProgress {
+  z-index: 1; /** Just to get rid of empty ruleset warning */
+}
+
+.bulletIcon.completed {
+  background: var(--chakra-colors-progressGreen);
+  border: 2px solid var(--chakra-colors-progressGreen);
 }

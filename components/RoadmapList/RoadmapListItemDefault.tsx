@@ -23,7 +23,7 @@ export default function RoadmapListItemDefault ({ issue, index, issuesWithDueDat
       {/* <> */}
       <GridItem area="date">
         <Center>
-          <Text size="l" color="#1FA5FF">{dayjs(issue.due_date).format('MMM D, YYYY')}</Text>
+          <Text size="l" color="spotLightBlue" lineHeight="32px">{dayjs(issue.due_date).format('MMM D, YYYY')}</Text>
         </Center>
       </GridItem>
       <GridItem area="icon">
@@ -33,15 +33,15 @@ export default function RoadmapListItemDefault ({ issue, index, issuesWithDueDat
       </GridItem>
       <GridItem area="title">
         <HStack gap={0} alignItems="flex-start">
-          <Link href={issue.html_url} lineHeight="1.5rem" isExternal>
+          <Link href={issue.html_url} lineHeight="32px" isExternal>
             <HStack gap={0} alignItems="center" wrap={"nowrap"}>
               <SvgGitHubLogo style={{ display:'inline', color: '#313239' }} fill="#313239" />
-              <Text color="#313239" style={{ whiteSpace: 'nowrap' }}>{owner}/{repo}#{issue_number}</Text>
-              {/* <ExternalLinkIcon mx='2px' color="#313239"/> */}
+              <Text color="text" style={{ whiteSpace: 'nowrap' }}>{owner}/{repo}#{issue_number}</Text>
+              {/* <ExternalLinkIcon mx='2px' color="text"/> */}
             </HStack>
           </Link>
           {/* <Flex> margin-top:-0.2rem */}
-            <Text color="#4987bd" fontSize={"xl"} lineHeight="1.5rem">{issue.title}</Text>
+            <Text color="linkBlue" fontSize={"xl"} lineHeight="32px">{issue.title}</Text>
           {/* </Flex> */}
         </HStack>
       </GridItem>

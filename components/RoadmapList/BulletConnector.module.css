@@ -1,15 +1,12 @@
 .bulletConnector {
-  /* height: calc(100% + 32px); */
-  /* min-height:100px; */
+  /**
+   * This top value must be set to the size of the .bulletIcon_Wrapper class in order to not appear underneath
+   * transparent colors
+  */
+  top: 26px;
   width: 2px;
-  /* position: absolute; */
-  top: 0;
   bottom: 0;
-  /* left: -17px; */
-  background: #282f4d;
-  /* width: 2px; */
-  /* content: " "; */
-  /* height: max-content; */
-  /* overflow: visible; */
+  /** Spotlight Blue */
+  background: #1FA5FF;
   position: absolute;
 }
