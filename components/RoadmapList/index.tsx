@@ -1,6 +1,9 @@
 import React from 'react';
-import { IssueDataViewInput } from '../../lib/types';
+import { IssueData, IssueDataViewInput } from '../../lib/types';
 import SortedIssuesWithDueDates from './SortedIssuesWithDueDates';
+
+import styles from './RoadmapList.module.css';
+import { Divider } from '@chakra-ui/react';
 
 interface RoadmapListProps extends IssueDataViewInput {
   maybe?: unknown
@@ -28,7 +31,7 @@ export default function RoadmapList({ issueDataState }: RoadmapListProps): JSX.E
       acc.issuesWithoutDueDates.push(issue)
     }
     return acc
-  }, { issuesWithDueDates: [], issuesWithoutDueDates: [] })
+  }, { issuesWithDueDates: [], issuesWithoutDueDates: [] } as {issuesWithDueDates: IssueData[], issuesWithoutDueDates: IssueData[]})
     // .filter((issue) => issue.due_date.length > 0)
     // .sort((a, b) => new Date(a.due_date) - new Date(b.due_date))
   console.log(`RoadmapList issuesWithDueDates: `, issuesWithDueDates);
@@ -38,15 +41,17 @@ export default function RoadmapList({ issueDataState }: RoadmapListProps): JSX.E
   // const issuesWithoutDueDate = flattenedIssues.filter((issue) => issue.due_date.length === 0)
 
   return (
-    <div>
-      {/* <h1>{rootIssueTitle}</h1>
-      <h2>{rootIssueDescription}</h2> */}
+    <>
+    <Divider pb="3" />
+    <div className={styles.roadmapList}>
+      <h1>{rootIssueTitle}</h1>
+      <h2>{rootIssueDescription}</h2>
       <SortedIssuesWithDueDates issuesWithDueDates={sortedIssuesWithDueDates} />
       <br/>
       <h2>Issues without due dates</h2>
       <ul>
-        {issuesWithoutDueDates.map((issue) => (
-          <li key={issue.id}>
+        {issuesWithoutDueDates.map((issue, index) => (
+          <li key={index}>
             <article>
               <h3>{issue.title}</h3>
               <p>{issue.description}</p>
@@ -55,5 +60,6 @@ export default function RoadmapList({ issueDataState }: RoadmapListProps): JSX.E
         ))}
       </ul>
     </div>
+    </>
   )
 }
