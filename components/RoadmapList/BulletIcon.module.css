@@ -1,0 +1,20 @@
+.bulletIcon {
+  height: 32px;
+  width: 32px;
+  border-radius: 100%;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  border: 2px solid #282f4d;
+  color: #000;
+  background: #1e58de;
+}
+
+.bulletIcon .bulletIcon_notStarted {
+  background: #282f4d;
+}

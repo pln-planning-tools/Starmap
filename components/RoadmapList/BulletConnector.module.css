@@ -1,0 +1,14 @@
+.bulletConnector {
+  height: calc(100% + 32px);
+  width: 2px;
+  /* position: absolute; */
+  /* top: 15px; */
+  /* bottom: 0; */
+  /* left: -17px; */
+  background: #282f4d;
+  /* width: 2px; */
+  /* content: " "; */
+  /* height: max-content; */
+  overflow: visible;
+  position: absolute;
+}

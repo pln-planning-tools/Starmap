@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import { IssueDataViewInput } from '../../lib/types';
 import SortedIssuesWithDueDates from './SortedIssuesWithDueDates';
 
