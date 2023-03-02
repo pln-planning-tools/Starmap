@@ -74,6 +74,11 @@ Example: Starmap 2023 Roadmap
 Example: Starmap Q4 2022 Roadmap
 ```
 
+```
+Title: [Team/Project Name] [Milestone Title]
+Example: Starmap Hackathon
+```
+
 #### Description
 
 - A milestone **may** have a description field.
