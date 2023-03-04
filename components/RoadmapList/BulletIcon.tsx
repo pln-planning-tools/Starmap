@@ -25,7 +25,7 @@ export default function BulletIcon ({ completion_rate }: {completion_rate: numbe
     <span className={wrapperClassNames}>
       <span className={iconClassNames}>
         <CircularProgress value={completion_rate} size='30px' trackColor="transparent" color={color}>
-          <CircularProgressLabel>{inProgress ? `${completion_rate}%` : ''}</CircularProgressLabel>
+          {/* <CircularProgressLabel>{inProgress ? `${completion_rate}%` : ''}</CircularProgressLabel> */}
         </CircularProgress>
       </span>
     </span>
