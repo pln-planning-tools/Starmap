@@ -1,4 +1,4 @@
-import { getDueDate } from '../parser';
+import { getDescription, getDueDate } from '../parser';
 import { GithubIssueDataWithGroupAndChildren, IssueData } from '../types';
 import { ErrorManager } from './errorManager';
 

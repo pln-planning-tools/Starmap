@@ -2,10 +2,10 @@ import React from 'react';
 import { IssueData, IssueDataViewInput } from '../../lib/types';
 
 import styles from './RoadmapList.module.css';
-import { Checkbox, Divider, Radio, RadioGroup, Skeleton, Stack, Text } from '@chakra-ui/react';
+import { Divider, Radio, RadioGroup, Stack, Text } from '@chakra-ui/react';
 import RoadmapListItem from './RoadmapListItem';
 import { dayjs } from '../../lib/client/dayjs';
-import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
+import { ImmutableObject } from '@hookstate/core';
 
 interface RoadmapListProps extends IssueDataViewInput {
   maybe?: unknown
@@ -34,31 +34,6 @@ function sortMilestones (a, b) {
 // eslint-disable-next-line import/no-unused-modules
 export default function RoadmapList({ issueDataState }: RoadmapListProps): JSX.Element {
   const [groupBy, setGroupBy] = React.useState('directChildren')
-  const globalLoadingState = useGlobalLoadingState()
-  // return skeleton loader if isGlobalLoading is true
-  if (globalLoadingState.get()) {
-    return (
-      <Skeleton height='20px' width='100%' />
-    )
-  }
-  //   return (
-  //     <div className={styles.roadmapList}>
-  //       <div className={styles.roadmapList__header}>
-  //         <div className={styles.roadmapList__header__title}>
-  //           <Skeleton height='20px' width='200px' />
-  //         </div>
-  //         <div className={styles.roadmapList__header__description}>
-  //           <Skeleton height='20px' width='400px' />
-  //         </div>
-  //       </div>
-  //       <div className={styles.roadmapList__body}>
-  //         <div className={styles.roadmapList__body__list}>
-  //           <Skeleton height='20px' width='100%' />
-  //           <Skeleton height='20px' width='100%' />
-  //           <Skeleton height='20px' width='100%' />
-  //           <Skeleton height='20px' width='100%' />
-  //           <Skeleton height='20px' width='100%' />
-
 
   const rootIssueTitle = issueDataState.get({ noproxy: true }).title;
   const rootIssueDescription = issueDataState.get({ noproxy: true }).description;
@@ -97,7 +72,7 @@ export default function RoadmapList({ issueDataState }: RoadmapListProps): JSX.E
       acc[month] = acc[month].concat(issue).sort(sortMilestones)
     }
     return acc
-  }, {} as { [key: string]: IssueData[] })
+  }, {} as { [key: string]: ImmutableObject<IssueData>[] })
   console.log(`RoadmapList grouped: `, grouped);
   // const issuesWithoutDueDate = flattenedIssues.filter((issue) => issue.due_date.length === 0)
   return (
