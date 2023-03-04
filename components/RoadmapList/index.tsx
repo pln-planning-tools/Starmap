@@ -5,20 +5,27 @@ import { IssueDataViewInput } from '../../lib/types';
 import RoadmapListItemDefault from './RoadmapListItemDefault';
 import { ListIssueViewModel } from './types';
 import styles from './RoadmapList.module.css';
+import { getTimeFromDateString } from '../../lib/helpers';
 
 interface RoadmapListProps extends IssueDataViewInput {
   maybe?: unknown
 }
 
+/**
+ * Sorts milestones by due date, in ascending order (2022-01-01 before 2023-01-01) with invalid dates at the end.
+ * @param {ListIssueViewModel | IssueData} a
+ * @param {ListIssueViewModel | IssueData} b
+ * @returns
+ */
 function sortMilestones (a, b) {
-  if (a.due_date.length === 0) {
-    // a has an invalid ETA, so it should be sorted to the end
-    return 1
-  } else if (b.due_date.length === 0) {
-    // b has an invalid ETA, so it should be sorted to the end
-    return -1
-  }
-  return new Date(a.due_date).getTime() - new Date(b.due_date).getTime()
+  // Get either a unix timestamp or Number.MAX_VALUE
+  const aTime = getTimeFromDateString(a.due_date, Number.MAX_VALUE)
+  const bTime = getTimeFromDateString(b.due_date, Number.MAX_VALUE)
+
+  // if a is valid and b is not, MAX_VALUE - validTime will be positive.
+  // if b is valid and a is not, MAX_VALUE - validTime will be negative.
+  // if both are valid, or invalid, result is 0.
+  return aTime - bTime
 }
 
 export default function RoadmapList({ issueDataState }: RoadmapListProps): JSX.Element {
@@ -26,7 +33,7 @@ export default function RoadmapList({ issueDataState }: RoadmapListProps): JSX.E
 
   const [isDevMode_groupBy, _setIsDevMode_groupBy] = useState(false);
   const [isDevMode_duplicateDates, _setIsDevMode_duplicateDates] = useState(true);
-  const [dupeDateToggleValue, setDupeDateToggleValue] = useState('show');
+  const [dupeDateToggleValue, setDupeDateToggleValue] = useState('hide');
   const flattenedIssues = issueDataState.children.flatMap((issueData) => issueData.get({ noproxy: true }))
   const datesSeen = new Set<string>();
   const sortedIssuesWithDueDates = flattenedIssues.sort(sortMilestones)
