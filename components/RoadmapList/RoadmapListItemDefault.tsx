@@ -4,7 +4,6 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { IssueData } from '../../lib/types';
 import SvgGitHubLogo from '../icons/svgr/SvgGitHubLogo';
 import BulletConnector from './BulletConnector';
 import BulletIcon from './BulletIcon';
@@ -13,11 +12,15 @@ import { dayjs } from '../../lib/client/dayjs';
 import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
 import { ViewMode } from '../../lib/enums';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
-import { ImmutableObject } from '@hookstate/core';
+import { ListIssueViewModel } from './types';
 
-type ListIssueViewModel = Pick<ImmutableObject<IssueData>, 'html_url' | 'due_date' | 'title' | 'completion_rate' | 'description' | 'children'>
-// eslint-disable-next-line import/no-unused-modules
-export default function RoadmapListItemDefault ({ issue, index, issues }: {issue: ListIssueViewModel, index: number, issues: ListIssueViewModel[]}) {
+interface RoadmapListItemDefaultProps {
+  issue: ListIssueViewModel
+  index: number
+  issues: ListIssueViewModel[]
+}
+
+export default function RoadmapListItemDefault ({ issue, index, issues }: RoadmapListItemDefaultProps) {
   const { owner, repo, issue_number } = paramsFromUrl(issue.html_url)
   const childLink = getLinkForRoadmapChild({ issueData: issue, query: useRouter().query, viewMode: ViewMode.List })
   const globalLoadingState = useGlobalLoadingState();
@@ -42,13 +45,13 @@ export default function RoadmapListItemDefault ({ issue, index, issues }: {issue
       gridTemplateColumns={'1fr 1fr 8fr'}
       columnGap={0}
       rowGap={0}>
-      <GridItem area="date" lineHeight="32px">
+      {issue.isNested ? null : <GridItem area="date" lineHeight="32px">
         <Center>
           <Skeleton isLoaded={!globalLoadingState.get()}>
             <Text size="l" color="spotLightBlue" lineHeight="32px">{issue.due_date ? dayjs(issue.due_date).format('MMM D, YYYY') : 'unknown'}</Text>
           </Skeleton>
         </Center>
-      </GridItem>
+      </GridItem>}
       <GridItem area="icon" lineHeight="32px">
         <Center>
           <Skeleton isLoaded={!globalLoadingState.get()}>
