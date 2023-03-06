@@ -1,4 +1,4 @@
-import { CircularProgress, CircularProgressLabel } from '@chakra-ui/react'
+import { CircularProgress } from '@chakra-ui/react'
 import React from 'react'
 import styles from './BulletIcon.module.css'
 
@@ -6,13 +6,11 @@ export default function BulletIcon ({ completion_rate }: {completion_rate: numbe
   let wrapperClassNames = styles.bulletIcon_Wrapper
   let iconClassNames = styles.bulletIcon
   let color = 'inactive'
-  let inProgress = false
   if (completion_rate === 100) {
     color = 'progressGreenAccent'
     iconClassNames += ` ${styles.completed}`
     wrapperClassNames += ` ${styles.completed}`
   } else if (completion_rate > 0) {
-    inProgress = true
     iconClassNames += ` ${styles.inProgress}`
     wrapperClassNames += ` ${styles.inProgress}`
     color = 'progressGreen'
