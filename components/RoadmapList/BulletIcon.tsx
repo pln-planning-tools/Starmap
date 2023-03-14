@@ -3,28 +3,26 @@ import React from 'react'
 import styles from './BulletIcon.module.css'
 
 export default function BulletIcon ({ completion_rate }: {completion_rate: number}) {
-  let wrapperClassNames = styles.bulletIcon_Wrapper
-  let iconClassNames = styles.bulletIcon
+  const wrapperClassNames = [styles.bulletIcon_Wrapper]
+  const iconClassNames = [styles.bulletIcon]
   let color = 'inactive'
   if (completion_rate === 100) {
     color = 'progressGreenAccent'
-    iconClassNames += ` ${styles.completed}`
-    wrapperClassNames += ` ${styles.completed}`
+    iconClassNames.push(styles.completed)
+    wrapperClassNames.push(styles.completed)
   } else if (completion_rate > 0) {
-    iconClassNames += ` ${styles.inProgress}`
-    wrapperClassNames += ` ${styles.inProgress}`
+    iconClassNames.push(styles.inProgress)
+    wrapperClassNames.push(styles.inProgress)
     color = 'progressGreen'
   } else {
-    iconClassNames += ` ${styles.notStarted}`
-    wrapperClassNames += ` ${styles.notStarted}`
+    iconClassNames.push(styles.notStarted)
+    wrapperClassNames.push(styles.notStarted)
   }
 
   return (
-    <span className={wrapperClassNames}>
-      <span className={iconClassNames}>
-        <CircularProgress value={completion_rate} size='30px' trackColor="transparent" color={color}>
-          {/* <CircularProgressLabel>{inProgress ? `${completion_rate}%` : ''}</CircularProgressLabel> */}
-        </CircularProgress>
+    <span className={wrapperClassNames.join(' ')}>
+      <span className={iconClassNames.join(' ')}>
+        <CircularProgress value={completion_rate} size='30px' trackColor="transparent" color={color} />
       </span>
     </span>
   )

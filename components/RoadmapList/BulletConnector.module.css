@@ -7,6 +7,6 @@
   width: 2px;
   bottom: 0;
   /** Spotlight Blue */
-  background: #1FA5FF;
+  background: var(--chakra-colors-spotLightBlue);
   position: absolute;
 }

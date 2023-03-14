@@ -173,15 +173,20 @@ export const getDescription = (issueBodyText: string): string => {
 
   const [firstLine, ...linesToParse] = getSectionLines(issueBodyText, 'description:')
     .split(/\r\n|\r|\n/) // We do not want to replace multiple newlines, only one.
-    // .slice(1);
-  const firstLineContent = firstLine.split('description:')[1]?.replace(/-->/g, '').trim() ?? '';
+
+  // the first line may contain only "description:" or "description: This is the start of my description"
+  const firstLineContent = firstLine
+      .replace(/^.{0,}description:/, '')
+      .replace(/-->/g, '') // may be part of an HTML comment so it's hidden from the user. Remove the HTML comment end tag
+      .trim();
+
   const descriptionLines: string[] = []
   if (firstLineContent !== '') {
     descriptionLines.push(firstLineContent)
   }
 
-  for (const line of linesToParse) {
-    if (line.trim() === '' || line.includes('children:') || line.includes('```[tasklist]') || line.includes('eta:')) {
+  for (const line of linesToParse.map((line) => line.trim())) {
+    if (line === '' || line.includes('children:') || line.includes('```[tasklist]') || line.includes('eta:')) {
       break
     }
     descriptionLines.push(line.trim())

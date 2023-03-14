@@ -14,11 +14,12 @@
 
 .bulletIcon_Wrapper.notStarted {
   border: 6px solid var(--chakra-colors-inactiveAccent);
-
 }
+
 .bulletIcon_Wrapper.inProgress {
   border: 6px solid var(--chakra-colors-progressGreenAccent);
 }
+
 .bulletIcon_Wrapper.completed {
   border: 6px solid var(--chakra-colors-progressGreenAccent);
 }

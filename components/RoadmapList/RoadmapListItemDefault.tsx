@@ -20,22 +20,34 @@ interface RoadmapListItemDefaultProps {
   issues: ListIssueViewModel[]
 }
 
+function TitleText ({ hasChildren, issue }: Pick<RoadmapListItemDefaultProps, 'issue'> & {hasChildren: boolean}) {
+  return (
+    <Text fontWeight="semibold" color="linkBlue" fontSize={"xl"} lineHeight="32px">
+      {hasChildren ? <LinkIcon lineHeight="32px" boxSize="10px" /> : null} {issue.title}
+    </Text>
+  )
+}
+
+function TitleTextMaybeLink ({ issue, hasChildren, index, childLink }: Pick<RoadmapListItemDefaultProps, 'issue'> & {hasChildren: boolean, index: number, childLink: string}) {
+  const titleText = <TitleText hasChildren={hasChildren} issue={issue} />
+  if (!hasChildren) {
+    return titleText
+  }
+  return (
+      <NextLink key={`roadmapItem-${index}`} href={childLink} passHref>
+        <Link cursor="pointer" _hover={{ textDecoration: 'none' }}>
+          {titleText}
+        </Link>
+      </NextLink>
+  )
+}
+
 export default function RoadmapListItemDefault ({ issue, index, issues }: RoadmapListItemDefaultProps) {
   const { owner, repo, issue_number } = paramsFromUrl(issue.html_url)
   const childLink = getLinkForRoadmapChild({ issueData: issue, query: useRouter().query, viewMode: ViewMode.List })
   const globalLoadingState = useGlobalLoadingState();
   const hasChildren = childLink !== '#'
-
-  let titleTextOrLink = <Text fontWeight="semibold" color="linkBlue" fontSize={"xl"} lineHeight="32px">{hasChildren ? <LinkIcon lineHeight="32px" boxSize="10px" /> : null} {issue.title}</Text>
-  if (hasChildren) {
-    titleTextOrLink = (
-      <NextLink key={`roadmapItem-${index}`} href={childLink} passHref>
-        <Link cursor="pointer" _hover={{ textDecoration: 'none' }}>
-          {titleTextOrLink}
-        </Link>
-      </NextLink>
-    )
-  }
+  const issueDueDate = issue.due_date ? dayjs(issue.due_date).format('MMM D, YYYY') : 'unknown'
 
   return (
     <Grid width="100%" key={issue.html_url}
@@ -45,13 +57,13 @@ export default function RoadmapListItemDefault ({ issue, index, issues }: Roadma
       gridTemplateColumns={'1fr 1fr 8fr'}
       columnGap={0}
       rowGap={0}>
-      {issue.isNested ? null : <GridItem area="date" lineHeight="32px">
+      <GridItem area="date" lineHeight="32px">
         <Center>
           <Skeleton isLoaded={!globalLoadingState.get()}>
-            <Text size="l" color="spotLightBlue" lineHeight="32px">{issue.due_date ? dayjs(issue.due_date).format('MMM D, YYYY') : 'unknown'}</Text>
+            <Text size="l" color="spotLightBlue" lineHeight="32px">{issueDueDate}</Text>
           </Skeleton>
         </Center>
-      </GridItem>}
+      </GridItem>
       <GridItem area="icon" lineHeight="32px">
         <Center>
           <Skeleton isLoaded={!globalLoadingState.get()}>
@@ -70,13 +82,13 @@ export default function RoadmapListItemDefault ({ issue, index, issues }: Roadma
             </Skeleton>
           </Link>
           <Skeleton isLoaded={!globalLoadingState.get()}>
-            {titleTextOrLink}
+            <TitleTextMaybeLink hasChildren={hasChildren} issue={issue} index={index} childLink={childLink} />
           </Skeleton>
         </HStack>
       </GridItem>
       <GridItem gridRow="1/-1" area="line" pos="relative">
         <Center height="100%">
-          <BulletConnector isLast={index === issues.length - 1}>&nbsp;</BulletConnector>
+          <BulletConnector isLast={index === issues.length - 1} />
         </Center>
       </GridItem>
       <GridItem area="description" pb="2rem">

@@ -31,45 +31,14 @@ function sortMilestones (a, b) {
 export default function RoadmapList({ issueDataState }: RoadmapListProps): JSX.Element {
   const [groupBy, setGroupBy] = useState('directChildren')
 
-  const [isDevMode_groupBy, _setIsDevMode_groupBy] = useState(false);
-  const [isDevMode_duplicateDates, _setIsDevMode_duplicateDates] = useState(true);
-  const [dupeDateToggleValue, setDupeDateToggleValue] = useState('hide');
+  const [isDevModeGroupBy, _setIsDevModeGroupBy] = useState(false);
+  const [isDevModeDuplicateDates, _setIsDevModeDuplicateDates] = useState(false);
+  const [dupeDateToggleValue, setDupeDateToggleValue] = useState('show');
   const flattenedIssues = issueDataState.children.flatMap((issueData) => issueData.get({ noproxy: true }))
-  const datesSeen = new Set<string>();
   const sortedIssuesWithDueDates = flattenedIssues.sort(sortMilestones)
-    .map((issue) => {
-      const issueViewModel: ListIssueViewModel = {
-        ...issue,
-        isNested: false
-      }
-      if (datesSeen.has(issue.due_date) && dupeDateToggleValue === 'hide') {
-        issueViewModel.isNested = true
-      } else {
-        datesSeen.add(issue.due_date)
-      }
-      return issueViewModel
-    })
 
-  /**
-   * Group by the selected option
-   */
-  // const grouped = groupBy === 'none' ? sortedIssuesWithDueDates : sortedIssuesWithDueDates.reduce((acc, issue) => {
-  //   if (groupBy === 'parent') {
-  //     if (acc[issue.parent.html_url]) {
-  //       acc[issue.parent.html_url].push(issue)
-  //     } else {
-  //       acc[issue.parent.html_url] = [issue]
-  //     }
-  //   } else if (groupBy === 'month') {
-  //     const month = issue.due_date ? dayjs(issue.due_date).format('MMM YYYY') : 'Unknown'
-  //     acc[month] = acc[month] ?? []
-  //     acc[month] = acc[month].concat(issue).sort(sortMilestones)
-  //   }
-
-  //   return acc
-  // }, {} as { [key: string]: ImmutableObject<ListIssueViewModel | IssueData>[] })
   let groupByToggle: JSX.Element | null = null
-  if (isDevMode_groupBy) {
+  if (isDevModeGroupBy) {
     groupByToggle = (
       <RadioGroup onChange={setGroupBy} value={groupBy}>
         <Stack direction='row'>
@@ -84,7 +53,7 @@ export default function RoadmapList({ issueDataState }: RoadmapListProps): JSX.E
   }
 
   let dupeDateToggle: JSX.Element | null = null
-  if (isDevMode_duplicateDates) {
+  if (isDevModeDuplicateDates) {
     dupeDateToggle = (
       <RadioGroup onChange={setDupeDateToggleValue} value={dupeDateToggleValue}>
         <Stack direction='row'>
@@ -98,13 +67,13 @@ export default function RoadmapList({ issueDataState }: RoadmapListProps): JSX.E
 
   return (
     <>
-    {groupByToggle}
-    {dupeDateToggle}
-    <div className={styles.roadmapList}>
-      {sortedIssuesWithDueDates.map((issue, index) => (
-        <RoadmapListItemDefault key={index} issue={issue} index={index} issues={sortedIssuesWithDueDates} />
-      ))}
-    </div>
+      {groupByToggle}
+      {dupeDateToggle}
+      <div className={styles.roadmapList}>
+        {sortedIssuesWithDueDates.map((issue, index) => (
+          <RoadmapListItemDefault key={index} issue={issue} index={index} issues={sortedIssuesWithDueDates} />
+        ))}
+      </div>
     </>
   )
 }
