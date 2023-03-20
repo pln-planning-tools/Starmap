@@ -14,7 +14,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<RoadmapApiResponse>
 ): Promise<void> {
-  console.log(`API hit: roadmap`, req.query);
+  if (req.method !== 'GET') {
+    res.status(405).send({ error: { ...new Error('Only GET requests allowed'), code: '405' } })
+    return
+  }
   const { platform = 'github', owner, repo, issue_number } = req.query;
   const options = Object.create({});
   options.depth = Number(req.query.depth);
