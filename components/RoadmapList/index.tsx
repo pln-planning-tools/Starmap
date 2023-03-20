@@ -3,7 +3,6 @@ import { Radio, RadioGroup, Stack, Text } from '@chakra-ui/react';
 
 import { IssueDataViewInput } from '../../lib/types';
 import RoadmapListItemDefault from './RoadmapListItemDefault';
-import { ListIssueViewModel } from './types';
 import styles from './RoadmapList.module.css';
 import { getTimeFromDateString } from '../../lib/helpers';
 
