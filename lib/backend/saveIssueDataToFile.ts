@@ -8,6 +8,8 @@ import { paramsFromUrl } from '../paramsFromUrl';
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
+const pathToSaveFiles = join(__dirname, '..', '..', 'cache');
+
   /**
    * Save the finalIssueData to a file with the owner, repo, and issue number as name
    */
@@ -20,7 +22,6 @@ export function saveIssueDataToFile(finalIssueData: IssueData) {
    */
   const { owner, repo, issue_number } = paramsFromUrl(finalIssueData.html_url);
 
-  const pathToSaveFiles = join(__dirname, '..', '..', 'tests', 'fixtures', 'issueData');
   const fileName = `${owner}-${repo}-${issue_number}.json`;
   const filePath = join(pathToSaveFiles, fileName);
   console.log(`Saving ${owner}/${repo}#${issue_number} issueData to ${filePath}`);
@@ -35,7 +36,6 @@ export async function checkForSavedIssueData({ owner, repo, issue_number }): Pro
     throw new Error('checkForSavedIssueData not enabled. Check that IS_LOCAL and ENABLE_ISSUEDATA_READING are set to true');
   }
 
-  const pathToSaveFiles = join(__dirname, '..', '..', 'tests', 'fixtures', 'issueData');
   const fileName = `${owner}-${repo}-${issue_number}.json`;
   const filePath = join(pathToSaveFiles, fileName);
   try {

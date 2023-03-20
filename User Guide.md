@@ -40,6 +40,7 @@ The fundamental unit of a roadmap is a project milestone. In the context of road
 - Roadmaps are represented by a single root node, or GitHub issue, which contains links to milestones contained within that roadmap.
 - The roadmap root node and child milestones can be in any public repository as long as the issues satisfy the requirements outlined in this document.
   - This means that you can link to existing GitHub issues as child milestones.
+- Errors will be logged and displayed for the user in starmap.site
 
 ### Milestone Encodings
 
@@ -73,6 +74,11 @@ Example: Starmap 2023 Roadmap
 Example: Starmap Q4 2022 Roadmap
 ```
 
+```
+Title: [Team/Project Name] [Milestone Title]
+Example: Starmap Hackathon
+```
+
 #### Description
 
 - A milestone **may** have a description field.
@@ -93,10 +99,31 @@ can expect to get from this milestone.
 #### Children
 
 - A milestone may have child milestones.
-- Child milestones are simply full URL links to other GitHub milestone issues.
-- Child milestones can exist in any public Github repository.
+- Child milestones are simply GitHub issue identifiers (#<issue_number>, <org>/<repo>#<issue_number>, or full URLs) to other GitHub milestone issues.
+- Child milestones can exist in any public GitHub repository.
 - It is expected that child milestone issues are themselves properly encoded milestones; otherwise they will be ignored by Starmap.
 - Within a parent issue, child milestones are encoded as follows (raw Markdown):
+
+##### Tasklist syntax
+
+Tasklists allow for "taskifying" of strings, and we have no way to link a random string to a GitHub issue. You must convert any [tasks to issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-tasklists#converting-draft-issues-to-issues-in-a-tasklist) for them to show up as a child milestone.
+
+We will do our best to support the expected syntax of GitHub's tasklist functionality.
+
+See https://docs.github.com/en/issues/tracking-your-work-with-issues/about-tasklists#creating-tasklists and https://github.com/pln-planning-tools/Starmap/issues/245 for more details.
+
+```
+```[tasklist]
+### Tasks
+- [ ] https://github.com/pln-roadmap/Roadmap-Vizualizer/issues/10
+- [ ] https://github.com/pln-roadmap/Roadmap-Vizualizer/issues/9
+- [ ] https://github.com/pln-roadmap/Roadmap-Vizualizer/issues/8
+\```
+```
+
+##### "Children:" syntax
+
+This syntax is deprecated. Please see https://github.com/pln-planning-tools/Starmap/issues/245 for more details.
 
 ```
 Children:
@@ -104,7 +131,6 @@ Children:
 - https://github.com/pln-roadmap/Roadmap-Vizualizer/issues/9
 - https://github.com/pln-roadmap/Roadmap-Vizualizer/issues/8
 ```
-- Errors will be logged and displayed for the user in starmap.site
 
 ### Progress Indicators
 
@@ -127,6 +153,39 @@ Children:
 ### Templates
 
 #### Root Node Issue
+
+##### Using GitHub Tasklists
+
+```
+Title: [Team/Project Name] [Duration] Roadmap
+
+Description (optional):
+The goal of this roadmap is to outline the key milestones and deliverables for our team/project over the next [Duration].
+
+```[tasklist]
+### Any descriptor or other text
+- [ ] #123 <!-- will be recognized by starmap -->
+- [ ] org/repo#123 <!-- will be recognized by starmap -->
+- [ ] some non-link description <!-- will NOT be recognized by starmap -->
+- [ ] https://github.com/org/repo/issue/987 <!-- will be recognized by starmap -->
+
+### Any text
+- [ ] #456 <!-- will be recognized by starmap -->
+- [ ] org/repo#567 <!-- will be recognized by starmap -->
+- [ ] https://github.com/other-org/other-repo/issue/987 <!-- will be recognized by starmap -->
+
+\```
+
+Note: This roadmap is subject to change as priorities and circumstances evolve.
+
+Starmap Link: [Starmap Link]
+
+```
+
+##### Using "Children:"
+
+**NOTE:** The children: section is deprecated. Please see https://github.com/pln-planning-tools/Starmap/issues/245 for more details
+
 ```
 Title: [Team/Project Name] [Duration] Roadmap
 

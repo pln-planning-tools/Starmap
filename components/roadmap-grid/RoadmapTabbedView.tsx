@@ -1,14 +1,15 @@
 import {
   Box,
+  Center,
+  Flex,
   Link,
-  Spinner,
+  Skeleton,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Center,
-  Flex
+  Spacer,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -32,9 +33,7 @@ export function RoadmapTabbedView({
   const globalLoadingState = useGlobalLoadingState();
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
   const router = useRouter();
-  if (issueDataState.children.length === 0 || globalLoadingState.get()) {
-    return (<Spinner size="lg" />);
-  }
+
   // Defining what tabs to show and in what order
   const tabs = ['Detailed View','Overview'] as const;
 
@@ -67,15 +66,17 @@ export function RoadmapTabbedView({
     }
 
     return (
-      <Tab
-        className={styles.gridViewTab}
-        key={index}
-      >
-        <Center>
-          <TabIcon />
-          <Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>
-        </Center>
-      </Tab>
+      <Skeleton isLoaded={!globalLoadingState.get()}>
+        <Tab
+          className={styles.gridViewTab}
+          key={index}
+        >
+          <Center>
+            <TabIcon />
+            <Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>
+          </Center>
+        </Tab>
+      </Skeleton>
     )
   };
 
@@ -89,16 +90,18 @@ export function RoadmapTabbedView({
     <>
       <Box className={styles.timelineBox}>
         <Header issueDataState={issueDataState} />
-        <Flex align="center" justify="space-between">
-          <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} isLazy pt='20px'>
-            <TabList display="flex" alignItems="center" justifyContent="space-between">
-              <Flex>
+        <Flex align="center" justify="space-between" grow={"1"}>
+          <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} pt='20px' flexGrow={"1"}
+            isLazy>
+            <Flex direction={'row'} grow={"1"}>
+              <TabList display="flex" alignItems="center" justifyContent="space-between">
                 {tabs.map(renderTab)}
-              </Flex>
+              </TabList>
+              <Spacer />
               <TodayMarkerToggle />
-            </TabList>
+            </Flex>
             <TabPanels className={styles.tabPanels}>
-              {tabs.map(renderTabPanel)}
+             {tabs.map(renderTabPanel)}
             </TabPanels>
           </Tabs>
         </Flex>

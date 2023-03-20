@@ -13,6 +13,7 @@ import { BASE_PROTOCOL } from '../../config/constants';
 import { setDateGranularity } from '../../hooks/useDateGranularity';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { setViewMode } from '../../hooks/useViewMode';
+import { assignCompletionRateToIssues } from '../../lib/calculateCompletionRate';
 import { DateGranularityState, RoadmapMode, ViewMode } from '../../lib/enums';
 import { findIssueDataByUrl } from '../../lib/findIssueDataByUrl';
 import { mergeStarMapsErrorGroups } from '../../lib/mergeStarMapsErrorGroups';
@@ -30,6 +31,18 @@ import {
   RoadmapServerSidePropsResult,
   StarMapsIssueErrorsGrouped
 } from '../../lib/types';
+
+/**
+ * From https://vercel.com/docs/concepts/edge-network/caching#stale-while-revalidate
+ * This tells our Vercel Edge Network cache the value is fresh for 30 seconds. If a request is repeated within the
+ * next 30 seconds, the previously cached value is still fresh. The header x-vercel-cache present in the response will
+ * show the value HIT. If the request is repeated between 30 and 86400 seconds later, the cached value will be stale but
+ * still render. In the background, a revalidation request will be made to populate the cache with a fresh value.
+ * x-vercel-cache will have the value STALE until the cache is refreshed.
+ */
+const fetchHeaders = {
+  'Cache-Control': 's-maxage=30, stale-while-revalidate=86400' // 30 second cache, hold for 24 hours, revalidate after 30 seconds
+}
 
 export async function getServerSideProps(context): Promise<RoadmapServerSidePropsResult> {
   const [_hostname, owner, repo, _, issue_number] = context.query.slug;
@@ -72,7 +85,9 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       }
       const roadmapApiUrl = `${window.location.origin}/api/roadmap?owner=${owner}&repo=${repo}&issue_number=${issue_number}`
       try {
-        const apiResult = await fetch(new URL(roadmapApiUrl), { signal: controller.signal })
+        const apiResult = await fetch(new URL(roadmapApiUrl), { method: 'GET', signal: controller.signal, headers: fetchHeaders })
+        // console.log(`roadmap: ${owner}/${repo}/${issue_number} - x-vercel-cache: `, apiResult.headers.get('x-vercel-cache'))
+
         const roadmapResponse: RoadmapApiResponse = await apiResult.json();
 
         const roadmapResponseSuccess = roadmapResponse as RoadmapApiResponseSuccess;
@@ -121,31 +136,31 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
       }
       setIsPendingChildrenLoading(true);
 
+      const parent = findIssueDataByUrl(issueDataState.value as IssueData, typedPendingChild.parentHtmlUrl.value)
+      // we can reduce the size of the parent, because we have the parent on the client and use the one we have when adding the success response
+      const parentJson = JSON.stringify({ ...parent, children: [] })
+
+      const encodedParentJson = encodeURIComponent(parentJson)
       const { issue_number, owner, repo } = paramsFromUrl(typedPendingChild.html_url.value)
-      const requestBody = {
-        issue_number,
-        owner,
-        repo,
-        parent: findIssueDataByUrl(issueDataState.get() as IssueData, typedPendingChild.parentHtmlUrl.value)
-      };
-      const pendingChildApiUrl = new URL(`${window.location.origin}/api/pendingChild`);
+      const pendingChildApiUrl = new URL(`${window.location.origin}/api/pendingChild?owner=${owner}&repo=${repo}&issue_number=${issue_number}&parentJson=${encodedParentJson}`);
 
       try {
         const apiResult = await fetch(pendingChildApiUrl, {
           signal: controller.signal,
-          method: 'POST',
+          method: 'GET',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            ...fetchHeaders
           },
-          body: JSON.stringify(requestBody)
         });
+        // console.log(`pendingChild: ${owner}/${repo}/${issue_number} - x-vercel-cache: `, apiResult.headers.get('x-vercel-cache'))
         const pendingChildResponse: PendingChildApiResponse = await apiResult.json();
         const pendingChildFailure = pendingChildResponse as PendingChildApiResponseFailure;
         const pendingChildSuccess = pendingChildResponse as PendingChildApiResponseSuccess;
         if (pendingChildFailure.error != null) {
           roadmapLoadErrorState.set(pendingChildFailure.error);
         } else {
-          asyncIssueDataState.merge([pendingChildSuccess.data]);
+          asyncIssueDataState.merge([{ ...pendingChildSuccess.data, parent: parent as IssueData }]);
           if (pendingChildSuccess.errors.length !== 0) {
             starMapsErrorsState.set((currentErrors) => mergeStarMapsErrorGroups(currentErrors, pendingChildSuccess.errors))
           }
@@ -201,6 +216,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
    */
   useEffect(() => {
     if (!isRootIssueLoading && pendingChildrenState.length === 0 && asyncIssueDataState.length === 0) {
+      assignCompletionRateToIssues(issueDataState)
       globalLoadingState.stop();
     } else {
       globalLoadingState.start();
