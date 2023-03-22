@@ -1,4 +1,4 @@
-import { getChildren } from '../../lib/parser';
+import { getChildren, getDescription } from '../../lib/parser';
 
 /**
  * Test data obtained from calling getIssue() on github.com/protocol/engres/issues/5 on 2023-02-10 @ 5pm PST
@@ -88,6 +88,25 @@ const expectedResult = [
   },
 ]
 
+const exampleBodyWithDescription = `eta: 2023-10\r\ndescription:\r\nThis issue is intended to capture discussion around Testground's Roadmap\r\nBecause GitHub doesn't have any feature to comment on Markdown files, please use this issue to leave any feedback, proposals, etc.\r\n\r\nchildren:\r\n- https://github.com/testground/testground/issues/1533\r\n- https://github.com/testground/testground/issues/1512\r\n- https://github.com/testground/testground/issues/1514\r\n- https://github.com/testground/testground/issues/1524\r\n- https://github.com/testground/testground/issues/1529\r\n- https://github.com/testground/testground/issues/1523\r\n\r\n---\r\n\r\n# Current Roadmap\r\n\r\n🛣🗺 Roadmap document: https://github.com/testground/testground/blob/master/ROADMAP.md\r\n\r\nStarmap viewer for this roadmap: https://www.starmaps.app/roadmap/github.com/testground/testground/issues/1491#simple\r\n\r\n# Current Status of the Roadmap:\r\n\r\n- 2022-10-10: We don't have full maintainer alignment on Roadmap items and priorities. As we resolve these, we will update the roadmap.\r\n\r\n## Unresolved questions:\r\n\r\n- [ ] https://github.com/testground/testground/pull/1484#discussion_r992168145\r\n\r\n## Roadmap drafts:\r\n- 1st draft: https://github.com/testground/testground/pull/1484`
+
+const fullHtmlCommentDescription = `<!-- description:
+This is a sample description.
+This is part of the description.
+
+This is not part of the description.
+-->`;
+
+const htmlCommentHeaderDescription = `<!-- description: -->
+This is a sample description.
+This is part of the description.
+
+This is not part of the description.
+`;
+
+const exampleBodyWithDescriptionIpfsGui119 = `eta: 2022-11-16\r\n\r\ndescription: Deliver the soft-launch initial version of starmaps.app for use by EngRes teams\r\n\r\nchildren:\r\n`
+const exampleBodyWithDescriptionIpfsGui112 = 'eta: 2023-01\r\n\r\ndescription: https://pl-strflt.notion.site/IPFS-Companion-Manifest-V3-update-44b223ff36ae413fb86e7dc5a131973c\r\n\r\nchildren:\r\n- [x] https://github.com/ipfs/ipfs-companion/pull/1054\r\n- [ ] https://github.com/ipfs/ipfs-companion/issues/666'
+
 describe('parser', function() {
   describe('getChildren', function() {
     it('Can parse children from issue.body_html', function() {
@@ -176,6 +195,32 @@ describe('parser', function() {
         { group: 'children:', html_url: 'https://github.com/testground/testground/issues/1529' },
         { group: 'children:', html_url: 'https://github.com/testground/testground/issues/1523' },
       ])
+    })
+  })
+
+  describe('getDescription', function() {
+    it('can safely handle an empty string', function() {
+      expect(getDescription('')).toBe('');
+    })
+
+    it('Can parse description from issue.body without linebreaks between them', function() {
+      expect(getDescription(exampleBodyWithDescription)).toBe(`This issue is intended to capture discussion around Testground's Roadmap\nBecause GitHub doesn't have any feature to comment on Markdown files, please use this issue to leave any feedback, proposals, etc.`)
+    })
+
+    it('Can parse description wrapped by HTML comment', function() {
+      expect(getDescription(fullHtmlCommentDescription)).toBe(`This is a sample description.\nThis is part of the description.`)
+    })
+
+    it('Can parse description with HTML comment header', function() {
+      expect(getDescription(htmlCommentHeaderDescription)).toBe(`This is a sample description.\nThis is part of the description.`)
+    })
+
+    it('can get the description from ipfs/ipfs-gui#119', function() {
+      expect(getDescription(exampleBodyWithDescriptionIpfsGui119)).toBe('Deliver the soft-launch initial version of starmaps.app for use by EngRes teams')
+    })
+
+    it('can get the description from ipfs/ipfs-gui#112', function() {
+      expect(getDescription(exampleBodyWithDescriptionIpfsGui112)).toBe('https://pl-strflt.notion.site/IPFS-Companion-Manifest-V3-update-44b223ff36ae413fb86e7dc5a131973c')
     })
   })
 })

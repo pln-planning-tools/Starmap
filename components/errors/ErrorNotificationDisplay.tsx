@@ -22,7 +22,7 @@ export function ErrorNotificationDisplay ({ errorsState, issueDataState }: Error
       return [];
     }
     const errors = errorsState.ornull.value;
-    if (viewMode != null && issueDataState.ornull != null) {
+    if (viewMode != null && issueDataState.ornull != null && errorFilters[viewMode] != null) {
       return errorFilters[viewMode](errors, issueDataState.ornull.value)
     }
     return errors;

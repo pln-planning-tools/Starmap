@@ -11,6 +11,7 @@ export interface GithubIssueData {
   title: string;
   state: IssueStates;
   root_issue?: boolean;
+  description: string;
 }
 
 export interface GithubIssueDataWithGroup extends GithubIssueData {
@@ -47,6 +48,7 @@ export interface IssueData extends  Omit<PostParsedIssueData, 'children' | 'pare
   completion_rate: number;
   due_date: string;
   parent: Omit<IssueData, 'children' | 'parent'>;
+  description: string;
 }
 
 export interface RoadmapApiResponseSuccess {
