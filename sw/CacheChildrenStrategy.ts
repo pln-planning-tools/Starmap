@@ -2,6 +2,13 @@
 import { Strategy, StrategyHandler } from 'workbox-strategies';
 import Dexie from 'dexie';
 
+/**
+ * A simple cache versioning strategy. If changes are made to the cache strategy, this version number should be incremented
+ * in order to prevent issues like the one found in https://github.com/pln-planning-tools/Starmap/issues/345 when we switched from using
+ * POST to GET requests.
+ */
+const CACHE_VERSION = 'v1'
+
 // Based on Java's hashCode implementation: https://stackoverflow.com/a/7616484/104380
 const generateHashCode = str => [...str].reduce((hash, chr) => 0 | (31 * hash + chr.charCodeAt(0)), 0)
 
@@ -55,8 +62,8 @@ export class CacheChildren extends Strategy implements Strategy {
       // We are using the owner, repo and issue number as the cache key.
       // We are also using the parent node_id as part of the cache key.
       // This is because the children can have multiple parents.
-      // That will cause cachce collisions.
-      const cacheKey = `${owner}/${repo}/${issue_number}/${node_id}`
+      // That will cause cache collisions.
+      const cacheKey = `${CACHE_VERSION}/${owner}/${repo}/${issue_number}/${node_id}`
       // Checking if the cache already has the response.
       let cachedResponse = await handler.cacheMatch(cacheKey)
       // WARNING: We're not awaiting this call deliberately. We want to populate the cache in the background.
