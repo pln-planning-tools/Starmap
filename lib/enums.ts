@@ -6,6 +6,7 @@ export enum RoadmapMode {
 export enum ViewMode {
   Detail = 'detail',
   Simple = 'simple',
+  List = 'list',
 }
 
 export enum DateGranularityState {
