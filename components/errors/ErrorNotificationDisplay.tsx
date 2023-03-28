@@ -1,5 +1,5 @@
 import { Box, Center } from '@chakra-ui/react';
-import type { State } from '@hookstate/core';
+import type { ImmutableArray, State } from '@hookstate/core';
 import React, { useMemo, useState } from 'react';
 
 import { IssueData, StarMapsIssueErrorsGrouped } from '../../lib/types';
@@ -17,7 +17,7 @@ export function ErrorNotificationDisplay ({ errorsState, issueDataState }: Error
   const [isExpanded, setIsExpanded] = useState(true);
 
   const viewMode = useViewMode();
-  const filteredErrors: StarMapsIssueErrorsGrouped[] = useMemo(() => {
+  const filteredErrors: ImmutableArray<StarMapsIssueErrorsGrouped> = useMemo(() => {
     if (errorsState.ornull == null) {
       return [];
     }
