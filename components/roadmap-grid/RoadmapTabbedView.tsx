@@ -71,10 +71,9 @@ export function RoadmapTabbedView({
     }
 
     return (
-      <Skeleton isLoaded={!globalLoadingState.get()}>
+      <Skeleton isLoaded={!globalLoadingState.get()} key={index}>
         <Tab
           className={styles.gridViewTab}
-          key={index}
         >
           <Center>
             <TabIcon />
