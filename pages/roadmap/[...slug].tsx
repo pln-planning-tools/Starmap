@@ -105,7 +105,10 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
       } catch (err) {
         if (!(err as Error).toString().includes('AbortError')) {
-          roadmapLoadErrorState.set({ code: `Error fetching ${roadmapApiUrl}`, message: `Error fetching ${roadmapApiUrl}: ${(err as Error).toString()}` })
+          roadmapLoadErrorState.set({
+            code: `Error fetching api/roadmap for ${owner}/${repo}#${issue_number}`,
+            message: `Error fetching api/roadmap for ${owner}/${repo}#${issue_number}: ${(err as Error).toString()}`
+          })
         }
       }
       setIsRootIssueLoading(false);
@@ -167,7 +170,10 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
         }
       } catch (err) {
         if (!(err as Error).toString().includes('AbortError')) {
-          roadmapLoadErrorState.set({ code: `Error fetching ${pendingChildApiUrl}`, message: `Error fetching ${pendingChildApiUrl}: ${(err as Error).toString()}` })
+          roadmapLoadErrorState.set({
+            code: `Error fetching api/pendingChild for ${owner}/${repo}#${issue_number}`,
+            message: `Error fetching api/pendingChild for ${owner}/${repo}#${issue_number}: ${(err as Error).toString()}`
+          })
         }
       }
       pendingChildrenState[0].set(none);
