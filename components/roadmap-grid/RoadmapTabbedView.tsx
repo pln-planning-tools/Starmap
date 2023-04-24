@@ -110,8 +110,8 @@ export function RoadmapTabbedView({
               <Spacer />
               <TodayMarkerToggle />
             </Flex>
-            <TabPanels>
-              {tabs.map(renderTabPanel)}
+            <TabPanels className={styles.tabPanels}>
+             {tabs.map(renderTabPanel)}
             </TabPanels>
           </Tabs>
         </Flex>
