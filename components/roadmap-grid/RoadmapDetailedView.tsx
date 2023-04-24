@@ -1,5 +1,5 @@
-import { Box, Spinner } from '@chakra-ui/react';
-import { useHookstate } from '@hookstate/core';
+import { Box, Spinner, Stack, Skeleton } from '@chakra-ui/react';
+import { hookstate, useHookstateMemo } from '@hookstate/core';
 import type { Dayjs } from 'dayjs';
 import _ from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -22,9 +22,8 @@ import { globalTimeScaler } from '../../lib/client/TimeScaler';
 import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
 import { useRouter } from 'next/router';
 import { ErrorBoundary } from '../errors/ErrorBoundary';
-import { usePrevious } from '../../hooks/usePrevious';
-import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
 import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 
 export function RoadmapDetailed({
   issueDataState
@@ -35,19 +34,14 @@ export function RoadmapDetailed({
   const [isDevMode, _setIsDevMode] = useState(false);
   const viewMode = useViewMode() as ViewMode;
   const router = useRouter();
-
-  const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
-  const groupedIssuesId = getUniqIdForGroupedIssues(issuesGroupedState.value)
-  const groupedIssuesIdPrev = usePrevious(groupedIssuesId);
+  const globalLoadingState = useGlobalLoadingState();
   const query = router.query
   const showTodayMarker = useShowTodayMarker();
-
-  const setIssuesGroupedState = issuesGroupedState.set
-  useEffect(() => {
-    if (viewMode && groupedIssuesIdPrev !== groupedIssuesId) {
-      setIssuesGroupedState(() => convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, query))
-    }
-  }, [viewMode, query, setIssuesGroupedState, issueDataState, groupedIssuesIdPrev, groupedIssuesId]);
+  const memoGrouped = useHookstateMemo(
+    () => convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, query),
+    [viewMode, query, issueDataState]
+  )
+  const issuesGroupedState = hookstate<DetailedViewGroup[]>(memoGrouped)
 
   /**
    * Magic numbers that just seem to work are:
@@ -68,7 +62,7 @@ export function RoadmapDetailed({
   /**
    * Collect all due dates from all issues, as DayJS dates.
    */
-  const dayjsDates: Dayjs[] = useMemo(() => {
+  const dayjsDates: Dayjs[] = useHookstateMemo(() => {
     const today = dayjs();
     let innerDayjsDates: Dayjs[] = []
     try {
@@ -111,7 +105,7 @@ export function RoadmapDetailed({
 
     return innerDayjsDates;
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [issuesGroupedState.length, issuesGroupedId]);
+  }, [issuesGroupedState, issuesGroupedId]);
 
   /**
    *  * Ensure that the dates are
@@ -126,6 +120,19 @@ export function RoadmapDetailed({
     globalTimeScaler.setScale(dates, numGridCols * 1.09);
   }, [dates, numGridCols]);
 
+
+  // return early while loading.
+  if (globalLoadingState.get()) {
+    return (
+      <Stack pt={"20px"}>
+        <Skeleton height='60px' />
+        <Skeleton height='150px' />
+        <Skeleton height='150px' />
+        <Skeleton height='150px' />
+        <Skeleton height='150px' />
+      </Stack>
+    )
+  }
   const invalidGroups = issuesGroupedState.filter((group) => group.ornull == null || group.items.ornull == null)
   if (issuesGroupedState.value.length === 0 || invalidGroups.length > 0) {
     if (invalidGroups.length > 0) {
@@ -145,26 +152,26 @@ export function RoadmapDetailed({
   return (
     <>
       {isDevMode && <NumSlider msg="how many header ticks" value={numHeaderTicks} min={5} max={60} setValue={setNumHeaderTicks}/>}
-      {isDevMode && <NumSlider msg="how many grid columns" value={numGridCols} min={20} max={60} step={numHeaderTicks} setValue={setNumGridCols}/>}
+      {isDevMode && <NumSlider msg="how many grid columns" value={numGridCols} min={20} max={60} step={numHeaderTicks} setValue={setNumGridCols} />}
 
-      <Box className={`${styles.timelineBox} ${ viewMode=='detail' ? styles.detailView : '' }`} >
+      <Box className={`${styles.timelineBox} ${viewMode == 'detail' ? styles.detailView : ''}`} >
         <Grid ticksLength={numGridCols}>
           {ticksHeader.map((tick, index) => (
 
-            <GridHeader key={index} tick={tick} index={index} numHeaderTicks={numHeaderTicks} numGridCols={numGridCols}/>
+            <GridHeader key={index} tick={tick} index={index} numHeaderTicks={numHeaderTicks} numGridCols={numGridCols} />
           ))}
 
-          <Headerline numGridCols={numGridCols} ticksRatio={3}/>
+          <Headerline numGridCols={numGridCols} ticksRatio={3} />
         </Grid>
-        <Grid ticksLength={numGridCols} scroll={true}  renderTodayLine={showTodayMarker} >
+        <Grid ticksLength={numGridCols} scroll={true} renderTodayLine={showTodayMarker} >
           {issuesGroupedState.map((group, index) => (
-              <ErrorBoundary key={`Fragment-${index}`} >
-                <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState}/><GroupWrapper key={`GroupWrapper-${index}`}>
-                  {group.ornull != null && group.items.ornull != null &&
-                    _.sortBy(group.items.ornull, ['title']).map((item, index) => <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
-                </GroupWrapper>
-              </ErrorBoundary>
-            ))}
+            <ErrorBoundary key={`Fragment-${index}`} >
+              <GroupHeader group={group} key={`GroupHeader-${index}`} issueDataState={issueDataState} /><GroupWrapper key={`GroupWrapper-${index}`}>
+                {group.ornull != null && group.items.ornull != null &&
+                  _.sortBy(group.items.ornull, ['title']).map((item, index) => <GridRow key={index} milestone={item} index={index} timelineTicks={ticks} numGridCols={numGridCols} numHeaderItems={numHeaderTicks} issueDataState={issueDataState} />)}
+              </GroupWrapper>
+            </ErrorBoundary>
+          ))}
         </Grid>
       </Box>
     </>

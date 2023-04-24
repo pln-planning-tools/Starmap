@@ -1,4 +1,5 @@
 import { IssueStates } from '../enums';
+import { getDescription } from '../parser';
 import { GithubIssueData } from '../types';
 import { getOctokit } from './octokit';
 
@@ -21,14 +22,18 @@ export async function getIssue ({ owner, repo, issue_number }): Promise<GithubIs
       issue_number,
     });
 
+    const description = getDescription(data.body ?? '')
+
     const result: GithubIssueData = {
       html_url: data.html_url,
       title: data.title,
       state: data.state as IssueStates,
       node_id: data.node_id,
       body_html: data.body_html || '',
+      body: data.body || '',
       labels: data.labels
         .map((label) => (typeof label !== 'string' ? label.name : label)) as string[],
+      description
     };
 
     if (process.env.IS_LOCAL === 'true') {

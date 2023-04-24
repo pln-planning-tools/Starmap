@@ -62,3 +62,11 @@ export const getEtaDate = (data: string, config: { addError: ErrorManager['addEr
 };
 
 export const isValidChildren = (v) => /^children[:]?$/im.test(v);
+
+export const getTimeFromDateString = (dateString: string, defaultValue: number): number => {
+  try {
+    return new Date(dateString).getTime();
+  } catch {
+    return defaultValue;
+  }
+}

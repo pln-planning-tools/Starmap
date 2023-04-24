@@ -11,11 +11,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<PendingChildApiResponse>
 ): Promise<void> {
-  if (req.method !== 'POST') {
-    res.status(405).send({ error: { ...new Error('Only POST requests allowed'), code: '405' } })
+  if (req.method !== 'GET') {
+    res.status(405).send({ error: { ...new Error('Only GET requests allowed'), code: '405' } })
     return
   }
-  const { owner, repo, issue_number, parent } = req.body;
+  const { owner, repo, issue_number, parentJson } = req.query;
+  const parentJsonDecoded = decodeURIComponent(parentJson as string);
+  const parent = JSON.parse(parentJsonDecoded);
   const errorManager = new ErrorManager();
 
   if (process.env.IS_LOCAL === 'true') {

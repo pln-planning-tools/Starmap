@@ -1,7 +1,7 @@
 import NextLink from 'next/link';
 import { Flex, Text, Box, Center } from '@chakra-ui/react';
-import React, { useEffect, useMemo, useState } from 'react';
-import type { State } from '@hookstate/core'
+import React, { useState } from 'react';
+import { State, useHookstateEffect, useHookstateMemo } from '@hookstate/core'
 
 import { dayjs } from '../../lib/client/dayjs';
 import { IssueData, IssueDataViewInput } from '../../lib/types';
@@ -33,13 +33,12 @@ export function GridRow({
   const viewMode = useViewMode();
   const routerQuery = useRouter().query;
   const [closestDateIdx, setClosestDateIdx] = useState(Math.round(globalTimeScaler.getColumn(dayjs.utc(milestone.due_date.get()).toDate())));
-  useEffect(() => {
+  useHookstateEffect(() => {
     setClosestDateIdx(Math.round(globalTimeScaler.getColumn(dayjs.utc(milestone.due_date.get()).toDate())));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [milestone.due_date, globalTimeScaler.getDomain()]);
+  }, [milestone.due_date, ...globalTimeScaler.getDomain()]);
   const span = Math.max(4, numGridCols / timelineTicks.length);
   const closest = span * (closestDateIdx - 1);
-  const childLink = useMemo(() => getLinkForRoadmapChild({ viewMode, issueData: milestone.get(), query: routerQuery, currentRoadmapRoot: issueDataState.value }), [issueDataState.value, milestone, routerQuery, viewMode]);
+  const childLink = useHookstateMemo(() => getLinkForRoadmapChild({ viewMode, issueData: milestone.get(), query: routerQuery, currentRoadmapRoot: issueDataState.value }), [issueDataState, milestone, routerQuery, viewMode]);
   const clickable = milestone.children.length > 0;
 
   if (milestone == null || milestone.ornull == null) {

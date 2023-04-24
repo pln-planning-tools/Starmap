@@ -1,18 +1,17 @@
-import { readFile } from 'fs/promises'
-import { join } from 'path'
+import { readFile } from 'fs/promises';
+import { join } from 'path';
 
 import type { NextPage } from 'next';
-import React from 'react';
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
-import { Center, Link, Text, Flex } from '@chakra-ui/react'
+import { Center, Link, Text, Flex } from '@chakra-ui/react';
 import Image from 'next/image';
-import NextLink from 'next/link'
+import NextLink from 'next/link';
 import GitHubSvgIcon from '../components/icons/GitHubLogo.svg';
 import themes from '../components/theme/constants';
 
-import styles from './LandingPage.module.css'
+import styles from './LandingPage.module.css';
 import PageHeader from '../components/layout/PageHeader';
 
 interface SSProps {
@@ -21,7 +20,7 @@ interface SSProps {
 
 const starmapsGithubUrl = 'https://github.com/pln-planning-tools/Starmap/blob/main/User%20Guide.md';
 
-export async function getServerSideProps(): Promise<{props: SSProps}> {
+export async function getServerSideProps(): Promise<{ props: SSProps }> {
   const filePath = join(process.cwd(), 'User Guide.md');
   const markdown = await readFile(filePath, 'utf8');
 

@@ -1,3 +1,4 @@
+import { ImmutableArray, ImmutableObject } from '@hookstate/core';
 import { ViewMode } from '../enums';
 import { findIssueDepthByUrl } from '../findIssueDepthByUrl';
 import { StarMapsIssueErrorsGrouped, IssueData } from '../types';
@@ -9,7 +10,7 @@ import { StarMapsIssueErrorsGrouped, IssueData } from '../types';
  * @returns {function} filterFn
  */
 export const getIssueErrorFilter = (maxDepth: number) =>
-  (errors: StarMapsIssueErrorsGrouped[], issueDataState: IssueData) => errors.filter(({ issueUrl: errorIssueUrl }) => {
+  (errors: ImmutableArray<StarMapsIssueErrorsGrouped>, issueDataState: ImmutableObject<IssueData>) => errors.filter(({ issueUrl: errorIssueUrl }) => {
       if (issueDataState != null) {
         const foundIssueDepth = findIssueDepthByUrl(issueDataState, errorIssueUrl);
 
@@ -24,6 +25,7 @@ export const getIssueErrorFilter = (maxDepth: number) =>
 
 
 export const errorFilters = {
+  [ViewMode.List]: getIssueErrorFilter(1),
   [ViewMode.Simple]: getIssueErrorFilter(1),
   [ViewMode.Detail]: getIssueErrorFilter(3),
 }
