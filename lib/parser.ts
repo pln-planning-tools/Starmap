@@ -12,7 +12,7 @@ export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' |
   const issueText = [...document.querySelectorAll('*')].map((v) => v.textContent).join('\n');
   let eta: string | null = null;
   try {
-    eta = getEtaDate(issueText)
+    eta = getEtaDate(issueText, { addError: errorManager.addError.bind(errorManager), issue })
   } catch (e) {
     if (issue.html_url != null && issue.root_issue !== true) {
       errorManager.addError({
@@ -29,14 +29,21 @@ export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' |
   };
 };
 
-function getSectionLines(text: string, sectionHeader: string) {
+function getSectionLines(text: string, sectionHeader: string): string {
   const sectionIndex = text.indexOf(sectionHeader);
   if (sectionIndex === -1) {
-    return [];
+    return '';
   }
   return text.substring(sectionIndex)
-    .split(/[\r\n]+/).slice(1)
-    .map(getUrlFromMarkdownText)
+}
+
+function getCleanedSectionLines(text: string, sectionHeader: string) {
+  const lines = getSectionLines(text, sectionHeader)
+  if (typeof lines === 'string') {
+    return lines.split(/[\r\n]+/).slice(1)
+      .map(getUrlFromMarkdownText)
+  }
+  return lines
 }
 
 const splitAndGetLastItem = (line: string) => line.trim().split(' ').slice(-1)[0]
@@ -62,7 +69,7 @@ function getUrlStringForChildrenLine(line: string, issue: Pick<GithubIssueData, 
  */
 function getChildrenFromTaskList(issue: Pick<GithubIssueData, 'body' | 'html_url'>): ParserGetChildrenResponse[] {
   // tasklists require the checkbox style format to recognize children
-  const lines = getSectionLines(issue.body, '```[tasklist]')
+  const lines = getCleanedSectionLines(issue.body, '```[tasklist]')
     .filter(ensureTaskListChild)
     .map(splitAndGetLastItem)
     .filter(Boolean);
@@ -88,7 +95,7 @@ function getChildrenNew(issue: Pick<GithubIssueData, 'body' | 'html_url'>): Pars
     // Could not find children using new tasklist format,
     // try to look for "children:" section
   }
-  const lines = getSectionLines(issue.body, 'children:').map(splitAndGetLastItem).filter(Boolean);
+  const lines = getCleanedSectionLines(issue.body, 'children:').map(splitAndGetLastItem).filter(Boolean);
   if (lines.length === 0) {
     throw new Error('Section missing or has no children')
   }
@@ -152,3 +159,38 @@ export const getChildren = (issue: Pick<GithubIssueData, 'body_html' | 'body' | 
 
   return [...children];
 };
+
+/**
+ * Search for "description: " in the issue body, and return all text after that
+ * except for the first empty line it finds
+ *
+ * @param {string} issueBodyText
+ *
+ * @returns {string}
+ */
+export const getDescription = (issueBodyText: string): string => {
+  if (issueBodyText.length === 0) return '';
+
+  const [firstLine, ...linesToParse] = getSectionLines(issueBodyText, 'description:')
+    .split(/\r\n|\r|\n/) // We do not want to replace multiple newlines, only one.
+
+  // the first line may contain only "description:" or "description: This is the start of my description"
+  const firstLineContent = firstLine
+      .replace(/^.{0,}description:/, '')
+      .replace(/-->/g, '') // may be part of an HTML comment so it's hidden from the user. Remove the HTML comment end tag
+      .trim();
+
+  const descriptionLines: string[] = []
+  if (firstLineContent !== '') {
+    descriptionLines.push(firstLineContent)
+  }
+
+  for (const line of linesToParse.map((line) => line.trim())) {
+    if (line === '' || line.includes('children:') || line.includes('```[tasklist]') || line.includes('eta:')) {
+      break
+    }
+    descriptionLines.push(line.trim())
+  }
+
+  return descriptionLines.join('\n');
+}

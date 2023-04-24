@@ -1,5 +1,5 @@
 import { Box, Spinner, Stack, Skeleton } from '@chakra-ui/react';
-import { useHookstate } from '@hookstate/core';
+import { hookstate, useHookstateMemo } from '@hookstate/core';
 import type { Dayjs } from 'dayjs';
 import _ from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -22,8 +22,6 @@ import { globalTimeScaler } from '../../lib/client/TimeScaler';
 import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
 import { useRouter } from 'next/router';
 import { ErrorBoundary } from '../errors/ErrorBoundary';
-import { usePrevious } from '../../hooks/usePrevious';
-import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
 import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 
@@ -36,19 +34,14 @@ export function RoadmapDetailed({
   const [isDevMode, _setIsDevMode] = useState(false);
   const viewMode = useViewMode() as ViewMode;
   const router = useRouter();
-
-  const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
-  const groupedIssuesId = getUniqIdForGroupedIssues(issuesGroupedState.value)
-  const groupedIssuesIdPrev = usePrevious(groupedIssuesId);
+  const globalLoadingState = useGlobalLoadingState();
   const query = router.query
   const showTodayMarker = useShowTodayMarker();
-
-  const setIssuesGroupedState = issuesGroupedState.set
-  useEffect(() => {
-    if (viewMode && groupedIssuesIdPrev !== groupedIssuesId) {
-      setIssuesGroupedState(() => convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, query))
-    }
-  }, [viewMode, query, setIssuesGroupedState, issueDataState, groupedIssuesIdPrev, groupedIssuesId]);
+  const memoGrouped = useHookstateMemo(
+    () => convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, query),
+    [viewMode, query, issueDataState]
+  )
+  const issuesGroupedState = hookstate<DetailedViewGroup[]>(memoGrouped)
 
   /**
    * Magic numbers that just seem to work are:
@@ -63,15 +56,13 @@ export function RoadmapDetailed({
    */
   const [numHeaderTicks, setNumHeaderTicks] = useState(5);
   const [numGridCols, setNumGridCols] = useState(45);
-  const globalLoadingState = useGlobalLoadingState();
-
 
   // for preventing dayjsDates from being recalculated if it doesn't need to be
   const issuesGroupedId = issuesGroupedState.value.map((g) => g.groupName).join(',');
   /**
    * Collect all due dates from all issues, as DayJS dates.
    */
-  const dayjsDates: Dayjs[] = useMemo(() => {
+  const dayjsDates: Dayjs[] = useHookstateMemo(() => {
     const today = dayjs();
     let innerDayjsDates: Dayjs[] = []
     try {
@@ -114,7 +105,7 @@ export function RoadmapDetailed({
 
     return innerDayjsDates;
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [issuesGroupedState.length, issuesGroupedId]);
+  }, [issuesGroupedState, issuesGroupedId]);
 
   /**
    *  * Ensure that the dates are
@@ -129,15 +120,6 @@ export function RoadmapDetailed({
     globalTimeScaler.setScale(dates, numGridCols * 1.09);
   }, [dates, numGridCols]);
 
-  const invalidGroups = issuesGroupedState.filter((group) => group.ornull == null || group.items.ornull == null)
-  if (issuesGroupedState.value.length === 0 || invalidGroups.length > 0) {
-    if (invalidGroups.length > 0) {
-      invalidGroups.forEach((g) => {
-        console.warn('Found an invalid group: ', g.value);
-      });
-    }
-    return <Spinner />;
-  }
 
   // return early while loading.
   if (globalLoadingState.get()) {
@@ -150,6 +132,15 @@ export function RoadmapDetailed({
         <Skeleton height='150px' />
       </Stack>
     )
+  }
+  const invalidGroups = issuesGroupedState.filter((group) => group.ornull == null || group.items.ornull == null)
+  if (issuesGroupedState.value.length === 0 || invalidGroups.length > 0) {
+    if (invalidGroups.length > 0) {
+      invalidGroups.forEach((g) => {
+        console.warn('Found an invalid group: ', g.value);
+      });
+    }
+    return <Spinner />;
   }
 
   /**
