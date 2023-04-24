@@ -18,8 +18,7 @@ const errorMessage = 'ETA must use ISO 8601 standard (YYYY-MM-DD). Please see ht
  */
 export const getEtaDate = (data: string, config: { addError: ErrorManager['addError'], issue: Pick<IssueData, 'html_url' | 'title'> }): string => {
   // how this works: https://www.debuggex.com/r/x-U2AnhTwWbSCXCD
-
-  const etaRegex = /^eta\s*:\s*(?<dateString>\d{4}(Q[1-4]|\-\d{2}(\-\d{2})?))/im;
+  const etaRegex = /^\s*eta\s*:\s*(?<dateString>\d{4}(Q[1-4]|\-\d{2}(\-\d{2})?))/im;
   const dateString = data.match(etaRegex)?.groups?.dateString;
 
   if (!dateString) {
