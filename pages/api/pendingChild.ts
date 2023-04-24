@@ -16,7 +16,8 @@ export default async function handler(
     return
   }
   const { owner, repo, issue_number, parentJson } = req.query;
-  const parent = JSON.parse(parentJson as string);
+  const parentJsonDecoded = decodeURIComponent(parentJson as string);
+  const parent = JSON.parse(parentJsonDecoded);
   const errorManager = new ErrorManager();
 
   if (process.env.IS_LOCAL === 'true') {
