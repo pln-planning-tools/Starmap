@@ -25,6 +25,7 @@ export const getIssueErrorFilter = (maxDepth: number) =>
 
 
 export const errorFilters = {
+  [ViewMode.List]: getIssueErrorFilter(1),
   [ViewMode.Simple]: getIssueErrorFilter(1),
   [ViewMode.Detail]: getIssueErrorFilter(3),
 }

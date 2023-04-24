@@ -1,0 +1,12 @@
+.bulletConnector {
+  /**
+   * This top value must be set to the size of the .bulletIcon_Wrapper class in order to not appear underneath
+   * transparent colors
+  */
+  top: 26px;
+  width: 2px;
+  bottom: 0;
+  /** Spotlight Blue */
+  background: var(--chakra-colors-spotLightBlue);
+  position: absolute;
+}
