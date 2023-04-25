@@ -8,8 +8,10 @@ import { RoadmapForm } from '../RoadmapForm';
 import theme from '../theme/constants';
 import styles from './PageHeader.module.css';
 import SmallScreenModal from '../modal/SmallScreenModal';
+import useStarmapContentUpdated from '../../hooks/useStarmapContentUpdated';
 
 function PageHeader() {
+  useStarmapContentUpdated();
   return (
     <>
       <SmallScreenModal></SmallScreenModal>
@@ -21,7 +23,7 @@ function PageHeader() {
               <Center>
                 <SvgStarMapsLogo width={45} height={45} className={styles.StarMapsLogo} />
                 <Text fontSize={'24px'} as='span' color={theme.light.header.text.color}>Star</Text>
-                <Text fontSize={'24px'} as='b' color={theme.light.header.text.color}>Map</Text>
+                <Text fontSize={'24px'} as='b' color={theme.light.header.text.color}>map</Text>
               </Center>
             </Link>
           </NextLink>

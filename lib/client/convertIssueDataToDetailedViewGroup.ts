@@ -1,4 +1,4 @@
-import { State } from '@hookstate/core';
+import { State, ImmutableArray } from '@hookstate/core';
 import { group } from 'd3';
 import { reverse, sortBy, uniqBy } from 'lodash';
 
@@ -23,7 +23,7 @@ export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: Stat
     children: v.children.map((x) => ({ ...x, group: x.parent?.title ?? '' })),
   }));
 
-  const getGroupedIssues = (issueData: IssueData[]): DetailedViewGroup[] => Array.from(
+  const getGroupedIssues = (issueData: ImmutableArray<IssueData>): DetailedViewGroup[] => Array.from(
     group(issueData, (d) => d.group),
     ([key, value]) => ({
       groupName: key,
@@ -32,9 +32,9 @@ export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: Stat
     }),
   );
 
-  const issueDataLevelOneIfNoChildren: IssueData[] = newIssueData.map((v) => ({ ...v, children: [v], group: v.title }));
+  const issueDataLevelOneIfNoChildren: ImmutableArray<IssueData> = newIssueData.map((v) => ({ ...v, children: [v], group: v.title }));
 
-  const issueDataLevelOne: IssueData[] = newIssueData.map((v) => v.children.flat()).flat();
+  const issueDataLevelOne: ImmutableArray<IssueData> = newIssueData.map((v) => v.children.flat()).flat();
   const issueDataLevelOneGrouped: DetailedViewGroup[] = getGroupedIssues(issueDataLevelOne);
   const issueDataLevelOneIfNoChildrenGrouped: DetailedViewGroup[] = getGroupedIssues(issueDataLevelOneIfNoChildren);
 
@@ -61,7 +61,10 @@ export function convertIssueDataStateToDetailedViewGroupOld(issueDataState: Stat
 
 export function convertIssueDataToDetailedViewGroup(issueData: IssueData): DetailedViewGroup[] {
   const allIssues = flattenIssueData(issueData);
-  const group = allIssues.reduce((viewGroup: DetailedViewGroup[], issueItem: IssueData) => {
+  interface MutableDetailedViewGroup extends DetailedViewGroup {
+    items: IssueData[]
+  }
+  const group = allIssues.reduce((viewGroup: MutableDetailedViewGroup[], issueItem: IssueData) => {
     const currentItemsGroupIndex = viewGroup.findIndex((item) => item.groupName === issueItem.parent?.title)
     if (viewGroup[currentItemsGroupIndex] != null) {
       viewGroup[currentItemsGroupIndex].items.push(issueItem);
@@ -85,7 +88,7 @@ export function convertIssueDataToDetailedViewGroup(issueData: IssueData): Detai
       }
     }
     return viewGroup;
-  }, [] as DetailedViewGroup[])
+  }, [] as MutableDetailedViewGroup[])
 
   return reverse(Array.from(sortBy(group, ['groupName'])));
 }

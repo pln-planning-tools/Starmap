@@ -1,10 +1,10 @@
 .grid {
   display: grid;
-  grid-gap: 0.5rem;
   grid-column-gap: 0;
   grid-template-columns: repeat(10, minmax(10px, 1fr));
-  margin-top: 20px;
   overflow-x: hidden;
+  background: #F9FCFF;
+  border-radius: 10px 10px 0 0;
 }
 
 .scrollable {
@@ -13,7 +13,8 @@
   overflow-y: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  margin-top: -20px
+  margin-top: -20px;
+  border-radius: 0 0 10px 10px;
 }
 
 .scrollable::-webkit-scrollbar {
@@ -38,14 +39,14 @@
 }
 
 .item.itemHeader {
-  background: revert;
+  background: #F9FCFF;
   text-align: center;
   /* font-size: 16px; */
   font-weight: 600;
   position: relative;
   /** must align with .timelineTick left positioning. This is done in order to handle the centering of the text and grid ticks*/
   left: -1rem;
-  z-index: 4;
+  padding: 4px 0;
 }
 
 .nested > .item:not(.group) {
@@ -62,13 +63,13 @@
 }
 
 .item.group {
-  background: revert;
   grid-row: 1 / -1;
-  font-weight: 600;
+  font-weight: 500;
   grid-column: 1 / span 2;
   grid-column-end: none;
-  background: white;
+  background: #ffffff;
   color: #3182ce;
+  padding: 0 8px;
 }
 
 /* detail view GroupHeader text */
@@ -87,17 +88,16 @@
 }
 
 .groupWrapper:nth-child(odd):not(.timelineHeaderLineWrapper) {
-  background: rgba(215, 228, 253, 0.5);
+  background: #fafafa;
   padding: 1.25rem 0;
 }
 
 .groupWrapper:nth-child(even):not(.timelineHeaderLineWrapper) {
-  background: rgba(215, 228, 253, 0.5);
+  background: #fafafa;
   padding: 1.25rem 0;
 }
 
 .simpleView {
-  background-color: revert !important;
   color: revert !important;
 }
 
@@ -117,7 +117,18 @@
 
 .timelineBox {
   position: relative;
-  padding: 0.25rem;
+}
+
+.tabPanels .timelineBox {
+  padding: 0;
+}
+
+.tabPanels {
+  background: #fafafa;
+  border-radius: 10px;
+  border: 1px solid #A2D0DE;
+  margin-top: 20px;
+  padding: 0;
 }
 
 .milestoneTitleWrapper {
@@ -165,8 +176,8 @@ a.milestoneTitle {
 }
 
 .timelineHeaderLineWrapper {
-  background: revert !important;
-  border-top: 1px solid;
+  background: #fafafa;
+  border-top: 1px solid #A2D0DE;
   gap: 0px;
 }
 

@@ -1,14 +1,15 @@
 import {
   Box,
+  Center,
+  Flex,
   Link,
-  Spinner,
+  Skeleton,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Center,
-  Flex
+  Spacer,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -25,7 +26,8 @@ import Header from './header';
 import styles from './Roadmap.module.css';
 import { RoadmapDetailed } from './RoadmapDetailedView';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
-import NewRoadmap from '../roadmap/NewRoadmap';
+import SvgListViewIcon from '../icons/svgr/SvgListViewIcon';
+import RoadmapList from '../RoadmapList';
 
 export function RoadmapTabbedView({
   issueDataState,
@@ -34,16 +36,15 @@ export function RoadmapTabbedView({
   const globalLoadingState = useGlobalLoadingState();
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
   const router = useRouter();
-  if (issueDataState.children.length === 0 || globalLoadingState.get()) {
-    return (<Spinner size="lg" />);
-  }
+
   // Defining what tabs to show and in what order
-  const tabs = ['Detailed View','Overview'] as const;
+  const tabs = ['Detailed View', 'Overview', 'List'] as const;
 
   // Mapping the views to the tabs
   const tabViewMap: Record<typeof tabs[number], ViewMode> = {
     'Detailed View': ViewMode.Detail,
     'Overview': ViewMode.Simple,
+    'List': ViewMode.List,
   };
 
   // Mapping the tabs to the views
@@ -61,46 +62,57 @@ export function RoadmapTabbedView({
     }, undefined, { shallow: true });
   }
 
-  const renderTab = (title: string, index: number) => {
+  const renderTab = (title: typeof tabs[number], index: number) => {
     let TabIcon = SvgDetailViewIcon
 
     if (title == "Overview") {
       TabIcon = SvgOverviewIcon
+    } else if (title == "List") {
+      TabIcon = SvgListViewIcon
     }
 
     return (
-      <Tab
-        className={styles.gridViewTab}
-        key={index}
-      >
-        <Center>
-          <TabIcon />
-          <Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>
-        </Center>
-      </Tab>
+      <Skeleton isLoaded={!globalLoadingState.get()} key={index}>
+        <Tab
+          className={styles.gridViewTab}
+        >
+          <Center>
+            <TabIcon />
+            <Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>
+          </Center>
+        </Tab>
+      </Skeleton>
     )
   };
 
-  const renderTabPanel = (_title: string, index: number) => (
-    <TabPanel p={0} key={index}>
-      {mode === RoadmapMode.grid ? <RoadmapDetailed issueDataState={issueDataState} /> : <NewRoadmap issueDataState={issueDataState} />}
-    </TabPanel>
-  );
+  const renderTabPanel = (title: typeof tabs[number], index: number) => {
+    let component = <RoadmapDetailed issueDataState={issueDataState} />
+    if (title === 'List') {
+      component = <RoadmapList issueDataState={issueDataState} />
+    }
+    return (
+      <TabPanel p={0} key={index}>
+        {component}
+      </TabPanel>
+    )
+  };
 
   return (
     <>
       <Box className={styles.timelineBox}>
         <Header issueDataState={issueDataState} />
-        <Flex align="center" justify="space-between">
-          <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} isLazy pt='20px'>
-            <TabList display="flex" alignItems="center" justifyContent="space-between">
-              <Flex>
+        <Flex align="center" justify="space-between" grow={"1"}>
+          <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} pt='20px' flexGrow={"1"}
+            isLazy>
+            <Flex direction={'row'} grow={"1"}>
+              <TabList display="flex" alignItems="center" justifyContent="space-between">
                 {tabs.map(renderTab)}
-              </Flex>
+              </TabList>
+              <Spacer />
               <TodayMarkerToggle />
-            </TabList>
-            <TabPanels>
-              {tabs.map(renderTabPanel)}
+            </Flex>
+            <TabPanels className={styles.tabPanels}>
+             {tabs.map(renderTabPanel)}
             </TabPanels>
           </Tabs>
         </Flex>

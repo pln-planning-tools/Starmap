@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request_target:
-    branches: [ "main" ]
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 permissions: {}
 
@@ -25,6 +27,7 @@ jobs:
         yarn test:ci
 
     - name: Publish Code Coverage
+      if: github.repository == 'pln-planning-tools/Starmap'
       uses: paambaati/codeclimate-action@v3.2.0
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_TEST_REPORTER_ID }}

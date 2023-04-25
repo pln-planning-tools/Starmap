@@ -1,7 +1,9 @@
 import { parseHTML } from 'linkedom';
 import { ErrorManager } from './backend/errorManager';
+import { getValidUrlFromInput } from './getValidUrlFromInput';
 import { getEtaDate, isValidChildren } from './helpers';
-import { GithubIssueDataWithChildren, ParserGetChildrenResponse } from './types';
+import { paramsFromUrl } from './paramsFromUrl';
+import { GithubIssueData, GithubIssueDataWithChildren, ParserGetChildrenResponse } from './types';
 
 export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' | 'body_html' | 'root_issue' | 'title'>, errorManager: ErrorManager) => {
   const { body_html: issueBodyHtml } = issue;
@@ -10,7 +12,7 @@ export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' |
   const issueText = [...document.querySelectorAll('*')].map((v) => v.textContent).join('\n');
   let eta: string | null = null;
   try {
-    eta = getEtaDate(issueText)
+    eta = getEtaDate(issueText, { addError: errorManager.addError.bind(errorManager), issue })
   } catch (e) {
     if (issue.html_url != null && issue.root_issue !== true) {
       errorManager.addError({
@@ -27,8 +29,114 @@ export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' |
   };
 };
 
-export const getChildren = (issue: string): ParserGetChildrenResponse[] => {
-  const { document } = parseHTML(issue);
+function getSectionLines(text: string, sectionHeader: string): string {
+  const sectionIndex = text.indexOf(sectionHeader);
+  if (sectionIndex === -1) {
+    return '';
+  }
+  return text.substring(sectionIndex)
+}
+
+function getCleanedSectionLines(text: string, sectionHeader: string) {
+  const lines = getSectionLines(text, sectionHeader)
+  if (typeof lines === 'string') {
+    return lines.split(/[\r\n]+/).slice(1)
+      .map(getUrlFromMarkdownText)
+  }
+  return lines
+}
+
+const splitAndGetLastItem = (line: string) => line.trim().split(' ').slice(-1)[0]
+const ensureTaskListChild = (line: string) => line.trim().indexOf('-') === 0
+const getUrlFromMarkdownText = (line: string) => line.trim().split('](').slice(-1)[0].replace(')', '')
+
+function getUrlStringForChildrenLine(line: string, issue: Pick<GithubIssueData, 'html_url'>) {
+  if (/^#\d+$/.test(line)) {
+    const { owner, repo } = paramsFromUrl(issue.html_url)
+    line = `${owner}/${repo}${line}`
+  }
+  const url = getValidUrlFromInput(line)
+  if (!url.host.includes('github.com')) {
+    throw new Error('Invalid host for children item')
+  }
+  return url.href
+}
+/**
+ * We attempt to parse the issue.body for children included in 'tasklist' format
+ * @see https://github.com/pln-planning-tools/Starmap/issues/245
+ *
+ * @param {string} issue_body
+ */
+function getChildrenFromTaskList(issue: Pick<GithubIssueData, 'body' | 'html_url'>): ParserGetChildrenResponse[] {
+  // tasklists require the checkbox style format to recognize children
+  const lines = getCleanedSectionLines(issue.body, '```[tasklist]')
+    .filter(ensureTaskListChild)
+    .map(splitAndGetLastItem)
+    .filter(Boolean);
+
+  if (lines.length === 0) {
+    throw new Error('Section missing or has no children')
+  }
+
+  return convertLinesToChildren(lines, issue, 'tasklist')
+}
+
+/**
+ * A new version of getchildren which parses the issue body_text instead of issue body_html
+ *
+ * This function must support recognizing the current issue's organization and repo, because some children may simply be "#43" instead of a github short-id such as "org/repo#43"
+ * @param {string} issue
+ */
+function getChildrenNew(issue: Pick<GithubIssueData, 'body' | 'html_url'>): ParserGetChildrenResponse[] {
+
+  try {
+    return getChildrenFromTaskList(issue);
+  } catch (e) {
+    // Could not find children using new tasklist format,
+    // try to look for "children:" section
+  }
+  const lines = getCleanedSectionLines(issue.body, 'children:').map(splitAndGetLastItem).filter(Boolean);
+  if (lines.length === 0) {
+    throw new Error('Section missing or has no children')
+  }
+
+  // guard against HTML tags (covers cases where this method is called with issue.body_html instead of issue.body_text)
+  if (lines.some((line) => line.startsWith('<'))) {
+    throw new Error('HTML tags found in body_text');
+  }
+
+  return convertLinesToChildren(lines, issue, 'children:')
+}
+
+function getValidChildrenLinks(lines: string[], issue: Pick<GithubIssueData, 'html_url'>): string[] {
+  const validChildrenLinks: string[] = []
+  for (const line of lines) {
+    try {
+      validChildrenLinks.push(getUrlStringForChildrenLine(line, issue))
+    } catch (e) {
+      break
+    }
+  }
+  return validChildrenLinks
+}
+
+function convertLinesToChildren(lines: string[], issue: Pick<GithubIssueData, 'html_url'>, group: string): ParserGetChildrenResponse[] {
+  const validChildrenLinks = getValidChildrenLinks(lines, issue)
+
+  return validChildrenLinks
+    .map((html_url): ParserGetChildrenResponse => ({
+      group,
+      html_url,
+    }))
+}
+
+export const getChildren = (issue: Pick<GithubIssueData, 'body_html' | 'body' | 'html_url'>): ParserGetChildrenResponse[] => {
+  try {
+    return getChildrenNew(issue);
+  } catch (e) {
+    // ignore failures for now, fallback to old method.
+  }
+  const { document } = parseHTML(issue.body_html);
   const ulLists = [...document.querySelectorAll('ul')];
   const filterListByTitle = (ulLists) =>
     ulLists.filter((list) => {
@@ -51,3 +159,38 @@ export const getChildren = (issue: string): ParserGetChildrenResponse[] => {
 
   return [...children];
 };
+
+/**
+ * Search for "description: " in the issue body, and return all text after that
+ * except for the first empty line it finds
+ *
+ * @param {string} issueBodyText
+ *
+ * @returns {string}
+ */
+export const getDescription = (issueBodyText: string): string => {
+  if (issueBodyText.length === 0) return '';
+
+  const [firstLine, ...linesToParse] = getSectionLines(issueBodyText, 'description:')
+    .split(/\r\n|\r|\n/) // We do not want to replace multiple newlines, only one.
+
+  // the first line may contain only "description:" or "description: This is the start of my description"
+  const firstLineContent = firstLine
+      .replace(/^.{0,}description:/, '')
+      .replace(/-->/g, '') // may be part of an HTML comment so it's hidden from the user. Remove the HTML comment end tag
+      .trim();
+
+  const descriptionLines: string[] = []
+  if (firstLineContent !== '') {
+    descriptionLines.push(firstLineContent)
+  }
+
+  for (const line of linesToParse.map((line) => line.trim())) {
+    if (line === '' || line.includes('children:') || line.includes('```[tasklist]') || line.includes('eta:')) {
+      break
+    }
+    descriptionLines.push(line.trim())
+  }
+
+  return descriptionLines.join('\n');
+}

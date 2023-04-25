@@ -25,7 +25,9 @@
     ".eslintrc.js",
     "**/*.ts",
     "**/*.tsx",
-    "*.config.js"
+    "*.config.js",
+    "sw/*.ts",
+    "public/update-listener.js"
   ],
   "exclude": [
     "node_modules"
