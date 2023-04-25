@@ -54,6 +54,12 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
   const dateGranularity = useDateGranularity()
 
   useEffect(() => {
+    window.addEventListener('resize', () => {
+      setMaxW(window.innerWidth);
+    });
+  }, []);
+
+  useEffect(() => {
   //   console.log('height NewRoadmap setting maxW and maxH', maxH)
     setMaxW(window.innerWidth);
   //   setMaxHeight(Math.max(maxH, window.innerHeight / 2));
@@ -97,14 +103,14 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
   const height = useMemo(() => maxH - margin.top - margin.bottom, [margin.bottom, margin.top, maxH]);
   console.log(`height: `, height);
   const globalLoadingState = useGlobalLoadingState();
-  const dates = useMemo(() => dayjsDates
-    .map((date) => date.toDate())
-    .sort((a, b) => a.getTime() - b.getTime()),  [dayjsDates]);
+  // const dates = useMemo(() => dayjsDates
+  //   .map((date) => date.toDate())
+  //   .sort((a, b) => a.getTime() - b.getTime()),  [dayjsDates]);
 
   console.log(`dayjsDates: `, dayjsDates);
-  useEffect(() => {
-    globalTimeScaler.setScale(dates, 5);
-  }, [dates]);
+  // useEffect(() => {
+  //   globalTimeScaler.setScale(dates, 5);
+  // }, [dates]);
   const scaleX = scaleTime()
     .domain([earliestEta.toDate(), latestEta.toDate()])
     .range([0, width]);
@@ -117,7 +123,7 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
       height: 80,
       ySpacing: 5,
       xSpacing: 0,
-      yMin: 60
+      yMin: 40
     })
 
   if (globalLoadingState.get()) {
@@ -127,10 +133,22 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
       </Center>
     );
   }
-  // function onScroll(event) {
-  //   const { scrollLeft } = event.target;
-  //   scaleX.
-  // }
+
+  // get the left-most value of binPackedItems
+  const { leftMostX, rightMostX } = binPackedItems.reduce((acc, item) => ({
+    leftMostX: Math.min(acc.leftMostX, item.left),
+    rightMostX: Math.min(acc.rightMostX, item.left)
+  }), { leftMostX: 0, rightMostX: 0 });
+  const earliestDate = scaleX.invert(leftMostX);
+  console.log(`earliestDate: `, earliestDate);
+  const latestDate = scaleX.invert(rightMostX);
+  console.log(`latestDate: `, latestDate);
+  // dayjsDates.push(dayjs(earliestDate));
+  // dayjsDates.push(dayjs(latestDate));
+
+  // scaleX = scaleTime()
+  //   .domain([earliestDate, latestDate])
+  //   .range([0, width])
 
   console.log(`height maxH: `, maxH);
   return (
@@ -139,7 +157,7 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
       {/* {isLocal && <WeekTicksSelector />} */}
         <svg ref={ref} width='100%' height='100%'>
           <rect x={0} y={50} width={maxW} height={maxH} fill={'#F8FCFF'}></rect>
-          <NewRoadmapHeader scale={scaleX} transform={`translate(0, ${margin.top + 50})`} dates={dayjsDates.map((d) => d.toDate())} />
+          <NewRoadmapHeader scale={scaleX} transform={`translate(0, ${margin.top + 30})`} dates={dayjsDates.map((d) => d.toDate())} leftMostX={leftMostX} rightMostX={rightMostX} />
           {showTodayMarker && <TodayLine scale={scaleX} height={height} />}
           {/* {issueData.children.map((childIssue, index) => (
             <RoadmapItem index={index} scale={scaleX} childIssue={childIssue} />

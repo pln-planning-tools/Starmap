@@ -9,9 +9,11 @@ interface AxisTopProps {
   scale: ScaleTime<number, number>;
   transform: string;
   dates: Date[];
+  leftMostX: number;
+  rightMostX: number;
 }
 
-export default function NewRoadmapHeader({ scale, transform, dates }: AxisTopProps) {
+export default function NewRoadmapHeader({ scale, transform, dates, leftMostX, rightMostX }: AxisTopProps) {
   console.log(`dates: `, dates);
   // const ref = useRef<SVGGElement>(null);
   const numWeeks = useWeekTicks();
