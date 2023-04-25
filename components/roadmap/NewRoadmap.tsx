@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Center, Spinner, usePrevious } from '@chakra-ui/react';
-import { State, useHookstate } from '@hookstate/core';
+import { State, useHookstate, useHookstateMemo } from '@hookstate/core';
 
 import { D3ZoomEvent, scaleTime, select, zoom as d3Zoom } from 'd3';
 import { ManipulateType } from 'dayjs';
@@ -20,6 +20,8 @@ import { globalTimeScaler } from '../../lib/client/TimeScaler';
 import { ViewMode } from '../../lib/enums';
 import { DetailedViewGroup, IssueData } from '../../lib/types';
 import AxisTop from './AxisTop';
+import BinPackedMilestoneItem from './BinPackedMilestoneItem';
+import { binPack } from './lib';
 import NewRoadmapHeader from './NewRoadMapHeader';
 import RoadmapItem from './RoadmapItem';
 import TodayLine from './TodayLine';
@@ -109,6 +111,14 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // const scaleX = useMemo(() => globalTimeScaler.percentageScale, [dates]);
+  const binPackedItems = binPack(issueData.children, {
+      scale: scaleX,
+      width: 350,
+      height: 80,
+      ySpacing: 5,
+      xSpacing: 0,
+      yMin: 60
+    })
 
   if (globalLoadingState.get()) {
     return (
@@ -131,8 +141,11 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
           <rect x={0} y={50} width={maxW} height={maxH} fill={'#F8FCFF'}></rect>
           <NewRoadmapHeader scale={scaleX} transform={`translate(0, ${margin.top + 50})`} dates={dayjsDates.map((d) => d.toDate())} />
           {showTodayMarker && <TodayLine scale={scaleX} height={height} />}
-          {issueData.children.map((childIssue, index) => (
+          {/* {issueData.children.map((childIssue, index) => (
             <RoadmapItem index={index} scale={scaleX} childIssue={childIssue} />
+          ))} */}
+          {binPackedItems.map((item) => (
+            <BinPackedMilestoneItem item={item} />
           ))}
         </svg>
       </div>

@@ -8,7 +8,6 @@ import { StarmapsBreadcrumb } from '../../components/breadcrumb';
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 import PageHeader from '../../components/layout/PageHeader';
 import { RoadmapTabbedView } from '../../components/roadmap-grid/RoadmapTabbedView';
-import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { BASE_PROTOCOL } from '../../config/constants';
 import { setDateGranularity } from '../../hooks/useDateGranularity';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';

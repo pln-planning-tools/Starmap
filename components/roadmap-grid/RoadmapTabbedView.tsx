@@ -28,6 +28,7 @@ import { RoadmapDetailed } from './RoadmapDetailedView';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import SvgListViewIcon from '../icons/svgr/SvgListViewIcon';
 import RoadmapList from '../RoadmapList';
+import NewRoadmap from '../../components/roadmap/NewRoadmap';
 
 export function RoadmapTabbedView({
   issueDataState,
@@ -87,6 +88,9 @@ export function RoadmapTabbedView({
 
   const renderTabPanel = (title: typeof tabs[number], index: number) => {
     let component = <RoadmapDetailed issueDataState={issueDataState} />
+    if (mode === 'd3') {
+      component = <NewRoadmap issueDataState={issueDataState} />
+    }
     if (title === 'List') {
       component = <RoadmapList issueDataState={issueDataState} />
     }

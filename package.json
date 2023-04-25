@@ -28,6 +28,7 @@
     "@octokit/rest": "^19.0.5",
     "@types/d3": "^7.4.0",
     "@types/lodash": "^4.14.186",
+    "@visx/text": "^3.0.0",
     "awesome-toast-component": "^2.0.6",
     "chakra-ui-markdown-renderer": "^4.1.0",
     "cheerio": "^1.0.0-rc.12",
