@@ -1,12 +1,15 @@
 import { ScaleTime } from 'd3';
+import { useContext } from 'react';
 
 import { dayjs } from '../../lib/client/dayjs';
+import { PanContext } from './contexts';
 
-function TodayLine({ scale, height }: { scale: ScaleTime<number, number>; height: number }) {
+function TodayLine({ scale, height }: { scale: ScaleTime<number, number>; height: number, transform?: string }) {
   const todayX = scale(dayjs().toDate());
+  const panX = useContext(PanContext)
 
   return (
-    <g>
+    <g transform={`translate(${panX}, 0)`}>
       <text
         dominantBaseline='text-before-edge'
         x={todayX - 20}

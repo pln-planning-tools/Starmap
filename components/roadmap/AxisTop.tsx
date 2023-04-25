@@ -12,7 +12,7 @@ interface AxisTopProps {
 
 function AxisTop({ scale, transform, dates }: AxisTopProps) {
   const ref = useRef<SVGGElement>(null);
-  const numWeeks = useWeekTicks();
+  const numWeeks = 5
 
   console.log(`dates?.length: `, dates?.length);
   dates?.forEach((date) => {
@@ -23,7 +23,7 @@ function AxisTop({ scale, transform, dates }: AxisTopProps) {
     if (ref.current) {
       const axis = axisTop(scale)
         .tickSizeInner(-20)
-        .ticks(3)
+        .ticks(15)
         .tickFormat((d, i) => i > 0 ? dayjs(d.toString()).format('YYYY MMM DD'):'')
         .tickSizeOuter(0)
         .tickPadding(10);
@@ -32,10 +32,10 @@ function AxisTop({ scale, transform, dates }: AxisTopProps) {
 
       select(ref.current).call(axis);
     }
-  }, [scale, numWeeks]);
+  }, [scale, numWeeks, transform]);
   console.log(`scale: `, scale);
 
-  return <g ref={ref} transform={transform} />;
+  return <g ref={ref} transform={transform} viewBox={`[${0},0, 100, 100]`}/>;
 }
 
 export default AxisTop;

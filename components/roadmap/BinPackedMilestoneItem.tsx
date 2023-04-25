@@ -6,12 +6,13 @@ import dayjs from 'dayjs';
 import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
 // import { IssueData } from '../../lib/types';
 import { useMaxHeight, setMaxHeight } from '../../hooks/useMaxHeight';
-import { useEffect, useId, useMemo, useRef } from 'react';
+import { useContext, useEffect, useId, useMemo, useRef } from 'react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useMilestoneBoundingRects, setMilestoneBoundingRects } from '../../hooks/useMilestoneBoundingRects';
 import { Text } from '@visx/text';
 import { BinPackItem } from './lib';
+import { PanContext } from './contexts';
 
 // interface MilestoneRect extends DOMRect {
 //   id: string
@@ -58,12 +59,15 @@ import { BinPackItem } from './lib';
 // D3 milestone item
 function BinPackedMilestoneItem({
   item,
+  // panX,
   // index,
 }: {
   item: BinPackItem;
+  // panX: number;
   // index?: number;
 }) {
   const itemRef = useRef<SVGGElement>(null);
+  const panX = useContext(PanContext)
   // const allBoundingRects = useMilestoneBoundingRects();
   const uniqId = useId();
 
@@ -81,7 +85,8 @@ function BinPackedMilestoneItem({
   const itemWidth = item.right - item.left
   return (
     <NextLink key={uniqId} href={getLinkForRoadmapChild({ issueData: item.data, query: useRouter().query })} passHref>
-      <g cursor={'pointer'} ref={itemRef}>
+      {/* <g cursor={'pointer'} ref={itemRef} transform={`translate(${panX}, 0)`}> */}
+      <g cursor={'pointer'} ref={itemRef} transform={`translate(${panX}, 0)`}>
         <rect
           x={item.left}
           y={item.top}

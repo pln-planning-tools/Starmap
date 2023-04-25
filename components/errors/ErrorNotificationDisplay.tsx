@@ -14,7 +14,7 @@ interface ErrorNotificationDisplayProps {
 }
 
 export function ErrorNotificationDisplay ({ errorsState, issueDataState }: ErrorNotificationDisplayProps) {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const viewMode = useViewMode();
   const filteredErrors: ImmutableArray<StarMapsIssueErrorsGrouped> = useMemo(() => {
