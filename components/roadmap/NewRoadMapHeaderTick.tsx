@@ -25,7 +25,7 @@ export default function NewRoadmapHeaderTick({ date,  y,  height, scale, maxX, n
   const startX = scale(dayjs(date).startOf('month'))
   const endX = scale(dayjs(date).endOf('month'))
   // const width = endX / numberOfTicks + 1
-  const width = endX - startX
+  const width = (endX - startX)
   const dateLabel = dayjs(date).format('MMM YYYY')
   if (width < 0) return null
 
