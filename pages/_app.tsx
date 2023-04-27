@@ -12,6 +12,9 @@ import type { BrowserMetricsProvider } from '../lib/types';
 const theme = extendTheme({
   semanticTokens: {
     colors: {
+      background: {
+        default: '#FFFFFF',
+      },
       inactive: {
         // darkGray: '#D7D7D7',
         default: '#D7D7D7',
@@ -37,6 +40,9 @@ const theme = extendTheme({
       },
       text: {
         default: '#313239'
+      },
+      textMuted: {
+        default: '#a3a3a3'
       }
     },
   },

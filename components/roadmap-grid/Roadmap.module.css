@@ -245,3 +245,48 @@ button.gridViewTab {
   background: #F9FCFF;
   border: 1px solid #A2D0DE;
 }
+
+/**
+  D3 Roadmap Styles
+  Note that some css properties for SVG elements are not recognized by cssLint
+  and you will need to modify `css.lint.validProperties` in
+  `./.vscode/settings.json` to remove errors for valid properties.
+*/
+.d3__milestoneItem {
+  fill: var(--chakra-colors-background);
+}
+.d3__milestoneItem .d3__milestoneItem__rect  {
+  stroke: var(--chakra-colors-inactiveAccent);
+}
+.d3__milestoneItem:hover .d3__milestoneItem__rect {
+  stroke: var(--chakra-colors-spotLightBlue);
+}
+
+.d3__milestoneItem__rect {
+  stroke-width: 1;
+  rx: 10;
+}
+
+.d3__milestoneItem__title {
+  font-weight: 500;
+  fill: var(--chakra-colors-text);
+  font-size: 18px;
+}
+
+.d3__milestoneItem-clickable .d3__milestoneItem__title {
+  fill: var(--chakra-colors-linkBlue);
+}
+
+.d3__milestoneItem__eta {
+  font-size: 13px;
+  fill: var(--chakra-colors-textMuted);
+  font-weight: 300;
+  line-height: 1;
+}
+
+.d3__milestoneItem__githubLogo {
+  fill: var(--chakra-colors-textMuted);
+}
+.d3__milestoneItem__githubLogo:hover {
+  fill: var(--chakra-colors-text);
+}

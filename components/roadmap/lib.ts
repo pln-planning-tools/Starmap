@@ -45,7 +45,7 @@ export const binPack = (items: ImmutableArray<PartialIssueData>, { height, width
   const sortedItems = items
   const rects: BinPackItem[] = [];
   const ySpacing = opts.ySpacing ?? 0;
-  const xSpacing = opts.xSpacing ?? 0;
+  // const xSpacing = opts.xSpacing ?? 0;
 
   for (const item of sortedItems) {
     const x2 = scale(dayjs(item.due_date).toDate());

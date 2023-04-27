@@ -9,7 +9,8 @@ import { BinPackItem } from './lib';
 import { PanContext } from './contexts';
 import styles from '../roadmap-grid/Roadmap.module.css';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
-
+import { dayjs } from '../../lib/client/dayjs';
+import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
 
 // D3 milestone item
 function BinPackedMilestoneItem({
@@ -30,68 +31,48 @@ function BinPackedMilestoneItem({
     strokeWidth: 2,
   };
   const textPadding = 10;
-  const rxSize = 10;
 
   const itemHeight = item.bottom - item.top
   const itemWidth = item.right - item.left
 
-  const clickable = item.data.children.length > 0;
+  const classNames = [
+    'js-milestoneCard',
+  ];
 
-  let className = '';
+  if (item.data.children.length > 0) {
+    classNames.push(styles['d3__milestoneItem-clickable']);
+    console.log(`clickable: `, item.data.children.length);
+  };
+
   try {
     const { owner, repo, issue_number } = paramsFromUrl(item.data.html_url);
-    className = `js-milestoneCard-${owner}-${repo}-${issue_number}`
+    classNames.push(`js-milestoneCard-${owner}-${repo}-${issue_number}`);
   } catch {}
 
   return (
     <NextLink key={uniqId} href={getLinkForRoadmapChild({ issueData: item.data, query: useRouter().query })} passHref>
-      {/* <g cursor={'pointer'} ref={itemRef} transform={`translate(${panX}, 0)`}> */}
-      <g cursor={'pointer'} ref={itemRef} transform={`translate(${panX}, 0)`} className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink} js-milestoneCard ${clickable && className}`}>
+      <g className={`${styles.d3__milestoneItem} ${classNames.join(' ')}`} cursor={'pointer'} ref={itemRef} transform={`translate(${panX}, 0)`}>
         <rect
           x={item.left}
           y={item.top}
           width={itemWidth}
           height={itemHeight}
-          fill='white'
-          opacity={0.5}
-          rx={rxSize}
-          strokeWidth={rectConfig.strokeWidth}
-          stroke='darkblue'
+          className={`${styles['d3__milestoneItem__rect']}`}
         />
-        {/* <rect
-          x={etaX - calculatedWidth}
-          y={yLocation}
-          // width={calculatedWidth * (randomIntFromInterval(0, 100) / 100)}
-          width={calculatedWidth * (childIssue.completion_rate / 100)}
-          height={rectConfig.height}
-          fill='#93DEFF'
-          // fill={'lightgreen'}
-          opacity={0.95}
-          rx={rxSize}
-          ry={rxSize}
-          // strokeWidth={rectConfig.strokeWidth}
-          // stroke="black"
-        /> */}
-        {/* <text dominantBaseline="text-before-edge" x={etaX-rectConfig.strokeWidth-textPadding} y={yLocation+yPadding} dy={'.05em'} fontSize={12} textAnchor="end">{childIssue.completion_rate}% complete</text> */}
-        {/* <text dominantBaseline="text-before-edge" x={etaX-calculatedWidth + calculatedWidth * (childIssue.completion_rate / 100)+ 15} y={yLocation+yPadding+30} dy={'.05em'} fontSize={12} textAnchor="end">{childIssue.completion_rate}%</text> */}
         <Text
+          className={styles.d3__milestoneItem__title}
           dominantBaseline='text-before-edge'
           x={item.left - rectConfig.strokeWidth*2}
           y={item.top}
           dy={'-.6em'}
           dx={textPadding}
           width={itemWidth * .80}
-          fontSize={18}
-          fill={'#4987bd'}
-          // strokeWidth={1}
-          // textAnchor='end'
           verticalAnchor='start'
         >
           {item.data.title}
         </Text>
-        {/* <text dominantBaseline="text-before-edge" x={etaX-calculatedWidth+rectConfig.strokeWidth+textPadding} y={yLocation+yPadding*6} dy={'.05em'} fontSize={16} textAnchor="start">state: {childIssue.state}</text> */}
-
         <Text
+          className={styles.d3__milestoneItem__eta}
           dominantBaseline='text-before-edge'
           x={item.left - rectConfig.strokeWidth*2 + textPadding}
           y={item.bottom - yPadding - textPadding * 1.8}
@@ -99,8 +80,14 @@ function BinPackedMilestoneItem({
           fontSize={14}
           textAnchor='start'
         >
-          {item.data.due_date}
+          {dayjs(item.data.due_date).format('DD-MMM-YY')}
         </Text>
+        <foreignObject height="18" width="18" x={item.right - 18 - textPadding/2} y={item.bottom - 18 - textPadding/2}>
+          {/** @ts-expect-error - JSX error with xmnls */}
+          <body xmnls="http://www.w3.org/1999/xhtml">
+            <SvgGitHubLogoWithTooltip githuburl={item.data.html_url}/>
+          </body>
+        </foreignObject>
       </g>
     </NextLink>
   );
