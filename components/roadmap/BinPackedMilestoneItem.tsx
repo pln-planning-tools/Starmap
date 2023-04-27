@@ -13,6 +13,8 @@ import { dayjs } from '../../lib/client/dayjs';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
 import { Box, Flex } from '@chakra-ui/react';
 
+const MAX_TITLE_LENGTH = 80;
+
 // D3 milestone item
 function BinPackedMilestoneItem({
   item,
@@ -40,6 +42,7 @@ function BinPackedMilestoneItem({
 
   const itemHeight = item.bottom - item.top
   const itemWidth = item.right - item.left
+  const contentWidth = boundaryRight - boundaryLeft
 
   const classNames = [
     'js-milestoneCard',
@@ -47,13 +50,14 @@ function BinPackedMilestoneItem({
 
   if (item.data.children.length > 0) {
     classNames.push(styles['d3__milestoneItem-clickable']);
-    console.log(`clickable: `, item.data.children.length);
   };
 
   try {
     const { owner, repo, issue_number } = paramsFromUrl(item.data.html_url);
     classNames.push(`js-milestoneCard-${owner}-${repo}-${issue_number}`);
   } catch {}
+
+  const truncatedTitle = item.data.title.length > MAX_TITLE_LENGTH ? `${item.data.title.slice(0, MAX_TITLE_LENGTH-3)}...` : item.data.title;
 
   return (
     <NextLink key={uniqId} href={getLinkForRoadmapChild({ issueData: item.data, query: useRouter().query })} passHref>
@@ -69,15 +73,13 @@ function BinPackedMilestoneItem({
           className={styles.d3__milestoneItem__title}
           dominantBaseline='text-before-edge'
           x={boundaryLeft}
-          y={boundaryTop - textPadding/2}
-          dy={'-.6em'}
-          // dx={textPadding}
-          width={itemWidth * .80}
+          y={boundaryTop - textPadding}
+          width={contentWidth}
           verticalAnchor='start'
         >
-          {item.data.title}
+          {truncatedTitle}
         </Text>
-        <foreignObject height="6" width={boundaryRight - boundaryLeft} x={boundaryLeft} y={item.bottom - textPadding*3.5}>
+        <foreignObject height="6" width={contentWidth} x={boundaryLeft} y={item.bottom - textPadding*3.5}>
           {/** @ts-expect-error - JSX error with xmnls */}
           <body xmnls="http://www.w3.org/1999/xhtml">
           <Box h='100%' w="100%" borderRadius="20px" bgColor="#F1F4F8">
