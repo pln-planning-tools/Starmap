@@ -66,10 +66,21 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
 
   const currentRef = ref.current
   useEffect(() => {
-
     if (ref.current != null) {
+      let validDrag = false
       const drag = d3Drag<SVGSVGElement, any>()
+        .on('start', function (event) {
+          if (event.sourceEvent.srcElement === ref.current) {
+            validDrag = true
+          }
+        })
+        .on('end', () => {
+          validDrag = false
+        })
         .on("drag", function dragged(event) {
+          if (!validDrag) {
+            return
+          }
           // we only want to either pan or zoom, not both (may change in the future.. but doing both isn't super intuitive)
           if (Math.abs(event.dx) > 0) { // prefer panning to zooming on drag.
             // if user clicked and dragged left/right, then pan
