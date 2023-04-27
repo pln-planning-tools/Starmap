@@ -13,7 +13,7 @@ interface BinPackOptions {
   ySpacing?: number
   yMin?: number
 }
-type PartialIssueData = Pick<IssueData, 'due_date' | 'children' | 'html_url' | 'title'>
+type PartialIssueData = Pick<IssueData, 'due_date' | 'children' | 'html_url' | 'title' | 'completion_rate'>
 
 export interface BinPackItem {
   top: number, // y1

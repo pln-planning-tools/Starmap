@@ -270,7 +270,7 @@ button.gridViewTab {
 .d3__milestoneItem__title {
   font-weight: 500;
   fill: var(--chakra-colors-text);
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .d3__milestoneItem-clickable .d3__milestoneItem__title {

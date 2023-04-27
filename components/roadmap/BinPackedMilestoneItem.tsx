@@ -11,6 +11,7 @@ import styles from '../roadmap-grid/Roadmap.module.css';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import { dayjs } from '../../lib/client/dayjs';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
+import { Box, Flex } from '@chakra-ui/react';
 
 // D3 milestone item
 function BinPackedMilestoneItem({
@@ -31,6 +32,11 @@ function BinPackedMilestoneItem({
     strokeWidth: 2,
   };
   const textPadding = 10;
+
+  const boundaryLeft = item.left + rectConfig.strokeWidth + textPadding;
+  const boundaryRight = item.right - rectConfig.strokeWidth - textPadding;
+  const boundaryTop = item.top + rectConfig.strokeWidth + yPadding;
+  const boundaryBottom = item.bottom - rectConfig.strokeWidth - yPadding;
 
   const itemHeight = item.bottom - item.top
   const itemWidth = item.right - item.left
@@ -62,27 +68,32 @@ function BinPackedMilestoneItem({
         <Text
           className={styles.d3__milestoneItem__title}
           dominantBaseline='text-before-edge'
-          x={item.left - rectConfig.strokeWidth*2}
-          y={item.top}
+          x={boundaryLeft}
+          y={boundaryTop - textPadding/2}
           dy={'-.6em'}
-          dx={textPadding}
+          // dx={textPadding}
           width={itemWidth * .80}
           verticalAnchor='start'
         >
           {item.data.title}
         </Text>
+        <foreignObject height="6" width={boundaryRight - boundaryLeft} x={boundaryLeft} y={item.bottom - textPadding*3.5}>
+          {/** @ts-expect-error - JSX error with xmnls */}
+          <body xmnls="http://www.w3.org/1999/xhtml">
+          <Box h='100%' w="100%" borderRadius="20px" bgColor="#F1F4F8">
+            <Box w={`${item.data.completion_rate}%`} h="100%" borderRadius="20px" bg="#7DE087" />
+          </Box>
+          </body>
+        </foreignObject>
         <Text
           className={styles.d3__milestoneItem__eta}
-          dominantBaseline='text-before-edge'
-          x={item.left - rectConfig.strokeWidth*2 + textPadding}
-          y={item.bottom - yPadding - textPadding * 1.8}
-          dy={'.05em'}
-          fontSize={14}
-          textAnchor='start'
+          dominantBaseline='text-after-edge'
+          x={boundaryLeft}
+          y={boundaryBottom}
         >
           {dayjs(item.data.due_date).format('DD-MMM-YY')}
         </Text>
-        <foreignObject height="18" width="18" x={item.right - 18 - textPadding/2} y={item.bottom - 18 - textPadding/2}>
+        <foreignObject height="18" width="18" x={boundaryRight - 18} y={boundaryBottom - 18}>
           {/** @ts-expect-error - JSX error with xmnls */}
           <body xmnls="http://www.w3.org/1999/xhtml">
             <SvgGitHubLogoWithTooltip githuburl={item.data.html_url}/>
