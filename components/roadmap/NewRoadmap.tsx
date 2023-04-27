@@ -171,7 +171,7 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
 
   return (
     <PanContext.Provider value={panX}>
-      <div style={{ height: `${height}px`, width }}>
+      <div style={{ height: `${height}px` }}>
         <svg ref={ref} width='100%' height='100%' viewBox={`[${panX}, 0, ${width+panX}, ${height}]`}>
           <NewRoadmapHeader
             transform={`translate(0, ${margin.top + 30})`}
