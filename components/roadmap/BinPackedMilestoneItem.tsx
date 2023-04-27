@@ -1,70 +1,21 @@
 import NextLink from 'next/link';
-
-import { ScaleTime } from 'd3';
-import dayjs from 'dayjs';
-
-import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
-// import { IssueData } from '../../lib/types';
-import { useMaxHeight, setMaxHeight } from '../../hooks/useMaxHeight';
-import { useContext, useEffect, useId, useMemo, useRef } from 'react';
+import { useContext, useId, useRef } from 'react';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useMilestoneBoundingRects, setMilestoneBoundingRects } from '../../hooks/useMilestoneBoundingRects';
 import { Text } from '@visx/text';
+
+import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
 import { BinPackItem } from './lib';
 import { PanContext } from './contexts';
+import styles from '../roadmap-grid/Roadmap.module.css';
+import { paramsFromUrl } from '../../lib/paramsFromUrl';
 
-// interface MilestoneRect extends DOMRect {
-//   id: string
-//   title: string
-// }
-
-// function isIntersect(rect1: MilestoneRect, rect2: MilestoneRect) {
-//   // if (rect1.top < rect2.top) {
-//   //   return false // don't intersect if rect1 is above rect2
-//   // }
-//   return rect1.top <= rect2.bottom && rect1.bottom >= rect2.top && rect1.left <= rect2.right && rect1.right >= rect2.left
-// }
-
-// function sortRectsByTop(rect1: MilestoneRect, rect2: MilestoneRect) {
-//   return rect1.top - rect2.top
-// }
-
-// /**
-//  * Given a list of rects, return the top-most yLocation within the x1 and x2 range
-//  * @param param0
-//  * @returns
-//  */
-// function getYLocation (boundingRects: MilestoneRect[], givenRect: MilestoneRect) {
-//   const rects = boundingRects.filter((rect) => isIntersect(rect, givenRect)).sort(sortRectsByTop)
-//   const yLocation = rects.length > 0 ? rects[0].top : givenRect.top
-//   return yLocation
-// }
-
-// // return all rects within given x range (all returned rects are in the same, or a colliding, column)
-// function getIntersectingRectsColumn (boundingRects: MilestoneRect[], givenRect: MilestoneRect) {
-//   return boundingRects.filter((rect) => givenRect.left <= rect.right && givenRect.right >= rect.left)
-// }
-
-// // return all rects within a given y range (all returned rects are in the same, or a colliding, row)
-// function getIntersectingRectsRow (boundingRects: MilestoneRect[], givenRect: MilestoneRect) {
-//   return boundingRects.filter((rect) => givenRect.top <= rect.bottom && givenRect.bottom >= rect.top)
-// }
-
-// return whether there is space within a given row (y1-y2) for a given rect (x1-x2)
-// function isSpaceInRow (boundingRects: MilestoneRect[], givenRect: MilestoneRect) {
-//   const rects = getIntersectingRectsColumn(boundingRects, givenRect)
-// }
 
 // D3 milestone item
 function BinPackedMilestoneItem({
   item,
-  // panX,
-  // index,
 }: {
   item: BinPackItem;
-  // panX: number;
-  // index?: number;
 }) {
   const itemRef = useRef<SVGGElement>(null);
   const panX = useContext(PanContext)
@@ -83,10 +34,19 @@ function BinPackedMilestoneItem({
 
   const itemHeight = item.bottom - item.top
   const itemWidth = item.right - item.left
+
+  const clickable = item.data.children.length > 0;
+
+  let className = '';
+  try {
+    const { owner, repo, issue_number } = paramsFromUrl(item.data.html_url);
+    className = `js-milestoneCard-${owner}-${repo}-${issue_number}`
+  } catch {}
+
   return (
     <NextLink key={uniqId} href={getLinkForRoadmapChild({ issueData: item.data, query: useRouter().query })} passHref>
       {/* <g cursor={'pointer'} ref={itemRef} transform={`translate(${panX}, 0)`}> */}
-      <g cursor={'pointer'} ref={itemRef} transform={`translate(${panX}, 0)`}>
+      <g cursor={'pointer'} ref={itemRef} transform={`translate(${panX}, 0)`} className={`${styles.item} ${styles.issueItem} ${clickable && styles.wrapperLink} js-milestoneCard ${clickable && className}`}>
         <rect
           x={item.left}
           y={item.top}
@@ -118,12 +78,14 @@ function BinPackedMilestoneItem({
           dominantBaseline='text-before-edge'
           x={item.left - rectConfig.strokeWidth*2}
           y={item.top}
-          dy={'.05em'}
+          dy={'-.6em'}
           dx={textPadding}
           width={itemWidth * .80}
           fontSize={18}
+          fill={'#4987bd'}
+          // strokeWidth={1}
           // textAnchor='end'
-          verticalAnchor='middle'
+          verticalAnchor='start'
         >
           {item.data.title}
         </Text>
