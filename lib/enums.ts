@@ -9,6 +9,12 @@ export enum ViewMode {
   List = 'list',
 }
 
+export enum TimeUnit {
+  Month = 'month',
+  Quarter = 'quarter',
+  Year = 'year',
+}
+
 export enum DateGranularityState {
   Months = 'months',
   Weeks = 'weeks',

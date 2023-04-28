@@ -21,8 +21,8 @@ import { binPack } from './lib';
 import NewRoadmapHeader from './NewRoadMapHeader';
 import TodayLine from './TodayLine';
 
-const yZoomStep = 0.05
-const yZoomMin = 0.65 // inclusive
+const yZoomStep = 0.02
+const yZoomMin = 0.2 // inclusive
 const yZoomMax = 3 // inclusive
 
 function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
@@ -82,16 +82,27 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
 
   const currentRef = ref.current
   const getNewPanX = useCallback((panDx, oldPanX) => {
+
     if (currentRef != null) {
       const boundingRect = currentRef.getBoundingClientRect()
-      const panMargin = boundingRect.width/10
+      const panMargin = boundingRect.width/5
       let newPanX = oldPanX + panDx
+      // const middleX = rightMostMilestoneX - leftMostMilestoneX
       const maxRightValue = boundingRect.width - rightMostMilestoneX - panMargin
       const maxLeftValue = (boundingRect.width - leftMostMilestoneX) - boundingRect.width + panMargin
+      if (oldPanX <= maxRightValue && oldPanX >= maxLeftValue) {
+        // prevent jittering
+        /**
+         * TODO: Fix this to ensure that when zoomed out so far that all
+         * milestones are visible, and somewhat vertically aligned, that they
+         * are completely centered.
+         */
+        return oldPanX
+      }
 
-      if (newPanX < maxRightValue) {
+      if (newPanX <= maxRightValue) {
         newPanX = maxRightValue
-      } else if (newPanX > maxLeftValue) {
+      } else if (newPanX >= maxLeftValue) {
         newPanX = maxLeftValue
       }
       return newPanX
@@ -203,12 +214,12 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
   }
 
   // we set the height to the max value of either the bottom most milestone or the height of the container
-  const calcHeight = Math.max(bottomMostY+5, height)
+  const calcHeight = Math.max(bottomMostMilestoneY+5, height)
 
   return (
     <PanContext.Provider value={panX}>
       <div style={{ height: `${calcHeight}px` }}>
-        <svg ref={ref} width='100%' height='100%' viewBox={`[${panX}, 0, ${width+panX}, ${calcHeight}]`}>
+        <svg ref={ref} width='100%' height='100%'>
           <NewRoadmapHeader
             transform={`translate(0, ${margin.top + 30})`}
             width={width}

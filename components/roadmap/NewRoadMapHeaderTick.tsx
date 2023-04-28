@@ -3,30 +3,29 @@ import dayjs from 'dayjs';
 import { useContext } from 'react';
 import { useMaxHeight } from '../../hooks/useMaxHeight';
 import getDateAsQuarter from '../../lib/client/getDateAsQuarter';
+import { TimeUnit } from '../../lib/enums';
 
 import { PanContext } from './contexts';
 
 interface NewRoadmapHeaderTickProps {
   scale: ScaleTime<number, number>;
   date: Date;
-  // x: number;
   y: number;
-  // width: number;
   height: number;
-  maxX?: number;
-  timeUnit: 'quarter' | 'month'
-  // numberOfTicks: number;
+  timeUnit: TimeUnit
 }
 
-export default function NewRoadmapHeaderTick({ date,  y,  height, scale, maxX, timeUnit }: NewRoadmapHeaderTickProps) {
+export default function NewRoadmapHeaderTick({ date,  y,  height, scale, timeUnit }: NewRoadmapHeaderTickProps) {
   const maxH = useMaxHeight()
   const panX = useContext(PanContext)
   const startX = scale(dayjs(date).startOf(timeUnit))
   const endX = scale(dayjs(date).endOf(timeUnit))
   const width = (endX - startX)
   let dateLabel = dayjs(date).format('MMM YYYY')
-  if (timeUnit === 'quarter') {
+  if (timeUnit === TimeUnit.Quarter) {
     dateLabel = getDateAsQuarter(date)
+  } else if (timeUnit === TimeUnit.Year) {
+    dateLabel = dayjs(date).format('YYYY')
   }
   if (width < 0) return null
 
