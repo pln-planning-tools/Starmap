@@ -11,7 +11,7 @@ import styles from '../roadmap-grid/Roadmap.module.css';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import { dayjs } from '../../lib/client/dayjs';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 const MAX_TITLE_LENGTH = 80;
 

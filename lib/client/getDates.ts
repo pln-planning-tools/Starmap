@@ -1,7 +1,6 @@
 import type { Dayjs, ManipulateType } from 'dayjs';
 import { useMemo } from 'react';
 import { dayjs } from './dayjs';
-import { DEFAULT_TICK_COUNT } from '../../config/constants';
 import { useDateGranularity } from '../../hooks/useDateGranularity';
 
 export function getDates({ issuesGroupedState, issuesGroupedId }): Dayjs[] {

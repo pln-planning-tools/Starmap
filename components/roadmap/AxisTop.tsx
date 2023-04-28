@@ -1,8 +1,7 @@
-import { ScaleTime, axisTop, select, timeWeek } from 'd3';
+import { ScaleTime, axisTop, select } from 'd3';
 import dayjs from 'dayjs';
 import { useEffect, useRef } from 'react';
 
-import { useWeekTicks } from '../../hooks/useWeekTicks';
 
 interface AxisTopProps {
   scale: ScaleTime<number, number>;

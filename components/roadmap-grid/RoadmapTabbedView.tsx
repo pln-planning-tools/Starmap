@@ -24,7 +24,6 @@ import { RoadmapMode, ViewMode } from '../../lib/enums';
 import { IssueDataViewInput } from '../../lib/types';
 import Header from './header';
 import styles from './Roadmap.module.css';
-import { RoadmapDetailed } from './RoadmapDetailedView';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import SvgListViewIcon from '../icons/svgr/SvgListViewIcon';
 import RoadmapList from '../RoadmapList';
@@ -32,7 +31,7 @@ import NewRoadmap from '../../components/roadmap/NewRoadmap';
 
 export function RoadmapTabbedView({
   issueDataState,
-  mode
+  // mode
 }: IssueDataViewInput & { mode: RoadmapMode }): ReactElement {
   const globalLoadingState = useGlobalLoadingState();
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;

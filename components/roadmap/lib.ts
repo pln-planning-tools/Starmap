@@ -4,7 +4,6 @@ import { ScaleTime } from 'd3';
 import { IssueData } from '../../lib/types.js';
 import { dayjs } from '../../lib/client/dayjs';
 import { ImmutableArray, ImmutableObject } from '@hookstate/core';
-import { TimeUnit } from '../../lib/enums';
 
 interface BinPackOptions {
   width: number

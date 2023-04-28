@@ -28,9 +28,11 @@ const yZoomMax = 3 // inclusive
 function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
   if (!issueDataState) return null;
   const issueData = issueDataState.get({ noproxy: true })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isDevMode, _setIsDevMode] = useState(false);
   const [leftMostMilestoneX, setLeftMostMilestoneX] = useState(0)
   const [rightMostMilestoneX, setRightMostMilestoneX] = useState(0)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [topMostMilestoneY, setTopMostMilestoneY] = useState(0)
   const [bottomMostMilestoneY, setBottomMostMilestoneY] = useState(0)
 

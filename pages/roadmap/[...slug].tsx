@@ -62,7 +62,7 @@ export async function getServerSideProps(context): Promise<RoadmapServerSideProp
 }
 
 export default function RoadmapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { error: serverError, isLocal, mode, dateGranularity, issue_number, repo, owner } = props;
+  const { error: serverError, mode, dateGranularity, issue_number, repo, owner } = props;
 
   const starMapsErrorsState = useHookstate<StarMapsIssueErrorsGrouped[]>([]);
   const roadmapLoadErrorState = useHookstate<{ code: string; message: string } | null>(null)

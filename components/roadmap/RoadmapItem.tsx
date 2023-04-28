@@ -39,11 +39,6 @@ function getYLocation (boundingRects: MilestoneRect[], givenRect: MilestoneRect)
   return yLocation
 }
 
-// return all rects within given x range (all returned rects are in the same, or a colliding, column)
-function getIntersectingRectsColumn (boundingRects: MilestoneRect[], givenRect: MilestoneRect) {
-  return boundingRects.filter((rect) => givenRect.left <= rect.right && givenRect.right >= rect.left)
-}
-
 // return all rects within a given y range (all returned rects are in the same, or a colliding, row)
 function getIntersectingRectsRow (boundingRects: MilestoneRect[], givenRect: MilestoneRect) {
   return boundingRects.filter((rect) => givenRect.top <= rect.bottom && givenRect.bottom >= rect.top)
@@ -98,7 +93,7 @@ function RoadmapItem({
   }, [allBoundingRects, uniqId, childIssue.title, boundingRect]);
 
   const maxSvgHeight = useMaxHeight();
-  const y = 0;
+  // const y = 0;
   const yPadding = 5;
   const etaX = scale(dayjs(childIssue.due_date).toDate());
   const ySpacingBetweenItems = 10;
