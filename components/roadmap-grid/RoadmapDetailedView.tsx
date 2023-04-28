@@ -24,6 +24,7 @@ import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 import { getDates } from '../../lib/client/getDates';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 
+// eslint-disable-next-line import/no-unused-modules
 export function RoadmapDetailed({
   issueDataState
 }: IssueDataViewInput) {
