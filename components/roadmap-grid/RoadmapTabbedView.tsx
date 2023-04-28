@@ -87,10 +87,10 @@ export function RoadmapTabbedView({
   };
 
   const renderTabPanel = (title: typeof tabs[number], index: number) => {
-    let component = <RoadmapDetailed issueDataState={issueDataState} />
-    if (mode === 'd3') {
-      component = <NewRoadmap issueDataState={issueDataState} />
-    }
+    let component = <NewRoadmap issueDataState={issueDataState} />
+    // if (mode === 'd3') {
+    //   component = <NewRoadmap issueDataState={issueDataState} />
+    // }
     if (title === 'List') {
       component = <RoadmapList issueDataState={issueDataState} />
     }
