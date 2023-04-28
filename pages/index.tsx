@@ -3,6 +3,8 @@ import { join } from 'path';
 
 import type { NextPage } from 'next';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw'
+import rehypeSanitize from 'rehype-sanitize'
 import remarkGfm from 'remark-gfm';
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 import { Center, Link, Text, Flex } from '@chakra-ui/react';
@@ -41,6 +43,15 @@ const chakraUiRendererTheme: Parameters<typeof ChakraUIRenderer>[0] = {
       </Link>
     );
   },
+  img: (props) => {
+    const { children, src } = props;
+
+    return (
+      <Center>
+        <Image src={src as string} alt={children as string} width={500} height={500} />
+      </Center>
+    );
+  },
 };
 
 
@@ -59,7 +70,7 @@ const App: NextPage<SSProps> = ({ markdown }: SSProps) => (
               </Link>
             </NextLink>
           </Flex>
-          <ReactMarkdown components={ChakraUIRenderer(chakraUiRendererTheme)} children={markdown} remarkPlugins={[remarkGfm]} />
+        <ReactMarkdown components={ChakraUIRenderer(chakraUiRendererTheme)} children={markdown} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, rehypeSanitize]} />
         </article>
       </Center>
     </>

@@ -14,7 +14,9 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
   },
   productionBrowserSourceMaps: true,
-
+  images: {
+    domains: ['cdn.loom.com'],
+  },
   webpack(config) {
     config.experiments = config.experiments || {};
     config.experiments.topLevelAwait = true;
