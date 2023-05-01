@@ -252,6 +252,16 @@ button.gridViewTab {
   and you will need to modify `css.lint.validProperties` in
   `./.vscode/settings.json` to remove errors for valid properties.
 */
+.d3-draggable {
+  cursor: grab;
+}
+.d3__pannable {
+/* d3__milestoneItem__panContainer */
+  /**
+  items with this class will be modified by d3.
+  */
+}
+
 .d3__milestoneItem {
   fill: var(--chakra-colors-background);
 }

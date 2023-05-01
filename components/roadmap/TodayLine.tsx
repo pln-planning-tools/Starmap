@@ -10,6 +10,7 @@ function TodayLine({ scale, height }: { scale: ScaleTime<number, number>; height
 
   return (
     <g transform={`translate(${panX}, 0)`}>
+    {/* <g className="d3__milestoneItem__panContainer"> */}
       <text
         dominantBaseline='text-before-edge'
         x={todayX - 20}
