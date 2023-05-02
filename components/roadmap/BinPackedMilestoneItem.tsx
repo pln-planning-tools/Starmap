@@ -80,12 +80,9 @@ function BinPackedMilestoneItem({
           {truncatedTitle}
         </Text>
         <foreignObject height="6" width={contentWidth} x={boundaryLeft} y={item.bottom - textPadding*3.5}>
-          {/** @ts-expect-error - JSX error with xmnls */}
-          <body xmnls="http://www.w3.org/1999/xhtml">
           <Box h='100%' w="100%" borderRadius="20px" bgColor="#F1F4F8">
             <Box w={`${item.data.completion_rate}%`} h="100%" borderRadius="20px" bg="#7DE087" />
           </Box>
-          </body>
         </foreignObject>
         <Text
           className={styles.d3__milestoneItem__eta}
@@ -96,10 +93,7 @@ function BinPackedMilestoneItem({
           {dayjs(item.data.due_date).format('DD-MMM-YY')}
         </Text>
         <foreignObject height="18" width="18" x={boundaryRight - 18} y={boundaryBottom - 18}>
-          {/** @ts-expect-error - JSX error with xmnls */}
-          <body xmnls="http://www.w3.org/1999/xhtml">
-            <SvgGitHubLogoWithTooltip githuburl={item.data.html_url}/>
-          </body>
+          <SvgGitHubLogoWithTooltip githuburl={item.data.html_url}/>
         </foreignObject>
       </g>
     </NextLink>
