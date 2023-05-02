@@ -12,11 +12,12 @@ interface NewRoadmapHeaderTickProps {
   date: Date;
   y: number;
   height: number;
-  timeUnit: TimeUnit
+  timeUnit: TimeUnit;
+  maxHeight?: number;
 }
 
-export default function NewRoadmapHeaderTick({ date,  y,  height, scale, timeUnit }: NewRoadmapHeaderTickProps) {
-  const maxH = useMaxHeight()
+export default function NewRoadmapHeaderTick({ date,  y,  height, scale, timeUnit, maxHeight }: NewRoadmapHeaderTickProps) {
+  const maxH = Math.max(maxHeight ?? 0, useMaxHeight())
   const panX = useContext(PanContext)
   const startX = scale(dayjs(date).startOf(timeUnit))
   const endX = scale(dayjs(date).endOf(timeUnit))

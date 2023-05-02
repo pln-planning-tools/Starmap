@@ -12,9 +12,10 @@ interface AxisTopProps {
   leftMostX: number;
   rightMostX: number;
   width: number;
+  maxHeight: number;
 }
 
-export default function NewRoadmapHeader({ scale, transform, leftMostX, rightMostX, width }: AxisTopProps) {
+export default function NewRoadmapHeader({ scale, transform, leftMostX, rightMostX, width, maxHeight }: AxisTopProps) {
   const panX = useContext(PanContext);
   let minDate = scale.domain()[0];
   let maxDate = scale.domain()[1];
@@ -64,7 +65,7 @@ export default function NewRoadmapHeader({ scale, transform, leftMostX, rightMos
   }, [maxDate, minDate, timeUnit, monthDiff])
 
   return <g transform={transform}>
-    {newTicks.map((date,i) => (<NewRoadmapHeaderTick timeUnit={timeUnit} key={i} date={date} scale={scale} y={-30} height={30} />))}
+    {newTicks.map((date,i) => (<NewRoadmapHeaderTick timeUnit={timeUnit} key={i} date={date} scale={scale} y={-30} height={30} maxHeight={maxHeight} />))}
     {/* Render a border on the bottom of all of the labels */}
     <path d={`M${0-panX} 0 L${width-panX} 0`} style={{ fill: 'none', strokeWidth:2, stroke:'#A2D0DE' }} transform={`translate(${panX}, 0)`} />
   </g>

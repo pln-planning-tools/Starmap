@@ -252,6 +252,7 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
           <NewRoadmapHeader
             transform={`translate(0, ${margin.top + 30})`}
             width={width}
+            maxHeight={calcHeight}
             scale={scaleX}
             leftMostX={leftMostX}
             rightMostX={rightMostX}
