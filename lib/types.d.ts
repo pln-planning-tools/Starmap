@@ -169,6 +169,7 @@ interface StarmapContentUpdatedEvent extends Event {
     updatedURL: string;
   }
 }
+export type BinPackedGroup = Omit<DetailedViewGroup, 'items'> & {items: BinPackItem[]}
 
 declare global {
   interface DocumentEventMap {

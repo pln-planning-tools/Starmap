@@ -48,7 +48,13 @@ export const binPack = (items: ImmutableArray<PartialIssueData>, { height, width
   // const xSpacing = opts.xSpacing ?? 0;
 
   for (const item of sortedItems) {
-    const x2 = scale(dayjs(item.due_date).toDate());
+    if (item.due_date == null || item.due_date === '') {
+      console.error(`item ${item.title} has no due date: `, item.due_date)
+      // continue;
+    }
+    const dueDate = item.due_date ? dayjs(item.due_date) : dayjs();
+    const x2 = scale(dueDate.toDate());
+    // console.log(`${item.title} x2: `, x2);
     const x1 = x2 - width;
 
     const overlappingRects = getAllRectsWithCollisionsOnXRange(rects, x1, x2).sort((a, b) => a.bottom - b.bottom);

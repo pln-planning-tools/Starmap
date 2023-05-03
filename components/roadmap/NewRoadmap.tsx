@@ -14,21 +14,48 @@ import { dayjs } from '../../lib/client/dayjs';
 import { getDates } from '../../lib/client/getDates';
 import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
 import { ViewMode } from '../../lib/enums';
-import { DetailedViewGroup, IssueData } from '../../lib/types';
+import { BinPackedGroup, DetailedViewGroup, IssueData } from '../../lib/types';
 import BinPackedMilestoneItem from './BinPackedMilestoneItem';
 import { PanContext } from './contexts';
-import { binPack } from './lib';
+import { binPack, BinPackItem } from './lib';
 import NewRoadmapHeader from './NewRoadMapHeader';
 import TodayLine from './TodayLine';
 import styles from '../roadmap-grid/Roadmap.module.css';
+import { BinPackedGroupHeader } from '../roadmap-grid/group-header';
 
 const yZoomMin = 0.2
 const yZoomMax = 3
 const roadmapItemWidth = 350
 
+function RoadmapGroupRenderer ({ binPackedGroups, issueDataState }: {binPackedGroups: BinPackedGroup[], issueDataState: State<IssueData> }): JSX.Element {
+  if (binPackedGroups.length === 1) {
+    return (
+      <>
+        {binPackedGroups[0].items.map((item, index) => (
+          <BinPackedMilestoneItem key={index} item={item} />
+        ))}
+      </>
+    )
+  }
+  return (
+    <>
+    {binPackedGroups.map((binPackedGroup, gIdx) => (
+        <>
+          <foreignObject x="0" y={binPackedGroup.items[0].top - 30} width="100%" height="50">
+            <BinPackedGroupHeader group={binPackedGroup} issueDataState={issueDataState} />
+          </foreignObject>
+          {/* <text x="10" y={binPackedGroup.items[0].top - 30} width="100%" height="50">{binPackedGroup.groupName}</text> */}
+          {binPackedGroup.items.map((item, index) => (
+            <BinPackedMilestoneItem key={`${gIdx}+${index}`} item={item} />
+          ))}
+        </>
+      ))}
+    </>
+  )
+}
+
 function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
   if (!issueDataState) return null;
-  const issueData = issueDataState.get({ noproxy: true })
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isDevMode, _setIsDevMode] = useState(false);
   const [leftMostMilestoneX, setLeftMostMilestoneX] = useState(0)
@@ -69,7 +96,6 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
   const height = useMemo(() => maxH - margin.top - margin.bottom, [margin.bottom, margin.top, maxH]);
 
   const globalLoadingState = useGlobalLoadingState();
-  // const dateGranularity = useDateGranularity()
 
   useEffect(() => {
     window.addEventListener('resize', () => {
@@ -200,27 +226,36 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
         .call(drag)
         .call(zoomBehavior)
     }
-  }, [currentRef, getNewPanX, zoomBehavior])
+  }, [currentRef, getNewPanX, zoomBehavior, viewMode])
 
-  const binPackedItems = binPack(issueData.children, {
-    scale: scaleX,
-    width: roadmapItemWidth,
-    height: 80,
-    ySpacing: 5,
-    xSpacing: 0,
-    yMin: 40
-  })
-
-  // find the largest x value, smallest y value, and largest y value in binPackedItems
+  const titlePadding = 30;
   let leftMostX = Infinity
   let rightMostX = 0
   let topMostY = Infinity
-  let bottomMostY = 0
-  binPackedItems.forEach((item) => {
-    leftMostX = Math.min(leftMostX, item.left)
-    rightMostX = Math.max(rightMostX, item.right)
-    topMostY = Math.min(topMostY, item.top)
-    bottomMostY = Math.max(bottomMostY, item.bottom)
+  let bottomMostY = 40
+  const binPackedGroups: BinPackedGroup[] = []
+  const shouldAddYMinBuffer = issuesGroupedState.length > 1
+  issuesGroupedState.forEach((issueGroup) => {
+    const { items } = issueGroup
+    const binPackedIssues = binPack(items.get({ noproxy: true }), {
+      scale: scaleX,
+      width: roadmapItemWidth,
+      height: 80,
+      ySpacing: 5,
+      xSpacing: 0,
+      yMin: bottomMostY + (shouldAddYMinBuffer ? titlePadding : 0)
+    })
+
+    binPackedIssues.forEach((item) => {
+      leftMostX = Math.min(leftMostX, item.left)
+      rightMostX = Math.max(rightMostX, item.right)
+      topMostY = Math.min(topMostY, item.top)
+      bottomMostY = Math.max(bottomMostY, item.bottom)
+    })
+    binPackedGroups.push({
+      ...issueGroup.get({ noproxy: true }),
+      items: binPackedIssues
+    });
   })
 
   useEffect(() => {
@@ -228,10 +263,10 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
     setRightMostMilestoneX(rightMostX)
     setTopMostMilestoneY(topMostY)
     setBottomMostMilestoneY(bottomMostY)
-  }, [bottomMostY, leftMostX, rightMostX, topMostY])
+  }, [bottomMostY, leftMostX, rightMostX, topMostY, viewMode])
 
   // we set the height to the max value of either the bottom most milestone or the height of the container
-  const calcHeight = Math.max(bottomMostMilestoneY+5, height)
+  const calcHeight = Math.max(bottomMostMilestoneY+5, height, bottomMostY)
   // fixes issue with dotted lines from header ticks not extending to bottom of container
   // when calcHeight > maxH, however, it also overrides the minimum height of the container
   // useEffect(() => {setMaxHeight(calcHeight)}, [calcHeight]);
@@ -258,9 +293,7 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
             rightMostX={rightMostX}
           />
           {showTodayMarker && <TodayLine scale={scaleX} height={calcHeight} />}
-          {binPackedItems.map((item) => (
-            <BinPackedMilestoneItem item={item} />
-          ))}
+          <RoadmapGroupRenderer binPackedGroups={binPackedGroups} issueDataState={issueDataState} />
         </svg>
       </div>
     </PanContext.Provider>
