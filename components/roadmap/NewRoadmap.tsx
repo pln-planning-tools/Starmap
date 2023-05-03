@@ -17,7 +17,7 @@ import { ViewMode } from '../../lib/enums';
 import { BinPackedGroup, DetailedViewGroup, IssueData } from '../../lib/types';
 import BinPackedMilestoneItem from './BinPackedMilestoneItem';
 import { PanContext } from './contexts';
-import { binPack, BinPackItem } from './lib';
+import { binPack } from './lib';
 import NewRoadmapHeader from './NewRoadMapHeader';
 import TodayLine from './TodayLine';
 import styles from '../roadmap-grid/Roadmap.module.css';
