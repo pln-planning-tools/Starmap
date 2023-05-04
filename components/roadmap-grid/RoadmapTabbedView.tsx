@@ -12,8 +12,7 @@ import {
   Spacer,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React from 'react';
-import { ReactElement } from 'react-markdown/lib/react-markdown';
+import React, { useContext } from 'react';
 import SvgDetailViewIcon from '../icons/svgr/SvgDetailViewIcon';
 import SvgOverviewIcon from '../icons/svgr/SvgOverviewIcon';
 
@@ -21,22 +20,28 @@ import { TodayMarkerToggle } from './today-marker-toggle';
 import { setViewMode, useViewMode } from '../../hooks/useViewMode';
 import { DEFAULT_INITIAL_VIEW_MODE } from '../../lib/defaults';
 import { RoadmapMode, ViewMode } from '../../lib/enums';
-import { IssueDataViewInput } from '../../lib/types';
 import Header from './header';
 import styles from './Roadmap.module.css';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import SvgListViewIcon from '../icons/svgr/SvgListViewIcon';
 import RoadmapList from '../RoadmapList';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
+import { State, useHookstateMemo } from '@hookstate/core';
+import { convertIssueDataStateToDetailedViewGroupOld, convertIssueDataToDetailedViewGroup } from '../../lib/client/convertIssueDataToDetailedViewGroup';
+import { IssueDataStateContext, IssuesGroupedContext } from '../roadmap/contexts';
+import { IssueData } from '../../lib/types';
+import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
+import { usePrevious } from '../../hooks/usePrevious';
+// import { IssueDataStateContext } from '../roadmap/contexts';
 
 export function RoadmapTabbedView({
-  issueDataState,
-  // mode
-}: IssueDataViewInput & { mode: RoadmapMode }): ReactElement {
+  mode
+}: {mode: RoadmapMode}) {
+  console.log(`mode: `, mode);
   const globalLoadingState = useGlobalLoadingState();
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
   const router = useRouter();
-
+  const issueDataState = useContext(IssueDataStateContext)
   // Defining what tabs to show and in what order
   const tabs = ['Detailed View', 'Overview', 'List'] as const;
 
@@ -86,12 +91,13 @@ export function RoadmapTabbedView({
   };
 
   const renderTabPanel = (title: typeof tabs[number], index: number) => {
-    let component = <NewRoadmap issueDataState={issueDataState} />
+    console.log(`renderTabPanel: `);
+    let component = <NewRoadmap />
     // if (mode === 'd3') {
     //   component = <NewRoadmap issueDataState={issueDataState} />
     // }
     if (title === 'List') {
-      component = <RoadmapList issueDataState={issueDataState} />
+      component = <RoadmapList />
     }
     return (
       <TabPanel p={0} key={index}>
@@ -100,10 +106,29 @@ export function RoadmapTabbedView({
     )
   };
 
+  const query = router.query;
+
+  // const groupedIssuesIdPrev = usePrevious('');
+
+  // const groupedIssuesId = getUniqIdForGroupedIssues(issuesGrouped) + viewMode;
+  const issuesGrouped = useHookstateMemo(() => {
+    if (issueDataState.ornull === null) {
+      return []
+    }
+    const newIssuesGrouped = convertIssueDataStateToDetailedViewGroupOld(issueDataState as State<IssueData>, viewMode, query)
+    const newIssuesGrouped2 = convertIssueDataToDetailedViewGroup(issueDataState.ornull.get({ noproxy: true }) as IssueData)
+    console.log(`newIssuesGrouped2: `, newIssuesGrouped2);
+    console.log(`newIssuesGrouped: `, newIssuesGrouped);
+    if (viewMode === ViewMode.Detail) {
+      return newIssuesGrouped2
+    }
+    return newIssuesGrouped
+  }, [viewMode, query, issueDataState])
+
   return (
     <>
       <Box className={styles.timelineBox}>
-        <Header issueDataState={issueDataState} />
+        <Header />
         <Flex align="center" justify="space-between" grow={"1"}>
           <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} pt='20px' flexGrow={"1"}
             isLazy>
@@ -114,9 +139,11 @@ export function RoadmapTabbedView({
               <Spacer />
               <TodayMarkerToggle />
             </Flex>
-            <TabPanels className={styles.tabPanels}>
-             {tabs.map(renderTabPanel)}
-            </TabPanels>
+            <IssuesGroupedContext.Provider value={issuesGrouped}>
+              <TabPanels className={styles.tabPanels}>
+              {tabs.map(renderTabPanel)}
+              </TabPanels>
+            </IssuesGroupedContext.Provider>
           </Tabs>
         </Flex>
       </Box>

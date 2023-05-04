@@ -49,7 +49,7 @@ export const binPack = (items: ImmutableArray<PartialIssueData>, { height, width
 
   for (const item of sortedItems) {
     if (item.due_date == null || item.due_date === '') {
-      console.error(`item ${item.title} has no due date: `, item.due_date)
+      // console.trace(`item ${item.title} has no due date: `, item.due_date, item)
       // continue;
     }
     const dueDate = item.due_date ? dayjs(item.due_date) : dayjs();

@@ -1,30 +1,30 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Center, Spinner, usePrevious } from '@chakra-ui/react';
-import { State, useHookstate } from '@hookstate/core';
+import { Center, Spinner } from '@chakra-ui/react';
+import { State } from '@hookstate/core';
 import { scaleTime, select, zoom as d3Zoom, drag as d3Drag, D3ZoomEvent, ZoomTransform, D3DragEvent } from 'd3';
-import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { useMaxHeight } from '../../hooks/useMaxHeight';
 import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 import { useViewMode } from '../../hooks/useViewMode';
-import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
 import { dayjs } from '../../lib/client/dayjs';
 import { getDates } from '../../lib/client/getDates';
-import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
 import { ViewMode } from '../../lib/enums';
-import { BinPackedGroup, DetailedViewGroup, IssueData } from '../../lib/types';
+import { BinPackedGroup, IssueData } from '../../lib/types';
 import BinPackedMilestoneItem from './BinPackedMilestoneItem';
-import { PanContext } from './contexts';
+import { IssueDataStateContext, IssuesGroupedContext, PanContext } from './contexts';
 import { binPack } from './lib';
 import NewRoadmapHeader from './NewRoadMapHeader';
 import TodayLine from './TodayLine';
 import styles from '../roadmap-grid/Roadmap.module.css';
 import { BinPackedGroupHeader } from '../roadmap-grid/group-header';
 
-const yZoomMin = 0.2
-const yZoomMax = 3
+/**
+ * @todo: be smarter about choosing yZoomMin (large timespan roadmaps can't zoom out far enough)
+ */
+const yZoomMin = 0.01 // zoom OUT limit
+const yZoomMax = 3 // zoom IN limit
 const roadmapItemWidth = 350
 
 function RoadmapGroupRenderer ({ binPackedGroups, issueDataState }: {binPackedGroups: BinPackedGroup[], issueDataState: State<IssueData> }): JSX.Element {
@@ -40,22 +40,23 @@ function RoadmapGroupRenderer ({ binPackedGroups, issueDataState }: {binPackedGr
   return (
     <>
     {binPackedGroups.map((binPackedGroup, gIdx) => (
-        <>
+        <g key={gIdx}>
           <foreignObject x="0" y={binPackedGroup.items[0].top - 30} width="100%" height="50">
             <BinPackedGroupHeader group={binPackedGroup} issueDataState={issueDataState} />
           </foreignObject>
-          {/* <text x="10" y={binPackedGroup.items[0].top - 30} width="100%" height="50">{binPackedGroup.groupName}</text> */}
           {binPackedGroup.items.map((item, index) => (
             <BinPackedMilestoneItem key={`${gIdx}+${index}`} item={item} />
           ))}
-        </>
+        </g>
       ))}
     </>
   )
 }
 
-function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
-  if (!issueDataState) return null;
+function NewRoadmap() {
+  // if (!issueDataState) return null;
+  const issueDataState = useContext(IssueDataStateContext)
+  const issuesGroupedState = useContext(IssuesGroupedContext)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isDevMode, _setIsDevMode] = useState(false);
   const [leftMostMilestoneX, setLeftMostMilestoneX] = useState(0)
@@ -66,21 +67,21 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
   const [zoomTransform, setZoomTransform] = useState<ZoomTransform|null>(null)
 
   const viewMode = useViewMode() as ViewMode;
-  const router = useRouter();
+  // const router = useRouter();
   const [panX, setPanX] = useState(0) // positive is pan left (earlier), negative is pan right (later)
 
-  const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
-  const groupedIssuesId = getUniqIdForGroupedIssues(issuesGroupedState.value)
-  const groupedIssuesIdPrev = usePrevious(groupedIssuesId);
-  const query = router.query
+  // const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
+  // const groupedIssuesId = getUniqIdForGroupedIssues(issuesGroupedState.value)
+  // const groupedIssuesIdPrev = usePrevious(groupedIssuesId);
+  // const query = router.query
   const showTodayMarker = useShowTodayMarker();
 
-  const setIssuesGroupedState = issuesGroupedState.set
-  useEffect(() => {
-    if (viewMode && groupedIssuesIdPrev !== groupedIssuesId) {
-      setIssuesGroupedState(() => convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, query))
-    }
-  }, [viewMode, query, setIssuesGroupedState, issueDataState, groupedIssuesIdPrev, groupedIssuesId]);
+  // const setIssuesGroupedState = issuesGroupedState.set
+  // useEffect(() => {
+  //   if (viewMode && groupedIssuesIdPrev !== groupedIssuesId) {
+  //     setIssuesGroupedState(() => convertIssueDataStateToDetailedViewGroupOld(issueDataState as State<IssueData>, viewMode, query))
+  //   }
+  // }, [viewMode, query, setIssuesGroupedState, issueDataState, groupedIssuesIdPrev, groupedIssuesId]);
 
   const ref = useRef<SVGSVGElement>(null);
   const [maxW, setMaxW] = useState(1000);
@@ -187,7 +188,7 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
       .scaleExtent([yZoomMin, yZoomMax])
       .extent([[0, 0], [maxScaleRangeX, height]])
       .filter(zoomFilter)
-    }, [getNewPanX, height, maxScaleRangeX])
+    }, [currentRef, getNewPanX, height, maxScaleRangeX])
 
   const scaleX = useMemo(() => {
     let scaleRange = [0, maxScaleRangeX]
@@ -200,8 +201,7 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
       .range(scaleRange)
 
       return scale
-  }
-  , [earliestEta, latestEta, maxScaleRangeX, zoomTransform]);
+  }, [currentRef, earliestEta, latestEta, maxScaleRangeX, zoomTransform]);
 
   useEffect(() => {
     if (currentRef != null) {
@@ -237,7 +237,7 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
   const shouldAddYMinBuffer = issuesGroupedState.length > 1
   issuesGroupedState.forEach((issueGroup) => {
     const { items } = issueGroup
-    const binPackedIssues = binPack(items.get({ noproxy: true }), {
+    const binPackedIssues = binPack(items, {
       scale: scaleX,
       width: roadmapItemWidth,
       height: 80,
@@ -253,17 +253,19 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
       bottomMostY = Math.max(bottomMostY, item.bottom)
     })
     binPackedGroups.push({
-      ...issueGroup.get({ noproxy: true }),
+      ...issueGroup,
       items: binPackedIssues
     });
   })
+
+  // console.log('newRoadMapRender...')
 
   useEffect(() => {
     setLeftMostMilestoneX(leftMostX)
     setRightMostMilestoneX(rightMostX)
     setTopMostMilestoneY(topMostY)
     setBottomMostMilestoneY(bottomMostY)
-  }, [bottomMostY, leftMostX, rightMostX, topMostY, viewMode])
+  }, [bottomMostY, leftMostX, rightMostX, topMostY])
 
   // we set the height to the max value of either the bottom most milestone or the height of the container
   const calcHeight = Math.max(bottomMostMilestoneY+5, height, bottomMostY)
@@ -271,7 +273,7 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
   // when calcHeight > maxH, however, it also overrides the minimum height of the container
   // useEffect(() => {setMaxHeight(calcHeight)}, [calcHeight]);
 
-  if (globalLoadingState.get()) {
+  if (globalLoadingState.get() || issueDataState.ornull === null) {
     return (
       <Center h={maxH} w={maxW}>
         <Spinner size='xl' />
@@ -293,7 +295,7 @@ function NewRoadmap({ issueDataState }: { issueDataState: State<IssueData> }) {
             rightMostX={rightMostX}
           />
           {showTodayMarker && <TodayLine scale={scaleX} height={calcHeight} />}
-          <RoadmapGroupRenderer binPackedGroups={binPackedGroups} issueDataState={issueDataState} />
+          <RoadmapGroupRenderer binPackedGroups={binPackedGroups} issueDataState={issueDataState.ornull} />
         </svg>
       </div>
     </PanContext.Provider>

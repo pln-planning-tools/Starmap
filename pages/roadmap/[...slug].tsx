@@ -8,6 +8,7 @@ import { StarmapsBreadcrumb } from '../../components/breadcrumb';
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 import PageHeader from '../../components/layout/PageHeader';
 import { RoadmapTabbedView } from '../../components/roadmap-grid/RoadmapTabbedView';
+import { IssueDataStateContext } from '../../components/roadmap/contexts';
 import { BASE_PROTOCOL } from '../../config/constants';
 import { setDateGranularity } from '../../hooks/useDateGranularity';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
@@ -235,13 +236,14 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
   const router = useRouter();
   const urlPath = router.asPath
+  console.log(`urlPath: `, urlPath);
   useEffect(() => {
     const hashString = urlPath.split('#')[1] as ViewMode ?? ViewMode.Simple;
     setViewMode(hashString);
   }, [urlPath]);
 
   return (
-    <>
+    <IssueDataStateContext.Provider value={issueDataState}>
       <PageHeader />
       <div style={{ overflowY: 'auto', height: 'calc(100vh - 120px)', paddingTop: '28px' }}>
         {issueDataState.ornull != null && <StarmapsBreadcrumb currentTitle={issueDataState.ornull.title.value} />}
@@ -250,10 +252,10 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
           {!!serverError && <Box color='red.500'>{serverError.message}</Box>}
           {roadmapLoadErrorState.ornull && <Box color='red.500'>{roadmapLoadErrorState.ornull.message.value}</Box>}
           {!!issueDataState.ornull && (
-            <RoadmapTabbedView issueDataState={issueDataState as State<IssueData>} mode={mode} />
+            <RoadmapTabbedView mode={mode} />
           )}
         </Box>
       </div>
-    </>
+    </IssueDataStateContext.Provider>
   );
 }

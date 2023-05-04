@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Radio, RadioGroup, Stack, Text } from '@chakra-ui/react';
 
-import { IssueDataViewInput } from '../../lib/types';
 import RoadmapListItemDefault from './RoadmapListItemDefault';
 import styles from './RoadmapList.module.css';
 import { getTimeFromDateString } from '../../lib/helpers';
+import { IssueDataStateContext } from '../roadmap/contexts';
 
-interface RoadmapListProps extends IssueDataViewInput {
-  maybe?: unknown
-}
 
 /**
  * Sorts milestones by due date, in ascending order (2022-01-01 before 2023-01-01) with invalid dates at the end.
@@ -27,13 +24,17 @@ function sortMilestones (a, b) {
   return aTime - bTime
 }
 
-export default function RoadmapList({ issueDataState }: RoadmapListProps): JSX.Element {
+export default function RoadmapList(): JSX.Element | null {
   const [groupBy, setGroupBy] = useState('directChildren')
+  const issueDataState = useContext(IssueDataStateContext)
 
   const [isDevModeGroupBy, _setIsDevModeGroupBy] = useState(false);
   const [isDevModeDuplicateDates, _setIsDevModeDuplicateDates] = useState(false);
   const [dupeDateToggleValue, setDupeDateToggleValue] = useState('show');
-  const flattenedIssues = issueDataState.children.flatMap((issueData) => issueData.get({ noproxy: true }))
+  if (issueDataState.ornull === null) {
+    return null;
+  }
+  const flattenedIssues = issueDataState.ornull.children.flatMap((issueData) => issueData.get({ noproxy: true }))
   const sortedIssuesWithDueDates = flattenedIssues.sort(sortMilestones)
 
   let groupByToggle: JSX.Element | null = null

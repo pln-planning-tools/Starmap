@@ -1,19 +1,23 @@
 import { Center, Flex, Link, Skeleton, Spacer, Text } from '@chakra-ui/react';
 import Image from 'next/image';
 import NextLink from 'next/link';
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { IssueDataViewInput } from '../../lib/types';
 import GitHubSvgIcon from '../icons/GitHubLogo.svg';
+import { IssueDataStateContext } from '../roadmap/contexts';
 import themes from '../theme/constants';
 
-export default function Header({
-  issueDataState
-}: IssueDataViewInput): ReactElement | null {
+export default function Header(): ReactElement | null {
   const globalLoadingState = useGlobalLoadingState();
-  if (issueDataState.html_url.value == null || typeof issueDataState.html_url.value !== 'string') {
+  const issueDataState = useContext(IssueDataStateContext)
+  if (issueDataState.ornull == null) {
+    return null;
+  }
+
+  if (issueDataState.ornull.html_url.value == null || typeof issueDataState.ornull.html_url.value !== 'string') {
     console.log('error with issueData', issueDataState.get({ noproxy: true }))
     return null;
   }
@@ -22,11 +26,11 @@ export default function Header({
     <Skeleton isLoaded={!globalLoadingState.get()} >
       <Flex direction={'row'} lineHeight={1} >
         <Text as='span' fontSize={24} fontWeight={600} pr="5rem">
-          {issueDataState.title.value}
+          {issueDataState.ornull.title.value}
         </Text>
         <Spacer />
         <Center>
-          <NextLink style={{ display: 'span' }} passHref href={issueDataState.get().html_url}>
+          <NextLink style={{ display: 'span' }} passHref href={issueDataState.ornull.get().html_url}>
             <Link target="_blank" rel="noopener noreferrer">
               <Center minWidth="9rem">
                 <Text as='span' fontSize={15} fontWeight={400} color={themes.light.text.color} pr="0.5rem">View in GitHub</Text>
