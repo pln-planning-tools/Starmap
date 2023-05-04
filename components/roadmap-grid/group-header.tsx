@@ -1,14 +1,14 @@
 import { Text } from '@chakra-ui/react';
-import { State } from '@hookstate/core';
 import { isEmpty } from 'lodash';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useViewMode } from '../../hooks/useViewMode';
 import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
 
 import { ViewMode } from '../../lib/enums';
-import { BinPackedGroup, GroupHeaderProps, IssueData } from '../../lib/types';
+import { BinPackedGroup, GroupHeaderProps } from '../../lib/types';
+import { IssueDataStateContext } from '../roadmap/contexts';
 import styles from './Roadmap.module.css';
 
 /**
@@ -46,7 +46,8 @@ export function GroupHeader({ group, issueDataState }: GroupHeaderProps) {
 }
 
 
-export function BinPackedGroupHeader({ group, issueDataState }: {group: BinPackedGroup, issueDataState: State<IssueData> }) {
+export function BinPackedGroupHeader({ group }: {group: BinPackedGroup }) {
+  const issueDataState = useContext(IssueDataStateContext)
   const viewMode = useViewMode();
   const router = useRouter();
   let groupNameElement: JSX.Element | null = null;
@@ -54,13 +55,16 @@ export function BinPackedGroupHeader({ group, issueDataState }: {group: BinPacke
     html_url: group.url.replace('/roadmap/', ''),
     children: group.items,
   };
+  if (issueDataState.ornull === null) {
+    return null;
+  }
   if (viewMode === ViewMode.Detail) {
     if (isEmpty(group.url)) {
       groupNameElement = <Text color="black">{group.groupName}</Text>
     } else {
       const groupHeaderLink = getLinkForRoadmapChild({
         issueData: issueData,
-        currentRoadmapRoot: issueDataState.value,
+        currentRoadmapRoot: issueDataState.ornull.value,
         viewMode,
         query: router.query,
         replaceOrigin: false,
@@ -70,7 +74,7 @@ export function BinPackedGroupHeader({ group, issueDataState }: {group: BinPacke
   }
 
   return (
-    <div className={`${styles.item} ${styles.group}`}>
+    <div className={`${styles.item} ${styles.group} ${styles.d3__groupTitle}`}>
       <div>{groupNameElement}</div>
     </div>
   );

@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Center, Spinner } from '@chakra-ui/react';
-import { State } from '@hookstate/core';
 import { scaleTime, select, zoom as d3Zoom, drag as d3Drag, D3ZoomEvent, ZoomTransform, D3DragEvent } from 'd3';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
@@ -9,15 +8,14 @@ import { useMaxHeight } from '../../hooks/useMaxHeight';
 import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 import { dayjs } from '../../lib/client/dayjs';
 import { getDates } from '../../lib/client/getDates';
-import { BinPackedGroup, IssueData } from '../../lib/types';
-import BinPackedMilestoneItem from './BinPackedMilestoneItem';
+import { BinPackedGroup } from '../../lib/types';
 import { IssueDataStateContext, IssuesGroupedContext, PanContext } from './contexts';
 import { binPack } from './lib';
 import NewRoadmapHeader from './NewRoadMapHeader';
 import TodayLine from './TodayLine';
 import styles from '../roadmap-grid/Roadmap.module.css';
-import { BinPackedGroupHeader } from '../roadmap-grid/group-header';
 import { useViewMode } from '../../hooks/useViewMode';
+import RoadmapGroupRenderer from './RoadmapGroupRenderer';
 
 /**
  * @todo: be smarter about choosing yZoomMin (large timespan roadmaps can't zoom out far enough)
@@ -25,32 +23,6 @@ import { useViewMode } from '../../hooks/useViewMode';
 const yZoomMin = 0.01 // zoom OUT limit
 const yZoomMax = 3 // zoom IN limit
 const roadmapItemWidth = 350
-
-function RoadmapGroupRenderer ({ binPackedGroups, issueDataState }: {binPackedGroups: BinPackedGroup[], issueDataState: State<IssueData> }): JSX.Element {
-  if (binPackedGroups.length === 1) {
-    return (
-      <>
-        {binPackedGroups[0].items.map((item, index) => (
-          <BinPackedMilestoneItem key={index} item={item} />
-        ))}
-      </>
-    )
-  }
-  return (
-    <>
-    {binPackedGroups.map((binPackedGroup, gIdx) => (
-        <g key={gIdx}>
-          <foreignObject x="0" y={binPackedGroup.items[0].top - 30} width="100%" height="50">
-            <BinPackedGroupHeader group={binPackedGroup} issueDataState={issueDataState} />
-          </foreignObject>
-          {binPackedGroup.items.map((item, index) => (
-            <BinPackedMilestoneItem key={`${gIdx}+${index}`} item={item} />
-          ))}
-        </g>
-      ))}
-    </>
-  )
-}
 
 function NewRoadmap() {
   const issueDataState = useContext(IssueDataStateContext)
@@ -282,7 +254,7 @@ function NewRoadmap() {
             rightMostX={rightMostMilestoneX}
           />
           {showTodayMarker && <TodayLine scale={scaleX} height={calcHeight} />}
-          <RoadmapGroupRenderer binPackedGroups={binPackedGroups} issueDataState={issueDataState.ornull} />
+          <RoadmapGroupRenderer binPackedGroups={binPackedGroups} />
         </svg>
       </div>
     </PanContext.Provider>

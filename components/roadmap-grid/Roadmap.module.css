@@ -255,11 +255,23 @@ button.gridViewTab {
 .d3-draggable {
   cursor: grab;
 }
+
+/**
+  Any direct child should reset it's cursor back to default.
+*/
+.d3-draggable > * {
+  cursor: default;
+}
+
 .d3__pannable {
 /* d3__milestoneItem__panContainer */
   /**
   items with this class will be modified by d3.
   */
+}
+
+.d3__groupTitle {
+  font-size: 18px;
 }
 
 .d3__milestoneItem {

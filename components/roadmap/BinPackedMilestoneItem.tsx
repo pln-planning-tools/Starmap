@@ -23,7 +23,6 @@ function BinPackedMilestoneItem({
 }) {
   const itemRef = useRef<SVGGElement>(null);
   const panX = useContext(PanContext)
-  // const allBoundingRects = useMilestoneBoundingRects();
   const uniqId = useId();
 
   const yPadding = 5;
