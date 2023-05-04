@@ -90,7 +90,7 @@ function BinPackedMilestoneItem({
           x={boundaryLeft}
           y={boundaryBottom}
         >
-          {dayjs(item.data.due_date).format('DD-MMM-YY')}
+          {dayjs(item.data.due_date).format('MMM DD, YYYY')}
         </Text>
         <foreignObject height="18" width="18" x={boundaryRight - 18} y={boundaryBottom - 18}>
           <SvgGitHubLogoWithTooltip githuburl={item.data.html_url}/>
