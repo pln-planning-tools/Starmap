@@ -27,12 +27,9 @@ import SvgListViewIcon from '../icons/svgr/SvgListViewIcon';
 import RoadmapList from '../RoadmapList';
 import NewRoadmap from '../../components/roadmap/NewRoadmap';
 import { State, useHookstateMemo } from '@hookstate/core';
-import { convertIssueDataStateToDetailedViewGroupOld, convertIssueDataToDetailedViewGroup } from '../../lib/client/convertIssueDataToDetailedViewGroup';
+import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
 import { IssueDataStateContext, IssuesGroupedContext } from '../roadmap/contexts';
 import { IssueData } from '../../lib/types';
-import getUniqIdForGroupedIssues from '../../lib/client/getUniqIdForGroupedIssues';
-import { usePrevious } from '../../hooks/usePrevious';
-// import { IssueDataStateContext } from '../roadmap/contexts';
 
 export function RoadmapTabbedView({
   mode
@@ -89,12 +86,11 @@ export function RoadmapTabbedView({
       </Skeleton>
     )
   };
+  // const ref = useRef<SVGSVGElement>(null);
 
   const renderTabPanel = (title: typeof tabs[number], index: number) => {
     let component = <NewRoadmap />
-    // if (mode === 'd3') {
-    //   component = <NewRoadmap issueDataState={issueDataState} />
-    // }
+
     if (title === 'List') {
       component = <RoadmapList />
     }

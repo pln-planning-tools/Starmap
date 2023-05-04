@@ -2,15 +2,13 @@
 import { Center, Spinner } from '@chakra-ui/react';
 import { State } from '@hookstate/core';
 import { scaleTime, select, zoom as d3Zoom, drag as d3Drag, D3ZoomEvent, ZoomTransform, D3DragEvent } from 'd3';
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { useMaxHeight } from '../../hooks/useMaxHeight';
 import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
-import { useViewMode } from '../../hooks/useViewMode';
 import { dayjs } from '../../lib/client/dayjs';
 import { getDates } from '../../lib/client/getDates';
-import { ViewMode } from '../../lib/enums';
 import { BinPackedGroup, IssueData } from '../../lib/types';
 import BinPackedMilestoneItem from './BinPackedMilestoneItem';
 import { IssueDataStateContext, IssuesGroupedContext, PanContext } from './contexts';
@@ -19,6 +17,7 @@ import NewRoadmapHeader from './NewRoadMapHeader';
 import TodayLine from './TodayLine';
 import styles from '../roadmap-grid/Roadmap.module.css';
 import { BinPackedGroupHeader } from '../roadmap-grid/group-header';
+import { useViewMode } from '../../hooks/useViewMode';
 
 /**
  * @todo: be smarter about choosing yZoomMin (large timespan roadmaps can't zoom out far enough)
@@ -54,7 +53,6 @@ function RoadmapGroupRenderer ({ binPackedGroups, issueDataState }: {binPackedGr
 }
 
 function NewRoadmap() {
-  // if (!issueDataState) return null;
   const issueDataState = useContext(IssueDataStateContext)
   const issuesGroupedState = useContext(IssuesGroupedContext)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -65,25 +63,16 @@ function NewRoadmap() {
   const [topMostMilestoneY, setTopMostMilestoneY] = useState(0)
   const [bottomMostMilestoneY, setBottomMostMilestoneY] = useState(0)
   const [zoomTransform, setZoomTransform] = useState<ZoomTransform|null>(null)
-
-  const viewMode = useViewMode() as ViewMode;
-  // const router = useRouter();
   const [panX, setPanX] = useState(0) // positive is pan left (earlier), negative is pan right (later)
-
-  // const issuesGroupedState = useHookstate<DetailedViewGroup[]>([]);
-  // const groupedIssuesId = getUniqIdForGroupedIssues(issuesGroupedState.value)
-  // const groupedIssuesIdPrev = usePrevious(groupedIssuesId);
-  // const query = router.query
   const showTodayMarker = useShowTodayMarker();
+  const viewMode = useViewMode();
 
-  // const setIssuesGroupedState = issuesGroupedState.set
-  // useEffect(() => {
-  //   if (viewMode && groupedIssuesIdPrev !== groupedIssuesId) {
-  //     setIssuesGroupedState(() => convertIssueDataStateToDetailedViewGroupOld(issueDataState as State<IssueData>, viewMode, query))
-  //   }
-  // }, [viewMode, query, setIssuesGroupedState, issueDataState, groupedIssuesIdPrev, groupedIssuesId]);
-
-  const ref = useRef<SVGSVGElement>(null);
+  /**
+   * Using useState and attachRef as done at https://github.com/facebook/react/issues/11258#issuecomment-495262508
+   * in order to get around a bug where reference is null on the last re-render,
+   * which causes d3 zoom/pan other event handlers not to work.
+   */
+  const [ref, attachRef] = useState<SVGSVGElement | null>(null)
   const [maxW, setMaxW] = useState(1000);
   const maxH = useMaxHeight();
 
@@ -110,12 +99,12 @@ function NewRoadmap() {
   //   setMaxHeight(Math.max(maxH, window.innerHeight / 2));
   }, [maxH]);
 
-  const currentRef = ref.current
+  // const currentRef = ref.current
   const getNewPanX = useCallback((panDx, oldPanX) => {
     // TODO: instead of using panX directly, we should transform elements appropriately using d3.
 
-    if (currentRef != null) {
-      const boundingRect = currentRef.getBoundingClientRect()
+    if (ref != null) {
+      const boundingRect = ref.getBoundingClientRect()
       const panMargin = boundingRect.width/5
       let newPanX = oldPanX + panDx
       // const middleX = rightMostMilestoneX - leftMostMilestoneX
@@ -138,7 +127,7 @@ function NewRoadmap() {
       }
       return newPanX
     }
-  }, [currentRef, leftMostMilestoneX, rightMostMilestoneX])
+  }, [leftMostMilestoneX, rightMostMilestoneX, ref])
 
   useEffect(() => {
     /**
@@ -188,7 +177,7 @@ function NewRoadmap() {
       .scaleExtent([yZoomMin, yZoomMax])
       .extent([[0, 0], [maxScaleRangeX, height]])
       .filter(zoomFilter)
-    }, [currentRef, getNewPanX, height, maxScaleRangeX])
+    }, [getNewPanX, height, maxScaleRangeX])
 
   const scaleX = useMemo(() => {
     let scaleRange = [0, maxScaleRangeX]
@@ -201,32 +190,32 @@ function NewRoadmap() {
       .range(scaleRange)
 
       return scale
-  }, [currentRef, earliestEta, latestEta, maxScaleRangeX, zoomTransform]);
+  }, [earliestEta, latestEta, maxScaleRangeX, zoomTransform]);
 
   useEffect(() => {
-    if (currentRef != null) {
+    if (ref != null) {
       // let validDrag = false
       const drag = d3Drag<SVGSVGElement, any>()
-        .on('start', () => select(currentRef).style('cursor', 'grabbing'))
-        .on('end', () => select(currentRef).style('cursor', 'grab'))
+        .on('start', () => select(ref).style('cursor', 'grabbing'))
+        .on('end', () => select(ref).style('cursor', 'grab'))
         .on("drag", function dragged(event: D3DragEvent<SVGSVGElement, unknown, unknown>) {
           if (Math.abs(event.dx) > 0) {
             setPanX((oldPanX) => getNewPanX(event.dx, oldPanX))
           }
         })
         .filter((event) => {
-          if (event.srcElement === currentRef) {
+          if (event.srcElement === ref) {
             event.preventDefault();
             return true
           }
           return false
         })
 
-      select(currentRef)
+      select(ref)
         .call(drag)
         .call(zoomBehavior)
     }
-  }, [currentRef, getNewPanX, zoomBehavior, viewMode])
+  }, [getNewPanX, zoomBehavior, viewMode, ref])
 
   const titlePadding = 30;
   const binPackedGroups: BinPackedGroup[] = useMemo(() => {
@@ -280,11 +269,10 @@ function NewRoadmap() {
     );
   }
 
-
   return (
     <PanContext.Provider value={panX}>
       <div style={{ height: `${calcHeight}px` }}>
-        <svg ref={ref} width='100%' height='100%' className={`${styles['d3-draggable']}`}>
+        <svg ref={attachRef} width='100%' height='100%' className={`${styles['d3-draggable']} view-${viewMode}`} >
           <NewRoadmapHeader
             transform={`translate(0, ${margin.top + 30})`}
             width={width}
