@@ -8,9 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "test": "echo 'skipping for now' || jest",
+    "test": "jest",
     "test:ci": "NO_SW=true yarn lint && jest --ci --coverage && yarn test:e2e",
-    "test:e2e": "playwright test"
+    "test:e2e": "echo 'skip for now' || playwright test"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.12",

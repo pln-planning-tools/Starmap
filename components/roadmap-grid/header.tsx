@@ -5,7 +5,6 @@ import React, { useContext } from 'react';
 
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
-import { IssueDataViewInput } from '../../lib/types';
 import GitHubSvgIcon from '../icons/GitHubLogo.svg';
 import { IssueDataStateContext } from '../roadmap/contexts';
 import themes from '../theme/constants';
