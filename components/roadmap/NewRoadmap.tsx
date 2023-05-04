@@ -229,46 +229,45 @@ function NewRoadmap() {
   }, [currentRef, getNewPanX, zoomBehavior, viewMode])
 
   const titlePadding = 30;
-  let leftMostX = Infinity
-  let rightMostX = 0
-  let topMostY = Infinity
-  let bottomMostY = 40
-  const binPackedGroups: BinPackedGroup[] = []
-  const shouldAddYMinBuffer = issuesGroupedState.length > 1
-  issuesGroupedState.forEach((issueGroup) => {
-    const { items } = issueGroup
-    const binPackedIssues = binPack(items, {
-      scale: scaleX,
-      width: roadmapItemWidth,
-      height: 80,
-      ySpacing: 5,
-      xSpacing: 0,
-      yMin: bottomMostY + (shouldAddYMinBuffer ? titlePadding : 0)
+  const binPackedGroups: BinPackedGroup[] = useMemo(() => {
+    let leftMostX = Infinity
+    let rightMostX = 0
+    let topMostY = Infinity
+    let bottomMostY = 40
+    const newGroups: BinPackedGroup[] = []
+    const shouldAddYMinBuffer = issuesGroupedState.length > 1
+    issuesGroupedState.forEach((issueGroup) => {
+      const { items } = issueGroup
+      const binPackedIssues = binPack(items, {
+        scale: scaleX,
+        width: roadmapItemWidth,
+        height: 80,
+        ySpacing: 5,
+        xSpacing: 0,
+        yMin: bottomMostY + (shouldAddYMinBuffer ? titlePadding : 0)
+      })
+
+      binPackedIssues.forEach((item) => {
+        leftMostX = Math.min(leftMostX, item.left)
+        rightMostX = Math.max(rightMostX, item.right)
+        topMostY = Math.min(topMostY, item.top)
+        bottomMostY = Math.max(bottomMostY, item.bottom)
+      })
+      newGroups.push({
+        ...issueGroup,
+        items: binPackedIssues
+      });
     })
 
-    binPackedIssues.forEach((item) => {
-      leftMostX = Math.min(leftMostX, item.left)
-      rightMostX = Math.max(rightMostX, item.right)
-      topMostY = Math.min(topMostY, item.top)
-      bottomMostY = Math.max(bottomMostY, item.bottom)
-    })
-    binPackedGroups.push({
-      ...issueGroup,
-      items: binPackedIssues
-    });
-  })
-
-  // console.log('newRoadMapRender...')
-
-  useEffect(() => {
     setLeftMostMilestoneX(leftMostX)
     setRightMostMilestoneX(rightMostX)
     setTopMostMilestoneY(topMostY)
     setBottomMostMilestoneY(bottomMostY)
-  }, [bottomMostY, leftMostX, rightMostX, topMostY])
+    return newGroups
+  }, [issuesGroupedState, scaleX])
 
   // we set the height to the max value of either the bottom most milestone or the height of the container
-  const calcHeight = Math.max(bottomMostMilestoneY+5, height, bottomMostY)
+  const calcHeight = Math.max(bottomMostMilestoneY+5, height)
   // fixes issue with dotted lines from header ticks not extending to bottom of container
   // when calcHeight > maxH, however, it also overrides the minimum height of the container
   // useEffect(() => {setMaxHeight(calcHeight)}, [calcHeight]);
@@ -291,8 +290,8 @@ function NewRoadmap() {
             width={width}
             maxHeight={calcHeight}
             scale={scaleX}
-            leftMostX={leftMostX}
-            rightMostX={rightMostX}
+            leftMostX={leftMostMilestoneX}
+            rightMostX={rightMostMilestoneX}
           />
           {showTodayMarker && <TodayLine scale={scaleX} height={calcHeight} />}
           <RoadmapGroupRenderer binPackedGroups={binPackedGroups} issueDataState={issueDataState.ornull} />

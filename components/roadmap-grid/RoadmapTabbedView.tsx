@@ -91,7 +91,6 @@ export function RoadmapTabbedView({
   };
 
   const renderTabPanel = (title: typeof tabs[number], index: number) => {
-    console.log(`renderTabPanel: `);
     let component = <NewRoadmap />
     // if (mode === 'd3') {
     //   component = <NewRoadmap issueDataState={issueDataState} />
@@ -116,12 +115,12 @@ export function RoadmapTabbedView({
       return []
     }
     const newIssuesGrouped = convertIssueDataStateToDetailedViewGroupOld(issueDataState as State<IssueData>, viewMode, query)
-    const newIssuesGrouped2 = convertIssueDataToDetailedViewGroup(issueDataState.ornull.get({ noproxy: true }) as IssueData)
-    console.log(`newIssuesGrouped2: `, newIssuesGrouped2);
-    console.log(`newIssuesGrouped: `, newIssuesGrouped);
-    if (viewMode === ViewMode.Detail) {
-      return newIssuesGrouped2
-    }
+    // const newIssuesGrouped2 = convertIssueDataToDetailedViewGroup(issueDataState.ornull.get({ noproxy: true }) as IssueData)
+    // console.log(`newIssuesGrouped2: `, newIssuesGrouped2);
+    // console.log(`newIssuesGrouped: `, newIssuesGrouped);
+    // if (viewMode === ViewMode.Detail) {
+    //   return newIssuesGrouped2
+    // }
     return newIssuesGrouped
   }, [viewMode, query, issueDataState])
 
