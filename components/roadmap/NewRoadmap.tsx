@@ -244,7 +244,7 @@ function NewRoadmap() {
       <div style={{ height: `${calcHeight}px` }}>
         <svg ref={attachRef} width='100%' height='100%' className={`${styles['d3-draggable']} view-${viewMode}`} >
           <NewRoadmapHeader
-            transform={`translate(0, ${margin.top + 30})`}
+            yMin={30}
             width={width}
             maxHeight={calcHeight}
             scale={scaleX}
