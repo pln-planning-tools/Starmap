@@ -36,7 +36,6 @@ function NewRoadmap() {
   const [bottomMostMilestoneY, setBottomMostMilestoneY] = useState(0)
   const [zoomTransform, setZoomTransform] = useState<ZoomTransform|null>(null)
   const [panX, setPanX] = useState(0) // positive is pan left (earlier), negative is pan right (later)
-  const showTodayMarker = useShowTodayMarker();
   const viewMode = useViewMode();
 
   /**
@@ -253,7 +252,7 @@ function NewRoadmap() {
             leftMostX={leftMostMilestoneX}
             rightMostX={rightMostMilestoneX}
           />
-          {showTodayMarker && <TodayLine scale={scaleX} height={calcHeight} />}
+          <TodayLine scale={scaleX} height={calcHeight} />
           <RoadmapGroupRenderer binPackedGroups={binPackedGroups} />
         </svg>
       </div>

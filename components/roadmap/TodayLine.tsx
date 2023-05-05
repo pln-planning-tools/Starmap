@@ -3,27 +3,44 @@ import { useContext } from 'react';
 
 import { dayjs } from '../../lib/client/dayjs';
 import { PanContext } from './contexts';
+import styles from '../roadmap-grid/today-marker.module.css';
+import { setShowTodayMarker, useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 
 function TodayLine({ scale, height }: { scale: ScaleTime<number, number>; height: number, transform?: string }) {
   const todayX = scale(dayjs().toDate());
   const panX = useContext(PanContext)
+  const showTodayMarker = useShowTodayMarker();
+
+  if (!showTodayMarker) {
+    return null;
+  }
+
+  const rectSize = 15;
+  const yMin = 0
+  /**
+   * Draws a filled triangle + rectangle, centered at the top center of the
+   * todayLine, that kind of looks like:
+   *  .-----.
+   *  |     |
+   *  .     .
+   *
+   *     .
+   *
+   * The '.' in the above are the points of the polygon defined below.
+   */
+  const polygonPointArray = [
+    [todayX-rectSize/2, yMin], // the top left point
+    [todayX-rectSize/2, yMin + rectSize/2], // the bottom left point (end of rectangle)
+    [todayX, yMin + rectSize], // the bottom tip of the triangle
+    [todayX+rectSize/2, yMin + rectSize/2], // the bottom right point (end of the rectangle)
+    [todayX+rectSize/2, yMin], // the top right point
+  ]
+  const points = polygonPointArray.map(point => point.join(',')).join(' ')
 
   return (
-    <g transform={`translate(${panX}, 0)`}>
-    {/* <g className="d3__milestoneItem__panContainer"> */}
-      <text
-        dominantBaseline='text-before-edge'
-        x={todayX - 20}
-        y={0}
-        dy={'.05em'}
-        fontSize={16}
-        textAnchor='center'
-        color='blue'
-      >
-        Today
-      </text>
-
-      <line x1={todayX} x2={todayX} y1={20} y2={height} strokeWidth={2} stroke={'blue'} strokeDasharray='10' />
+    <g transform={`translate(${panX}, 0)`} className={styles.todayMarkerWrapper} onClick={() => setShowTodayMarker(!showTodayMarker)}>
+      <line x1={todayX} x2={todayX} y1={yMin} y2={height} strokeWidth={2} style={{ stroke: 'var(--chakra-colors-orangeAccent)' }} />
+      <polygon points={points} style={{ fill: 'var(--chakra-colors-orangeAccent)' }}/>
     </g>
   );
 }
