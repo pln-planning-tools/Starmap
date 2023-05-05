@@ -5,7 +5,6 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import { useMaxHeight } from '../../hooks/useMaxHeight';
-import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 import { dayjs } from '../../lib/client/dayjs';
 import { getDates } from '../../lib/client/getDates';
 import { BinPackedGroup } from '../../lib/types';
