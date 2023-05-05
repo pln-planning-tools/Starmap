@@ -15,7 +15,7 @@ function TodayLine({ scale, height }: { scale: ScaleTime<number, number>; height
     return null;
   }
 
-  const rectSize = 15;
+  const size = 5;
   const yMin = 0
   /**
    * Draws a filled triangle + rectangle, centered at the top center of the
@@ -29,17 +29,17 @@ function TodayLine({ scale, height }: { scale: ScaleTime<number, number>; height
    * The '.' in the above are the points of the polygon defined below.
    */
   const polygonPointArray = [
-    [todayX-rectSize/2, yMin], // the top left point
-    [todayX-rectSize/2, yMin + rectSize/2], // the bottom left point (end of rectangle)
-    [todayX, yMin + rectSize], // the bottom tip of the triangle
-    [todayX+rectSize/2, yMin + rectSize/2], // the bottom right point (end of the rectangle)
-    [todayX+rectSize/2, yMin], // the top right point
+    [todayX-size, yMin], // the top left point
+    [todayX-size, yMin + size], // the bottom left point (end of rectangle)
+    [todayX, yMin + size*2], // the bottom tip of the triangle
+    [todayX+size, yMin + size], // the bottom right point (end of the rectangle)
+    [todayX+size, yMin], // the top right point
   ]
   const points = polygonPointArray.map(point => point.join(',')).join(' ')
 
   return (
     <g transform={`translate(${panX}, 0)`} className={styles.todayMarkerWrapper} onClick={() => setShowTodayMarker(!showTodayMarker)}>
-      <line x1={todayX} x2={todayX} y1={yMin} y2={height} strokeWidth={2} style={{ stroke: 'var(--chakra-colors-orangeAccent)' }} />
+      <line x1={todayX} x2={todayX} y1={yMin} y2={height} strokeWidth={1} style={{ stroke: 'var(--chakra-colors-orangeAccent)' }} />
       <polygon points={points} style={{ fill: 'var(--chakra-colors-orangeAccent)' }}/>
     </g>
   );

@@ -251,8 +251,8 @@ function NewRoadmap() {
             leftMostX={leftMostMilestoneX}
             rightMostX={rightMostMilestoneX}
           />
-          <TodayLine scale={scaleX} height={calcHeight} />
           <RoadmapGroupRenderer binPackedGroups={binPackedGroups} />
+          <TodayLine scale={scaleX} height={calcHeight} />
         </svg>
       </div>
     </PanContext.Provider>
