@@ -53,7 +53,7 @@ export const binPack = (items: ImmutableArray<PartialIssueData>, { height, width
       continue;
     }
     const dueDate = item.due_date ? dayjs(item.due_date) : dayjs();
-    const x2 = scale(dueDate.toDate());
+    const x2 = scale(dueDate.endOf('day').toDate());
     // console.log(`${item.title} x2: `, x2);
     const x1 = x2 - width;
 
