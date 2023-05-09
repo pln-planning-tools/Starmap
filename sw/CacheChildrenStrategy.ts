@@ -85,12 +85,11 @@ export class CacheChildren extends Strategy implements Strategy {
       log.debug(`response(cached) x-vercel-cache header: ${cachedResponse?.headers?.get('x-vercel-cache')}`)
 
       const actualResponse = handler.fetch(request.clone())
-
-      this.populateCacheAsync(cacheKey, actualResponse, handler)
+      const populateCachePromise = this.populateCacheAsync(cacheKey, actualResponse, handler)
       // WARNING: We're not awaiting this call deliberately. We want to populate the cache in the background.
       // Essentially, poor-man's version of stale-while-revalidate.
       // handler will wait till this promise resolves. This can be monitored using the `doneWaiting` method.
-      void handler.waitUntil(actualResponse)
+      void handler.waitUntil(populateCachePromise)
       if (!cachedResponse || !cachedResponse.ok) {
         log.debug('No valid cached response found. Waiting for populateCacheAsync to finish')
         await handler.doneWaiting()
