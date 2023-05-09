@@ -10,7 +10,7 @@ const example_body = 'children: \r\n- https://github.com/protocol/bedrock/issues
 /**
  * Test data obtained from calling getIssue() on github.com/ipfs/ipfs-gui/issues/106 on 2023-02-10 @ 5:52pm PST
  */
-const example_tasklist_body = 'eta: 2023Q4\r\n\r\nchildren:\r\n- [ ] #121\r\n- [ ] #122\r\n- [ ] #123\r\n- [ ] #124\r\n\r\n```[tasklist]\r\n### Tasks\r\n- [ ] #121\r\n- [ ] #122\r\n- [ ] #123\r\n- [ ] #124\r\n```\r\n'
+const example_tasklist_body = 'eta: 2023Q4\r\n\r\nchildren:\r\n- [ ] #121\r\n- [ ] #122\r\n- [ ] #123\r\n- [ ] #124\r\n\r\n```[tasklist]\r\n### Tasks\r\n- [ ] #125\r\n- [ ] #126\r\n- [ ] #127\r\n- [ ] #128\r\n```\r\n'
 
 /**
  * Test data manually removing "children:" from the above example_tasklist_body
@@ -133,10 +133,10 @@ describe('parser', function() {
       expect(Array.isArray(children)).toBe(true);
       expect(children).toHaveLength(4);
       expect(children).toStrictEqual([
-        { group: 'tasklist', html_url: 'https://github.com/ipfs/ipfs-gui/issues/121' },
-        { group: 'tasklist', html_url: 'https://github.com/ipfs/ipfs-gui/issues/122' },
-        { group: 'tasklist', html_url: 'https://github.com/ipfs/ipfs-gui/issues/123' },
-        { group: 'tasklist', html_url: 'https://github.com/ipfs/ipfs-gui/issues/124' }
+        { group: 'tasklist', html_url: 'https://github.com/ipfs/ipfs-gui/issues/125' },
+        { group: 'tasklist', html_url: 'https://github.com/ipfs/ipfs-gui/issues/126' },
+        { group: 'tasklist', html_url: 'https://github.com/ipfs/ipfs-gui/issues/127' },
+        { group: 'tasklist', html_url: 'https://github.com/ipfs/ipfs-gui/issues/128' }
       ])
     })
 
@@ -195,6 +195,12 @@ describe('parser', function() {
         { group: 'children:', html_url: 'https://github.com/testground/testground/issues/1529' },
         { group: 'children:', html_url: 'https://github.com/testground/testground/issues/1523' },
       ])
+    })
+
+    it('Can parse pull-request children properly', async function() {
+      const issueJson = await import('../fixtures/getIssueResult/filecoin-station-roadmap-15.json');
+      const children = getChildren(issueJson);
+      expect(children).toHaveLength(3)
     })
   })
 
