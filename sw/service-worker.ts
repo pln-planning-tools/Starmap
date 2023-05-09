@@ -5,7 +5,13 @@ import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching';
 import { registerRoute, setDefaultHandler } from 'workbox-routing';
 import { CacheFirst, NetworkFirst, StaleWhileRevalidate } from 'workbox-strategies';
 import { CacheChildren } from './CacheChildrenStrategy';
+import debug from 'debug'
 
+globalThis.addEventListener('message', event => {
+  if (event.data && event.data.type === 'DEBUG_JS_ENABLE') {
+    debug.enable(event.data.debugString)
+  }
+})
 
 // Setting the default expiration options for the caches.
 const DEFAULT_EXPIRATION_OPTIONS = {

@@ -66,6 +66,19 @@ function App({ Component, pageProps }) {
   }, [])
 
   useEffect(() => {
+    // read from the localStorage and send a message to the service worker to call debug.enable(<debugString>)
+    navigator.serviceWorker.ready.then((registration) => {
+      const debugString = localStorage.getItem('debug')
+      if (debugString) {
+        registration.active?.postMessage({
+          type: 'DEBUG_JS_ENABLE',
+          debugString
+        })
+      }
+    })
+  }, [])
+
+  useEffect(() => {
     (async() => {
       if (telemetry == null) {
         const { BrowserMetricsProvider } = await igniteMetricsModulePromise

@@ -1,6 +1,14 @@
 /* eslint-disable import/no-unused-modules */
 import { Strategy, StrategyHandler } from 'workbox-strategies';
 import Dexie from 'dexie';
+import debug from 'debug';
+
+const logger = debug('starmap:sw:CacheChildrenStrategy')
+const log = {
+  debug: logger.extend('debug'),
+  info: logger.extend('info'),
+  warn: logger.extend('warn'),
+}
 
 /**
  * A simple cache versioning strategy. If changes are made to the cache strategy, this version number should be incremented
@@ -28,23 +36,31 @@ export class CacheChildren extends Strategy implements Strategy {
       'cache-control': 's-maxage=30, stale-while-revalidate=86400'
     }
   }
-  async populateCacheAsync(cacheKey: string, request: Request, handler: StrategyHandler): Promise<void> {
-    const response = await handler.fetch(request.clone())
-    // console.log(`SW NEW: ${cacheKey} - x-vercel-cache: `, response.headers.get('x-vercel-cache'))
+  async populateCacheAsync(cacheKey: string, responsePromise: Promise<Response>, handler: StrategyHandler): Promise<void> {
+    const response = await responsePromise
+    log.debug(`response(actual) x-vercel-cache header: ${response.headers.get('x-vercel-cache')}`)
     if (!response.ok) {
+      log.warn(`populateCacheAsync(${cacheKey}) - handler.fetch response not ok: ${response.status} - ${response.statusText}`)
       return
     }
     const hashCodeStoredValue = await contentHashDB.hashes?.get({ cacheKey })
     const previousResponseHash = hashCodeStoredValue?.hashCode ?? ''
-    const currentResponseHash = generateHashCode(JSON.stringify(await response.clone().json()))
+    const responseJson = await response.clone().json()
+    log.debug(`populateCacheAsync(${cacheKey}) - got responseJson`)
+    const currentResponseHash = generateHashCode(JSON.stringify(responseJson))
 
     if (previousResponseHash !== currentResponseHash) {
+      log.debug(`populateCacheAsync(${cacheKey}) - previous response doesn't match latest response hash - updating response with new data`)
       await contentHashDB.hashes?.put({ cacheKey, hashCode: currentResponseHash })
       await handler.cachePut(cacheKey, response.clone())
+      log.debug(`populateCacheAsync(${cacheKey}) - handler.cachePut done`)
+    } else {
+      log.debug(`populateCacheAsync(${cacheKey}) - previous response matches latest response hash - not updating response`)
     }
+    return
   }
 
-  async _handle(request: Request, handler: StrategyHandler): Promise<Response | undefined> {
+  async _handle(request: Request, handler: StrategyHandler): Promise<Response> {
     try {
       const url = new URL(request.url)
       const queryParams = new URLSearchParams(url.search)
@@ -66,18 +82,24 @@ export class CacheChildren extends Strategy implements Strategy {
       const cacheKey = `${CACHE_VERSION}/${owner}/${repo}/${issue_number}/${node_id}`
       // Checking if the cache already has the response.
       let cachedResponse = await handler.cacheMatch(cacheKey)
+      log.debug(`response(cached) x-vercel-cache header: ${cachedResponse?.headers?.get('x-vercel-cache')}`)
+
+      const actualResponse = handler.fetch(request.clone())
+
+      this.populateCacheAsync(cacheKey, actualResponse, handler)
       // WARNING: We're not awaiting this call deliberately. We want to populate the cache in the background.
       // Essentially, poor-man's version of stale-while-revalidate.
       // handler will wait till this promise resolves. This can be monitored using the `doneWaiting` method.
-      handler.waitUntil(this.populateCacheAsync(cacheKey, request, handler))
-      if (!cachedResponse) {
+      void handler.waitUntil(actualResponse)
+      if (!cachedResponse || !cachedResponse.ok) {
+        log.debug('No valid cached response found. Waiting for populateCacheAsync to finish')
         await handler.doneWaiting()
+        log.debug('populateCacheAsync finished. Getting cached response')
         cachedResponse = await handler.cacheMatch(cacheKey)
-      } else {
-        // console.log(`SW CACHED: ${cacheKey} - x-vercel-cache: `, cachedResponse.headers.get('x-vercel-cache'))
+        log.debug('Got cached response')
       }
 
-      return cachedResponse
+      return cachedResponse ?? actualResponse
     } catch (error) {
       throw new Error(`Custom Caching of Children Failed with error: ${error}`)
     }
