@@ -1,9 +1,8 @@
 import { ScaleTime } from 'd3';
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { dayjs } from '../../lib/client/dayjs'
 import NewRoadmapHeaderTick from './NewRoadMapHeaderTick';
-import { PanContext } from './contexts';
 import { TimeUnit } from '../../lib/enums';
 
 interface NewRoadmapHeaderProps {
@@ -16,17 +15,14 @@ interface NewRoadmapHeaderProps {
 }
 
 export default function NewRoadmapHeader({ scale, yMin, leftMostX, rightMostX, width, maxHeight }: NewRoadmapHeaderProps) {
-  const panX = useContext(PanContext);
-  let minDate = scale.domain()[0];
-  let maxDate = scale.domain()[1];
-  const minX = Math.min(scale(minDate), leftMostX)
-  const maxX = Math.max(scale(maxDate), rightMostX)
+  const minX = leftMostX
+  const maxX = rightMostX
 
-  maxDate = dayjs.max(dayjs(maxDate), dayjs(scale.invert(maxX))).toDate()
-  minDate = dayjs.min(dayjs(minDate), dayjs(scale.invert(minX))).toDate()
+  const maxDate = scale.invert(maxX)
+  const minDate = scale.invert(minX)
+  // const xDiff = scale(scale.invert(maxX)) - scale(scale.invert(minX))
 
   const monthDiff = useMemo(() => dayjs(maxDate).diff(dayjs(minDate), 'months'), [minDate, maxDate])
-
   /**
    * TODO: Be smarter about choosing the timeUnit. i.e. We should be able to
    * determine the number of ticks d3 will end up displaying, and choose
@@ -67,7 +63,7 @@ export default function NewRoadmapHeader({ scale, yMin, leftMostX, rightMostX, w
   return <g transform={`translate(0,${yMin})`}>
     {newTicks.map((date,i) => (<NewRoadmapHeaderTick timeUnit={timeUnit} key={i} date={date} scale={scale} y={-30} height={30} maxHeight={maxHeight} />))}
     {/* Render a border on the bottom of all of the labels */}
-    <path d={`M${0-panX} 0 L${width-panX} 0`} style={{ fill: 'none', strokeWidth:2, stroke:'#A2D0DE' }} transform={`translate(${panX}, 0)`} />
+    <path d={`M${0} 0 L${width} 0`} style={{ fill: 'none', strokeWidth:2, stroke:'#A2D0DE' }} />
   </g>
 }
 

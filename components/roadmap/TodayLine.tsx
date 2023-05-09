@@ -1,14 +1,11 @@
 import { ScaleTime } from 'd3';
-import { useContext } from 'react';
 
 import { dayjs } from '../../lib/client/dayjs';
-import { PanContext } from './contexts';
 import styles from '../roadmap-grid/today-marker.module.css';
 import { setShowTodayMarker, useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 
 function TodayLine({ scale, height }: { scale: ScaleTime<number, number>; height: number, transform?: string }) {
   const todayX = scale(dayjs().toDate());
-  const panX = useContext(PanContext)
   const showTodayMarker = useShowTodayMarker();
 
   if (!showTodayMarker) {
@@ -38,7 +35,7 @@ function TodayLine({ scale, height }: { scale: ScaleTime<number, number>; height
   const points = polygonPointArray.map(point => point.join(',')).join(' ')
 
   return (
-    <g transform={`translate(${panX}, 0)`} className={styles.todayMarkerWrapper} onClick={() => setShowTodayMarker(!showTodayMarker)}>
+    <g className={styles.todayMarkerWrapper} onClick={() => setShowTodayMarker(!showTodayMarker)}>
       <line x1={todayX} x2={todayX} y1={yMin} y2={height} strokeWidth={1} style={{ stroke: 'var(--chakra-colors-orangeAccent)' }} />
       <polygon points={points} style={{ fill: 'var(--chakra-colors-orangeAccent)' }}/>
     </g>

@@ -1,12 +1,11 @@
 import NextLink from 'next/link';
-import { useContext, useId, useRef } from 'react';
+import { useId, useRef } from 'react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Text } from '@visx/text';
 
 import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
 import { BinPackItem } from './lib';
-import { PanContext } from './contexts';
 import styles from '../roadmap-grid/Roadmap.module.css';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import { dayjs } from '../../lib/client/dayjs';
@@ -22,7 +21,6 @@ function BinPackedMilestoneItem({
   item: BinPackItem;
 }) {
   const itemRef = useRef<SVGGElement>(null);
-  const panX = useContext(PanContext)
   const uniqId = useId();
 
   const yPadding = 5;
@@ -60,7 +58,7 @@ function BinPackedMilestoneItem({
 
   return (
     <NextLink key={uniqId} href={getLinkForRoadmapChild({ issueData: item.data, query: useRouter().query })} passHref>
-      <g className={`${styles.d3__milestoneItem} ${classNames.join(' ')}`} cursor={'pointer'} ref={itemRef} transform={`translate(${panX}, 0)`}>
+      <g className={`${styles.d3__milestoneItem} ${classNames.join(' ')}`} cursor={'pointer'} ref={itemRef}>
         <rect
           x={item.left}
           y={item.top}

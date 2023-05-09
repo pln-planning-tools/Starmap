@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { dayjs } from './dayjs';
 import { useDateGranularity } from '../../hooks/useDateGranularity';
 
-export function getDates({ issuesGroupedState, issuesGroupedId }): Dayjs[] {
+export function getDates({ issuesGroupedState, issuesGroupedId, legacyView }): Dayjs[] {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const dateGranularity = useDateGranularity()
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -11,11 +11,15 @@ export function getDates({ issuesGroupedState, issuesGroupedId }): Dayjs[] {
     const today = dayjs();
     let innerDayjsDates: Dayjs[] = []
     try {
-      innerDayjsDates = issuesGroupedState.value
+      innerDayjsDates = issuesGroupedState
         .flatMap((group) => group.items.map((item) => dayjs(item.due_date).utc()))
         .filter((d) => d.isValid());
     } catch {
       innerDayjsDates = []
+    }
+    if (!legacyView) {
+      console.log(`innerDayjsDates: `, innerDayjsDates);
+      return innerDayjsDates;
     }
     /**
      * Add today
@@ -45,25 +49,6 @@ export function getDates({ issuesGroupedState, issuesGroupedId }): Dayjs[] {
         maxDate = maxDate.add(1, dateGranularity as ManipulateType);
         minDate = minDate.subtract(1, dateGranularity as ManipulateType);
     }
-
-
-    /**
-     * This is a hack to make sure that the first and last ticks are always visible.
-     * TODO: Perform in constant time based on current DateGranularity
-     */
-    // while (Math.abs(maxDate.diff(minDate, 'months')) < 5) {
-    //   // if (incrementMax) {
-    //   // } else {
-    //     maxDate = maxDate.add(1, 'day');
-    //     minDate = minDate.subtract(1, 'day');
-    //   // }
-    //   // incrementMax = !incrementMax;
-    // }
-    // if (incrementMax) {
-    //   maxDate = maxDate.add(1, 'day');
-    // } else {
-    //   minDate = minDate.subtract(1, 'day');
-    // }
 
     /**
      * Add minDate and maxDate so that the grid is not cut off.

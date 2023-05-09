@@ -1,11 +1,9 @@
 import { ScaleTime } from 'd3';
-import dayjs from 'dayjs';
-import { useContext } from 'react';
+
+import { dayjs } from '../../lib/client/dayjs';
 import { useMaxHeight } from '../../hooks/useMaxHeight';
 import getDateAsQuarter from '../../lib/client/getDateAsQuarter';
 import { TimeUnit } from '../../lib/enums';
-
-import { PanContext } from './contexts';
 
 interface NewRoadmapHeaderTickProps {
   scale: ScaleTime<number, number>;
@@ -18,7 +16,6 @@ interface NewRoadmapHeaderTickProps {
 
 export default function NewRoadmapHeaderTick({ date,  y,  height, scale, timeUnit, maxHeight }: NewRoadmapHeaderTickProps) {
   const maxH = Math.max(maxHeight ?? 0, useMaxHeight())
-  const panX = useContext(PanContext)
   const startX = scale(dayjs(date).startOf(timeUnit))
   const endX = scale(dayjs(date).endOf(timeUnit))
   const width = (endX - startX)
@@ -30,7 +27,7 @@ export default function NewRoadmapHeaderTick({ date,  y,  height, scale, timeUni
   }
   if (width < 0) return null
 
-  return <g x={startX} y={y} x2={endX} transform={`translate(${panX}, 0)`}>
+  return <g x={startX} y={y} x2={endX}>
     <text x={startX + width/2} y={y + height/2 + 2} height={height} dominantBaseline='middle' textAnchor='middle'>
       {dateLabel}
     </text>

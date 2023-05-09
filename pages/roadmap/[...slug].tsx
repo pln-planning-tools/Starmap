@@ -245,7 +245,7 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
   return (
     <IssueDataStateContext.Provider value={issueDataState}>
       <PageHeader />
-      <div style={{ overflowY: 'auto', height: 'calc(100vh - 120px)', paddingTop: '28px' }}>
+      <div style={{ height: 'calc(100vh)', paddingTop: '28px', paddingBottom: '28px' }}>
         {issueDataState.ornull != null && <StarmapsBreadcrumb currentTitle={issueDataState.ornull.title.value} />}
         <ErrorNotificationDisplay errorsState={starMapsErrorsState} issueDataState={issueDataState}/>
         <Box pr={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }} pl={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }} >
