@@ -150,14 +150,16 @@ function NewRoadmap() {
     }, [getNewPanX, height, maxScaleRangeX])
 
   const scaleX = useMemo(() => {
-    let scaleRange = [0, maxScaleRangeX]
+    const scaleRange = [0, maxScaleRangeX]
     const scaleDomain = [earliestEta.toDate(), latestEta.toDate()]
-    if (zoomTransform !== null) {
-      scaleRange = scaleRange.map(d => zoomTransform.applyY(d))
-    }
-    const scale = scaleTime()
+    let scale = scaleTime()
       .domain(scaleDomain)
       .range(scaleRange)
+
+    if (zoomTransform) {
+      // rescales the dates based on the zoom transform
+      scale = scale.domain(zoomTransform.rescaleX(scale).domain())
+    }
 
       return scale
   }, [earliestEta, latestEta, maxScaleRangeX, zoomTransform]);
