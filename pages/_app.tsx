@@ -78,7 +78,6 @@ function App({ Component, pageProps }) {
       }
     }
     setupSWDebug();
-  })
   }, [])
 
   useEffect(() => {
