@@ -8,7 +8,7 @@ import { CacheChildren } from './CacheChildrenStrategy';
 import debug from 'debug'
 
 globalThis.addEventListener('message', event => {
-  if (event.data && event.data.type === 'DEBUG_JS_ENABLE') {
+  if (event.data?.type === 'DEBUG_JS_ENABLE') {
     debug.enable(event.data.debugString)
   }
 })
