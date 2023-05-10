@@ -23,6 +23,7 @@ import { ErrorBoundary } from '../errors/ErrorBoundary';
 import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 import { getDates } from '../../lib/client/getDates';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
+import { useLegacyView } from '../../hooks/useLegacyView';
 
 // eslint-disable-next-line import/no-unused-modules
 export function RoadmapDetailed({
@@ -59,10 +60,11 @@ export function RoadmapDetailed({
 
   // for preventing dayjsDates from being recalculated if it doesn't need to be
   const issuesGroupedId = issuesGroupedState.value.map((g) => g.groupName).join(',');
+  const legacyView = useLegacyView()
   /**
    * Collect all due dates from all issues, as DayJS dates.
    */
-  const dayjsDates: Dayjs[] = getDates({ issuesGroupedState, issuesGroupedId })
+  const dayjsDates: Dayjs[] = getDates({ issuesGroupedState, issuesGroupedId, legacyView })
 
   /**
    *  * Ensure that the dates are
