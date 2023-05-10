@@ -57,7 +57,7 @@ test('clicking a milestone item should show more breadcrumbs', async ({ page, co
   const expectedCrumbs = convertCrumbDataArraysToCrumbDataString([currentUrlCrumbs]);
   const newUrl = new URL(`/roadmap/github.com/ipfs/roadmap/issues/98`, page.url());
   newUrl.searchParams.set('crumbs', expectedCrumbs);
-  newUrl.hash = 'simple';
+  newUrl.hash = 'view=simple';
   await expect(page).toHaveURL(newUrl.href);
 
   await getSpinnerAndBreadcrumbPromise(0, 2);

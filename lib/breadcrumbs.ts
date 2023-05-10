@@ -72,7 +72,7 @@ export function appendCrumbArrayData(urlCrumbDataArray: CrumbArrayData[], parent
 
 export function getCrumbDataFromCrumbDataArray(crumbItems: CrumbArrayData[], viewMode: ViewMode): CrumbData[] {
   return crumbItems.map(mapCrumbArrayToCrumbData).map((crumb) => {
-    crumb.url.hash = viewMode;
+    crumb.url.hash = `view=${viewMode}`;
     return {
       ...crumb,
       url: crumb.url.toString()

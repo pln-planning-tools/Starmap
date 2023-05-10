@@ -236,10 +236,13 @@ export default function RoadmapPage(props: InferGetServerSidePropsType<typeof ge
 
   const router = useRouter();
   const urlPath = router.asPath
-  console.log(`urlPath: `, urlPath);
   useEffect(() => {
-    const hashString = urlPath.split('#')[1] as ViewMode ?? ViewMode.Simple;
-    setViewMode(hashString);
+    const hashString = urlPath.split('#')[1];
+    const hashParams = new URLSearchParams(hashString);
+    const viewModeHash = hashParams.get('view')
+    const viewMode = viewModeHash as ViewMode ?? ViewMode.Simple
+
+    setViewMode(viewMode);
   }, [urlPath]);
 
   return (

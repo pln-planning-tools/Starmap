@@ -37,7 +37,7 @@ export function getLinkForRoadmapChild({ issueData, currentRoadmapRoot, query, v
   const url = new URL(`/roadmap/github.com/${urlM.owner}/${urlM.repo}/issues/${urlM.issue_number}`, window.location.origin);
   addCrumbsParamToUrl({ currentRoadmapRoot, query, url });
   if (viewMode != null) {
-    url.hash = viewMode;
+    url.hash = `view=${viewMode}`;
   }
 
 

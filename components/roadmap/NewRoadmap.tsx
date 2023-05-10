@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Center, Spinner } from '@chakra-ui/react';
-import { scaleTime, select, zoom as d3Zoom, D3ZoomEvent, ZoomTransform, ScaleTime } from 'd3';
+import { scaleTime, select, zoom as d3Zoom, D3ZoomEvent, ZoomTransform } from 'd3';
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
@@ -23,7 +23,6 @@ import { useLegacyView } from '../../hooks/useLegacyView';
 const yZoomMin = 0.2 // zoom OUT limit
 const yZoomMax = 3 // zoom IN limit
 const roadmapItemWidth = 350
-const enableHorizontalScrolling = false
 
 function NewRoadmap() {
   const issueDataState = useContext(IssueDataStateContext)
@@ -36,8 +35,36 @@ function NewRoadmap() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [topMostMilestoneY, setTopMostMilestoneY] = useState(0)
   const [bottomMostMilestoneY, setBottomMostMilestoneY] = useState(0)
-  const [zoomTransform, setZoomTransform] = useState<ZoomTransform>(new ZoomTransform(0.5, 0, 0))
+
+  const [zoomTransform, setZoomTransform] = useState<ZoomTransform>(new ZoomTransform(1, 0, 0))
   const viewMode = useViewMode();
+  const defaultZoomSet = useRef(false)
+
+  useEffect(() => {
+    // load zoomTransform from URL, only once.
+    const hashString = window.location.hash.substring(1) || ''
+    const hashParams = new URLSearchParams(hashString)
+
+    const d3x = Number(hashParams.get('d3x')) || 0
+    const d3y = Number(hashParams.get('d3y')) || 0
+    const d3k = Number(hashParams.get('d3k')) || 1
+    setZoomTransform(new ZoomTransform(d3k, d3x, d3y))
+  }, [])
+
+  const updateZoomTransformInUrl = (zoomTransform) => {
+  // update queryParameters in URL on zoom/pan
+    const d3x = zoomTransform.x.toFixed(2)
+    const d3y = zoomTransform.y.toFixed(2)
+    const d3k = zoomTransform.k.toFixed(2)
+
+    const hashString = window.location.hash.substring(1) ?? ''
+    const hashParams = new URLSearchParams(hashString)
+    hashParams.set('d3x', String(d3x))
+    hashParams.set('d3y', String(d3y))
+    hashParams.set('d3k', String(d3k))
+    // window.location.hash = hashParams.toString();
+    window.history.replaceState({}, '', `${window.location.pathname}#${hashParams.toString()}`)
+  }
 
   /**
    * Using useState and attachRef as done at https://github.com/facebook/react/issues/11258#issuecomment-495262508
@@ -84,6 +111,7 @@ function NewRoadmap() {
     }
     const zoomFilter = (event) => {
       event.preventDefault();
+      event.stopImmediatePropagation();
       let keepEvent = false
 
       const { isZoom, isPan, isVerticalScroll } = getEventDetails(event)
@@ -92,14 +120,19 @@ function NewRoadmap() {
         keepEvent = true
       } else if (isVerticalScroll) {
         window.scrollBy(0, event.deltaY)
+        event.stopImmediatePropagation();
         keepEvent = false
       }
 
       return keepEvent
     }
+    const translateExtent: [[number, number], [number, number]] = [[-maxScaleRangeX, 0], [maxScaleRangeX*2, 0]]
     return d3Zoom<SVGSVGElement, unknown>()
       .on('start', (event) => {
+        // event.preventDefault();
         const domEvent = event.sourceEvent
+        domEvent.preventDefault();
+        domEvent.stopImmediatePropagation();
         if (domEvent.type !== 'wheel') {
           select(ref).style('cursor', 'grabbing')
         }
@@ -109,20 +142,37 @@ function NewRoadmap() {
         if (domEvent.type !== 'wheel') {
           select(ref).style('cursor', 'grab')
         }
+        setZoomTransform((oldZoomTransform) => {
+          updateZoomTransformInUrl(oldZoomTransform)
+          return oldZoomTransform // don't change.
+        })
       })
       .on('zoom', (event: D3ZoomEvent<SVGSVGElement, unknown>) => {
         const domEvent = event.sourceEvent
         const { isMouseEvent, isZoom, isPan, isVerticalScroll } = getEventDetails(domEvent)
 
         if (isZoom) {
+          // setZoomTransform((oldTransform) => new ZoomTransform(event.transform.k, event.transform.x, oldTransform.y))
           setZoomTransform(event.transform)
         } else if (isPan) {
-          const newTransform = event.transform
 
           if (isMouseEvent) {
-            setZoomTransform((oldTransform) => new ZoomTransform(oldTransform.k, newTransform.x, oldTransform.y))
+            setZoomTransform((oldTransform) => new ZoomTransform(oldTransform.k, event.transform.x, oldTransform.y))
+            // setZoomTransform((oldTransform) => {
+            //   const newTransform = new ZoomTransform(oldTransform.k, event.transform.x, oldTransform.y)
+            //   const currentConstraint = zoomBehavior.constrain()
+            //   return currentConstraint(newTransform, [[0, 0], [maxScaleRangeX, 0]], translateExtent)
+            // })
           } else {
+            // horizontal scroll
+            // on mac, it frequently tries to go back when I want to prevent it from doing so
+            event.sourceEvent.preventDefault()
             setZoomTransform((oldTransform) => new ZoomTransform(oldTransform.k, oldTransform.x - domEvent.deltaX, oldTransform.y))
+            // setZoomTransform((oldTransform) => {
+            //   const newTransform = new ZoomTransform(oldTransform.k, oldTransform.x - domEvent.deltaX, oldTransform.y)
+            //   const currentConstraint = zoomBehavior.constrain()
+            //   return currentConstraint(newTransform, [[0, 0], [maxScaleRangeX, 0]], translateExtent)
+            // })
           }
         } else if (isVerticalScroll) {
           /**
@@ -132,12 +182,12 @@ function NewRoadmap() {
           window.scrollBy(0, -domEvent.deltaY/10)
         }
       })
-      .translateExtent([[-maxScaleRangeX, 0], [maxScaleRangeX*2, height]])
+      // .translateExtent(translateExtent)
       .scaleExtent([yZoomMin, yZoomMax])
-      .extent([[0, 0], [maxScaleRangeX, height]])
+      .extent([[0, 0], [maxScaleRangeX, 0]])
       .filter(zoomFilter)
 
-    }, [height, maxScaleRangeX, ref])
+    }, [maxScaleRangeX, ref])
 
   const scaleX = useMemo(() => {
     const scaleRange = [0, maxScaleRangeX]
@@ -202,25 +252,34 @@ function NewRoadmap() {
     return newGroups
   }, [issuesGroupedState, scaleX])
 
-  const visibleLeftX = useMemo(() => scaleX(scaleX.invert(0)), [scaleX])
-  // console.log(`findRight - visibleLeftX: `, visibleLeftX);
-  if (leftMostMilestoneX < visibleLeftX) {
-    // console.log('findLeft - leftMostMilestoneX is <less than visibleLeftX')
-  } else {
-    // console.log('findLeft - leftMostMilestoneX is >greater than visibleLeftX')
-  }
-  const visibleRightX = useMemo(() => {
-    if (zoomTransform) {
-      return zoomTransform?.applyX(scaleX(scaleX.invert(maxScaleRangeX)))
-    }
-    return scaleX(scaleX.invert(maxScaleRangeX))
-  }, [maxScaleRangeX, scaleX, zoomTransform])
+  const visibleLeftX = useMemo(() => scaleX(scaleX.domain()[0]), [scaleX])
+  const visibleRightX = useMemo(() => scaleX(scaleX.domain()[1]), [scaleX])
+  const isLeftMilestoneVisible = useMemo(() => leftMostMilestoneX > visibleLeftX, [leftMostMilestoneX, visibleLeftX])
+  const isRightMilestoneVisible = useMemo(() => rightMostMilestoneX < visibleRightX, [rightMostMilestoneX, visibleRightX])
 
-  if (rightMostMilestoneX < visibleRightX) {
-    // console.log('findRight - rightMostMilestoneX is <less than visibleRightX')
-  } else {
-    // console.log('findRight - rightMostMilestoneX is >greater than visibleRightX')
-  }
+  useEffect(() => {
+    if (!defaultZoomSet.current) {
+      if (isLeftMilestoneVisible && isRightMilestoneVisible) {
+        console.log('defaultView - All milestones are visible!')
+      } else {
+        console.log('defaultView - Some milestones are hidden!')
+      }
+      // const isLeftMilestoneVisible = leftMostMilestoneX > visibleLeftX
+      // const isRightMilestoneVisible = rightMostMilestoneX < visibleRightX
+      if (isLeftMilestoneVisible && isRightMilestoneVisible) {
+        // update zoomTransform so that all milestones are visible
+        defaultZoomSet.current = true
+      } else {
+        scaleX.range([leftMostMilestoneX, rightMostMilestoneX])
+        // create new zoomTransform so that all milestones are visible
+        // we will need to calculate what type of transform will make sure that
+        // leftMostMilestoneX is > visibleLeftX and rightMostMilestoneX is < visibleRightX
+
+      }
+    }
+  }, [isLeftMilestoneVisible, isRightMilestoneVisible, leftMostMilestoneX, rightMostMilestoneX, scaleX, visibleLeftX, visibleRightX])
+  // defaultZoomSet.current
+  console.log(`defaultZoomSet.current: `, defaultZoomSet.current);
 
   // we set the height to the max value of either the bottom most milestone or the height of the container
   const calcHeight = Math.max(bottomMostMilestoneY+5, height)

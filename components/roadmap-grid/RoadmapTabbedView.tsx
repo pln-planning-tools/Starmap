@@ -59,8 +59,11 @@ export function RoadmapTabbedView({
 
   const handleTabChange = (index: number) => {
     setViewMode(tabViewMap[tabs[index]]);
+    const currentHashString = router.asPath.split('#')[1];
+    const currentHashParams = new URLSearchParams(currentHashString);
+    currentHashParams.set('view', tabViewMap[tabs[index]])
     router.push({
-      hash: tabViewMap[tabs[index]],
+      hash: currentHashParams.toString(),
     }, undefined, { shallow: true });
   }
 
