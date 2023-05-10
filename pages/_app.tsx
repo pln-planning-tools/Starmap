@@ -67,7 +67,8 @@ function App({ Component, pageProps }) {
 
   useEffect(() => {
     // read from the localStorage and send a message to the service worker to call debug.enable(<debugString>)
-    navigator.serviceWorker.ready.then((registration) => {
+    async function setupSWDebug() {
+      const registration = await navigator.serviceWorker.ready
       const debugString = localStorage.getItem('debug')
       if (debugString) {
         registration.active?.postMessage({
@@ -75,7 +76,9 @@ function App({ Component, pageProps }) {
           debugString
         })
       }
-    })
+    }
+    setupSWDebug();
+  })
   }, [])
 
   useEffect(() => {
