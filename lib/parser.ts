@@ -70,9 +70,38 @@ function getCleanedSectionLines(text: string, sectionHeader: string | RegExp) {
   return lines
 }
 
-const splitAndGetLastItem = (line: string) => line.trim().split(' ').slice(-1)[0]
+/**
+ * Function that splits a space separated string into an array of strings and
+ * returns the first github issue ID or link it finds.
+ *
+ * @param line a string most-likely containing a link in it somewhere.
+ * @returns {string}
+ */
+const getGithubLinkFromLine = (line: string): string | null => {
+  const trimmedLine = line.trim()
+  if (trimmedLine.length === 0) {
+    return ''
+  }
+  const trimmedLinePieces = trimmedLine.split(' ')
+  const validLinks = trimmedLinePieces.filter((linePiece) => {
+    if (linePiece.length <= 1) {
+      return false
+    }
+    try {
+      // try github issue IDs
+      getValidUrlFromInput(linePiece.replace(/pull/g, 'issues'))
+      return true
+    } catch {
+      return false
+    }
+  })
+
+  // return the first valid link found
+  return validLinks[0] ?? null
+}
 const ensureTaskListChild = (line: string) => line.trim().indexOf('-') === 0
 const getUrlFromMarkdownText = (line: string) => line.trim().split('](').slice(-1)[0].replace(')', '')
+const isNonEmptyString = (value: unknown): value is string => typeof value === 'string' && value.length > 0
 
 function getUrlStringForChildrenLine(line: string, issue: Pick<GithubIssueData, 'html_url'>) {
   if (/^#\d+$/.test(line)) {
@@ -103,8 +132,8 @@ function getChildrenFromTaskList(issue: Pick<GithubIssueData, 'body' | 'html_url
   // tasklists require the checkbox style format to recognize children
   const lines = getCleanedSectionLines(issue.body, '```[tasklist]')
     .filter(ensureTaskListChild)
-    .map(splitAndGetLastItem)
-    .filter(Boolean);
+    .map(getGithubLinkFromLine)
+    .filter(isNonEmptyString);
 
   if (lines.length === 0) {
     throw new Error('Section missing or has no children')
@@ -127,7 +156,9 @@ function getChildrenNew(issue: Pick<GithubIssueData, 'body' | 'html_url'>): Pars
     // Could not find children using new tasklist format,
     // try to look for "children:" section
   }
-  const lines = getCleanedSectionLines(issue.body, /children:/i).map(splitAndGetLastItem).filter(Boolean);
+  const lines = getCleanedSectionLines(issue.body, /children:/i)
+    .map(getGithubLinkFromLine)
+    .filter(isNonEmptyString);
   if (lines.length === 0) {
     throw new Error('Section missing or has no children')
   }
