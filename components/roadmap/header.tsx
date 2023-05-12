@@ -16,8 +16,8 @@ export default function Header(): ReactElement | null {
     return null;
   }
 
-  if (issueDataState.ornull.html_url.value == null || typeof issueDataState.ornull.html_url.value !== 'string') {
-    console.log('error with issueData', issueDataState.get({ noproxy: true }))
+  if (typeof issueDataState.ornull?.html_url?.value !== 'string') {
+    console.error('error with issueData', issueDataState.get({ noproxy: true }))
     return null;
   }
 
