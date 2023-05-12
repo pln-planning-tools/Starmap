@@ -82,8 +82,10 @@ const getGithubLinkFromLine = (line: string): string | null => {
   if (trimmedLine.length === 0) {
     return ''
   }
-  const trimmedLinePieces = trimmedLine.split(/\s+/)
-  const validLinks = trimmedLinePieces.filter((linePiece) => {
+  const trimmedLinePieces = trimmedLine.split(' ')
+
+  // return the first valid link found
+  return trimmedLinePieces.find((linePiece) => {
     if (linePiece.length <= 1) {
       return false
     }
@@ -94,10 +96,7 @@ const getGithubLinkFromLine = (line: string): string | null => {
     } catch {
       return false
     }
-  })
-
-  // return the first valid link found
-  return validLinks[0] ?? null
+  }) ?? null
 }
 const ensureTaskListChild = (line: string) => line.trim().indexOf('-') === 0
 const getUrlFromMarkdownText = (line: string) => line.trim().split('](').slice(-1)[0].replace(')', '')
