@@ -6,7 +6,7 @@ import { Text } from '@visx/text';
 
 import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
 import { BinPackItem } from './lib';
-import styles from '../roadmap-grid/Roadmap.module.css';
+import styles from './Roadmap.module.css';
 import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import { dayjs } from '../../lib/client/dayjs';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';

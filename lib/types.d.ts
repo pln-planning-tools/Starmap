@@ -1,4 +1,4 @@
-import type { ImmutableArray, State } from '@hookstate/core'
+import type { ImmutableArray } from '@hookstate/core'
 
 import type { RoadmapMode, IssueStates, DateGranularityState } from './enums'
 
@@ -138,10 +138,6 @@ export interface DetailedViewGroup {
   url: string;
 }
 
-export interface GroupHeaderProps extends IssueDataViewInput {
-  group: State<DetailedViewGroup>;
-}
-
 export interface UrlMatchSlugs {
   owner: string;
   repo: string;
@@ -153,12 +149,6 @@ export interface QueryParameters {
   mode?: RoadmapMode;
   timeUnit?: DateGranularityState;
   crumbs?: string;
-}
-
-export interface IssueDataViewInput {
-  issueDataState: State<IssueData>;
-  // isRootIssueLoading: boolean;
-  // isPendingChildrenLoading: boolean;
 }
 
 export type BrowserMetricsProvider = typeof import('@ipfs-shipyard/ignite-metrics').BrowserMetricsProvider

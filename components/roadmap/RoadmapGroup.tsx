@@ -1,5 +1,5 @@
 import { BinPackedGroup } from '../../lib/types'
-import { BinPackedGroupHeader } from '../roadmap-grid/group-header'
+import { BinPackedGroupHeader } from './group-header'
 import BinPackedMilestoneItem from './BinPackedMilestoneItem'
 
 export default function RoadmapGroup({ binPackedGroup, index }: {binPackedGroup: BinPackedGroup, index: number}) {

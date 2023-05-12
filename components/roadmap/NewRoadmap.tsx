@@ -12,7 +12,7 @@ import { IssueDataStateContext, IssuesGroupedContext } from './contexts';
 import { binPack } from './lib';
 import NewRoadmapHeader from './NewRoadMapHeader';
 import TodayLine from './TodayLine';
-import styles from '../roadmap-grid/Roadmap.module.css';
+import styles from './Roadmap.module.css';
 import { useViewMode } from '../../hooks/useViewMode';
 import RoadmapGroupRenderer from './RoadmapGroupRenderer';
 

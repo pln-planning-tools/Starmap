@@ -52,6 +52,8 @@ const darkMode = {
   }
 }
 
+// TODO: Migrate to chakra theme defined in /pages/_app.tsx
+// see https://github.com/pln-planning-tools/Starmap/issues/370
 export default {
   light: lightMode,
   dark: darkMode

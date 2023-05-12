@@ -7,7 +7,7 @@ import { StarmapsBreadcrumb } from '../../components/breadcrumb';
 
 import { ErrorNotificationDisplay } from '../../components/errors/ErrorNotificationDisplay';
 import PageHeader from '../../components/layout/PageHeader';
-import { RoadmapTabbedView } from '../../components/roadmap-grid/RoadmapTabbedView';
+import { RoadmapTabbedView } from '../../components/roadmap/RoadmapTabbedView';
 import { IssueDataStateContext } from '../../components/roadmap/contexts';
 import { BASE_PROTOCOL } from '../../config/constants';
 import { setDateGranularity } from '../../hooks/useDateGranularity';

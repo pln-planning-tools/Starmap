@@ -16,6 +16,7 @@ module.exports = {
     'next',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:import/typescript',
     'prettier',
   ],
   rules: {
@@ -43,11 +44,11 @@ module.exports = {
     'import/no-unused-modules': [2, {
       "unusedExports": true,
       "ignoreExports": [
-        'pages/',
-        'components/roadmap/',
+        'hooks/useEffectDebugger.ts',
         'lib/backend/saveIssueDataToFile.ts',
         'lib/mergeStarMapsErrorGroups.ts',
         'lib/addStarMapsErrorsToStarMapsErrorGroups.ts',
+        'pages/',
         'playwright.config.ts',
       ]
     }]

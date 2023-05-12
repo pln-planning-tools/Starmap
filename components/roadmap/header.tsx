@@ -6,7 +6,7 @@ import React, { useContext } from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
 import GitHubSvgIcon from '../icons/GitHubLogo.svg';
-import { IssueDataStateContext } from '../roadmap/contexts';
+import { IssueDataStateContext } from './contexts';
 import themes from '../theme/constants';
 
 export default function Header(): ReactElement | null {
