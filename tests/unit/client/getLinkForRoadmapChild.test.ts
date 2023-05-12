@@ -56,7 +56,7 @@ describe('getLinkForRoadmapChild', function() {
 
     it('issueData has children and parent, with viewMode', () => {
       const expectedCrumbs = convertCrumbDataArraysToCrumbDataString([getCrumbDataArrayFromIssueData(parent)]);
-      const expectedLink = `/roadmap/github.com${new URL(child.html_url).pathname}?crumbs=${encodeURIComponent(expectedCrumbs)}#detail`
+      const expectedLink = `/roadmap/github.com${new URL(child.html_url).pathname}?crumbs=${encodeURIComponent(expectedCrumbs)}#view=detail`
       expect(getLinkForRoadmapChild({ issueData: child, viewMode: ViewMode.Detail })).toEqual(expectedLink);
     });
 
