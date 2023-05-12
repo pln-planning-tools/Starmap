@@ -82,7 +82,7 @@ const getGithubLinkFromLine = (line: string): string | null => {
   if (trimmedLine.length === 0) {
     return ''
   }
-  const trimmedLinePieces = trimmedLine.split(' ')
+  const trimmedLinePieces = trimmedLine.split(/\s+/)
   const validLinks = trimmedLinePieces.filter((linePiece) => {
     if (linePiece.length <= 1) {
       return false
