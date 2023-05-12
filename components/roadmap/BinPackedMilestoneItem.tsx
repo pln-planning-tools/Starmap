@@ -12,8 +12,7 @@ import { dayjs } from '../../lib/client/dayjs';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
 import { Box } from '@chakra-ui/react';
 import { useViewMode } from '../../hooks/useViewMode';
-
-const MAX_TITLE_LENGTH = 80;
+import { MAX_TITLE_LENGTH, rectConfig, textPaddingX, yPadding } from './svgConstants';
 
 // D3 milestone item
 function BinPackedMilestoneItem({
@@ -25,17 +24,8 @@ function BinPackedMilestoneItem({
   const uniqId = useId();
   const viewMode = useViewMode();
 
-  const yPadding = 5;
-
-  const rectConfig = {
-    width: 300,
-    height: 80,
-    strokeWidth: 2,
-  };
-  const textPadding = 10;
-
-  const boundaryLeft = item.left + rectConfig.strokeWidth + textPadding;
-  const boundaryRight = item.right - rectConfig.strokeWidth - textPadding;
+  const boundaryLeft = item.left + rectConfig.strokeWidth + textPaddingX;
+  const boundaryRight = item.right - rectConfig.strokeWidth - textPaddingX;
   const boundaryTop = item.top + rectConfig.strokeWidth + yPadding;
   const boundaryBottom = item.bottom - rectConfig.strokeWidth - yPadding;
 
@@ -72,13 +62,13 @@ function BinPackedMilestoneItem({
           className={styles.d3__milestoneItem__title}
           dominantBaseline='text-before-edge'
           x={boundaryLeft}
-          y={boundaryTop - textPadding}
+          y={boundaryTop - textPaddingX}
           width={contentWidth}
           verticalAnchor='start'
         >
           {truncatedTitle}
         </Text>
-        <foreignObject height="6" width={contentWidth} x={boundaryLeft} y={item.bottom - textPadding*3.5}>
+        <foreignObject height="6" width={contentWidth} x={boundaryLeft} y={item.bottom - textPaddingX*3.5}>
           <Box h='100%' w="100%" borderRadius="20px" bgColor="#F1F4F8">
             <Box w={`${item.data.completion_rate}%`} h="100%" borderRadius="20px" bg="#7DE087" />
           </Box>
