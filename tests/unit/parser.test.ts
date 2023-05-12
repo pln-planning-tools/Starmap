@@ -202,6 +202,13 @@ describe('parser', function() {
       const children = getChildren(issueJson);
       expect(children).toHaveLength(3)
     })
+
+    it('bug366', async function() {
+      // test for bug https://github.com/pln-planning-tools/Starmap/issues/366
+      const issueJson = await import('../fixtures/getIssueResult/protocol-probelab-1.json');
+      const children = getChildren(issueJson);
+      expect(children).toHaveLength(8)
+    })
   })
 
   describe('getDescription', function() {
