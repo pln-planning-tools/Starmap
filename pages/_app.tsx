@@ -75,6 +75,21 @@ function App({ Component, pageProps }) {
   }, [])
 
   useEffect(() => {
+    // read from the localStorage and send a message to the service worker to call debug.enable(<debugString>)
+    async function setupSWDebug() {
+      const registration = await navigator.serviceWorker.ready
+      const debugString = localStorage.getItem('debug')
+      if (debugString) {
+        registration.active?.postMessage({
+          type: 'DEBUG_JS_ENABLE',
+          debugString
+        })
+      }
+    }
+    setupSWDebug();
+  }, [])
+
+  useEffect(() => {
     (async() => {
       if (telemetry == null) {
         const { BrowserMetricsProvider } = await igniteMetricsModulePromise
