@@ -11,6 +11,7 @@ import { paramsFromUrl } from '../../lib/paramsFromUrl';
 import { dayjs } from '../../lib/client/dayjs';
 import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip';
 import { Box } from '@chakra-ui/react';
+import { useViewMode } from '../../hooks/useViewMode';
 
 const MAX_TITLE_LENGTH = 80;
 
@@ -22,6 +23,7 @@ function BinPackedMilestoneItem({
 }) {
   const itemRef = useRef<SVGGElement>(null);
   const uniqId = useId();
+  const viewMode = useViewMode();
 
   const yPadding = 5;
 
@@ -57,7 +59,7 @@ function BinPackedMilestoneItem({
   const truncatedTitle = item.data.title.length > MAX_TITLE_LENGTH ? `${item.data.title.slice(0, MAX_TITLE_LENGTH-3)}...` : item.data.title;
 
   return (
-    <NextLink key={uniqId} href={getLinkForRoadmapChild({ issueData: item.data, query: useRouter().query })} passHref>
+    <NextLink key={uniqId} href={getLinkForRoadmapChild({ issueData: item.data, query: useRouter().query, viewMode })} passHref>
       <g className={`${styles.d3__milestoneItem} ${classNames.join(' ')}`} cursor={'pointer'} ref={itemRef}>
         <rect
           x={item.left}
