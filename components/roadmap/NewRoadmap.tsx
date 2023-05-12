@@ -15,7 +15,6 @@ import TodayLine from './TodayLine';
 import styles from '../roadmap-grid/Roadmap.module.css';
 import { useViewMode } from '../../hooks/useViewMode';
 import RoadmapGroupRenderer from './RoadmapGroupRenderer';
-import { useLegacyView } from '../../hooks/useLegacyView';
 
 /**
  * @todo: be smarter about choosing yZoomMin (large timespan roadmaps can't zoom out far enough)
@@ -27,8 +26,6 @@ const roadmapItemWidth = 350
 function NewRoadmap() {
   const issueDataState = useContext(IssueDataStateContext)
   const issuesGroupedState = useContext(IssuesGroupedContext)
-  const legacyView = useLegacyView()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isDevMode, _setIsDevMode] = useState(false);
   const [leftMostMilestoneX, setLeftMostMilestoneX] = useState(0)
   const [rightMostMilestoneX, setRightMostMilestoneX] = useState(0)
