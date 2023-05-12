@@ -83,9 +83,9 @@ function NewRoadmap() {
   const [maxW, setMaxW] = useState(1000);
   const maxH = useMaxHeight();
 
-  const dayjsDates = getDates({ issuesGroupedState, issuesGroupedId: 'test', legacyView });
-  const earliestEta = dayjs.min(dayjsDates)
-  const latestEta = dayjs.max(dayjsDates)
+  const dayjsDates = useMemo(() => getDates({ issuesGroupedState }), [issuesGroupedState])
+  const earliestEta = useMemo(() => dayjs.min(dayjsDates.concat(dayjs().subtract(1, 'month'))).toDate(), [dayjsDates])
+  const latestEta = useMemo(() => dayjs.max(dayjsDates.concat(dayjs().add(1, 'month'))).toDate(), [dayjsDates])
   const margin = { top: 0, right: 0, bottom: 20, left: 0 };
 
   const maxScaleRangeX = useMemo(() => {
@@ -201,7 +201,7 @@ function NewRoadmap() {
 
   const scaleX = useMemo(() => {
     const scaleRange = [0, maxScaleRangeX]
-    const scaleDomain = [earliestEta.toDate(), latestEta.toDate()]
+    const scaleDomain = [earliestEta, latestEta]
     const scale = scaleTime()
       .domain(scaleDomain)
       .range(scaleRange)
@@ -310,7 +310,6 @@ function NewRoadmap() {
           // calculate how much to pan left or right so that all milestones are visible
           // pan left leftPanAmount
           const xPaddingAvailable = visibleWidth - milestoneWidth
-          console.log(`defaultView - xPaddingAvailable: `, xPaddingAvailable);
           if (Math.abs(rightPanAmount) > Math.abs(leftPanAmount)) {
             panRight(rightPanAmount - xPaddingAvailable/2)
           } else {
@@ -350,8 +349,8 @@ function NewRoadmap() {
             width={maxScaleRangeX}
             maxHeight={calcHeight}
             scale={scaleX}
-            leftMostX={leftMostMilestoneX}
-            rightMostX={rightMostMilestoneX}
+            leftMostX={visibleLeftX}
+            rightMostX={visibleRightX}
           />
           <RoadmapGroupRenderer binPackedGroups={binPackedGroups} />
           <TodayLine scale={scaleX} height={calcHeight} />
