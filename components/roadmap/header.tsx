@@ -9,27 +9,24 @@ import GitHubSvgIcon from '../icons/GitHubLogo.svg';
 import { IssueDataStateContext } from './contexts';
 import themes from '../theme/constants';
 
-export default function Header(): ReactElement | null {
+export default function Header(): ReactElement {
   const globalLoadingState = useGlobalLoadingState();
+  const isGlobalLoading = globalLoadingState.get();
   const issueDataState = useContext(IssueDataStateContext)
-  if (issueDataState.ornull == null) {
-    return null;
-  }
+  const rootIssueUrl = issueDataState.ornull?.html_url?.value
+  const rootIssueTitle = issueDataState.ornull?.title?.value
 
-  if (typeof issueDataState.ornull?.html_url?.value !== 'string') {
-    console.error('error with issueData', issueDataState.get({ noproxy: true }))
-    return null;
-  }
+  const isReadyToRender = typeof rootIssueUrl === 'string' && typeof rootIssueTitle === 'string' && !isGlobalLoading;
 
   return (
-    <Skeleton isLoaded={!globalLoadingState.get()} >
+    <Skeleton isLoaded={isReadyToRender} >
       <Flex direction={'row'} lineHeight={1} >
         <Text as='span' fontSize={24} fontWeight={600} pr="5rem">
-          {issueDataState.ornull.title.value}
+          {rootIssueTitle}
         </Text>
         <Spacer />
         <Center>
-          <NextLink style={{ display: 'span' }} passHref href={issueDataState.ornull.get().html_url}>
+          <NextLink style={{ display: 'span' }} passHref href={rootIssueUrl as string}>
             <Link target="_blank" rel="noopener noreferrer">
               <Center minWidth="9rem">
                 <Text as='span' fontSize={15} fontWeight={400} color={themes.light.text.color} pr="0.5rem">View in GitHub</Text>
