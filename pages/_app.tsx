@@ -44,6 +44,9 @@ const theme = extendTheme({
       textMuted: {
         default: '#a3a3a3'
       },
+      textHeader: {
+        default: '#FFFFFF'
+      },
       orangeAccent: {
         default: '#F39106'
       }

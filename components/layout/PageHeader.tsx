@@ -9,6 +9,7 @@ import theme from '../theme/constants';
 import styles from './PageHeader.module.css';
 import SmallScreenModal from '../modal/SmallScreenModal';
 import useStarmapContentUpdated from '../../hooks/useStarmapContentUpdated';
+import { LegacyButton } from '../legacy/LegacyButton';
 
 function PageHeader() {
   useStarmapContentUpdated();
@@ -16,24 +17,25 @@ function PageHeader() {
     <>
       <SmallScreenModal></SmallScreenModal>
       <Flex direction={'row'} bg={theme.light.header.background.color} pr={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }} pl={{ base:"30px", sm:"30px", md:"60px", lg:"120px" }}>
-      <Box pt={6} pb={6} className={styles.Logo} textAlign={'center'} alignContent='center' verticalAlign='center'>
-        <ErrorBoundary>
-          <NextLink href="/" passHref>
-            <Link className="js-headerLogo">
-              <Center>
-                <SvgStarMapsLogo width={45} height={45} className={styles.StarMapsLogo} />
-                <Text fontSize={'24px'} as='span' color={theme.light.header.text.color}>Star</Text>
-                <Text fontSize={'24px'} as='b' color={theme.light.header.text.color}>map</Text>
-              </Center>
-            </Link>
-          </NextLink>
-        </ErrorBoundary>
+        <Box pt={6} pb={6} className={styles.Logo} textAlign={'center'} alignContent='center' verticalAlign='center'>
+          <ErrorBoundary>
+            <NextLink href="/" passHref>
+              <Link className="js-headerLogo">
+                <Center>
+                  <SvgStarMapsLogo width={45} height={45} className={styles.StarMapsLogo} />
+                  <Text fontSize={'24px'} as='span' color={theme.light.header.text.color}>Star</Text>
+                  <Text fontSize={'24px'} as='b' color={theme.light.header.text.color}>map</Text>
+                </Center>
+              </Link>
+            </NextLink>
+          </ErrorBoundary>
         </Box>
+        <Center pt={6} pb={6} pl={5} textAlign={'center'} alignContent='center' verticalAlign='center'>
+          <LegacyButton />
+        </Center>
         <Spacer />
         <Center>
-          <Box
-            className={styles.pageHeaderInput}
-          >
+          <Box className={styles.pageHeaderInput}>
             <RoadmapForm />
           </Box>
         </Center>
