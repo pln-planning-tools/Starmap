@@ -59,7 +59,9 @@ const App: NextPage<SSProps> = ({ markdown }: SSProps) => (
               </Link>
             </NextLink>
           </Flex>
-          <ReactMarkdown components={ChakraUIRenderer(chakraUiRendererTheme)} children={markdown} remarkPlugins={[remarkGfm]} />
+          <ReactMarkdown components={ChakraUIRenderer(chakraUiRendererTheme)} remarkPlugins={[remarkGfm]} >
+            {markdown}
+          </ReactMarkdown>
         </article>
       </Center>
     </>

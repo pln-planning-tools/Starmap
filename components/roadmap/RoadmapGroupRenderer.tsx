@@ -15,7 +15,7 @@ export default function RoadmapGroupRenderer ({ binPackedGroups }: {binPackedGro
   }
   return (
     <>
-    {binPackedGroups.map((binPackedGroup, gIdx) => (<RoadmapGroup binPackedGroup={binPackedGroup} index={gIdx} />))}
+    {binPackedGroups.map((binPackedGroup, gIdx) => (<RoadmapGroup key={gIdx} binPackedGroup={binPackedGroup} index={gIdx} />))}
     </>
   )
 }

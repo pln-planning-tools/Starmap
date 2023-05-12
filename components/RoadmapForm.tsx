@@ -110,10 +110,7 @@ export function RoadmapForm() {
       <form onSubmit={formSubmit}>
         <FormControl isInvalid={error != null} isDisabled={globalLoadingState.get()}>
           <InputGroup>
-            <InputLeftElement
-              pointerEvents='none'
-              children={<SearchIcon color='#FFFFFF' />}
-            />
+            <InputLeftElement pointerEvents='none'><SearchIcon color='#FFFFFF' /></InputLeftElement>
             <Input
               type="text"
               value={currentIssueUrl}
@@ -128,7 +125,7 @@ export function RoadmapForm() {
               borderColor={theme.light.header.input.border.color}
               borderRadius={theme.light.header.input.border.radius}
             />
-            <InputRightElement cursor="pointer" children={inputRightElement} />
+            <InputRightElement cursor="pointer">{inputRightElement}</InputRightElement>
           </InputGroup>
           <FormErrorMessage>{error?.message}</FormErrorMessage>
         </FormControl>

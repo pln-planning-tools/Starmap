@@ -1,12 +1,12 @@
 import { Box, Spinner, Stack, Skeleton } from '@chakra-ui/react';
-import { hookstate, useHookstateMemo } from '@hookstate/core';
+import { useHookstateMemo } from '@hookstate/core';
 import type { Dayjs } from 'dayjs';
 import _ from 'lodash';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { getTicks } from '../../lib/client/getTicks';
 import { ViewMode } from '../../lib/enums';
-import { DetailedViewGroup, IssueDataViewInput } from '../../lib/types';
+import { IssueDataViewInput } from '../../lib/types';
 import { useViewMode } from '../../hooks/useViewMode';
 import styles from './Roadmap.module.css';
 import { Grid } from './grid';
@@ -23,7 +23,6 @@ import { ErrorBoundary } from '../errors/ErrorBoundary';
 import { useShowTodayMarker } from '../../hooks/useShowTodayMarker';
 import { getDates } from '../../lib/client/getDates';
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
-import { useLegacyView } from '../../hooks/useLegacyView';
 
 // eslint-disable-next-line import/no-unused-modules
 export function RoadmapDetailed({
@@ -38,11 +37,10 @@ export function RoadmapDetailed({
   const globalLoadingState = useGlobalLoadingState();
   const query = router.query
   const showTodayMarker = useShowTodayMarker();
-  const memoGrouped = useHookstateMemo(
+  const issuesGroupedState = useHookstateMemo(
     () => convertIssueDataStateToDetailedViewGroupOld(issueDataState, viewMode, query),
     [viewMode, query, issueDataState]
   )
-  const issuesGroupedState = hookstate<DetailedViewGroup[]>(memoGrouped)
 
   /**
    * Magic numbers that just seem to work are:
@@ -58,13 +56,10 @@ export function RoadmapDetailed({
   const [numHeaderTicks, setNumHeaderTicks] = useState(5);
   const [numGridCols, setNumGridCols] = useState(45);
 
-  // for preventing dayjsDates from being recalculated if it doesn't need to be
-  const issuesGroupedId = issuesGroupedState.value.map((g) => g.groupName).join(',');
-  const legacyView = useLegacyView()
   /**
    * Collect all due dates from all issues, as DayJS dates.
    */
-  const dayjsDates: Dayjs[] = getDates({ issuesGroupedState, issuesGroupedId, legacyView })
+  const dayjsDates: Dayjs[] = getDates({ issuesGroupedState })
 
   /**
    *  * Ensure that the dates are
