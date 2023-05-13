@@ -1,6 +1,6 @@
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 
 // const router = useRouter();
 // const { pathname, query } = router;
@@ -12,17 +12,17 @@ import { useEffect } from 'react';
 // };
 
 // Current URL is '/'
-function Page() {
-  const router = useRouter();
+function Page () {
+  const router = useRouter()
 
   useEffect(() => {
     // Always do navigations after the first render
-    router.push('/RoadmapNav/?rootIssue=3&parentIssue=2&currentIssue=1', '/RoadmapNav', { shallow: true });
-  }, [router]);
+    router.push('/RoadmapNav/?rootIssue=3&parentIssue=2&currentIssue=1', '/RoadmapNav', { shallow: true })
+  }, [router])
 
   useEffect(() => {
-    console.log('router.query.currentIssue changed! | router:', router);
-  }, [router, router.query.currentIssue]);
+    console.log('router.query.currentIssue changed! | router:', router)
+  }, [router, router.query.currentIssue])
 }
 
-export default Page;
+export default Page

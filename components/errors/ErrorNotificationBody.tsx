@@ -1,18 +1,18 @@
-import { Box, SimpleGrid, Text, Link } from '@chakra-ui/react';
-import { ImmutableArray } from '@hookstate/core';
-import NextLink from 'next/link';
+import { Box, SimpleGrid, Text, Link } from '@chakra-ui/react'
+import { ImmutableArray } from '@hookstate/core'
+import NextLink from 'next/link'
 
-import { StarMapsIssueErrorsGrouped } from '../../lib/types';
-import { ErrorLineItemDescription } from './ErrorLineItemDescription';
-import styles from './ErrorNotificationBody.module.css';
+import { StarMapsIssueErrorsGrouped } from '../../lib/types'
+import { ErrorLineItemDescription } from './ErrorLineItemDescription'
+import styles from './ErrorNotificationBody.module.css'
 
 interface ErrorNotificationBodyProps {
   isExpanded: boolean;
   errors: ImmutableArray<StarMapsIssueErrorsGrouped>;
 }
-export function ErrorNotificationBody({ isExpanded, errors }: ErrorNotificationBodyProps) {
+export function ErrorNotificationBody ({ isExpanded, errors }: ErrorNotificationBodyProps) {
   if (!isExpanded) {
-    return null;
+    return null
   }
   return <Box className={styles.errorNotificationBody}>
     <Box className={styles.errorNotificationBodyHeader}>
@@ -30,8 +30,8 @@ export function ErrorNotificationBody({ isExpanded, errors }: ErrorNotificationB
               </Box>
               <ErrorLineItemDescription error={error} />
             </Box>
-          ))}
+        ))}
       </SimpleGrid>
     </Box>
-  </Box>;
+  </Box>
 }

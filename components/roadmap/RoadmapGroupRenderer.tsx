@@ -1,10 +1,10 @@
+import { ReactElement } from 'react'
 import { BinPackedGroup } from '../../lib/types'
 import BinPackedMilestoneItem from './BinPackedMilestoneItem'
 import RoadmapGroup from './RoadmapGroup'
 import { ItemContainerSvg } from './svg/ItemContainerSvg'
 
-export default function RoadmapGroupRenderer ({ binPackedGroups }: {binPackedGroups: BinPackedGroup[]}): JSX.Element {
-
+export default function RoadmapGroupRenderer ({ binPackedGroups }: {binPackedGroups: BinPackedGroup[]}): ReactElement {
   if (binPackedGroups.length === 1) {
     return (
       <>

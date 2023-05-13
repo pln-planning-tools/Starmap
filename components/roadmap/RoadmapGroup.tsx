@@ -3,7 +3,7 @@ import { BinPackedGroupHeader } from './group-header'
 import BinPackedMilestoneItem from './BinPackedMilestoneItem'
 import { ItemContainerSvg } from './svg/ItemContainerSvg'
 
-export default function RoadmapGroup({ binPackedGroup, index }: {binPackedGroup: BinPackedGroup, index: number}) {
+export default function RoadmapGroup ({ binPackedGroup, index }: {binPackedGroup: BinPackedGroup, index: number}) {
   /**
    * @todo: support collapsing/expanding groups
    */

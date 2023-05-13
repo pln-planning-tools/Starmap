@@ -1,17 +1,17 @@
 import {
-    Box, Center,
-    Flex, Link, Modal, ModalBody,
-    ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text
-} from '@chakra-ui/react';
-import useCheckMobileScreen from '../../hooks/useCheckSmallScreen';
-import SvgStarMapsLogo from '../icons/svgr/StarMapsLogo';
-import SvgDesktopIcon from '../icons/svgr/SvgDesktopIcon';
-import SvgRotateScreenIcon from '../icons/svgr/SvgRotateScreenIcon';
-import styles from './SmallScreenModal.module.css';
+  Box, Center,
+  Flex, Link, Modal, ModalBody,
+  ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text
+} from '@chakra-ui/react'
+import useCheckMobileScreen from '../../hooks/useCheckSmallScreen'
+import SvgStarMapsLogo from '../icons/svgr/StarMapsLogo'
+import SvgDesktopIcon from '../icons/svgr/SvgDesktopIcon'
+import SvgRotateScreenIcon from '../icons/svgr/SvgRotateScreenIcon'
+import styles from './SmallScreenModal.module.css'
 
-export default function SmallScreenModal() {
+export default function SmallScreenModal () {
   const [isSmallScreen, setAcknowledgeSmallScreen] = useCheckMobileScreen()
-  const closeHandler = () => setAcknowledgeSmallScreen(true);
+  const closeHandler = () => setAcknowledgeSmallScreen(true)
   return (
     <Modal size='xs' isOpen={isSmallScreen} onClose={closeHandler} isCentered={true}>
       <ModalOverlay />
@@ -48,5 +48,5 @@ export default function SmallScreenModal() {
         </ModalFooter>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}

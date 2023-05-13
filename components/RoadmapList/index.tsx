@@ -1,11 +1,10 @@
-import React, { useContext, useState } from 'react';
-import { Radio, RadioGroup, Stack, Text } from '@chakra-ui/react';
+import React, { ReactElement, useContext, useState } from 'react'
+import { Radio, RadioGroup, Stack, Text } from '@chakra-ui/react'
 
-import RoadmapListItemDefault from './RoadmapListItemDefault';
-import styles from './RoadmapList.module.css';
-import { getTimeFromDateString } from '../../lib/helpers';
-import { IssueDataStateContext } from '../roadmap/contexts';
-
+import RoadmapListItemDefault from './RoadmapListItemDefault'
+import styles from './RoadmapList.module.css'
+import { getTimeFromDateString } from '../../lib/helpers'
+import { IssueDataStateContext } from '../roadmap/contexts'
 
 /**
  * Sorts milestones by due date, in ascending order (2022-01-01 before 2023-01-01) with invalid dates at the end.
@@ -24,20 +23,22 @@ function sortMilestones (a, b) {
   return aTime - bTime
 }
 
-export default function RoadmapList(): JSX.Element | null {
+export default function RoadmapList (): ReactElement | null {
   const [groupBy, setGroupBy] = useState('directChildren')
   const issueDataState = useContext(IssueDataStateContext)
 
-  const [isDevModeGroupBy, _setIsDevModeGroupBy] = useState(false);
-  const [isDevModeDuplicateDates, _setIsDevModeDuplicateDates] = useState(false);
-  const [dupeDateToggleValue, setDupeDateToggleValue] = useState('show');
+  // eslint-disable-next-line no-unused-vars
+  const [isDevModeGroupBy, _setIsDevModeGroupBy] = useState(false)
+  // eslint-disable-next-line no-unused-vars
+  const [isDevModeDuplicateDates, _setIsDevModeDuplicateDates] = useState(false)
+  const [dupeDateToggleValue, setDupeDateToggleValue] = useState('show')
   if (issueDataState.ornull === null) {
-    return null;
+    return null
   }
   const flattenedIssues = issueDataState.ornull.children.flatMap((issueData) => issueData.get({ noproxy: true }))
   const sortedIssuesWithDueDates = flattenedIssues.sort(sortMilestones)
 
-  let groupByToggle: JSX.Element | null = null
+  let groupByToggle: ReactElement | null = null
   if (isDevModeGroupBy) {
     groupByToggle = (
       <RadioGroup onChange={setGroupBy} value={groupBy}>
@@ -52,7 +53,7 @@ export default function RoadmapList(): JSX.Element | null {
     )
   }
 
-  let dupeDateToggle: JSX.Element | null = null
+  let dupeDateToggle: ReactElement | null = null
   if (isDevModeDuplicateDates) {
     dupeDateToggle = (
       <RadioGroup onChange={setDupeDateToggleValue} value={dupeDateToggleValue}>

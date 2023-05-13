@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Center, Spinner } from '@chakra-ui/react';
-import { scaleTime, select, zoom as d3Zoom, D3ZoomEvent, ZoomTransform } from 'd3';
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { Center, Spinner } from '@chakra-ui/react'
+import { scaleTime, select, zoom as d3Zoom, D3ZoomEvent, ZoomTransform } from 'd3'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
-import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
-import { useMaxHeight } from '../../hooks/useMaxHeight';
-import { dayjs } from '../../lib/client/dayjs';
-import { getDates } from '../../lib/client/getDates';
-import { BinPackedGroup } from '../../lib/types';
-import { IssueDataStateContext, IssuesGroupedContext } from './contexts';
-import { binPack } from './lib';
-import NewRoadmapHeader from './NewRoadMapHeader';
-import TodayLine from './TodayLine';
-import styles from './Roadmap.module.css';
-import { useViewMode } from '../../hooks/useViewMode';
-import RoadmapGroupRenderer from './RoadmapGroupRenderer';
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
+import { useMaxHeight } from '../../hooks/useMaxHeight'
+import { dayjs } from '../../lib/client/dayjs'
+import { getDates } from '../../lib/client/getDates'
+import { BinPackedGroup } from '../../lib/types'
+import { IssueDataStateContext, IssuesGroupedContext } from './contexts'
+import { binPack } from './lib'
+import NewRoadmapHeader from './NewRoadMapHeader'
+import TodayLine from './TodayLine'
+import styles from './Roadmap.module.css'
+import { useViewMode } from '../../hooks/useViewMode'
+import RoadmapGroupRenderer from './RoadmapGroupRenderer'
 
 /**
  * @todo: be smarter about choosing yZoomMin (large timespan roadmaps can't zoom out far enough)
@@ -23,18 +23,18 @@ const yZoomMin = 0.2 // zoom OUT limit
 const yZoomMax = 3 // zoom IN limit
 const roadmapItemWidth = 350
 
-function NewRoadmap() {
+function NewRoadmap () {
   const issueDataState = useContext(IssueDataStateContext)
   const issuesGroupedState = useContext(IssuesGroupedContext)
-  const [isDevMode, _setIsDevMode] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [isDevMode, _setIsDevMode] = useState(false)
   const [leftMostMilestoneX, setLeftMostMilestoneX] = useState(0)
   const [rightMostMilestoneX, setRightMostMilestoneX] = useState(0)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [topMostMilestoneY, setTopMostMilestoneY] = useState(0)
+  const [, setTopMostMilestoneY] = useState(0)
   const [bottomMostMilestoneY, setBottomMostMilestoneY] = useState(0)
 
   const [zoomTransform, setZoomTransform] = useState<ZoomTransform>(new ZoomTransform(1, 0, 0))
-  const viewMode = useViewMode();
+  const viewMode = useViewMode()
   const defaultZoomSet = useRef(false)
 
   useEffect(() => {
@@ -68,7 +68,6 @@ function NewRoadmap() {
     hashParams.set('d3k', String(d3k))
 
     window.history.replaceState(null, '', `${window.location.pathname}#${hashParams.toString()}`)
-
   }, [zoomTransform])
 
   /**
@@ -77,13 +76,13 @@ function NewRoadmap() {
    * which causes d3 zoom/pan other event handlers not to work.
    */
   const [ref, attachRef] = useState<SVGSVGElement | null>(null)
-  const [maxW, setMaxW] = useState(1000);
-  const maxH = useMaxHeight();
+  const [maxW, setMaxW] = useState(1000)
+  const maxH = useMaxHeight()
 
   const dayjsDates = useMemo(() => getDates({ issuesGroupedState }), [issuesGroupedState])
   const earliestEta = useMemo(() => dayjs.min(dayjsDates.concat(dayjs().subtract(1, 'month'))).toDate(), [dayjsDates])
   const latestEta = useMemo(() => dayjs.max(dayjsDates.concat(dayjs().add(1, 'month'))).toDate(), [dayjsDates])
-  const margin = { top: 0, right: 0, bottom: 20, left: 0 };
+  const margin = { top: 0, right: 0, bottom: 20, left: 0 }
 
   const maxScaleRangeX = useMemo(() => {
     if (ref) {
@@ -91,17 +90,17 @@ function NewRoadmap() {
       return rect.width
     }
     return maxW
-  }, [maxW, ref]);
+  }, [maxW, ref])
 
-  const height = useMemo(() => maxH - margin.top - margin.bottom, [margin.bottom, margin.top, maxH]);
+  const height = useMemo(() => maxH - margin.top - margin.bottom, [margin.bottom, margin.top, maxH])
 
-  const globalLoadingState = useGlobalLoadingState();
+  const globalLoadingState = useGlobalLoadingState()
 
   useEffect(() => {
     window.addEventListener('resize', () => {
-      setMaxW(window.innerWidth);
-    });
-  }, []);
+      setMaxW(window.innerWidth)
+    })
+  }, [])
 
   const zoomBehavior = useMemo(() => {
     function getEventDetails (event) {
@@ -115,8 +114,8 @@ function NewRoadmap() {
       return { isMouseEvent, isZoom, isPan, isHorizontal, isVerticalScroll }
     }
     const zoomFilter = (event) => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
+      event.preventDefault()
+      event.stopImmediatePropagation()
       let keepEvent = false
 
       const { isZoom, isPan, isVerticalScroll } = getEventDetails(event)
@@ -125,7 +124,7 @@ function NewRoadmap() {
         keepEvent = true
       } else if (isVerticalScroll) {
         window.scrollBy(0, event.deltaY)
-        event.stopImmediatePropagation();
+        event.stopImmediatePropagation()
         keepEvent = false
       }
 
@@ -138,8 +137,8 @@ function NewRoadmap() {
         const domEvent = event.sourceEvent
         if (domEvent) {
           // event.sourceEvent is empty when we call zoomBehavior.scaleTo
-          domEvent.preventDefault();
-          domEvent.stopImmediatePropagation();
+          domEvent.preventDefault()
+          domEvent.stopImmediatePropagation()
           if (domEvent.type !== 'wheel') {
             select(ref).style('cursor', 'grabbing')
           }
@@ -172,7 +171,6 @@ function NewRoadmap() {
           // setZoomTransform((oldTransform) => new ZoomTransform(event.transform.k, event.transform.x, oldTransform.y))
           setZoomTransform(event.transform)
         } else if (isPan) {
-
           if (isMouseEvent) {
             setZoomTransform((oldTransform) => new ZoomTransform(oldTransform.k, event.transform.x, oldTransform.y))
           } else {
@@ -186,15 +184,14 @@ function NewRoadmap() {
            * vertical scrolling needs to be done manually because we are using
            * preventDefault
            */
-          window.scrollBy(0, -domEvent.deltaY/10)
+          window.scrollBy(0, -domEvent.deltaY / 10)
         }
       })
       // .translateExtent(translateExtent)
       .scaleExtent([yZoomMin, yZoomMax])
       .extent([[0, 0], [maxScaleRangeX, 0]])
       .filter(zoomFilter)
-
-    }, [maxScaleRangeX, ref, updateZoomTransformInUrl])
+  }, [maxScaleRangeX, ref, updateZoomTransformInUrl])
 
   const scaleX = useMemo(() => {
     const scaleRange = [0, maxScaleRangeX]
@@ -210,8 +207,8 @@ function NewRoadmap() {
       scale.domain(newScale.domain())
     }
 
-      return scale
-  }, [earliestEta, latestEta, maxScaleRangeX, zoomTransform]);
+    return scale
+  }, [earliestEta, latestEta, maxScaleRangeX, zoomTransform])
 
   useEffect(() => {
     if (ref != null) {
@@ -221,7 +218,7 @@ function NewRoadmap() {
     }
   }, [zoomBehavior, ref, zoomTransform])
 
-  const titlePadding = 30;
+  const titlePadding = 30
   const binPackedGroups: BinPackedGroup[] = useMemo(() => {
     let leftMostX = Infinity
     let rightMostX = 0
@@ -249,7 +246,7 @@ function NewRoadmap() {
       newGroups.push({
         ...issueGroup,
         items: binPackedIssues
-      });
+      })
     })
 
     setLeftMostMilestoneX(leftMostX)
@@ -264,7 +261,7 @@ function NewRoadmap() {
   const isLeftMilestoneVisible = useMemo(() => leftMostMilestoneX > visibleLeftX, [leftMostMilestoneX, visibleLeftX])
   const isRightMilestoneVisible = useMemo(() => rightMostMilestoneX < visibleRightX, [rightMostMilestoneX, visibleRightX])
   const zoomKStep = 0.1
-  const zoomPanStep = maxScaleRangeX / 10;
+  const zoomPanStep = maxScaleRangeX / 10
   const increaseZoomK = useCallback(() => {
     if (ref) {
       zoomBehavior.scaleTo(select(ref), zoomTransform.k + zoomKStep)
@@ -284,7 +281,7 @@ function NewRoadmap() {
   }, [ref, zoomBehavior, zoomPanStep])
   const panLeft = useCallback((amount: number | null = null) => {
     if (ref) {
-      zoomBehavior.translateBy(select(ref), (amount ?? zoomPanStep)*-1, 0)
+      zoomBehavior.translateBy(select(ref), (amount ?? zoomPanStep) * -1, 0)
     }
   }, [ref, zoomBehavior, zoomPanStep])
 
@@ -308,18 +305,17 @@ function NewRoadmap() {
           // pan left leftPanAmount
           const xPaddingAvailable = visibleWidth - milestoneWidth
           if (Math.abs(rightPanAmount) > Math.abs(leftPanAmount)) {
-            panRight(rightPanAmount - xPaddingAvailable/2)
+            panRight(rightPanAmount - xPaddingAvailable / 2)
           } else {
-            panLeft(Math.abs(leftPanAmount) + xPaddingAvailable/2)
+            panLeft(Math.abs(leftPanAmount) + xPaddingAvailable / 2)
           }
         }
       }
     }
   }, [decreaseZoomK, isLeftMilestoneVisible, isRightMilestoneVisible, leftMostMilestoneX, panLeft, panRight, rightMostMilestoneX, visibleLeftX, visibleRightX])
 
-
   // we set the height to the max value of either the bottom most milestone or the height of the container
-  const calcHeight = Math.max(bottomMostMilestoneY+5, height)
+  const calcHeight = Math.max(bottomMostMilestoneY + 5, height)
   // fixes issue with dotted lines from header ticks not extending to bottom of container
   // when calcHeight > maxH, however, it also overrides the minimum height of the container
   // useEffect(() => {setMaxHeight(calcHeight)}, [calcHeight]);
@@ -329,7 +325,7 @@ function NewRoadmap() {
       <Center h={maxH} w={maxW}>
         <Spinner size='xl' />
       </Center>
-    );
+    )
   }
 
   return (
@@ -338,7 +334,7 @@ function NewRoadmap() {
       {isDevMode && <button style={{ border: '1px solid red', borderRadius: '5px' }} onClick={increaseZoomK}>increaseZoomK</button>}
       {isDevMode && <button style={{ border: '1px solid red', borderRadius: '5px' }} onClick={decreaseZoomK}>decreaseZoomK</button>}
       {isDevMode && <button style={{ border: '1px solid red', borderRadius: '5px' }} onClick={() => panRight()}>panRight</button>}
-      {isDevMode && <button style={{ border: '1px solid red', borderRadius: '5px' }} onClick={() => {scaleX.range([leftMostMilestoneX, rightMostMilestoneX])}}>setScale</button>}
+      {isDevMode && <button style={{ border: '1px solid red', borderRadius: '5px' }} onClick={() => { scaleX.range([leftMostMilestoneX, rightMostMilestoneX]) }}>setScale</button>}
       <div style={{ height: `${calcHeight}px` }}>
         <svg ref={attachRef} width='100%' height='100%' className={`${styles['d3-draggable']} view-${viewMode}`}>
           <NewRoadmapHeader
@@ -354,7 +350,7 @@ function NewRoadmap() {
         </svg>
       </div>
     </>
-  );
+  )
 }
 
-export default NewRoadmap;
+export default NewRoadmap

@@ -1,4 +1,4 @@
-export function getValidUrlFromInput(urlString: string): URL {
+export function getValidUrlFromInput (urlString: string): URL {
   if (urlString.includes('#')) {
     urlString = urlString.replace('#', '/issues/')
   } else if (!urlString.includes('issues')) {
@@ -19,4 +19,4 @@ export function getValidUrlFromInput(urlString: string): URL {
   }
 
   return new URL(urlString, 'https://github.com')
-};
+}

@@ -9,70 +9,70 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Spacer,
-} from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
-import SvgDetailViewIcon from '../icons/svgr/SvgDetailViewIcon';
-import SvgOverviewIcon from '../icons/svgr/SvgOverviewIcon';
+  Spacer
+} from '@chakra-ui/react'
+import { useRouter } from 'next/router'
+import React, { useContext } from 'react'
+import SvgDetailViewIcon from '../icons/svgr/SvgDetailViewIcon'
+import SvgOverviewIcon from '../icons/svgr/SvgOverviewIcon'
 
-import { TodayMarkerToggle } from './today-marker-toggle';
-import { setViewMode, useViewMode } from '../../hooks/useViewMode';
-import { DEFAULT_INITIAL_VIEW_MODE } from '../../lib/defaults';
-import { RoadmapMode, ViewMode } from '../../lib/enums';
-import Header from './header';
-import styles from './Roadmap.module.css';
-import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
-import SvgListViewIcon from '../icons/svgr/SvgListViewIcon';
-import RoadmapList from '../RoadmapList';
-import NewRoadmap from './NewRoadmap';
-import { State, useHookstateMemo } from '@hookstate/core';
-import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup';
-import { IssueDataStateContext, IssuesGroupedContext } from './contexts';
-import { IssueData } from '../../lib/types';
+import { TodayMarkerToggle } from './today-marker-toggle'
+import { setViewMode, useViewMode } from '../../hooks/useViewMode'
+import { DEFAULT_INITIAL_VIEW_MODE } from '../../lib/defaults'
+import { RoadmapMode, ViewMode } from '../../lib/enums'
+import Header from './header'
+import styles from './Roadmap.module.css'
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
+import SvgListViewIcon from '../icons/svgr/SvgListViewIcon'
+import RoadmapList from '../RoadmapList'
+import NewRoadmap from './NewRoadmap'
+import { State, useHookstateMemo } from '@hookstate/core'
+import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup'
+import { IssueDataStateContext, IssuesGroupedContext } from './contexts'
+import { IssueData } from '../../lib/types'
 
-export function RoadmapTabbedView({
+export function RoadmapTabbedView ({
   mode
 }: {mode: RoadmapMode}) {
-  console.log(`mode: `, mode);
-  const globalLoadingState = useGlobalLoadingState();
-  const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE;
-  const router = useRouter();
+  console.log('mode: ', mode)
+  const globalLoadingState = useGlobalLoadingState()
+  const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE
+  const router = useRouter()
   const issueDataState = useContext(IssueDataStateContext)
   // Defining what tabs to show and in what order
-  const tabs = ['Detailed View', 'Overview', 'List'] as const;
+  const tabs = ['Detailed View', 'Overview', 'List'] as const
 
   // Mapping the views to the tabs
   const tabViewMap: Record<typeof tabs[number], ViewMode> = {
     'Detailed View': ViewMode.Detail,
-    'Overview': ViewMode.Simple,
-    'List': ViewMode.List,
-  };
+    Overview: ViewMode.Simple,
+    List: ViewMode.List
+  }
 
   // Mapping the tabs to the views
   const tabViewMapInverse: Record<ViewMode, number> = tabs.reduce((acc, tab, index) => {
-    acc[tabViewMap[tab]] = index;
-    return acc;
-  }, {} as Record<ViewMode, number>);
+    acc[tabViewMap[tab]] = index
+    return acc
+  }, {} as Record<ViewMode, number>)
 
   const tabIndexFromViewMode = tabViewMapInverse[viewMode]
 
   const handleTabChange = (index: number) => {
-    setViewMode(tabViewMap[tabs[index]]);
-    const currentHashString = router.asPath.split('#')[1];
-    const currentHashParams = new URLSearchParams(currentHashString);
+    setViewMode(tabViewMap[tabs[index]])
+    const currentHashString = router.asPath.split('#')[1]
+    const currentHashParams = new URLSearchParams(currentHashString)
     currentHashParams.set('view', tabViewMap[tabs[index]])
     router.push({
-      hash: currentHashParams.toString(),
-    }, undefined, { shallow: true });
+      hash: currentHashParams.toString()
+    }, undefined, { shallow: true })
   }
 
   const renderTab = (title: typeof tabs[number], index: number) => {
     let TabIcon = SvgDetailViewIcon
 
-    if (title == "Overview") {
+    if (title === 'Overview') {
       TabIcon = SvgOverviewIcon
-    } else if (title == "List") {
+    } else if (title === 'List') {
       TabIcon = SvgListViewIcon
     }
 
@@ -88,7 +88,7 @@ export function RoadmapTabbedView({
         </Tab>
       </Skeleton>
     )
-  };
+  }
   // const ref = useRef<SVGSVGElement>(null);
 
   const renderTabPanel = (title: typeof tabs[number], index: number) => {
@@ -102,9 +102,9 @@ export function RoadmapTabbedView({
         {component}
       </TabPanel>
     )
-  };
+  }
 
-  const query = router.query;
+  const query = router.query
 
   // const groupedIssuesIdPrev = usePrevious('');
 
@@ -127,10 +127,10 @@ export function RoadmapTabbedView({
     <>
       <Box className={styles.timelineBox}>
         <Header />
-        <Flex align="center" justify="space-between" grow={"1"}>
-          <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} pt='20px' flexGrow={"1"}
+        <Flex align="center" justify="space-between" grow={'1'}>
+          <Tabs variant='unstyled' onChange={handleTabChange} index={tabIndexFromViewMode} pt='20px' flexGrow={'1'}
             isLazy>
-            <Flex direction={'row'} grow={"1"}>
+            <Flex direction={'row'} grow={'1'}>
               <TabList display="flex" alignItems="center" justifyContent="space-between">
                 {tabs.map(renderTab)}
               </TabList>
@@ -146,5 +146,5 @@ export function RoadmapTabbedView({
         </Flex>
       </Box>
     </>
-  );
+  )
 }

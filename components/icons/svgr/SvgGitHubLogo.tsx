@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 
 const SvgGitHubLogo = (props) => (
   <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32.58 31.77' height="18px" width="18px" {...props}>
@@ -11,5 +11,5 @@ const SvgGitHubLogo = (props) => (
       />
     </g>
   </svg>
-);
-export default SvgGitHubLogo;
+)
+export default SvgGitHubLogo

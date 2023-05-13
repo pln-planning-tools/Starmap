@@ -1,4 +1,4 @@
-import type { ImmutableArray } from '@hookstate/core'
+import type { ImmutableArray, ImmutableObject } from '@hookstate/core'
 
 import type { RoadmapMode, IssueStates, DateGranularityState } from './enums'
 
@@ -19,31 +19,36 @@ export interface GithubIssueDataWithGroup extends GithubIssueData {
 }
 
 export interface GithubIssueDataWithChildren extends GithubIssueData {
+  // eslint-disable-next-line no-use-before-define
   children: GithubIssueDataWithGroupAndChildren[];
 }
 
 export interface GithubIssueDataWithGroupAndChildren extends GithubIssueDataWithGroup, GithubIssueDataWithChildren {
+  // eslint-disable-next-line no-use-before-define
   pendingChildren?: PendingChildren[]
 }
 interface ProcessedGithubIssueDataWithGroupAndChildren extends Omit<GithubIssueDataWithGroupAndChildren, 'body' | 'body_html' | 'body_text' | 'children'> {
   children: ProcessedGithubIssueDataWithGroupAndChildren[];
 }
 
-interface PreParsedIssueData extends ProcessedGithubIssueDataWithGroupAndChildren {
+interface PostParsedIssueData extends ProcessedGithubIssueDataWithGroupAndChildren {
+  // eslint-disable-next-line no-use-before-define
   children: (PreParsedIssueData | IssueData)[];
+  // eslint-disable-next-line no-use-before-define
   parent: PreParsedIssueData;
 }
 
-type PostParsedIssueData = PreParsedIssueData;
-type ProcessedParentIssueData = Omit<PreParsedIssueData, 'children' | 'parent'>;
+// type PostParsedIssueData = PreParsedIssueData;
 interface PreParsedIssueData extends ProcessedGithubIssueDataWithGroupAndChildren {
+  // eslint-disable-next-line no-use-before-define
   children: (PreParsedIssueData | IssueData)[];
   completion_rate: number;
   due_date: string;
   parent: PreParsedIssueData;
 }
+// type ProcessedParentIssueData = Omit<PreParsedIssueData, 'children' | 'parent'>;
 
-export interface IssueData extends  Omit<PostParsedIssueData, 'children' | 'parent'> {
+export interface IssueData extends Omit<PostParsedIssueData, 'children' | 'parent'> {
   children: IssueData[];
   completion_rate: number;
   due_date: string;
@@ -53,12 +58,15 @@ export interface IssueData extends  Omit<PostParsedIssueData, 'children' | 'pare
 
 export interface RoadmapApiResponseSuccess {
   data: IssueData;
+  // eslint-disable-next-line no-use-before-define
   errors: StarMapsIssueErrorsGrouped[];
+  // eslint-disable-next-line no-use-before-define
   pendingChildren: PendingChildren[];
 }
 
 export interface RoadmapApiResponseFailure {
   error?: { code: string; message: string };
+  // eslint-disable-next-line no-use-before-define
   errors?: StarMapsIssueErrorsGrouped[];
 }
 
@@ -115,7 +123,6 @@ export interface StarMapsIssueErrorsGrouped {
   errors: StarMapsIssueError[];
 }
 
-
 export interface RoadmapServerSidePropsResult {
   props: {
     owner: string;
@@ -159,6 +166,17 @@ interface StarmapContentUpdatedEvent extends Event {
     updatedURL: string;
   }
 }
+
+export type BinPackIssueData = Pick<IssueData, 'due_date' | 'children' | 'html_url' | 'title' | 'completion_rate'>
+
+export interface BinPackItem {
+  top: number, // y1
+  bottom: number, // y2
+  left: number, // x1
+  right: number, // x2
+  data: ImmutableObject<BinPackIssueData>
+}
+
 export type BinPackedGroup = Omit<DetailedViewGroup, 'items'> & {items: BinPackItem[]}
 
 declare global {

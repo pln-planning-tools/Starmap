@@ -1,9 +1,9 @@
-import { ScaleTime } from 'd3';
-import { useMemo } from 'react';
+import { ScaleTime } from 'd3'
+import { useMemo } from 'react'
 
 import { dayjs } from '../../lib/client/dayjs'
-import NewRoadmapHeaderTick from './NewRoadMapHeaderTick';
-import { TimeUnit } from '../../lib/enums';
+import NewRoadmapHeaderTick from './NewRoadMapHeaderTick'
+import { TimeUnit } from '../../lib/enums'
 
 interface NewRoadmapHeaderProps {
   scale: ScaleTime<number, number>;
@@ -14,7 +14,7 @@ interface NewRoadmapHeaderProps {
   maxHeight: number;
 }
 
-export default function NewRoadmapHeader({ scale, yMin, leftMostX, rightMostX, width, maxHeight }: NewRoadmapHeaderProps) {
+export default function NewRoadmapHeader ({ scale, yMin, leftMostX, rightMostX, width, maxHeight }: NewRoadmapHeaderProps) {
   const minX = leftMostX
   const maxX = rightMostX
 
@@ -57,13 +57,12 @@ export default function NewRoadmapHeader({ scale, yMin, leftMostX, rightMostX, w
       timeUnitEnd = middleOfTimeUnit.endOf(timeUnit)
     }
     ticks.push(middleOfTimeUnit.toDate())
-    return ticks;
+    return ticks
   }, [maxDate, minDate, timeUnit, monthDiff])
 
   return <g transform={`translate(0,${yMin})`}>
-    {newTicks.map((date,i) => (<NewRoadmapHeaderTick timeUnit={timeUnit} key={i} date={date} scale={scale} y={-30} height={30} maxHeight={maxHeight} />))}
+    {newTicks.map((date, i) => (<NewRoadmapHeaderTick timeUnit={timeUnit} key={i} date={date} scale={scale} y={-30} height={30} maxHeight={maxHeight} />))}
     {/* Render a border on the bottom of all of the labels */}
-    <path d={`M${0} 0 L${width} 0`} style={{ fill: 'none', strokeWidth:2, stroke:'#A2D0DE' }} />
+    <path d={`M${0} 0 L${width} 0`} style={{ fill: 'none', strokeWidth: 2, stroke: '#A2D0DE' }} />
   </g>
 }
-

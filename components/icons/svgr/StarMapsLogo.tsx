@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 const SvgStarMapsLogo = (props) => (
   <svg viewBox='0 0 36 40' fill='none' xmlns='http://www.w3.org/2000/svg' {...props}>
     <path fill='#fff' d='M0 0h36v40H0z' />
@@ -16,5 +16,5 @@ const SvgStarMapsLogo = (props) => (
     />
     <rect x={-150.5} y={-45.5} width={1450} height={386} rx={4.5} stroke='#9747FF' strokeDasharray='10 5' />
   </svg>
-);
-export default SvgStarMapsLogo;
+)
+export default SvgStarMapsLogo

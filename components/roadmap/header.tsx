@@ -1,22 +1,22 @@
-import { Center, Flex, Link, Skeleton, Spacer, Text } from '@chakra-ui/react';
-import Image from 'next/image';
-import NextLink from 'next/link';
-import React, { useContext } from 'react';
+import { Center, Flex, Link, Skeleton, Spacer, Text } from '@chakra-ui/react'
+import Image from 'next/image'
+import NextLink from 'next/link'
+import React, { useContext } from 'react'
 
-import { ReactElement } from 'react-markdown/lib/react-markdown';
-import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
-import GitHubSvgIcon from '../icons/GitHubLogo.svg';
-import { IssueDataStateContext } from './contexts';
-import themes from '../theme/constants';
+import { ReactElement } from 'react-markdown/lib/react-markdown'
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
+import GitHubSvgIcon from '../icons/GitHubLogo.svg'
+import { IssueDataStateContext } from './contexts'
+import themes from '../theme/constants'
 
-export default function Header(): ReactElement {
-  const globalLoadingState = useGlobalLoadingState();
-  const isGlobalLoading = globalLoadingState.get();
+export default function Header (): ReactElement {
+  const globalLoadingState = useGlobalLoadingState()
+  const isGlobalLoading = globalLoadingState.get()
   const issueDataState = useContext(IssueDataStateContext)
   const rootIssueUrl = issueDataState.ornull?.html_url?.value
   const rootIssueTitle = issueDataState.ornull?.title?.value
 
-  const isReadyToRender = typeof rootIssueUrl === 'string' && typeof rootIssueTitle === 'string' && !isGlobalLoading;
+  const isReadyToRender = typeof rootIssueUrl === 'string' && typeof rootIssueTitle === 'string' && !isGlobalLoading
 
   return (
     <Skeleton isLoaded={isReadyToRender} >
@@ -37,5 +37,5 @@ export default function Header(): ReactElement {
         </Center>
       </Flex>
     </Skeleton>
-  );
+  )
 }
