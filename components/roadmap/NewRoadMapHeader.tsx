@@ -24,18 +24,19 @@ export default function NewRoadmapHeader ({ scale, yMin, leftMostX, rightMostX, 
    */
   const monthDiff = useMemo(() => dayjs(maxDate).diff(dayjs(minDate), 'months'), [minDate, maxDate])
   const monthsPerQuarter = 3
-  const monthsOnScreen = 9
+  const roughMonthTextPixelWidth = 100
+  const maxMonthsOnScreen = width / roughMonthTextPixelWidth
 
   const timeUnit = useMemo(() => {
-    if (monthDiff <= monthsOnScreen) {
-      return TimeUnit.Month
+    if (monthDiff >= maxMonthsOnScreen * monthsPerQuarter) {
+      return TimeUnit.Year
     }
-    if (monthDiff <= monthsOnScreen * monthsPerQuarter) {
+    if (monthDiff >= maxMonthsOnScreen) {
       return TimeUnit.Quarter
     }
 
-    return TimeUnit.Year
-  }, [monthDiff])
+    return TimeUnit.Month
+  }, [maxMonthsOnScreen, monthDiff])
 
   /**
    * Get an array of dates representing each timeUnit between the min and max dates
@@ -44,7 +45,7 @@ export default function NewRoadmapHeader ({ scale, yMin, leftMostX, rightMostX, 
     const monthsDuration = dayjs.duration({ months: timeUnit === 'month' ? 0.5 : 2 })
     // limitExpansion is the amount of time to add to the min and max dates to ensure that the first and last ticks are visible
     const limitExpansion = dayjs.duration({ months: monthDiff })
-    let timeUnitStart = dayjs(minDate).startOf(timeUnit).subtract(limitExpansion)
+    const timeUnitStart = dayjs(minDate).startOf(timeUnit).subtract(limitExpansion)
     const ticks: Date[] = [timeUnitStart.toDate()]
     let timeUnitEnd = timeUnitStart.endOf(timeUnit)
     let middleOfTimeUnit = dayjs(timeUnitStart).add(monthsDuration)
@@ -52,7 +53,6 @@ export default function NewRoadmapHeader ({ scale, yMin, leftMostX, rightMostX, 
     while (middleOfTimeUnit.isBefore(maximumTickDate)) {
       ticks.push(middleOfTimeUnit.toDate())
       middleOfTimeUnit = dayjs(timeUnitEnd).add(monthsDuration)
-      timeUnitStart = middleOfTimeUnit.startOf(timeUnit)
       timeUnitEnd = middleOfTimeUnit.endOf(timeUnit)
     }
     ticks.push(middleOfTimeUnit.toDate())
