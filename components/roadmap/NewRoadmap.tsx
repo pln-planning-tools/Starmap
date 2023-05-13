@@ -5,16 +5,16 @@ import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } 
 
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
 import { useMaxHeight } from '../../hooks/useMaxHeight'
+import { useViewMode } from '../../hooks/useViewMode'
 import { dayjs } from '../../lib/client/dayjs'
 import { getDates } from '../../lib/client/getDates'
 import { BinPackedGroup } from '../../lib/types'
 import { IssueDataStateContext, IssuesGroupedContext } from './contexts'
 import { binPack } from './lib'
 import NewRoadmapHeader from './NewRoadMapHeader'
-import TodayLine from './TodayLine'
 import styles from './Roadmap.module.css'
-import { useViewMode } from '../../hooks/useViewMode'
 import RoadmapGroupRenderer from './RoadmapGroupRenderer'
+import TodayLine from './TodayLine'
 
 /**
  * @todo: be smarter about choosing yZoomMin (large timespan roadmaps can't zoom out far enough)

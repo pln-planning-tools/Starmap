@@ -1,8 +1,9 @@
 
-import { ScaleTime } from 'd3'
-import { BinPackIssueData, BinPackItem } from '../../lib/types.js'
-import { dayjs } from '../../lib/client/dayjs'
 import { ImmutableArray } from '@hookstate/core'
+import { ScaleTime } from 'd3'
+
+import { dayjs } from '../../lib/client/dayjs'
+import { BinPackIssueData, BinPackItem } from '../../lib/types.js'
 
 interface BinPackOptions {
   width: number

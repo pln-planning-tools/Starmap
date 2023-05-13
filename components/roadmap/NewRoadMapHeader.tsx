@@ -2,8 +2,8 @@ import { ScaleTime } from 'd3'
 import { useMemo } from 'react'
 
 import { dayjs } from '../../lib/client/dayjs'
-import NewRoadmapHeaderTick from './NewRoadMapHeaderTick'
 import { TimeUnit } from '../../lib/enums'
+import NewRoadmapHeaderTick from './NewRoadMapHeaderTick'
 
 interface NewRoadmapHeaderProps {
   scale: ScaleTime<number, number>;

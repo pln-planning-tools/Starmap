@@ -1,6 +1,7 @@
-import { Box, Center, Flex, Spacer, Spinner, Text } from '@chakra-ui/react'
 import { ChevronDownIcon, ChevronUpIcon, WarningTwoIcon } from '@chakra-ui/icons'
+import { Box, Center, Flex, Spacer, Spinner, Text } from '@chakra-ui/react'
 import React from 'react'
+
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
 
 interface ErrorNotificationHeaderProps {

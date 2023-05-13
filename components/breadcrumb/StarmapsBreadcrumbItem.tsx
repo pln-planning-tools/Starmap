@@ -1,5 +1,6 @@
 import { BreadcrumbItem, BreadcrumbItemProps, BreadcrumbLink } from '@chakra-ui/react'
 import React from 'react'
+
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
 
 interface StarmapsBreadcrumbItemProps extends BreadcrumbItemProps {

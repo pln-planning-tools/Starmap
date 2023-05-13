@@ -1,8 +1,9 @@
 import { ImmutableObject } from '@hookstate/core'
-import { paramsFromUrl } from '../paramsFromUrl'
-import { IssueData, QueryParameters } from '../types'
+
 import { appendCrumbArrayData, convertCrumbDataArraysToCrumbDataString, getCrumbDataArrayFromIssueData, routerQueryToCrumbArrayData } from '../breadcrumbs'
 import { ViewMode } from '../enums'
+import { paramsFromUrl } from '../paramsFromUrl'
+import { IssueData, QueryParameters } from '../types'
 
 type childrenAndUrl = Pick<IssueData, 'html_url' | 'children'>;
 type parentAndChildren = Pick<IssueData, 'parent' | 'children'>;

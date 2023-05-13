@@ -1,4 +1,5 @@
 import { ImmutableObject } from '@hookstate/core'
+
 import { IssueData } from './types'
 
 export function findIssueDepthByUrl (rootIssueData: ImmutableObject<IssueData>, parentHtmlUrl: string, depth = 0): number {

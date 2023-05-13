@@ -1,18 +1,18 @@
 import { readFile } from 'fs/promises'
 import { join } from 'path'
 
-import type { NextPage } from 'next'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import { Center, Link, Text, Flex } from '@chakra-ui/react'
+import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
+import type { NextPage } from 'next'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import GitHubSvgIcon from '../components/icons/GitHubLogo.svg'
-import themes from '../components/theme/constants'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
-import styles from './LandingPage.module.css'
+import GitHubSvgIcon from '../components/icons/GitHubLogo.svg'
 import PageHeader from '../components/layout/PageHeader'
+import themes from '../components/theme/constants'
+import styles from './LandingPage.module.css'
 
 interface SSProps {
   markdown: string

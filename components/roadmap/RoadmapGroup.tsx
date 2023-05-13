@@ -1,6 +1,6 @@
 import { BinPackedGroup } from '../../lib/types'
-import { BinPackedGroupHeader } from './group-header'
 import BinPackedMilestoneItem from './BinPackedMilestoneItem'
+import { BinPackedGroupHeader } from './group-header'
 import { ItemContainerSvg } from './svg/ItemContainerSvg'
 
 export default function RoadmapGroup ({ binPackedGroup, index }: {binPackedGroup: BinPackedGroup, index: number}) {

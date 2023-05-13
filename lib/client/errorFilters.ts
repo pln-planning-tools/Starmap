@@ -1,4 +1,5 @@
 import { ImmutableArray, ImmutableObject } from '@hookstate/core'
+
 import { ViewMode } from '../enums'
 import { findIssueDepthByUrl } from '../findIssueDepthByUrl'
 import { StarMapsIssueErrorsGrouped, IssueData } from '../types'

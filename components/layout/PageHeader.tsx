@@ -2,14 +2,14 @@ import { Box, Center, Flex, Link, Spacer, Text } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import React from 'react'
 
+import useStarmapContentUpdated from '../../hooks/useStarmapContentUpdated'
 import { ErrorBoundary } from '../errors/ErrorBoundary'
 import SvgStarMapsLogo from '../icons/svgr/StarMapsLogo'
+import { LegacyButton } from '../legacy/LegacyButton'
+import SmallScreenModal from '../modal/SmallScreenModal'
 import { RoadmapForm } from '../RoadmapForm'
 import theme from '../theme/constants'
 import styles from './PageHeader.module.css'
-import SmallScreenModal from '../modal/SmallScreenModal'
-import useStarmapContentUpdated from '../../hooks/useStarmapContentUpdated'
-import { LegacyButton } from '../legacy/LegacyButton'
 
 function PageHeader () {
   useStarmapContentUpdated()

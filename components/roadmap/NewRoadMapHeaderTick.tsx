@@ -1,7 +1,7 @@
 import { ScaleTime } from 'd3'
 
-import { dayjs } from '../../lib/client/dayjs'
 import { useMaxHeight } from '../../hooks/useMaxHeight'
+import { dayjs } from '../../lib/client/dayjs'
 import getDateAsQuarter from '../../lib/client/getDateAsQuarter'
 import { TimeUnit } from '../../lib/enums'
 

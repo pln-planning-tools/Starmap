@@ -2,11 +2,11 @@ import { Box, Center } from '@chakra-ui/react'
 import type { ImmutableArray, State } from '@hookstate/core'
 import React, { useMemo, useState } from 'react'
 
-import { IssueData, StarMapsIssueErrorsGrouped } from '../../lib/types'
-import { ErrorNotificationHeader } from './ErrorNotificationHeader'
-import { ErrorNotificationBody } from './ErrorNotificationBody'
-import { errorFilters } from '../../lib/client/errorFilters'
 import { useViewMode } from '../../hooks/useViewMode'
+import { errorFilters } from '../../lib/client/errorFilters'
+import { IssueData, StarMapsIssueErrorsGrouped } from '../../lib/types'
+import { ErrorNotificationBody } from './ErrorNotificationBody'
+import { ErrorNotificationHeader } from './ErrorNotificationHeader'
 
 interface ErrorNotificationDisplayProps {
   errorsState: State<StarMapsIssueErrorsGrouped[]>;

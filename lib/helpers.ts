@@ -1,5 +1,5 @@
-import { dayjs } from './client/dayjs'
 import type { ErrorManager } from './backend/errorManager'
+import { dayjs } from './client/dayjs'
 import type { IssueData } from './types'
 
 /**

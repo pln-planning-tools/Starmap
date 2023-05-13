@@ -1,4 +1,5 @@
 import { ImmutableArray, State } from '@hookstate/core'
+
 import { IssueStates } from './enums'
 import { IssueData } from './types'
 

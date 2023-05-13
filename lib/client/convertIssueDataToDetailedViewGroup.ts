@@ -1,11 +1,12 @@
+import { ParsedUrlQuery } from 'querystring'
+
 import { State, ImmutableArray } from '@hookstate/core'
 import { group } from 'd3'
 import { reverse, sortBy, uniqBy } from 'lodash'
 
 import { ViewMode } from '../enums'
-import { getLinkForRoadmapChild } from './getLinkForRoadmapChild'
 import { DetailedViewGroup, IssueData } from '../types'
-import { ParsedUrlQuery } from 'querystring'
+import { getLinkForRoadmapChild } from './getLinkForRoadmapChild'
 
 function flattenIssueData (issueData: IssueData, isChildIssue = false): IssueData[] {
   const parentArray: IssueData[] = []

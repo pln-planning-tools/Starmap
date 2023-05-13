@@ -1,4 +1,5 @@
 import type { Dayjs } from 'dayjs'
+
 import { dayjs } from './dayjs'
 
 function getDateAsQuarter (inputDate: Dayjs | Date | string) {

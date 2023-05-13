@@ -1,13 +1,12 @@
-import Head from 'next/head'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { noSSR } from 'next/dynamic'
+import Head from 'next/head'
 import React, { useEffect } from 'react'
 import { onCLS, onFID, onLCP } from 'web-vitals'
 
 import { setTelemetry, useTelemetry } from '../hooks/useTelemetry'
-
-import './style.css'
 import type { BrowserMetricsProvider } from '../lib/types'
+import './style.css'
 
 const theme = extendTheme({
   semanticTokens: {

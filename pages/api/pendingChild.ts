@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { addToChildren } from '../../lib/backend/addToChildren'
 
+import { addToChildren } from '../../lib/backend/addToChildren'
 import { convertParsedChildToGroupedIssueData } from '../../lib/backend/convertParsedChildToGroupedIssueData'
 import { ErrorManager } from '../../lib/backend/errorManager'
 import { getGithubIssueDataWithGroupAndChildren } from '../../lib/backend/getGithubIssueDataWithGroupAndChildren'

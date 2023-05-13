@@ -1,18 +1,18 @@
-import { Router, useRouter } from 'next/router'
-import { Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
+import { Button, FormControl, FormErrorMessage, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react'
+import { isEmpty } from 'lodash'
+import { Router, useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
-import { useGlobalLoadingState } from '../hooks/useGlobalLoadingState'
-import styles from './RoadmapForm.module.css'
-import theme from './theme/constants'
+import useCheckMobileScreen from '../hooks/useCheckSmallScreen'
 import { setCurrentIssueUrl, useCurrentIssueUrl } from '../hooks/useCurrentIssueUrl'
-import { paramsFromUrl } from '../lib/paramsFromUrl'
-import { getValidUrlFromInput } from '../lib/getValidUrlFromInput'
+import { useGlobalLoadingState } from '../hooks/useGlobalLoadingState'
 import { useViewMode } from '../hooks/useViewMode'
 import { ViewMode } from '../lib/enums'
-import { isEmpty } from 'lodash'
-import useCheckMobileScreen from '../hooks/useCheckSmallScreen'
+import { getValidUrlFromInput } from '../lib/getValidUrlFromInput'
+import { paramsFromUrl } from '../lib/paramsFromUrl'
+import styles from './RoadmapForm.module.css'
+import theme from './theme/constants'
 
 export function RoadmapForm () {
   const router = useRouter()

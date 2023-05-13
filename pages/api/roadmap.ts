@@ -1,14 +1,15 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
+
+import { addToChildren } from '../../lib/backend/addToChildren'
 import { ErrorManager } from '../../lib/backend/errorManager'
-import { getChildren } from '../../lib/parser'
 import { getIssue } from '../../lib/backend/issue'
+import { resolveChildrenWithDepth } from '../../lib/backend/resolveChildrenWithDepth'
+import { getChildren } from '../../lib/parser'
 import {
   RoadmapApiResponse,
   RoadmapApiResponseFailure,
   RoadmapApiResponseSuccess
 } from '../../lib/types'
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { resolveChildrenWithDepth } from '../../lib/backend/resolveChildrenWithDepth'
-import { addToChildren } from '../../lib/backend/addToChildren'
 
 export default async function handler (
   req: NextApiRequest,

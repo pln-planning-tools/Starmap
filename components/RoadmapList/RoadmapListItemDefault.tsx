@@ -1,17 +1,17 @@
-import { Grid, GridItem, Center, Link, HStack, Text, Skeleton } from '@chakra-ui/react'
 import { LinkIcon } from '@chakra-ui/icons'
+import { Grid, GridItem, Center, Link, HStack, Text, Skeleton } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-import SvgGitHubLogo from '../icons/svgr/SvgGitHubLogo'
-import BulletConnector from './BulletConnector'
-import BulletIcon from './BulletIcon'
-import { paramsFromUrl } from '../../lib/paramsFromUrl'
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
 import { dayjs } from '../../lib/client/dayjs'
 import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild'
 import { ViewMode } from '../../lib/enums'
-import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
+import { paramsFromUrl } from '../../lib/paramsFromUrl'
+import SvgGitHubLogo from '../icons/svgr/SvgGitHubLogo'
+import BulletConnector from './BulletConnector'
+import BulletIcon from './BulletIcon'
 import { ListIssueViewModel } from './types'
 
 interface RoadmapListItemDefaultProps {

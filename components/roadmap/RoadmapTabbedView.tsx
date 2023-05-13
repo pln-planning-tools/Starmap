@@ -11,25 +11,25 @@ import {
   Tabs,
   Spacer
 } from '@chakra-ui/react'
+import { State, useHookstateMemo } from '@hookstate/core'
 import { useRouter } from 'next/router'
 import React, { useContext } from 'react'
-import SvgDetailViewIcon from '../icons/svgr/SvgDetailViewIcon'
-import SvgOverviewIcon from '../icons/svgr/SvgOverviewIcon'
 
-import { TodayMarkerToggle } from './today-marker-toggle'
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
 import { setViewMode, useViewMode } from '../../hooks/useViewMode'
+import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup'
 import { DEFAULT_INITIAL_VIEW_MODE } from '../../lib/defaults'
 import { RoadmapMode, ViewMode } from '../../lib/enums'
-import Header from './header'
-import styles from './Roadmap.module.css'
-import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
-import SvgListViewIcon from '../icons/svgr/SvgListViewIcon'
-import RoadmapList from '../RoadmapList'
-import NewRoadmap from './NewRoadmap'
-import { State, useHookstateMemo } from '@hookstate/core'
-import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup'
-import { IssueDataStateContext, IssuesGroupedContext } from './contexts'
 import { IssueData } from '../../lib/types'
+import SvgDetailViewIcon from '../icons/svgr/SvgDetailViewIcon'
+import SvgListViewIcon from '../icons/svgr/SvgListViewIcon'
+import SvgOverviewIcon from '../icons/svgr/SvgOverviewIcon'
+import RoadmapList from '../RoadmapList'
+import { IssueDataStateContext, IssuesGroupedContext } from './contexts'
+import Header from './header'
+import NewRoadmap from './NewRoadmap'
+import styles from './Roadmap.module.css'
+import { TodayMarkerToggle } from './today-marker-toggle'
 
 export function RoadmapTabbedView ({
   mode

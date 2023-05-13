@@ -3,6 +3,7 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useMemo } from 'react'
+
 import { useViewMode } from '../../hooks/useViewMode'
 import { getCrumbDataFromCrumbDataArray, routerQueryToCrumbArrayData } from '../../lib/breadcrumbs'
 import { ViewMode } from '../../lib/enums'

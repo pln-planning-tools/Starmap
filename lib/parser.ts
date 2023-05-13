@@ -1,10 +1,11 @@
 import { parseHTML } from 'linkedom'
+
 import { ErrorManager } from './backend/errorManager'
-import { isNonEmptyString } from './typescriptGuards'
 import { getValidUrlFromInput } from './getValidUrlFromInput'
 import { getEtaDate, isValidChildren } from './helpers'
 import { paramsFromUrl } from './paramsFromUrl'
 import { GithubIssueData, GithubIssueDataWithChildren, ParserGetChildrenResponse } from './types'
+import { isNonEmptyString } from './typescriptGuards'
 
 export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' | 'body_html' | 'root_issue' | 'title'>, errorManager: ErrorManager) => {
   const { body_html: issueBodyHtml } = issue

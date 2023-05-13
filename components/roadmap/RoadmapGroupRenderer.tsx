@@ -1,4 +1,5 @@
 import { ReactElement } from 'react'
+
 import { BinPackedGroup } from '../../lib/types'
 import BinPackedMilestoneItem from './BinPackedMilestoneItem'
 import RoadmapGroup from './RoadmapGroup'

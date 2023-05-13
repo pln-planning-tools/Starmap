@@ -1,8 +1,9 @@
 import { writeFile, readFile } from 'fs/promises'
 import path, { join } from 'path'
-import { IssueData } from '../types'
 import { fileURLToPath } from 'url'
+
 import { paramsFromUrl } from '../paramsFromUrl'
+import { IssueData } from '../types'
 
 const __filename = fileURLToPath(import.meta.url)
 

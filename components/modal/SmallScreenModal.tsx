@@ -3,6 +3,7 @@ import {
   Flex, Link, Modal, ModalBody,
   ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text
 } from '@chakra-ui/react'
+
 import useCheckMobileScreen from '../../hooks/useCheckSmallScreen'
 import SvgStarMapsLogo from '../icons/svgr/StarMapsLogo'
 import SvgDesktopIcon from '../icons/svgr/SvgDesktopIcon'

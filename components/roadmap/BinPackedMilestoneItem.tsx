@@ -1,15 +1,15 @@
-import NextLink from 'next/link'
-import React, { useId, useRef } from 'react'
-import { useRouter } from 'next/router'
-import { Text } from '@visx/text'
-
-import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild'
-import styles from './Roadmap.module.css'
-import { paramsFromUrl } from '../../lib/paramsFromUrl'
-import { dayjs } from '../../lib/client/dayjs'
-import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip'
 import { Box } from '@chakra-ui/react'
+import { Text } from '@visx/text'
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
+import React, { useId, useRef } from 'react'
+
 import { useViewMode } from '../../hooks/useViewMode'
+import { dayjs } from '../../lib/client/dayjs'
+import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild'
+import { paramsFromUrl } from '../../lib/paramsFromUrl'
+import { SvgGitHubLogoWithTooltip } from '../icons/svgr/SvgGitHubLogoWithTooltip'
+import styles from './Roadmap.module.css'
 import { ItemContainerSvg } from './svg/ItemContainerSvg'
 
 const MAX_TITLE_LENGTH = 80

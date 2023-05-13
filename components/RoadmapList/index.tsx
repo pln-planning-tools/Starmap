@@ -1,10 +1,10 @@
-import React, { ReactElement, useContext, useState } from 'react'
 import { Radio, RadioGroup, Stack, Text } from '@chakra-ui/react'
+import React, { ReactElement, useContext, useState } from 'react'
 
-import RoadmapListItemDefault from './RoadmapListItemDefault'
-import styles from './RoadmapList.module.css'
 import { getTimeFromDateString } from '../../lib/helpers'
 import { IssueDataStateContext } from '../roadmap/contexts'
+import styles from './RoadmapList.module.css'
+import RoadmapListItemDefault from './RoadmapListItemDefault'
 
 /**
  * Sorts milestones by due date, in ascending order (2022-01-01 before 2023-01-01) with invalid dates at the end.

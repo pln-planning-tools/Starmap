@@ -1,8 +1,8 @@
 import { ScaleTime } from 'd3'
 
+import { setShowTodayMarker, useShowTodayMarker } from '../../hooks/useShowTodayMarker'
 import { dayjs } from '../../lib/client/dayjs'
 import styles from './today-marker.module.css'
-import { setShowTodayMarker, useShowTodayMarker } from '../../hooks/useShowTodayMarker'
 
 function TodayLine ({ scale, height }: { scale: ScaleTime<number, number>; height: number, transform?: string }) {
   const todayX = scale(dayjs().toDate())
