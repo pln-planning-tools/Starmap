@@ -15,27 +15,26 @@ interface NewRoadmapHeaderProps {
 }
 
 export default function NewRoadmapHeader ({ scale, yMin, leftMostX, rightMostX, width, maxHeight }: NewRoadmapHeaderProps) {
-  const minX = leftMostX
-  const maxX = rightMostX
+  const maxDate = scale.invert(rightMostX)
+  const minDate = scale.invert(leftMostX)
 
-  const maxDate = scale.invert(maxX)
-  const minDate = scale.invert(minX)
-  // const xDiff = scale(scale.invert(maxX)) - scale(scale.invert(minX))
-
-  const monthDiff = useMemo(() => dayjs(maxDate).diff(dayjs(minDate), 'months'), [minDate, maxDate])
   /**
-   * TODO: Be smarter about choosing the timeUnit. i.e. We should be able to
-   * determine the number of ticks d3 will end up displaying, and choose
-   * timeUnit based on that. Currently, this will probably have some unexpected
-   * edge-cases, but should work in most cases.
+   * This should be the current number of months that would be visible on the screen if we set
+   * the timeUnit to TimeUnit.Month. This is used to determine the timeUnit to use.
    */
+  const monthDiff = useMemo(() => dayjs(maxDate).diff(dayjs(minDate), 'months'), [minDate, maxDate])
+  const monthsPerQuarter = 3
+  const monthsOnScreen = 9
+
   const timeUnit = useMemo(() => {
-    if (monthDiff >= 20) {
-      return TimeUnit.Year
-    } else if (monthDiff >= 14) {
+    if (monthDiff <= monthsOnScreen) {
+      return TimeUnit.Month
+    }
+    if (monthDiff <= monthsOnScreen * monthsPerQuarter) {
       return TimeUnit.Quarter
     }
-    return TimeUnit.Month
+
+    return TimeUnit.Year
   }, [monthDiff])
 
   /**
