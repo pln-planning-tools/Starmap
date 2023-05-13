@@ -1,6 +1,7 @@
 import { BinPackedGroup } from '../../lib/types'
 import BinPackedMilestoneItem from './BinPackedMilestoneItem'
 import RoadmapGroup from './RoadmapGroup'
+import { ItemContainerSvg } from './svg/ItemContainerSvg'
 
 export default function RoadmapGroupRenderer ({ binPackedGroups }: {binPackedGroups: BinPackedGroup[]}): JSX.Element {
 
@@ -8,7 +9,7 @@ export default function RoadmapGroupRenderer ({ binPackedGroups }: {binPackedGro
     return (
       <>
         {binPackedGroups[0].items.map((item, index) => (
-          <BinPackedMilestoneItem key={index} item={item} />
+          <BinPackedMilestoneItem key={index} item={new ItemContainerSvg({ item })} />
         ))}
       </>
     )

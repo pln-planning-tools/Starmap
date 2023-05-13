@@ -1,6 +1,7 @@
 import { BinPackedGroup } from '../../lib/types'
 import { BinPackedGroupHeader } from './group-header'
 import BinPackedMilestoneItem from './BinPackedMilestoneItem'
+import { ItemContainerSvg } from './svg/ItemContainerSvg'
 
 export default function RoadmapGroup({ binPackedGroup, index }: {binPackedGroup: BinPackedGroup, index: number}) {
   /**
@@ -16,7 +17,7 @@ export default function RoadmapGroup({ binPackedGroup, index }: {binPackedGroup:
         <BinPackedGroupHeader group={binPackedGroup} />
       </foreignObject>
       {binPackedGroup.items.map((item, itemIndex) => (
-        <BinPackedMilestoneItem key={`${index}+${itemIndex}`} item={item} />
+        <BinPackedMilestoneItem key={`${index}+${itemIndex}`} item={new ItemContainerSvg({ item })} />
       ))}
     </g>
   )
