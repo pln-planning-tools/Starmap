@@ -263,13 +263,6 @@ button.gridViewTab {
   cursor: default;
 }
 
-.d3__pannable {
-/* d3__milestoneItem__panContainer */
-  /**
-  items with this class will be modified by d3.
-  */
-}
-
 .d3__groupTitle {
   font-size: 18px;
 }
@@ -277,10 +270,13 @@ button.gridViewTab {
 .d3__milestoneItem {
   fill: var(--chakra-colors-background);
 }
+.d3__milestoneItem.d3__milestoneItem-clickable {
+  cursor: pointer;
+}
 .d3__milestoneItem .d3__milestoneItem__rect  {
   stroke: var(--chakra-colors-inactiveAccent);
 }
-.d3__milestoneItem:hover .d3__milestoneItem__rect {
+.d3__milestoneItem:hover.d3__milestoneItem-clickable .d3__milestoneItem__rect {
   stroke: var(--chakra-colors-spotLightBlue);
 }
 
