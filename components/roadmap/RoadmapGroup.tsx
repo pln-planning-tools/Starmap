@@ -7,7 +7,7 @@ export default function RoadmapGroup ({ binPackedGroup, index }: {binPackedGroup
   /**
    * @todo: support collapsing/expanding groups
    */
-  if (binPackedGroup.items[0] == null) {
+  if (binPackedGroup.items.length === 0) {
     console.warn(`Not rendering empty group for ${binPackedGroup.groupName}`)
     return null
   }

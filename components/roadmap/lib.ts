@@ -40,7 +40,7 @@ export const binPack = (items: ImmutableArray<BinPackIssueData>, { height, width
 
   for (const item of sortedItems) {
     if (item.due_date == null || item.due_date === '') {
-      // console.trace(`item ${item.title} has no due date: `, item.due_date, item)
+      // if there's no due date, then we don't place it on the roadmap
       continue
     }
     const dueDate = item.due_date ? dayjs(item.due_date) : dayjs()

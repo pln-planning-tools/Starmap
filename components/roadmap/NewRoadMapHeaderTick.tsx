@@ -19,13 +19,14 @@ export default function NewRoadmapHeaderTick ({ date, y, height, scale, timeUnit
   const startX = scale(dayjs(date).startOf(timeUnit))
   const endX = scale(dayjs(date).endOf(timeUnit))
   const width = (endX - startX)
+  if (width < 0) return null
+
   let dateLabel = dayjs(date).format('MMM YYYY')
   if (timeUnit === TimeUnit.Quarter) {
     dateLabel = getDateAsQuarter(date)
   } else if (timeUnit === TimeUnit.Year) {
     dateLabel = dayjs(date).format('YYYY')
   }
-  if (width < 0) return null
 
   return <g x={startX} y={y} x2={endX}>
     <text x={startX + width / 2} y={y + height / 2 + 2} height={height} dominantBaseline='middle' textAnchor='middle'>
