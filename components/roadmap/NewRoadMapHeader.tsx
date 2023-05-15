@@ -1,4 +1,5 @@
 import { ScaleTime } from 'd3'
+import { Dayjs } from 'dayjs'
 import { useMemo } from 'react'
 
 import { dayjs } from '../../lib/client/dayjs'
@@ -41,21 +42,21 @@ export default function NewRoadmapHeader ({ scale, yMin, leftMostX, rightMostX, 
   /**
    * Get an array of dates representing each timeUnit between the min and max dates
    */
-  const newTicks: Date[] = useMemo(() => {
+  const newTicks: Dayjs[] = useMemo(() => {
     const monthsDuration = dayjs.duration({ months: timeUnit === 'month' ? 0.5 : 2 })
     // limitExpansion is the amount of time to add to the min and max dates to ensure that the first and last ticks are visible
     const limitExpansion = dayjs.duration({ months: monthDiff })
     const timeUnitStart = dayjs(minDate).startOf(timeUnit).subtract(limitExpansion)
-    const ticks: Date[] = [timeUnitStart.toDate()]
+    const ticks: Dayjs[] = [timeUnitStart]
     let timeUnitEnd = timeUnitStart.endOf(timeUnit)
     let middleOfTimeUnit = dayjs(timeUnitStart).add(monthsDuration)
     const maximumTickDate = dayjs(maxDate).add(limitExpansion)
     while (middleOfTimeUnit.isBefore(maximumTickDate)) {
-      ticks.push(middleOfTimeUnit.toDate())
+      ticks.push(middleOfTimeUnit)
       middleOfTimeUnit = dayjs(timeUnitEnd).add(monthsDuration)
       timeUnitEnd = middleOfTimeUnit.endOf(timeUnit)
     }
-    ticks.push(middleOfTimeUnit.toDate())
+    ticks.push(middleOfTimeUnit)
     return ticks
   }, [maxDate, minDate, timeUnit, monthDiff])
 

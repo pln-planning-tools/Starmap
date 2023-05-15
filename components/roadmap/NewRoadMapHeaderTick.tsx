@@ -1,13 +1,13 @@
 import { ScaleTime } from 'd3'
+import { Dayjs } from 'dayjs'
 
 import { useMaxHeight } from '../../hooks/useMaxHeight'
-import { dayjs } from '../../lib/client/dayjs'
 import getDateAsQuarter from '../../lib/client/getDateAsQuarter'
 import { TimeUnit } from '../../lib/enums'
 
 interface NewRoadmapHeaderTickProps {
   scale: ScaleTime<number, number>;
-  date: Date;
+  date: Dayjs;
   y: number;
   height: number;
   timeUnit: TimeUnit;
@@ -16,16 +16,16 @@ interface NewRoadmapHeaderTickProps {
 
 export default function NewRoadmapHeaderTick ({ date, y, height, scale, timeUnit, maxHeight }: NewRoadmapHeaderTickProps) {
   const maxH = Math.max(maxHeight ?? 0, useMaxHeight())
-  const startX = scale(dayjs(date).startOf(timeUnit))
-  const endX = scale(dayjs(date).endOf(timeUnit))
+  const startX = scale(date.startOf(timeUnit).toDate())
+  const endX = scale(date.endOf(timeUnit).toDate())
   const width = (endX - startX)
   if (width < 0) return null
 
-  let dateLabel = dayjs(date).format('MMM YYYY')
+  let dateLabel = date.format('MMM YYYY')
   if (timeUnit === TimeUnit.Quarter) {
     dateLabel = getDateAsQuarter(date)
   } else if (timeUnit === TimeUnit.Year) {
-    dateLabel = dayjs(date).format('YYYY')
+    dateLabel = date.format('YYYY')
   }
 
   return <g x={startX} y={y} x2={endX}>
