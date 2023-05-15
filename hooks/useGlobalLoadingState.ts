@@ -15,11 +15,12 @@ const wrapState = (s: State<boolean>) => ({
 export const accessGlobalLoadingState = () => wrapState(globalLoadingState)
 export const useGlobalLoadingState = () => wrapState(useHookstate(globalLoadingState))
 
-Router.events.on("routeChangeError", (err, url) => {
-    console.error("Navigating to: " + "url: " + url, { cancelled: err.cancelled } )
-});
+Router.events.on('routeChangeError', (err, url) => {
+  if (!err.cancelled) {
+    console.error('Navigating to: ' + 'url: ' + url, { cancelled: err.cancelled })
+  }
+})
 
-Router.events.on('hashChangeStart', accessGlobalLoadingState().start);
-Router.events.on('hashChangeComplete', accessGlobalLoadingState().stop);
-Router.events.on('routeChangeStart', accessGlobalLoadingState().start);
-Router.events.on('routeChangeComplete', accessGlobalLoadingState().stop);
+Router.events.on('routeChangeStart', accessGlobalLoadingState().start)
+Router.events.on('routeChangeComplete', accessGlobalLoadingState().stop)
+Router.events.on('hashChangeComplete', accessGlobalLoadingState().stop)

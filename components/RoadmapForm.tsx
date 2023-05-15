@@ -51,7 +51,7 @@ export function RoadmapForm () {
               }, 5000)
               throw new Error('Already viewing this issue')
             }
-            await router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}#${viewMode}`)
+            await router.push(`/roadmap/github.com/${owner}/${repo}/issues/${issue_number}#view=${viewMode}`)
             globalLoadingState.stop()
           }
         } catch (err) {

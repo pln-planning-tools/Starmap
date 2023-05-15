@@ -54,14 +54,18 @@ export function RoadmapTabbedView () {
 
   const tabIndexFromViewMode = tabViewMapInverse[viewMode]
 
-  const handleTabChange = (index: number) => {
+  const handleTabChange = async (index: number) => {
     setViewMode(tabViewMap[tabs[index]])
     const currentHashString = router.asPath.split('#')[1]
     const currentHashParams = new URLSearchParams(currentHashString)
     currentHashParams.set('view', tabViewMap[tabs[index]])
-    router.push({
-      hash: currentHashParams.toString()
-    }, undefined, { shallow: true })
+    try {
+      await router.push({
+        hash: currentHashParams.toString()
+      }, undefined, { shallow: true })
+    } catch {
+      // catch, but ignore cancelled route errors.
+    }
   }
 
   const renderTab = (title: typeof tabs[number], index: number) => {
@@ -80,7 +84,7 @@ export function RoadmapTabbedView () {
         >
           <Center>
             <TabIcon />
-            <Link href={'#' + tabViewMap[title]} className={styles.noDecoration}>{title}</Link>
+            <Link href={`#view=${tabViewMap[title]}`} className={styles.noDecoration}>{title}</Link>
           </Center>
         </Tab>
       </Skeleton>
