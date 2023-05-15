@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Center, Spinner } from '@chakra-ui/react'
 import { scaleTime, select, zoom as d3Zoom, D3ZoomEvent, ZoomTransform } from 'd3'
+import { useRouter } from 'next/router'
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
@@ -10,7 +11,7 @@ import { dayjs } from '../../lib/client/dayjs'
 import { getDates } from '../../lib/client/getDates'
 import { BinPackedGroup } from '../../lib/types'
 import { IssueDataStateContext, IssuesGroupedContext } from './contexts'
-import { binPack } from './lib'
+import { binPack, getDefaultZoomTransform, getHashFromZoomTransform } from './lib'
 import NewRoadmapHeader from './NewRoadMapHeader'
 import styles from './Roadmap.module.css'
 import RoadmapGroupRenderer from './RoadmapGroupRenderer'
@@ -24,6 +25,7 @@ const yZoomMax = 3 // zoom IN limit
 const roadmapItemWidth = 350
 
 function NewRoadmap () {
+  const router = useRouter()
   const issueDataState = useContext(IssueDataStateContext)
   const issuesGroupedState = useContext(IssuesGroupedContext)
   // eslint-disable-next-line no-unused-vars
@@ -33,42 +35,31 @@ function NewRoadmap () {
   const [, setTopMostMilestoneY] = useState(0)
   const [bottomMostMilestoneY, setBottomMostMilestoneY] = useState(0)
 
-  const [zoomTransform, setZoomTransform] = useState<ZoomTransform>(new ZoomTransform(1, 0, 0))
+  // const defaultZoomTransform = new ZoomTransform(1, 0, 0)
   const viewMode = useViewMode()
   const defaultZoomSet = useRef(false)
+  const [zoomTransform, setZoomTransform] = useState<ZoomTransform>(getDefaultZoomTransform(defaultZoomSet))
 
+  const zoomHash = useMemo(() => getHashFromZoomTransform(zoomTransform), [zoomTransform])
   useEffect(() => {
-    // load zoomTransform from URL, only once.
-    const hashString = window.location.hash.substring(1) || ''
-    const hashParams = new URLSearchParams(hashString)
-    const d3xParam = hashParams.get('d3x')
-    const d3yParam = hashParams.get('d3y')
-    const d3kParam = hashParams.get('d3k')
-    if (d3xParam || d3yParam || d3kParam) {
-      // we received some urlParameters, prevent finding the default zoom.
-      defaultZoomSet.current = true
+    const asyncFn = async () => {
+      /**
+       * if the router isn't ready, or defaultZoomSet.current is false, then we
+       * don't want to update the url yet.
+       */
+      if (!router.isReady || !defaultZoomSet.current) {
+        return
+      }
+      try {
+        await router.replace({ hash: zoomHash }, undefined, { shallow: true })
+      } catch {
+        // catch, but ignore cancelled route errors.
+      }
     }
-
-    const d3x = Number(d3xParam) || 0
-    const d3y = Number(d3yParam) || 0
-    const d3k = Number(d3kParam) || 1
-
-    setZoomTransform(() => new ZoomTransform(d3k, d3x, d3y))
-  }, [])
-
-  const updateZoomTransformInUrl = useCallback((passedZoomTransform = zoomTransform) => {
-    const d3x = passedZoomTransform.x.toFixed(2)
-    const d3y = passedZoomTransform.y.toFixed(2)
-    const d3k = passedZoomTransform.k.toFixed(2)
-
-    const hashString = window.location.hash.substring(1) ?? ''
-    const hashParams = new URLSearchParams(hashString)
-    hashParams.set('d3x', String(d3x))
-    hashParams.set('d3y', String(d3y))
-    hashParams.set('d3k', String(d3k))
-
-    window.history.replaceState(null, '', `${window.location.pathname}#${hashParams.toString()}`)
-  }, [zoomTransform])
+    asyncFn()
+    // Ignore the react-hooks/exhaustive-deps warning for 'router' only, otherwise we would repeatedly call router.replace
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [zoomHash])
 
   /**
    * Using useState and attachRef as done at https://github.com/facebook/react/issues/11258#issuecomment-495262508
@@ -153,10 +144,6 @@ function NewRoadmap () {
             select(ref).style('cursor', 'grab')
           }
         }
-        setZoomTransform((oldZoomTransform) => {
-          updateZoomTransformInUrl(oldZoomTransform)
-          return oldZoomTransform // don't change.
-        })
       })
       .on('zoom', (event: D3ZoomEvent<SVGSVGElement, unknown>) => {
         const domEvent = event.sourceEvent
@@ -168,7 +155,6 @@ function NewRoadmap () {
         const { isMouseEvent, isZoom, isPan, isVerticalScroll } = getEventDetails(domEvent)
 
         if (isZoom) {
-          // setZoomTransform((oldTransform) => new ZoomTransform(event.transform.k, event.transform.x, oldTransform.y))
           setZoomTransform(event.transform)
         } else if (isPan) {
           if (isMouseEvent) {
@@ -191,7 +177,7 @@ function NewRoadmap () {
       .scaleExtent([yZoomMin, yZoomMax])
       .extent([[0, 0], [maxScaleRangeX, 0]])
       .filter(zoomFilter)
-  }, [maxScaleRangeX, ref, updateZoomTransformInUrl])
+  }, [maxScaleRangeX, ref])
 
   const scaleX = useMemo(() => {
     const scaleRange = [0, maxScaleRangeX]

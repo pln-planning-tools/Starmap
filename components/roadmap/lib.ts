@@ -1,6 +1,7 @@
 
 import { ImmutableArray } from '@hookstate/core'
-import { ScaleTime } from 'd3'
+import { ScaleTime, ZoomTransform } from 'd3'
+import { MutableRefObject } from 'react'
 
 import { dayjs } from '../../lib/client/dayjs'
 import { BinPackIssueData, BinPackItem } from '../../lib/types.js'
@@ -83,4 +84,51 @@ export const binPack = (items: ImmutableArray<BinPackIssueData>, { height, width
   }
 
   return rects
+}
+
+/**
+ * Returns the hashString by merging the current hashString with the given zoomTransform
+ *
+ * @param zoomTransform
+ * @returns {string} the hashString
+ */
+export const getHashFromZoomTransform = (zoomTransform: ZoomTransform) => {
+  const d3x = zoomTransform.x.toFixed(2)
+  const d3y = zoomTransform.y.toFixed(2)
+  const d3k = zoomTransform.k.toFixed(2)
+
+  const hashString = window.location.hash.substring(1) ?? ''
+  // const hashString = window.location.search ?? ''
+  const hashParams = new URLSearchParams(hashString)
+  hashParams.set('d3x', String(d3x))
+  hashParams.set('d3y', String(d3y))
+  hashParams.set('d3k', String(d3k))
+
+  // const newUrl = new URL(window.location.toString())
+  // newUrl.hash = hashParams.toString()
+
+  // setShareLink(newUrl.toString())
+  return hashParams.toString()
+}
+
+export const getDefaultZoomTransform = (defaultZoomSet: MutableRefObject<boolean>) => {
+  if (typeof window === 'undefined') {
+    return new ZoomTransform(1, 0, 0)
+  }
+  // load zoomTransform from URL, only once.
+  const hashString = window.location.hash.substring(1) || ''
+  const hashParams = new URLSearchParams(hashString)
+  const d3xParam = hashParams.get('d3x')
+  const d3yParam = hashParams.get('d3y')
+  const d3kParam = hashParams.get('d3k')
+  if (d3xParam || d3yParam || d3kParam) {
+    // we received some urlParameters, prevent finding the default zoom.
+    defaultZoomSet.current = true
+  }
+
+  const d3x = Number(d3xParam) || 0
+  const d3y = Number(d3yParam) || 0
+  const d3k = Number(d3kParam) || 1
+
+  return new ZoomTransform(d3k, d3x, d3y)
 }

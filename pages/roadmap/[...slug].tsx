@@ -63,7 +63,7 @@ export async function getServerSideProps (context): Promise<RoadmapServerSidePro
 }
 
 export default function RoadmapPage (props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { error: serverError, mode, dateGranularity, issue_number, repo, owner } = props
+  const { error: serverError, dateGranularity, issue_number, repo, owner } = props
 
   const starMapsErrorsState = useHookstate<StarMapsIssueErrorsGrouped[]>([])
   const roadmapLoadErrorState = useHookstate<{ code: string; message: string } | null>(null)
@@ -253,7 +253,7 @@ export default function RoadmapPage (props: InferGetServerSidePropsType<typeof g
           {!!serverError && <Box color='red.500'>{serverError.message}</Box>}
           {roadmapLoadErrorState.ornull && <Box color='red.500'>{roadmapLoadErrorState.ornull.message.value}</Box>}
           {!!issueDataState.ornull && (
-            <RoadmapTabbedView mode={mode} />
+            <RoadmapTabbedView />
           )}
         </Box>
       </div>

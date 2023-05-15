@@ -1,13 +1,13 @@
-import Router from 'next/router';
-import { hookstate, State, useHookstate } from '@hookstate/core';
+import { hookstate, State, useHookstate } from '@hookstate/core'
+import Router from 'next/router'
 
-const globalLoadingState = hookstate(false);
+const globalLoadingState = hookstate(false)
 const wrapState = (s: State<boolean>) => ({
   get: () => s.value,
   toggle: () => s.set(p => !p),
   start: () => s.set(true),
   stop: () => s.set(false),
-  set: (v: boolean) => s.set(v),
+  set: (v: boolean) => s.set(v)
 })
 
 // The following 2 functions can be exported now:

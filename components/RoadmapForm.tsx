@@ -91,18 +91,25 @@ export function RoadmapForm () {
     setCurrentIssueUrl(e.target.value ?? '')
   }
 
-  Router.events.on('routeChangeStart', (...events) => {
-    globalLoadingState.start()
-    const path = events[0]
-    if (path === '/') {
-      setIsInputBlanked(true)
-      setCurrentIssueUrl('')
-      return
+  useEffect(() => {
+    const handleRouteChange = (...events) => {
+      globalLoadingState.start()
+      const path = events[0]
+      if (path === '/') {
+        setIsInputBlanked(true)
+        setCurrentIssueUrl('')
+        return
+      }
+      const currentUrl = getValidUrlFromInput(path.split('#')[0].replace('/roadmap/', ''))
+      currentUrl.searchParams.delete('crumbs')
+      setCurrentIssueUrl(currentUrl.toString())
     }
-    const currentUrl = getValidUrlFromInput(path.split('#')[0].replace('/roadmap/', ''))
-    currentUrl.searchParams.delete('crumbs')
-    setCurrentIssueUrl(currentUrl.toString())
-  })
+    Router.events.on('routeChangeStart', handleRouteChange)
+
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [globalLoadingState])
 
   return (
     isSmallScreen
