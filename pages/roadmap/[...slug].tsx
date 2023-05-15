@@ -14,7 +14,7 @@ import { setDateGranularity } from '../../hooks/useDateGranularity'
 import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
 import { setViewMode } from '../../hooks/useViewMode'
 import { assignCompletionRateToIssues } from '../../lib/calculateCompletionRate'
-import { DateGranularityState, RoadmapMode, ViewMode } from '../../lib/enums'
+import { DateGranularityState, ViewMode } from '../../lib/enums'
 import { findIssueDataByUrl } from '../../lib/findIssueDataByUrl'
 import { mergeStarMapsErrorGroups } from '../../lib/mergeStarMapsErrorGroups'
 import { paramsFromUrl } from '../../lib/paramsFromUrl'
@@ -47,7 +47,7 @@ const fetchHeaders = {
 export async function getServerSideProps (context): Promise<RoadmapServerSidePropsResult> {
   // eslint-disable-next-line no-unused-vars
   const [_hostname, owner, repo, _, issue_number] = context.query.slug
-  const { filter_group, mode, timeUnit }: QueryParameters = context.query
+  const { filter_group, timeUnit }: QueryParameters = context.query
 
   return {
     props: {
@@ -56,7 +56,6 @@ export async function getServerSideProps (context): Promise<RoadmapServerSidePro
       issue_number,
       isLocal: process.env.IS_LOCAL === 'true',
       groupBy: filter_group || null,
-      mode: mode || RoadmapMode.grid,
       dateGranularity: timeUnit || DateGranularityState.Months,
       baseUrl: `${BASE_PROTOCOL}://${process.env.VERCEL_URL}`
     }

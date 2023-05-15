@@ -19,7 +19,7 @@ import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
 import { setViewMode, useViewMode } from '../../hooks/useViewMode'
 import { convertIssueDataStateToDetailedViewGroupOld } from '../../lib/client/convertIssueDataToDetailedViewGroup'
 import { DEFAULT_INITIAL_VIEW_MODE } from '../../lib/defaults'
-import { RoadmapMode, ViewMode } from '../../lib/enums'
+import { ViewMode } from '../../lib/enums'
 import { IssueData } from '../../lib/types'
 import SvgDetailViewIcon from '../icons/svgr/SvgDetailViewIcon'
 import SvgListViewIcon from '../icons/svgr/SvgListViewIcon'
@@ -31,10 +31,7 @@ import NewRoadmap from './NewRoadmap'
 import styles from './Roadmap.module.css'
 import { TodayMarkerToggle } from './today-marker-toggle'
 
-export function RoadmapTabbedView ({
-  mode
-}: {mode: RoadmapMode}) {
-  console.log('mode: ', mode)
+export function RoadmapTabbedView () {
   const globalLoadingState = useGlobalLoadingState()
   const viewMode = useViewMode() || DEFAULT_INITIAL_VIEW_MODE
   const router = useRouter()

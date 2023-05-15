@@ -1,6 +1,6 @@
 import type { ImmutableArray, ImmutableObject } from '@hookstate/core'
 
-import type { RoadmapMode, IssueStates, DateGranularityState } from './enums'
+import type { IssueStates, DateGranularityState } from './enums'
 
 export interface GithubIssueData {
   body_html: string;
@@ -132,7 +132,6 @@ export interface RoadmapServerSidePropsResult {
 
     groupBy: string | null,
     error?: { code: string, message: string } | null;
-    mode: RoadmapMode;
     dateGranularity: DateGranularityState;
     pendingChildren?: ParserGetChildrenResponse[];
     baseUrl: string;
@@ -153,7 +152,6 @@ export interface UrlMatchSlugs {
 
 export interface QueryParameters {
   filter_group?: string;
-  mode?: RoadmapMode;
   timeUnit?: DateGranularityState;
   crumbs?: string;
 }
