@@ -4,7 +4,7 @@ import { ScaleTime, ZoomTransform } from 'd3'
 import { MutableRefObject } from 'react'
 
 import { dayjs } from '../../lib/client/dayjs'
-import { BinPackIssueData, BinPackItem } from '../../lib/types.js'
+import { BinPackIssueData, BinPackItem, BoxItem } from '../../lib/types.js'
 
 interface BinPackOptions {
   width: number
@@ -29,11 +29,16 @@ function getAllRectsWithCollisionsOnXRange (rects: BinPackItem[], x1: number, x2
  *
  * y1 is determined by finding the first empty space where the space between y1 and y2 are not occupied by other items within the same x1 and x2 range.
  */
-export const binPack = (items: ImmutableArray<BinPackIssueData>, { height, width, scale, yMin, ...opts }: BinPackOptions): BinPackItem[] => {
+export const binPack = (items: ImmutableArray<BinPackIssueData>, { height, width, scale, yMin, ...opts }: BinPackOptions): [BinPackItem[], BoxItem] => {
   const sortedItems = items
   const rects: BinPackItem[] = []
   const ySpacing = opts.ySpacing ?? 0
-  // const xSpacing = opts.xSpacing ?? 0;
+  const statsObj: BoxItem = {
+    top: Infinity,
+    bottom: -Infinity,
+    left: Infinity,
+    right: -Infinity
+  }
 
   for (const item of sortedItems) {
     if (item.due_date == null || item.due_date === '') {
@@ -69,6 +74,11 @@ export const binPack = (items: ImmutableArray<BinPackIssueData>, { height, width
     }
     const y2 = y1 + height
 
+    statsObj.top = Math.min(statsObj.top, y1)
+    statsObj.bottom = Math.max(statsObj.bottom, y2)
+    statsObj.left = Math.min(statsObj.left, x1)
+    statsObj.right = Math.max(statsObj.right, x2)
+
     rects.push({
       left: x1,
       right: x2,
@@ -78,7 +88,7 @@ export const binPack = (items: ImmutableArray<BinPackIssueData>, { height, width
     })
   }
 
-  return rects
+  return [rects, statsObj]
 }
 
 /**
