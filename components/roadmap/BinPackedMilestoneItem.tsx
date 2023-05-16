@@ -52,14 +52,14 @@ export default function BinPackedMilestoneItem ({
         <Text
           className={styles.d3__milestoneItem__title}
           dominantBaseline='text-before-edge'
-          x={item.boundaryLeft}
-          y={item.boundaryTop - ItemContainerSvg.defaultYPadding * 2}
-          width={item.contentWidth}
+          x={item.boundary.left}
+          y={item.boundary.top - ItemContainerSvg.defaultYPadding * 2}
+          width={item.boundary.width}
           verticalAnchor='start'
         >
           {truncatedTitle}
         </Text>
-        <foreignObject height="5" width={item.contentWidth} x={item.boundaryLeft} y={item.bottom - ItemContainerSvg.defaultYPadding * 7}>
+        <foreignObject height="5" width={item.boundary.width} x={item.boundary.left} y={item.bottom - ItemContainerSvg.defaultYPadding * 7}>
           <Box h='100%' w="100%" borderRadius="20px" bgColor="#F1F4F8">
             <Box w={`${item.data.completion_rate}%`} h="100%" borderRadius="20px" bg="#7DE087" />
           </Box>
@@ -67,12 +67,12 @@ export default function BinPackedMilestoneItem ({
         <Text
           className={styles.d3__milestoneItem__eta}
           dominantBaseline='text-after-edge'
-          x={item.boundaryLeft}
-          y={item.boundaryBottom}
+          x={item.boundary.left}
+          y={item.boundary.bottom}
         >
           {dayjs(item.data.due_date).format('MMM DD, YYYY')}
         </Text>
-        <foreignObject height="18" width="18" x={item.boundaryRight - 18} y={item.boundaryBottom - 18}>
+        <foreignObject height="18" width="18" x={item.boundary.right - 18} y={item.boundary.bottom - 18}>
           <SvgGitHubLogoWithTooltip githuburl={item.data.html_url}/>
         </foreignObject>
       </g>

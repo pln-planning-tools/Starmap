@@ -1,51 +1,57 @@
-import { BinPackItem } from '../../../lib/types'
+import { BinPackItem, BoxItem } from '../../../lib/types'
 
 interface ItemContainerSvgConstructorOptions {
   item: BinPackItem;
-  padding?: {x: number, y: number}
+  padding?: { x: number, y: number }
   strokeWidth?: number;
 }
 
-export class ItemContainerSvg implements BinPackItem {
-  static defaultXPadding = 10
-  static defaultYPadding = 5
-  static defaultStrokeWidth = 2
+class BoxModel {
   top: number
   bottom: number
   left: number
   right: number
-  data: BinPackItem['data']
-  horizontalPadding: number
-  verticalPadding: number
-  boundaryLeft: number
-  boundaryRight: number
-  boundaryTop: number
-  boundaryBottom: number
-  height: number
   width: number
-  contentWidth: number
+  height: number
 
-  constructor ({ item, padding, strokeWidth = ItemContainerSvg.defaultStrokeWidth }: ItemContainerSvgConstructorOptions) {
+  constructor ({ item }: { item: BoxItem }) {
     this.top = item.top
     this.bottom = item.bottom
     this.left = item.left
     this.right = item.right
+    this.width = Math.abs(item.right - item.left)
+    this.height = Math.abs(item.top - item.bottom)
+  }
+}
+
+export class ItemContainerSvg extends BoxModel implements BinPackItem {
+  static defaultXPadding = 10
+  static defaultYPadding = 5
+  static defaultStrokeWidth = 2
+  data: BinPackItem['data']
+  boundary: BoxModel
+
+  constructor ({
+    item, padding, strokeWidth = ItemContainerSvg.defaultStrokeWidth
+  }: ItemContainerSvgConstructorOptions) {
+    super({ item })
     this.data = item.data
 
-    padding = {
+    const computedPadding = {
       x: padding?.x ?? ItemContainerSvg.defaultXPadding,
       y: padding?.y ?? ItemContainerSvg.defaultYPadding
     }
 
-    this.horizontalPadding = strokeWidth + padding.x
-    this.verticalPadding = strokeWidth + padding.y
-    this.boundaryLeft = item.left + this.horizontalPadding
-    this.boundaryRight = item.right - this.horizontalPadding
-    this.boundaryTop = item.top + this.verticalPadding
-    this.boundaryBottom = item.bottom - this.verticalPadding
+    const horizontalPadding = strokeWidth + computedPadding.x
+    const verticalPadding = strokeWidth + computedPadding.y
 
-    this.height = item.bottom - item.top
-    this.width = item.right - item.left
-    this.contentWidth = this.boundaryRight - this.boundaryLeft
+    this.boundary = new BoxModel({
+      item: {
+        top: item.top + verticalPadding,
+        bottom: item.bottom - verticalPadding,
+        left: item.left + horizontalPadding,
+        right: item.right - horizontalPadding
+      }
+    })
   }
 }
