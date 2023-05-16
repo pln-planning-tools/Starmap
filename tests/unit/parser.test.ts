@@ -209,6 +209,12 @@ describe('parser', function() {
       const children = getChildren(issueJson);
       expect(children).toHaveLength(8)
     })
+    it('bug372', async function() {
+      // test for bug https://github.com/pln-planning-tools/Starmap/issues/372
+      const issueJson = await import('../fixtures/getIssueResult/filecoin-station-roadmap-12.json');
+      const children = getChildren(issueJson);
+      expect(children).toHaveLength(17);
+    })
   })
 
   describe('getDescription', function() {
