@@ -16,12 +16,8 @@ interface BinPackOptions {
 }
 
 function getAllRectsWithCollisionsOnXRange (rects: BinPackItem[], x1: number, x2: number) {
-  return rects.filter(rect => {
-    const isLeftOverlapping = rect.left <= x1 && rect.right >= x1
-    const isRightOverlapping = rect.left <= x2 && rect.right >= x2
-    const isWithin = rect.left >= x1 && rect.right <= x2
-    return isLeftOverlapping || isRightOverlapping || isWithin
-  })
+  // this can be calculated as item that are outside the range of x1 and x2.
+  return rects.filter(rect => !(rect.right < x1 || rect.left > x2))
 }
 
 /**
@@ -44,9 +40,8 @@ export const binPack = (items: ImmutableArray<BinPackIssueData>, { height, width
       // if there's no due date, then we don't place it on the roadmap
       continue
     }
-    const dueDate = item.due_date ? dayjs(item.due_date) : dayjs()
+    const dueDate = dayjs(item.due_date)
     const x2 = scale(dueDate.endOf('day').toDate())
-    // console.log(`${item.title} x2: `, x2);
     const x1 = x2 - width
 
     const overlappingRects = getAllRectsWithCollisionsOnXRange(rects, x1, x2).sort((a, b) => a.bottom - b.bottom)
