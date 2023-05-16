@@ -167,11 +167,14 @@ interface StarmapContentUpdatedEvent extends Event {
 
 export type BinPackIssueData = Pick<IssueData, 'due_date' | 'children' | 'html_url' | 'title' | 'completion_rate'>
 
-export interface BinPackItem {
+export interface BoxItem {
   top: number, // y1
   bottom: number, // y2
   left: number, // x1
   right: number, // x2
+}
+
+export interface BinPackItem extends BoxItem {
   data: ImmutableObject<BinPackIssueData>
 }
 
