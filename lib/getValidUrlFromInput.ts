@@ -1,4 +1,4 @@
-export function getValidUrlFromInput(urlString: string): URL {
+export function getValidUrlFromInput (urlString: string): URL {
   if (/#\d+/.test(urlString)) {
     urlString = urlString.replace('#', '/issues/')
   } else if (!/\/issues\/\d+/.test(urlString)) {
