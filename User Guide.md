@@ -1,5 +1,9 @@
 # Starmap User Guide
 
+<a href="https://www.loom.com/share/ff446968fa684ed4b83e98c22ec306d3" target="_blank"><img align="center" src="https://cdn.loom.com/sessions/thumbnails/ff446968fa684ed4b83e98c22ec306d3-with-play.gif"></a>
+
+<img align="center" src="https://cdn.loom.com/sessions/thumbnails/ff446968fa684ed4b83e98c22ec306d3-with-play.gif">
+
 Starmap is a tool used to generate graphical representations of project roadmaps from GitHub issues. For the purposes of Starmap, a roadmap is represented by a single root node issue in GitHub that contains links to date-bound project milestone issues within that roadmap.
 
 The goal of Starmap is to help externalize planning, share team progress against milestones, and publicly flag dependencies. Starmap roadmaps are inter-team and user-focused.  The tool provides flexibility in terms of the level of granularity that can be viewed, enabling users to drill down into specific details or see a high-level overview of the project as a whole.
@@ -11,13 +15,13 @@ For more context around roadmapping within the Protocol Labs Network, watch the 
 To render a roadmap in Starmap, enter the related GitHub issue URL into the Starmap search bar. Depending on the size of the roadmap, the rendering may take a minute to load.
 
 - Project milestones will appear as fixed-width cards on the Starmap timeline.
-   - If a milestone contains one or more nested “child” milestones, users can click on the milestone card to view that milestone and its nested child milestone(s).
-   - When applicable, Milestone cards will feature a green progress bar that reflects the completion status of nested child milestones.
-   - To access the source GitHub issue for any milestone, users can click on the GitHub icon within each milestone card.
+  - If a milestone contains one or more nested “child” milestones, users can click on the milestone card to view that milestone and its nested child milestone(s).
+  - When applicable, Milestone cards will feature a green progress bar that reflects the completion status of nested child milestones.
+  - To access the source GitHub issue for any milestone, users can click on the GitHub icon within each milestone card.
 - Starmap offers two rendering modes that can be set through the toggle button above the timeline:
-   - **Overview** mode displays high-level milestones plotted against a timeline.
-   - **Detailed view** mode organizes milestones under their respective parent milestones.
-   - **List view** will soon be added.
+  - **Overview** mode displays high-level milestones plotted against a timeline.
+  - **Detailed view** mode organizes milestones under their respective parent milestones.
+  - **List view** will soon be added.
 
 GitHub issues that do not satisfy the requirements for rendering in Starmap as outlined herein may not display correctly. To add your roadmap to GitHub in a manner that will allow it to render in Starmap.site, please refer to the section titled [Storing Roadmaps in GitHub](#storing-roadmaps-in-github).
 
@@ -31,7 +35,6 @@ The fundamental unit of a roadmap is a project milestone. In the context of road
   - A roadmap can therefore be conceptualized as a directed acyclic graph (DAG). The root node of the DAG represents the roadmap itself, with child milestones linked as issues under this root node. These child milestones can be displayed by directing Starmap to the root issue.
   - For more information on this, see the [Roadmap Root Nodes](#roadmap-root-nodes) section below.
 - Starmap allows you to easily create new roadmap visualizations by creating a new root "roadmap" node in GitHub that points to a set of existing milestones. This means that the same milestone can be included in multiple roadmaps.
-
 
 ## Storing Roadmaps in Github
 
@@ -60,12 +63,13 @@ ETA: YYYY-MM-DD
 
 Example: 2023-02-01
 ```
+
 - If you are linking to an existing GitHub issue as a milestone, you must edit the issue to include an ETA.
 
 #### Issue Title
 
 - The titles of the Roadmap root node and milestone issues will be displayed in the Starmap visualization.
-   - You should appropriately title your issues to give users a clear picture of the roadmap content.
+  - You should appropriately title your issues to give users a clear picture of the roadmap content.
 - Issue titles are encoded as follows:
 
 ```
@@ -110,7 +114,7 @@ Tasklists allow for "taskifying" of strings, and we have no way to link a random
 
 We will do our best to support the expected syntax of GitHub's tasklist functionality.
 
-See https://docs.github.com/en/issues/tracking-your-work-with-issues/about-tasklists#creating-tasklists and https://github.com/pln-planning-tools/Starmap/issues/245 for more details.
+See <https://docs.github.com/en/issues/tracking-your-work-with-issues/about-tasklists#creating-tasklists> and <https://github.com/pln-planning-tools/Starmap/issues/245> for more details.
 
 ```
 ```[tasklist]
@@ -123,7 +127,7 @@ See https://docs.github.com/en/issues/tracking-your-work-with-issues/about-taskl
 
 ##### "Children:" syntax
 
-This syntax is deprecated. Please see https://github.com/pln-planning-tools/Starmap/issues/245 for more details.
+This syntax is deprecated. Please see <https://github.com/pln-planning-tools/Starmap/issues/245> for more details.
 
 ```
 Children:
@@ -135,7 +139,7 @@ Children:
 ### Progress Indicators
 
 - Starmap shows progress against completion of every Milestone rendered within each milestone card.
-   - It uses the GitHub status (open/closed) of the children and the Roadmap root node itself to calculate progress.
+  - It uses the GitHub status (open/closed) of the children and the Roadmap root node itself to calculate progress.
 - As issues are resolved and closed, they are counted as progress towards completion.
 - Once all children and the parent node itself are closed, the progress bar on the parent will show 100% complete.
 
@@ -145,10 +149,9 @@ Children:
 
 - Roadmaps with numerous milestones may not render in a useful way; it is recommended to have <= 5 milestones at any level. This is also a general best practice for project roadmaps.
 - Starmap’s two rendering modes (Overview and Detailed View) allow for the display of a roadmap in which there are multiple independent streams of delivery - which could be considered "themes", "pillars", etc.
-   - To do this, set up a root roadmap issue, where the theme issues are the children.
-   - Then, each child theme issue (encoded as a milestone), will be required to have an ETA. ETA should be set to the latest milestone ETA within that theme.
+  - To do this, set up a root roadmap issue, where the theme issues are the children.
+  - Then, each child theme issue (encoded as a milestone), will be required to have an ETA. ETA should be set to the latest milestone ETA within that theme.
 - The children of each theme are milestones; these are what get rendered under the theme headings in the timeline.
-
 
 ### Templates
 
@@ -184,7 +187,7 @@ Starmap Link: [Starmap Link]
 
 ##### Using "Children:"
 
-**NOTE:** The children: section is deprecated. Please see https://github.com/pln-planning-tools/Starmap/issues/245 for more details
+**NOTE:** The children: section is deprecated. Please see <https://github.com/pln-planning-tools/Starmap/issues/245> for more details
 
 ```
 Title: [Team/Project Name] [Duration] Roadmap
@@ -204,6 +207,7 @@ Starmap Link: [Starmap Link]
 ```
 
 #### Child Milestone Issues
+
 ```
 Title: [Team/Project Name] [Milestone Title]
 
