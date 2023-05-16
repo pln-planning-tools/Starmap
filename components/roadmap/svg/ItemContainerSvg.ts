@@ -14,7 +14,7 @@ class BoxModel {
   width: number
   height: number
 
-  constructor({ item }: { item: BoxItem }) {
+  constructor ({ item }: { item: BoxItem }) {
     this.top = item.top
     this.bottom = item.bottom
     this.left = item.left
@@ -31,7 +31,7 @@ export class ItemContainerSvg extends BoxModel implements BinPackItem {
   data: BinPackItem['data']
   boundary: BoxModel
 
-  constructor({
+  constructor ({
     item, padding, strokeWidth = ItemContainerSvg.defaultStrokeWidth
   }: ItemContainerSvgConstructorOptions) {
     super({ item })
