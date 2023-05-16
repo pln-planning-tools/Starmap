@@ -208,8 +208,8 @@ function NewRoadmap () {
   const binPackedGroups: BinPackedGroup[] = useMemo(() => {
     let leftMostX = Infinity
     let rightMostX = -Infinity
-    let topMostY = -Infinity
-    let bottomMostY = 40
+    let topMostY = 40
+    let bottomMostY = -Infinity
     const newGroups: BinPackedGroup[] = []
     const shouldAddYMinBuffer = issuesGroupedState.length > 1
     issuesGroupedState.forEach((issueGroup) => {
@@ -220,7 +220,7 @@ function NewRoadmap () {
         height: 80,
         ySpacing: 5,
         xSpacing: 0,
-        yMin: bottomMostY + (shouldAddYMinBuffer ? titlePadding : 0)
+        yMin: topMostY + (shouldAddYMinBuffer ? titlePadding : 0)
       })
 
       leftMostX = Math.min(leftMostX, stats.left)
