@@ -1,7 +1,7 @@
 export function getValidUrlFromInput(urlString: string): URL {
-  if (urlString.includes('#')) {
+  if (/#\d+/.test(urlString)) {
     urlString = urlString.replace('#', '/issues/')
-  } else if (!urlString.includes('issues')) {
+  } else if (!/\/issues\/\d+/.test(urlString)) {
     throw new Error('Unsupported URL string. URLs should be formatted like a github issue')
   }
   /**
