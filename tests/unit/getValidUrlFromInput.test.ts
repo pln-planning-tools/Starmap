@@ -15,8 +15,8 @@ describe('getValidUrlFromInput', function() {
   })
 
   it('should throw an error on an invalid urlString', function() {
-    // expect(getValidUrlFromInput('invalid url string')).toEqual(new URL('https://www.google.com'));
     expect(() => getValidUrlFromInput('invalid url string')).toThrowError('Unsupported URL string. URLs should be formatted like a github issue');
-    // console.log(`getValidUrlFromInput('invalid url string'): `, getValidUrlFromInput('invalid url string'));
+    expect(() => getValidUrlFromInput('#')).toThrowError('Unsupported URL string. URLs should be formatted like a github issue');
+    expect(() => getValidUrlFromInput('###')).toThrowError('Unsupported URL string. URLs should be formatted like a github issue');
   })
 })
