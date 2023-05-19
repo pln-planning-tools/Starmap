@@ -1,16 +1,16 @@
+import { groupStarMapsErrors } from '../groupStarMapsErrors'
 import {
   GithubIssueData,
   StarMapsError
-} from '../types';
-import { groupStarMapsErrors } from '../groupStarMapsErrors';
+} from '../types'
 
 export class ErrorManager {
-  errors: StarMapsError[];
-  constructor() {
-    this.errors = [];
+  errors: StarMapsError[]
+  constructor () {
+    this.errors = []
   }
 
-  addError({
+  addError ({
     issue,
     errorTitle,
     errorMessage,
@@ -21,23 +21,23 @@ export class ErrorManager {
     errorMessage: string;
     userGuideSection: string;
   }): void {
-    const { html_url, title } = issue;
+    const { html_url, title } = issue
     this.errors.push({
       issueUrl: html_url,
       issueTitle: title,
       userGuideUrl: `https://github.com/pln-planning-tools/Starmap/blob/main/User%20Guide.md${userGuideSection}`,
       title: errorTitle,
       message: errorMessage
-    });
+    })
   }
 
-  flushErrors() {
-    const errors = groupStarMapsErrors(this.errors);
-    this.clearErrors();
-    return errors;
+  flushErrors () {
+    const errors = groupStarMapsErrors(this.errors)
+    this.clearErrors()
+    return errors
   }
 
-  clearErrors() {
-    this.errors = [];
+  clearErrors () {
+    this.errors = []
   }
 }

@@ -21,7 +21,7 @@ describe('getCrumbDataFromCrumbDataArray', function() {
     const resultingCrumbData = getCrumbDataFromCrumbDataArray(crumbDataArray, ViewMode.Detail);
     expect(resultingCrumbData).toEqual([{
       title: 'Issue 1',
-      url: 'http://localhost/roadmap/github.com/owner/repo/issues/1#detail',
+      url: 'http://localhost/roadmap/github.com/owner/repo/issues/1#view=detail',
     }]);
   });
 

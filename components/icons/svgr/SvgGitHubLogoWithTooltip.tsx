@@ -1,14 +1,16 @@
-import { Link, Tooltip } from '@chakra-ui/react';
-import React from 'react';
+import { Link, Tooltip } from '@chakra-ui/react'
+import React from 'react'
 
-import SvgGitHubLogo from './SvgGitHubLogo';
-import styles from './SvgGitHubLogoWithTooltip.module.css';
+import SvgGitHubLogo from './SvgGitHubLogo'
+import styles from './SvgGitHubLogoWithTooltip.module.css'
 
-const LogoWithTooltip = React.forwardRef<any, {children?: any}>(({ children, ...rest }, ref) => (
+const LogoWithTooltip = React.forwardRef<any, {children?: any}>(function LogoWithTooltipFn ({ children, ...rest }, ref) {
+  return (
     <SvgGitHubLogo ref={ref} {...rest}>
       {children}
     </SvgGitHubLogo>
-))
+  )
+})
 
 export const SvgGitHubLogoWithTooltip = (props) => {
   const onClickHandler = (event) => {

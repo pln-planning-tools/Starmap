@@ -1,7 +1,8 @@
-import { ImmutableArray, ImmutableObject } from '@hookstate/core';
-import { ViewMode } from '../enums';
-import { findIssueDepthByUrl } from '../findIssueDepthByUrl';
-import { StarMapsIssueErrorsGrouped, IssueData } from '../types';
+import { ImmutableArray, ImmutableObject } from '@hookstate/core'
+
+import { ViewMode } from '../enums'
+import { findIssueDepthByUrl } from '../findIssueDepthByUrl'
+import { StarMapsIssueErrorsGrouped, IssueData } from '../types'
 
 /**
  * Returns an issueError filter that will filter out any errors that are not maxDepth or shallower.
@@ -11,21 +12,19 @@ import { StarMapsIssueErrorsGrouped, IssueData } from '../types';
  */
 export const getIssueErrorFilter = (maxDepth: number) =>
   (errors: ImmutableArray<StarMapsIssueErrorsGrouped>, issueDataState: ImmutableObject<IssueData>) => errors.filter(({ issueUrl: errorIssueUrl }) => {
-      if (issueDataState != null) {
-        const foundIssueDepth = findIssueDepthByUrl(issueDataState, errorIssueUrl);
+    if (issueDataState != null) {
+      const foundIssueDepth = findIssueDepthByUrl(issueDataState, errorIssueUrl)
 
-        if (foundIssueDepth <= maxDepth && foundIssueDepth > -1) {
-          return true;
-        }
+      if (foundIssueDepth <= maxDepth && foundIssueDepth > -1) {
+        return true
       }
+    }
 
-      return false;
-    })
-
-
+    return false
+  })
 
 export const errorFilters = {
   [ViewMode.List]: getIssueErrorFilter(1),
   [ViewMode.Simple]: getIssueErrorFilter(1),
-  [ViewMode.Detail]: getIssueErrorFilter(3),
+  [ViewMode.Detail]: getIssueErrorFilter(3)
 }

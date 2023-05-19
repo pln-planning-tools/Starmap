@@ -3,22 +3,24 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     tsconfigRootDir: __dirname,
-    project: ['./tsconfig.json'],
+    project: ['./tsconfig.json']
   },
   env: {
-    jest: true,
+    jest: true
   },
   plugins: [
     '@typescript-eslint',
-    'import',
+    'import'
   ],
   extends: [
-    'plugin:@next/next/recommended',
+    'next',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
-    'prettier',
+    'plugin:import/typescript',
+    'standard'
   ],
   rules: {
+    camelcase: 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unsafe-argument': 'off',
@@ -26,9 +28,8 @@ module.exports = {
     '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
-    '@typescript-eslint/no-unused-vars': ['error', { 'destructuredArrayIgnorePattern': '^_' }],
+    '@typescript-eslint/no-unused-vars': ['error', { destructuredArrayIgnorePattern: '^_' }],
     '@typescript-eslint/restrict-template-expressions': 'off',
-    'arrow-body-style': 'off',
     'arrow-body-style': 'warn',
     'implicit-arrow-linebreak': 'off',
     'jsx-a11y/alt-text': 'off',
@@ -41,16 +42,32 @@ module.exports = {
     'react/prop-types': 'off',
     'react/react-in-jsx-scope': 'off',
     'import/no-unused-modules': [2, {
-      "unusedExports": true,
-      "ignoreExports": [
-        'pages/',
-        'components/roadmap/',
+      unusedExports: true,
+      ignoreExports: [
+        'hooks/useEffectDebugger.ts',
         'lib/backend/saveIssueDataToFile.ts',
         'lib/mergeStarMapsErrorGroups.ts',
         'lib/addStarMapsErrorsToStarMapsErrorGroups.ts',
-        'playwright.config.ts',
+        'pages/',
+        'playwright.config.ts'
       ]
-    }]
+    }],
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin', // Built-in types are first
+          ['external', 'unknown'],
+          ['parent', 'sibling', 'internal', 'index']
+        ],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true
+        },
+        warnOnUnassignedImports: true
+      }
+    ]
   },
   settings: {
     'import/parsers': {
@@ -60,8 +77,8 @@ module.exports = {
       typescript: {},
       node: {
         extensions: ['.jsx', '.jsx', '.ts', '.tsx'],
-        moduleDirectory: ['node_modules', 'lib/', 'components/', 'hooks/', 'pages/'],
+        moduleDirectory: ['node_modules', 'lib/', 'components/', 'hooks/', 'pages/']
       }
     }
   }
-};
+}

@@ -29,7 +29,7 @@ const testData: (Pick<IssueData, 'html_url' | 'title' | 'children'>)[] = [
 ];
 
 const getExpectedUrlForTestData = (testIssue: typeof testData[number], parents: typeof testData[number][] = [], viewMode = ViewMode.Detail) => {
-  const url = new URL(`http://localhost/roadmap/${testIssue.html_url.replace('https://', '')}#${viewMode}`)
+  const url = new URL(`http://localhost/roadmap/${testIssue.html_url.replace('https://', '')}#view=${viewMode}`)
   if (parents.length > 0) {
     const expectedCrumbs = convertCrumbDataArraysToCrumbDataString(parents.map(getCrumbDataArrayFromIssueData));
     url.searchParams.append('crumbs', expectedCrumbs);

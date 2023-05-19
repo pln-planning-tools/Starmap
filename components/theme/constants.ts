@@ -1,4 +1,4 @@
-export const SMALL_SCREEN_THRESHOLD = 720; // average mobile screen height in pixels.
+export const SMALL_SCREEN_THRESHOLD = 720 // average mobile screen height in pixels.
 
 const lightMode = {
   header: {
@@ -52,6 +52,8 @@ const darkMode = {
   }
 }
 
+// TODO: Migrate to chakra theme defined in /pages/_app.tsx
+// see https://github.com/pln-planning-tools/Starmap/issues/370
 export default {
   light: lightMode,
   dark: darkMode

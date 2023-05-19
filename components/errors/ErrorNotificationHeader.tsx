@@ -1,20 +1,21 @@
-import { Box, Center, Flex, Spacer, Spinner, Text } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronUpIcon, WarningTwoIcon } from '@chakra-ui/icons'
-import React from 'react';
-import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
+import { Box, Center, Flex, Spacer, Spinner, Text } from '@chakra-ui/react'
+import React from 'react'
+
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
 
 interface ErrorNotificationHeaderProps {
   isExpanded: boolean;
   toggle: () => void;
   errorCount: number;
 }
-export function ErrorNotificationHeader({ isExpanded, toggle, errorCount }: ErrorNotificationHeaderProps) {
-  const globalLoadingState = useGlobalLoadingState();
+export function ErrorNotificationHeader ({ isExpanded, toggle, errorCount }: ErrorNotificationHeaderProps) {
+  const globalLoadingState = useGlobalLoadingState()
 
-  const iconWandH = 8;
+  const iconWandH = 8
   const icon = isExpanded
     ? <ChevronDownIcon width={iconWandH} height={iconWandH} cursor="pointer" onClick={toggle} />
-    : <ChevronUpIcon width={iconWandH} height={iconWandH} cursor="pointer" onClick={toggle} />;
+    : <ChevronUpIcon width={iconWandH} height={iconWandH} cursor="pointer" onClick={toggle} />
   return (
     <Box
       bg="#F8FBFF"
@@ -37,5 +38,5 @@ export function ErrorNotificationHeader({ isExpanded, toggle, errorCount }: Erro
       </Flex>
 
     </Box>
-  );
+  )
 }

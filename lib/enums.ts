@@ -1,12 +1,13 @@
-export enum RoadmapMode {
-  d3 = 'd3',
-  grid = 'grid',
-}
-
 export enum ViewMode {
   Detail = 'detail',
   Simple = 'simple',
   List = 'list',
+}
+
+export enum TimeUnit {
+  Month = 'month',
+  Quarter = 'quarter',
+  Year = 'year',
 }
 
 export enum DateGranularityState {

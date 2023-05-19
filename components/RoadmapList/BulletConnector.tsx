@@ -1,5 +1,6 @@
-import React from 'react';
-import styles from './BulletConnector.module.css';
+import React from 'react'
+
+import styles from './BulletConnector.module.css'
 
 /**
  * The vertical line connecting each bulletIcon across all rows

@@ -1,18 +1,18 @@
-import { Grid, GridItem, Center, Link, HStack, Text, Skeleton } from '@chakra-ui/react';
-import { LinkIcon } from '@chakra-ui/icons';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import React from 'react';
+import { LinkIcon } from '@chakra-ui/icons'
+import { Grid, GridItem, Center, Link, HStack, Text, Skeleton } from '@chakra-ui/react'
+import NextLink from 'next/link'
+import { useRouter } from 'next/router'
+import React from 'react'
 
-import SvgGitHubLogo from '../icons/svgr/SvgGitHubLogo';
-import BulletConnector from './BulletConnector';
-import BulletIcon from './BulletIcon';
-import { paramsFromUrl } from '../../lib/paramsFromUrl';
-import { dayjs } from '../../lib/client/dayjs';
-import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild';
-import { ViewMode } from '../../lib/enums';
-import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState';
-import { ListIssueViewModel } from './types';
+import { useGlobalLoadingState } from '../../hooks/useGlobalLoadingState'
+import { dayjs } from '../../lib/client/dayjs'
+import { getLinkForRoadmapChild } from '../../lib/client/getLinkForRoadmapChild'
+import { ViewMode } from '../../lib/enums'
+import { paramsFromUrl } from '../../lib/paramsFromUrl'
+import SvgGitHubLogo from '../icons/svgr/SvgGitHubLogo'
+import BulletConnector from './BulletConnector'
+import BulletIcon from './BulletIcon'
+import { ListIssueViewModel } from './types'
 
 interface RoadmapListItemDefaultProps {
   issue: ListIssueViewModel
@@ -22,7 +22,7 @@ interface RoadmapListItemDefaultProps {
 
 function TitleText ({ hasChildren, issue }: Pick<RoadmapListItemDefaultProps, 'issue'> & {hasChildren: boolean}) {
   return (
-    <Text fontWeight="semibold" color="linkBlue" fontSize={"xl"} lineHeight="32px">
+    <Text fontWeight="semibold" color="linkBlue" fontSize={'xl'} lineHeight="32px">
       {hasChildren ? <LinkIcon lineHeight="32px" boxSize="10px" /> : null} {issue.title}
     </Text>
   )
@@ -45,7 +45,7 @@ function TitleTextMaybeLink ({ issue, hasChildren, index, childLink }: Pick<Road
 export default function RoadmapListItemDefault ({ issue, index, issues }: RoadmapListItemDefaultProps) {
   const { owner, repo, issue_number } = paramsFromUrl(issue.html_url)
   const childLink = getLinkForRoadmapChild({ issueData: issue, query: useRouter().query, viewMode: ViewMode.List })
-  const globalLoadingState = useGlobalLoadingState();
+  const globalLoadingState = useGlobalLoadingState()
   const hasChildren = childLink !== '#'
   const issueDueDate = issue.due_date ? dayjs(issue.due_date).format('MMM D, YYYY') : 'unknown'
 
@@ -75,8 +75,8 @@ export default function RoadmapListItemDefault ({ issue, index, issues }: Roadma
         <HStack gap={0} alignItems="flex-start">
           <Link href={issue.html_url} lineHeight="32px" isExternal>
             <Skeleton isLoaded={!globalLoadingState.get()}>
-              <HStack gap={0} alignItems="center" wrap={"nowrap"}>
-                <SvgGitHubLogo color="text" style={{ display:'inline', color: '#313239' }} fill="#313239" />
+              <HStack gap={0} alignItems="center" wrap={'nowrap'}>
+                <SvgGitHubLogo color="text" style={{ display: 'inline', color: '#313239' }} fill="#313239" />
                 <Text color="text" style={{ whiteSpace: 'nowrap' }} fontSize="large">{owner}/{repo}#{issue_number}</Text>
               </HStack>
             </Skeleton>

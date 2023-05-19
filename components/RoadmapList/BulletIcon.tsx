@@ -1,5 +1,6 @@
 import { CircularProgress } from '@chakra-ui/react'
 import React from 'react'
+
 import styles from './BulletIcon.module.css'
 
 export default function BulletIcon ({ completion_rate }: {completion_rate: number}) {

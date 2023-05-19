@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 
 const SvgDetailViewIcon = () => (
   /**
@@ -13,6 +13,6 @@ const SvgDetailViewIcon = () => (
       </g>
     </g>
   </svg>
-);
+)
 
-export default SvgDetailViewIcon;
+export default SvgDetailViewIcon
