@@ -191,9 +191,16 @@ export const getChildren = (issue: Pick<GithubIssueData, 'body_html' | 'body' | 
  */
 export const getDescription = (issueBodyText: string): string => {
   if (issueBodyText.length === 0) return ''
+  let sectionText = ''
+  try {
+    sectionText = betweenTwoRegex(issueBodyText, /description:/im, /^[\r\n]{2,}$/gm)
+  } catch {
+    // return empty string, no description text found.
+    return ''
+  }
 
-  const [firstLine, ...linesToParse] = betweenTwoRegex(issueBodyText, /description:/im, /^[\r\n]{2,}$/gm)
-    .split(/\r\n|\r|\n/) // We do not want to replace multiple newlines, only one.
+  // We do not want to replace multiple newlines, only one.
+  const [firstLine, ...linesToParse] = sectionText.split(/\r\n|\r|\n/)
 
   // the first line may contain only "description:" or "description: This is the start of my description"
   const firstLineContent = firstLine
