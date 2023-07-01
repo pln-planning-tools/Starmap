@@ -61,7 +61,6 @@ const getGithubLinkFromLine = (line: string): string | null => {
   }) ?? null
 }
 const ensureTaskListChild = (line: string) => line.trim().indexOf('-') === 0
-const getUrlFromMarkdownText = (line: string) => line.trim().split('](').slice(-1)[0].replace(')', '')
 
 function getUrlStringForChildrenLine (line: string, issue: Pick<GithubIssueData, 'html_url'>) {
   if (/^#\d+$/.test(line)) {

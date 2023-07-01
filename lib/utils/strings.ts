@@ -7,13 +7,6 @@ export function regexIndexOf (string: string, regex: RegExp, startpos = 0) {
   return indexOf
 }
 
-export function indexOf (string: string, strOrRegex: string | RegExp, startpos = 0) {
-  if (typeof strOrRegex === 'string') {
-    return string.indexOf(strOrRegex, startpos)
-  }
-  return regexIndexOf(string, strOrRegex, startpos)
-}
-
 /**
  * This function accepts a string, and two regular expressions, and returns the
  * string between the two regular expressions.
