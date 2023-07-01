@@ -201,6 +201,11 @@ describe('parser', function() {
       const issueJson = await import('../fixtures/getIssueResult/filecoin-station-roadmap-15.json');
       const children = getChildren(issueJson);
       expect(children).toHaveLength(3)
+      expect(children).toStrictEqual([
+        'https://github.com/filecoin-station/core/issues/83',
+        'https://github.com/filecoin-station/core/issues/100',
+        'https://github.com/filecoin-station/desktop/issues/621'
+      ].map(url => ({ group: 'children:', html_url: url })))
     })
 
     it('bug366', async function() {
@@ -208,12 +213,55 @@ describe('parser', function() {
       const issueJson = await import('../fixtures/getIssueResult/protocol-probelab-1.json');
       const children = getChildren(issueJson);
       expect(children).toHaveLength(8)
+      expect(children).toStrictEqual([
+        'https://github.com/protocol/probelab/issues/2',
+        'https://github.com/protocol/probelab/issues/3',
+        'https://github.com/protocol/probelab/issues/4',
+        'https://github.com/protocol/probelab/issues/5',
+        'https://github.com/protocol/probelab/issues/6',
+        'https://github.com/protocol/probelab/issues/7',
+        'https://github.com/protocol/probelab/issues/8',
+        'https://github.com/protocol/probelab/issues/9',
+      ].map(url => ({ group: 'children:', html_url: url })))
     })
     it('bug372', async function() {
       // test for bug https://github.com/pln-planning-tools/Starmap/issues/372
       const issueJson = await import('../fixtures/getIssueResult/filecoin-station-roadmap-12.json');
       const children = getChildren(issueJson);
       expect(children).toHaveLength(17);
+      expect(children).toStrictEqual([
+        'https://github.com/filecoin-station/core/issues/1',
+        'https://github.com/filecoin-station/core/issues/2',
+        'https://github.com/filecoin-station/core/issues/3',
+        'https://github.com/filecoin-station/core/issues/4',
+        'https://github.com/filecoin-station/core/issues/5',
+        'https://github.com/filecoin-station/core/issues/6',
+        'https://github.com/filecoin-station/core/issues/7',
+        'https://github.com/filecoin-station/core/issues/8',
+        'https://github.com/filecoin-station/core/issues/9',
+        'https://github.com/filecoin-station/core/issues/10',
+        'https://github.com/filecoin-station/core/issues/11',
+        'https://github.com/filecoin-station/core/issues/12',
+        'https://github.com/filecoin-station/core/issues/13',
+        'https://github.com/filecoin-station/core/issues/14',
+        'https://github.com/filecoin-station/core/issues/15',
+        'https://github.com/filecoin-station/core/issues/16',
+        'https://github.com/filecoin-station/core/issues/17',
+      ].map(url => ({ group: 'children:', html_url: url })))
+    })
+
+    it('bug378', async function() {
+      // test for bug https://github.com/pln-planning-tools/Starmap/issues/378
+      const issueJson = await import('../fixtures/getIssueResult/filecoin-station-roadmap-19.json')
+      const children = getChildren(issueJson)
+      expect(children).toHaveLength(5)
+      expect(children).toStrictEqual([
+        'https://github.com/filecoin-station/rusty-lassie/issues/1',
+        'https://github.com/filecoin-station/zinnia/issues/243',
+        'https://github.com/filecoin-station/zinnia/issues/243',
+        'https://github.com/filecoin-station/spark/issues/5',
+        'https://github.com/filecoin-station/zinnia/issues/245'
+      ].map(url => ({ group: 'children:', html_url: url })))
     })
   })
 

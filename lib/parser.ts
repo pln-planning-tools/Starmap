@@ -6,6 +6,7 @@ import { getEtaDate, isValidChildren } from './helpers'
 import { paramsFromUrl } from './paramsFromUrl'
 import { GithubIssueData, GithubIssueDataWithChildren, ParserGetChildrenResponse } from './types'
 import { isNonEmptyString } from './typescriptGuards'
+import { betweenTwoRegex, indexOf, regexIndexOf } from './utils/strings'
 
 export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' | 'body_html' | 'root_issue' | 'title'>, errorManager: ErrorManager) => {
   const { body_html: issueBodyHtml } = issue
@@ -31,45 +32,27 @@ export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' |
   }
 }
 
-function regexIndexOf (string: string, regex: RegExp, startpos = 0) {
-  const indexOf = string.substring(startpos).search(regex)
-  if (indexOf >= 0) {
-    return indexOf + startpos
-  }
-  return indexOf
-}
-
-function indexOf (string: string, strOrRegex: string | RegExp, startpos = 0) {
-  if (typeof strOrRegex === 'string') {
-    return string.indexOf(strOrRegex, startpos)
-  }
-  return regexIndexOf(string, strOrRegex, startpos)
-}
-
 function getSectionLines (text: string, sectionHeader: string | RegExp): string {
+  // console.log('text, sectionHeader: ', text, sectionHeader)
   const sectionStartIndex = indexOf(text, sectionHeader)
+  // console.log('sectionStartIndex: ', sectionStartIndex)
   if (sectionStartIndex === -1) {
     return ''
   }
   const startText = text.substring(sectionStartIndex)
+
+  const potentialSectionText = startText.replace(sectionHeader, '').trimStart()
+
   /**
    * sectionEndIndex marks the location of the first double line break
    * i.e. first empty line
    */
-  const sectionEndIndex = regexIndexOf(startText, /^[\r\n]{2,}$/gm)
+  const sectionEndIndex = regexIndexOf(potentialSectionText, /^[\r\n]{2,}$/gm)
+  console.log('sectionEndIndex: ', sectionEndIndex)
   if (sectionEndIndex === -1) {
-    return startText
+    return potentialSectionText
   }
-  return startText.substring(0, sectionEndIndex)
-}
-
-function getCleanedSectionLines (text: string, sectionHeader: string | RegExp) {
-  const lines = getSectionLines(text, sectionHeader)
-  if (typeof lines === 'string') {
-    return lines.split(/[\r\n]+/).slice(1)
-      .map(getUrlFromMarkdownText)
-  }
-  return lines
+  return potentialSectionText.substring(0, sectionEndIndex)
 }
 
 /**
@@ -130,7 +113,7 @@ function getUrlStringForChildrenLine (line: string, issue: Pick<GithubIssueData,
  */
 function getChildrenFromTaskList (issue: Pick<GithubIssueData, 'body' | 'html_url'>): ParserGetChildrenResponse[] {
   // tasklists require the checkbox style format to recognize children
-  const lines = getCleanedSectionLines(issue.body, '```[tasklist]')
+  const lines = betweenTwoRegex(issue.body, /^```\[tasklist\][\r\n]+/m, /^```$/m).split(/[\r\n]+/)
     .filter(ensureTaskListChild)
     .map(getGithubLinkFromLine)
     .filter(isNonEmptyString)
@@ -155,7 +138,7 @@ function getChildrenNew (issue: Pick<GithubIssueData, 'body' | 'html_url'>): Par
     // Could not find children using new tasklist format,
     // try to look for "children:" section
   }
-  const lines = getCleanedSectionLines(issue.body, /children:/i)
+  const lines = betweenTwoRegex(issue.body, /^\s*children:\s*[\r\n]+/im, /^[\r\n]{2,}$/m).split(/[\r\n]+/)
     .map(getGithubLinkFromLine)
     .filter(isNonEmptyString)
   if (lines.length === 0) {

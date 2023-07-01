@@ -43,8 +43,8 @@ describe('strings', function () {
 
     it('works on complicated multiple line strings', function () {
       const str = 'eta: 2023Q4\r\n\r\n```[tasklist]\r\n### Tasks\r\n- [ ] #121\r\n- [ ] #122\r\n- [ ] #123\r\n- [ ] #124\r\n```\r\n'
-      const regex1 = /^```\[tasklist\][\r\n]+/gm
-      const regex2 = /^```$/gm
+      const regex1 = /^```\[tasklist\][\r\n]+/m
+      const regex2 = /^```$/m
       const result = betweenTwoRegex(str, regex1, regex2)
       expect(result).toBe('### Tasks\r\n- [ ] #121\r\n- [ ] #122\r\n- [ ] #123\r\n- [ ] #124\r\n')
     })
