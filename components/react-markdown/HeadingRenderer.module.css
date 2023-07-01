@@ -1,0 +1,38 @@
+.heading {
+  position: relative;
+  margin-top: var(--chakra-space-4);
+  margin-bottom: var(--chakra-space-4);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.heading .link,
+.heading .link:hover {
+  text-decoration-line: none;
+}
+
+.heading .heading--anchorIcon {
+  display: none;
+  padding-left: 5px;
+}
+
+.heading:hover .heading--anchorIcon {
+  display: inline;
+}
+
+h1.heading {
+  font-size: 32px;
+  line-height: 1;
+}
+
+h2.heading {
+  font-size: 24px;
+}
+
+h3.heading {
+  font-size: 20px;
+}
+
+h4.heading {
+  font-size: 16px;
+}
