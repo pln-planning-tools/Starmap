@@ -27,7 +27,9 @@ export function indexOf (string: string, strOrRegex: string | RegExp, startpos =
  */
 export function betweenTwoRegex (str: string, regex1: RegExp, regex2: RegExp, errorOnEndNotFound = false): string {
   const result1 = regex1.exec(str)
-  if (!result1) throw new Error(`Could not find '${regex1}' in string`)
+  if (!result1) {
+    throw new Error(`Could not find '${regex1}' in string`)
+  }
   const startMatchStr = result1[0]
   const startIndex = result1.index + startMatchStr.length
 

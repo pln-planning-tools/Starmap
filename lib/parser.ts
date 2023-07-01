@@ -6,7 +6,7 @@ import { getEtaDate, isValidChildren } from './helpers'
 import { paramsFromUrl } from './paramsFromUrl'
 import { GithubIssueData, GithubIssueDataWithChildren, ParserGetChildrenResponse } from './types'
 import { isNonEmptyString } from './typescriptGuards'
-import { betweenTwoRegex, indexOf, regexIndexOf } from './utils/strings'
+import { betweenTwoRegex } from './utils/strings'
 
 export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' | 'body_html' | 'root_issue' | 'title'>, errorManager: ErrorManager) => {
   const { body_html: issueBodyHtml } = issue
@@ -30,29 +30,6 @@ export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' |
   return {
     eta: eta ?? ''
   }
-}
-
-function getSectionLines (text: string, sectionHeader: string | RegExp): string {
-  // console.log('text, sectionHeader: ', text, sectionHeader)
-  const sectionStartIndex = indexOf(text, sectionHeader)
-  // console.log('sectionStartIndex: ', sectionStartIndex)
-  if (sectionStartIndex === -1) {
-    return ''
-  }
-  const startText = text.substring(sectionStartIndex)
-
-  const potentialSectionText = startText.replace(sectionHeader, '').trimStart()
-
-  /**
-   * sectionEndIndex marks the location of the first double line break
-   * i.e. first empty line
-   */
-  const sectionEndIndex = regexIndexOf(potentialSectionText, /^[\r\n]{2,}$/gm)
-  console.log('sectionEndIndex: ', sectionEndIndex)
-  if (sectionEndIndex === -1) {
-    return potentialSectionText
-  }
-  return potentialSectionText.substring(0, sectionEndIndex)
 }
 
 /**
@@ -216,7 +193,7 @@ export const getChildren = (issue: Pick<GithubIssueData, 'body_html' | 'body' | 
 export const getDescription = (issueBodyText: string): string => {
   if (issueBodyText.length === 0) return ''
 
-  const [firstLine, ...linesToParse] = getSectionLines(issueBodyText, 'description:')
+  const [firstLine, ...linesToParse] = betweenTwoRegex(issueBodyText, /description:/im, /^[\r\n]{2,}$/gm)
     .split(/\r\n|\r|\n/) // We do not want to replace multiple newlines, only one.
 
   // the first line may contain only "description:" or "description: This is the start of my description"
