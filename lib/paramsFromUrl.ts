@@ -3,9 +3,7 @@ import { slugsFromUrl } from './slugsFromUrl'
 import { UrlMatchSlugs } from './types'
 
 export function paramsFromUrl (urlString: string): UrlMatchSlugs {
-  if (urlString.includes('/pull/')) {
-    urlString = urlString.replace(/pull/g, 'issues')
-  }
+  urlString = urlString.replace(/\/pull\//g, '/issues/')
   if (urlString.includes('/issues/') && urlString.lastIndexOf('#') > 0) {
     urlString = urlString.split('#')[0]
   }
