@@ -243,10 +243,10 @@ The `getChildren` function is defined in the [parser](./lib/parser.ts) and works
 
 1. startIndex = Find a [Tasklist](#tasklist-syntax) or [Children](#children-syntax) header
 2. endIndex = Find the end of the [Tasklist](#tasklist-syntax) or [Children](#children-syntax) section.
-3. Convert all of the lines between `startIndex` and `endIndex` into an array
-4. Map over all the lines, parsing each line and returning either a URL or null
-   * If a valid [Github Issue identifier](#github-issue-identifier), we return a URL
-   * If not, we return null
+3. Convert all of the lines between `startIndex` and `endIndex` into an array.
+4. Map over all the lines, parsing each line and returning either a URL or `null`.
+   * If a valid [Github Issue identifier](#github-issue-identifier), we return a URL.
+   * If not, we return `null`.
 5. Filter out all null items in the lines array.
 6. Convert each item to a child and return the result.
 
