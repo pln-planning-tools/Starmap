@@ -253,8 +253,8 @@ The `getChildren` function is defined in the [parser](./lib/parser.ts) and works
 #### Reasons your milestone's children may not be recognized
 
 1. You're using the deprecated `children:` syntax and have an extra space or empty-line where it shouldn't be.
-2. The link for your child is not a valid [Github Issue identifier](#github-issue-identifier)
-3. You have children specified via [Tasklist syntax](#tasklist-syntax) and [Children syntax](#children-syntax) section and one is empty
+2. The link for your child is not a valid [Github Issue identifier](#github-issue-identifier).
+3. You have children specified via [Tasklist syntax](#tasklist-syntax) and [Children syntax](#children-syntax) section and one is empty.
 
 ## Legend
 
