@@ -123,7 +123,10 @@ See https://docs.github.com/en/issues/tracking-your-work-with-issues/about-taskl
 
 ##### "Children:" syntax
 
-This syntax is deprecated. Please see https://github.com/pln-planning-tools/Starmap/issues/245 for more details.
+**WARNING:** This syntax is deprecated. Please see https://github.com/pln-planning-tools/Starmap/issues/245 for more details.
+
+**NOTE:** All child milestones using the `children:` syntax SHOULD appear between the section header and the first empty line for Starmap to recognize them. Failing to do this is a common cause of [children milestones not rendering](#why-arent-all-of-my-milestone-children-being-recognized-by-starmap).
+
 
 ```
 Children:
@@ -227,3 +230,38 @@ Resources:
 
 Note: This milestone is subject to change as priorities and circumstances evolve.
 ```
+
+## FAQs
+
+If you are experiencing issues using Starmap, please don't hesitate to [open an issue](https://github.com/pln-planning-tools/Starmap/issues/new) for support.
+
+### Why aren't all of my milestone children being recognized by Starmap?
+
+When Starmap is parsing children in your GitHub issue, look for valid [Github Issue identifiers](#github-issue-identifier) between the section header and the first empty line.
+
+The `getChildren` function is defined in the [parser](./lib/parser.ts) and works like this:
+
+1. startIndex = Find a [Tasklist](#tasklist-syntax) or [Children](#children-syntax) header
+2. endIndex = Find the end of the [Tasklist](#tasklist-syntax) or [Children](#children-syntax) section.
+3. Convert all of the lines between `startIndex` and `endIndex` into an array.
+4. Map over all the lines, parsing each line and returning either a URL or `null`.
+   * If a valid [Github Issue identifier](#github-issue-identifier), we return a URL.
+   * If not, we return `null`.
+5. Filter out all null items in the lines array.
+6. Convert each item to a child and return the result.
+
+#### Reasons your milestone's children may not be recognized
+
+1. You're using the deprecated `children:` syntax and have an extra space or empty-line where it shouldn't be.
+2. The link for your child is not a valid [Github Issue identifier](#github-issue-identifier).
+3. You have children specified via [Tasklist syntax](#tasklist-syntax) and [Children syntax](#children-syntax) section and one is empty.
+
+## Legend
+
+### GitHub Issue identifier
+
+A GitHub Issue identifier can come in three different forms:
+
+1. `#<issue_number>` - Is converted to a full URL, using the current/parent issues <org> and <repo>
+1. `<org>/<repo>#<issue_number>`
+1. A full URL

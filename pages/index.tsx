@@ -11,6 +11,7 @@ import remarkGfm from 'remark-gfm'
 
 import GitHubSvgIcon from '../components/icons/GitHubLogo.svg'
 import PageHeader from '../components/layout/PageHeader'
+import { HeadingRenderer } from '../components/react-markdown/HeadingRenderer'
 import themes from '../components/theme/constants'
 import styles from './LandingPage.module.css'
 
@@ -32,6 +33,12 @@ export async function getServerSideProps (): Promise<{ props: SSProps }> {
 }
 
 const chakraUiRendererTheme: Parameters<typeof ChakraUIRenderer>[0] = {
+  h1: HeadingRenderer,
+  h2: HeadingRenderer,
+  h3: HeadingRenderer,
+  h4: HeadingRenderer,
+  h5: HeadingRenderer,
+  h6: HeadingRenderer,
   a: (props) => {
     const { children, href } = props
 

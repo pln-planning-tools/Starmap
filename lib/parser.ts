@@ -6,6 +6,7 @@ import { getEtaDate, isValidChildren } from './helpers'
 import { paramsFromUrl } from './paramsFromUrl'
 import { GithubIssueData, GithubIssueDataWithChildren, ParserGetChildrenResponse } from './types'
 import { isNonEmptyString } from './typescriptGuards'
+import { betweenTwoRegex } from './utils/strings'
 
 export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' | 'body_html' | 'root_issue' | 'title'>, errorManager: ErrorManager) => {
   const { body_html: issueBodyHtml } = issue
@@ -29,47 +30,6 @@ export const getDueDate = (issue: Pick<GithubIssueDataWithChildren, 'html_url' |
   return {
     eta: eta ?? ''
   }
-}
-
-function regexIndexOf (string: string, regex: RegExp, startpos = 0) {
-  const indexOf = string.substring(startpos).search(regex)
-  if (indexOf >= 0) {
-    return indexOf + startpos
-  }
-  return indexOf
-}
-
-function indexOf (string: string, strOrRegex: string | RegExp, startpos = 0) {
-  if (typeof strOrRegex === 'string') {
-    return string.indexOf(strOrRegex, startpos)
-  }
-  return regexIndexOf(string, strOrRegex, startpos)
-}
-
-function getSectionLines (text: string, sectionHeader: string | RegExp): string {
-  const sectionStartIndex = indexOf(text, sectionHeader)
-  if (sectionStartIndex === -1) {
-    return ''
-  }
-  const startText = text.substring(sectionStartIndex)
-  /**
-   * sectionEndIndex marks the location of the first double line break
-   * i.e. first empty line
-   */
-  const sectionEndIndex = regexIndexOf(startText, /^[\r\n]{2,}$/gm)
-  if (sectionEndIndex === -1) {
-    return startText
-  }
-  return startText.substring(0, sectionEndIndex)
-}
-
-function getCleanedSectionLines (text: string, sectionHeader: string | RegExp) {
-  const lines = getSectionLines(text, sectionHeader)
-  if (typeof lines === 'string') {
-    return lines.split(/[\r\n]+/).slice(1)
-      .map(getUrlFromMarkdownText)
-  }
-  return lines
 }
 
 /**
@@ -101,7 +61,6 @@ const getGithubLinkFromLine = (line: string): string | null => {
   }) ?? null
 }
 const ensureTaskListChild = (line: string) => line.trim().indexOf('-') === 0
-const getUrlFromMarkdownText = (line: string) => line.trim().split('](').slice(-1)[0].replace(')', '')
 
 function getUrlStringForChildrenLine (line: string, issue: Pick<GithubIssueData, 'html_url'>) {
   if (/^#\d+$/.test(line)) {
@@ -130,7 +89,7 @@ function getUrlStringForChildrenLine (line: string, issue: Pick<GithubIssueData,
  */
 function getChildrenFromTaskList (issue: Pick<GithubIssueData, 'body' | 'html_url'>): ParserGetChildrenResponse[] {
   // tasklists require the checkbox style format to recognize children
-  const lines = getCleanedSectionLines(issue.body, '```[tasklist]')
+  const lines = betweenTwoRegex(issue.body, /^```\[tasklist\][\r\n]+/m, /^```$/m).split(/[\r\n]+/)
     .filter(ensureTaskListChild)
     .map(getGithubLinkFromLine)
     .filter(isNonEmptyString)
@@ -155,7 +114,7 @@ function getChildrenNew (issue: Pick<GithubIssueData, 'body' | 'html_url'>): Par
     // Could not find children using new tasklist format,
     // try to look for "children:" section
   }
-  const lines = getCleanedSectionLines(issue.body, /children:/i)
+  const lines = betweenTwoRegex(issue.body, /^\s*children:\s*[\r\n]+/im, /^[\r\n]{2,}$/m).split(/[\r\n]+/)
     .map(getGithubLinkFromLine)
     .filter(isNonEmptyString)
   if (lines.length === 0) {
@@ -232,9 +191,16 @@ export const getChildren = (issue: Pick<GithubIssueData, 'body_html' | 'body' | 
  */
 export const getDescription = (issueBodyText: string): string => {
   if (issueBodyText.length === 0) return ''
+  let sectionText = ''
+  try {
+    sectionText = betweenTwoRegex(issueBodyText, /description:/im, /^[\r\n]{2,}$/gm)
+  } catch {
+    // return empty string, no description text found.
+    return ''
+  }
 
-  const [firstLine, ...linesToParse] = getSectionLines(issueBodyText, 'description:')
-    .split(/\r\n|\r|\n/) // We do not want to replace multiple newlines, only one.
+  // We do not want to replace multiple newlines, only one.
+  const [firstLine, ...linesToParse] = sectionText.split(/\r\n|\r|\n/)
 
   // the first line may contain only "description:" or "description: This is the start of my description"
   const firstLineContent = firstLine
