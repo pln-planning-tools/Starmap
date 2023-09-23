@@ -17,6 +17,11 @@ const log = {
  */
 const CACHE_VERSION = 'v1'
 
+/**
+ * The maximum allowed age of the sw cache in milliseconds.
+ */
+const MAX_SW_CACHE_AGE = 1000 * 60 * 5
+
 // Based on Java's hashCode implementation: https://stackoverflow.com/a/7616484/104380
 const generateHashCode = str => [...str].reduce((hash, chr) => 0 | (31 * hash + chr.charCodeAt(0)), 0)
 
@@ -24,6 +29,30 @@ const contentHashDB: {hashes?: Dexie.Table} & Dexie = new Dexie('contentHashDB')
 contentHashDB.version(1).stores({
   hashes: `cacheKey, hashCode`
 });
+
+/**
+ * check if the cached response is valid:
+ * 1. Not null
+ * 2. 200-299 or 304 response
+ * 3. Not too old (not greater than MAX_SW_CACHE_AGE)
+ */
+function isCachedResponseStillValid (cachedResponse?: Response): cachedResponse is Response {
+  if (!cachedResponse) {
+    return false
+  }
+  if (!cachedResponse.ok || cachedResponse.status === 304) {
+    return false
+  }
+
+  const cachedResponseDate = cachedResponse.headers.get('Date')
+  const cachedResponseAge = cachedResponseDate != null ? Date.now() - new Date(cachedResponseDate).getTime() : Infinity
+
+  if (cachedResponseAge > MAX_SW_CACHE_AGE) {
+    return false
+  }
+
+  return true
+}
 
 /**
  * This is a custom strategy to cache the milestone children of a Starmap.
@@ -84,12 +113,13 @@ export class CacheChildren extends Strategy implements Strategy {
       let cachedResponse = await handler.cacheMatch(cacheKey)
       log.debug(`response(cached) x-vercel-cache header: ${cachedResponse?.headers?.get('x-vercel-cache')}`)
 
-      if (cachedResponse?.status === 304 || cachedResponse?.ok){
+      if (isCachedResponseStillValid(cachedResponse)) {
         // We have a cached response with  200-299 (status.ok) or 304 ("Not Modified") response, return it immediately.
         return cachedResponse
       }
+
       /**
-       * We don't have a cached response. We need to fetch the actual response, and populate the cache with it.
+       * We don't have a valid cached response. We need to fetch the actual response, and populate the cache with it.
        */
       log.debug('No valid cached response found. Waiting for populateCacheAsync to finish')
 
