@@ -20,7 +20,7 @@ const CACHE_VERSION = 'v1'
 /**
  * The maximum allowed age of the sw cache in milliseconds.
  */
-const MAX_SW_CACHE_AGE = 1000 * 60 * 5
+// const MAX_SW_CACHE_AGE = 1000 * 60 * 5
 
 // Based on Java's hashCode implementation: https://stackoverflow.com/a/7616484/104380
 const generateHashCode = str => [...str].reduce((hash, chr) => 0 | (31 * hash + chr.charCodeAt(0)), 0)
@@ -44,12 +44,13 @@ function isCachedResponseStillValid (cachedResponse?: Response): cachedResponse 
     return false
   }
 
-  const cachedResponseDate = cachedResponse.headers.get('Date')
-  const cachedResponseAge = cachedResponseDate != null ? Date.now() - new Date(cachedResponseDate).getTime() : Infinity
+  // leaving if we need it, but will remove in PR if preview is good.
+  // const cachedResponseDate = cachedResponse.headers.get('Date')
+  // const cachedResponseAge = cachedResponseDate != null ? Date.now() - new Date(cachedResponseDate).getTime() : Infinity
 
-  if (cachedResponseAge > MAX_SW_CACHE_AGE) {
-    return false
-  }
+  // if (cachedResponseAge > MAX_SW_CACHE_AGE) {
+  //   return false
+  // }
 
   return true
 }
