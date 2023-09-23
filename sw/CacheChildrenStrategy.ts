@@ -84,21 +84,25 @@ export class CacheChildren extends Strategy implements Strategy {
       let cachedResponse = await handler.cacheMatch(cacheKey)
       log.debug(`response(cached) x-vercel-cache header: ${cachedResponse?.headers?.get('x-vercel-cache')}`)
 
+      if (cachedResponse?.status === 304 || cachedResponse?.ok){
+        // We have a cached response with  200-299 (status.ok) or 304 ("Not Modified") response, return it immediately.
+        return cachedResponse
+      }
+      /**
+       * We don't have a cached response. We need to fetch the actual response, and populate the cache with it.
+       */
+      log.debug('No valid cached response found. Waiting for populateCacheAsync to finish')
+
       const actualResponse = handler.fetch(request.clone())
       const populateCachePromise = this.populateCacheAsync(cacheKey, actualResponse, handler)
       // WARNING: We're not awaiting this call deliberately. We want to populate the cache in the background.
       // Essentially, poor-man's version of stale-while-revalidate.
       // handler will wait till this promise resolves. This can be monitored using the `doneWaiting` method.
       void handler.waitUntil(populateCachePromise)
-      if (!cachedResponse || !cachedResponse.ok) {
-        log.debug('No valid cached response found. Waiting for populateCacheAsync to finish')
-        await handler.doneWaiting()
-        log.debug('populateCacheAsync finished. Getting cached response')
-        cachedResponse = await handler.cacheMatch(cacheKey)
-        log.debug('Got cached response')
-      }
+      await handler.doneWaiting()
+      log.debug('populateCacheAsync finished. Returning actual response')
 
-      return cachedResponse ?? actualResponse
+      return actualResponse
     } catch (error) {
       throw new Error(`Custom Caching of Children Failed with error: ${error}`)
     }
