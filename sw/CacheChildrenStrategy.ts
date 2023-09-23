@@ -17,6 +17,11 @@ const log = {
  */
 const CACHE_VERSION = 'v1'
 
+/**
+ * The maximum allowed age of the sw cache in milliseconds.
+ */
+// const MAX_SW_CACHE_AGE = 1000 * 60 * 5
+
 // Based on Java's hashCode implementation: https://stackoverflow.com/a/7616484/104380
 const generateHashCode = str => [...str].reduce((hash, chr) => 0 | (31 * hash + chr.charCodeAt(0)), 0)
 
@@ -24,6 +29,31 @@ const contentHashDB: {hashes?: Dexie.Table} & Dexie = new Dexie('contentHashDB')
 contentHashDB.version(1).stores({
   hashes: `cacheKey, hashCode`
 });
+
+/**
+ * check if the cached response is valid:
+ * 1. Not null
+ * 2. 200-299 or 304 response
+ * 3. Not too old (not greater than MAX_SW_CACHE_AGE)
+ */
+function isCachedResponseStillValid (cachedResponse?: Response): cachedResponse is Response {
+  if (!cachedResponse) {
+    return false
+  }
+  if (!cachedResponse.ok || cachedResponse.status === 304) {
+    return false
+  }
+
+  // leaving if we need it, but will remove in PR if preview is good.
+  // const cachedResponseDate = cachedResponse.headers.get('Date')
+  // const cachedResponseAge = cachedResponseDate != null ? Date.now() - new Date(cachedResponseDate).getTime() : Infinity
+
+  // if (cachedResponseAge > MAX_SW_CACHE_AGE) {
+  //   return false
+  // }
+
+  return true
+}
 
 /**
  * This is a custom strategy to cache the milestone children of a Starmap.
@@ -84,21 +114,26 @@ export class CacheChildren extends Strategy implements Strategy {
       let cachedResponse = await handler.cacheMatch(cacheKey)
       log.debug(`response(cached) x-vercel-cache header: ${cachedResponse?.headers?.get('x-vercel-cache')}`)
 
+      if (isCachedResponseStillValid(cachedResponse)) {
+        // We have a cached response with  200-299 (status.ok) or 304 ("Not Modified") response, return it immediately.
+        return cachedResponse
+      }
+
+      /**
+       * We don't have a valid cached response. We need to fetch the actual response, and populate the cache with it.
+       */
+      log.debug('No valid cached response found. Waiting for populateCacheAsync to finish')
+
       const actualResponse = handler.fetch(request.clone())
       const populateCachePromise = this.populateCacheAsync(cacheKey, actualResponse, handler)
       // WARNING: We're not awaiting this call deliberately. We want to populate the cache in the background.
       // Essentially, poor-man's version of stale-while-revalidate.
       // handler will wait till this promise resolves. This can be monitored using the `doneWaiting` method.
       void handler.waitUntil(populateCachePromise)
-      if (!cachedResponse || !cachedResponse.ok) {
-        log.debug('No valid cached response found. Waiting for populateCacheAsync to finish')
-        await handler.doneWaiting()
-        log.debug('populateCacheAsync finished. Getting cached response')
-        cachedResponse = await handler.cacheMatch(cacheKey)
-        log.debug('Got cached response')
-      }
+      await handler.doneWaiting()
+      log.debug('populateCacheAsync finished. Returning actual response')
 
-      return cachedResponse ?? actualResponse
+      return actualResponse
     } catch (error) {
       throw new Error(`Custom Caching of Children Failed with error: ${error}`)
     }
