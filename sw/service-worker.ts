@@ -67,7 +67,7 @@ registerRoute(
 // API Route for roadmap
 registerRoute(
   ({ url }) => url.pathname === '/api/roadmap',
-  new CacheChildren({
+  new StaleWhileRevalidate({
     cacheName: 'roadmap',
     matchOptions: {
       ignoreVary: true
