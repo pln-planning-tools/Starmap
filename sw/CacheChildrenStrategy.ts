@@ -1,13 +1,13 @@
 /* eslint-disable import/no-unused-modules */
-import { Strategy, StrategyHandler } from 'workbox-strategies';
-import Dexie from 'dexie';
-import debug from 'debug';
+import debug from 'debug'
+import Dexie from 'dexie'
+import { Strategy, StrategyHandler } from 'workbox-strategies'
 
 const logger = debug('starmap:sw:CacheChildrenStrategy')
 const log = {
   debug: logger.extend('debug'),
   info: logger.extend('info'),
-  warn: logger.extend('warn'),
+  warn: logger.extend('warn')
 }
 
 /**
@@ -27,8 +27,8 @@ const generateHashCode = str => [...str].reduce((hash, chr) => 0 | (31 * hash + 
 
 const contentHashDB: {hashes?: Dexie.Table} & Dexie = new Dexie('contentHashDB')
 contentHashDB.version(1).stores({
-  hashes: `cacheKey, hashCode`
-});
+  hashes: 'cacheKey, hashCode'
+})
 
 /**
  * check if the cached response is valid:
@@ -60,13 +60,14 @@ function isCachedResponseStillValid (cachedResponse?: Response): cachedResponse 
  * The benefit of writing this as a workbox strategy is we can use other workbox plugins like expiration.
  */
 export class CacheChildren extends Strategy implements Strategy {
-  fetchOptions?: RequestInit  = {
+  fetchOptions?: RequestInit = {
     method: 'GET',
     headers: {
       'cache-control': 's-maxage=30, stale-while-revalidate=86400'
     }
   }
-  async populateCacheAsync(cacheKey: string, responsePromise: Promise<Response>, handler: StrategyHandler): Promise<void> {
+
+  async populateCacheAsync (cacheKey: string, responsePromise: Promise<Response>, handler: StrategyHandler): Promise<void> {
     const response = await responsePromise
     log.debug(`response(actual) x-vercel-cache header: ${response.headers.get('x-vercel-cache')}`)
     if (!response.ok) {
@@ -87,10 +88,9 @@ export class CacheChildren extends Strategy implements Strategy {
     } else {
       log.debug(`populateCacheAsync(${cacheKey}) - previous response matches latest response hash - not updating response`)
     }
-    return
   }
 
-  async _handle(request: Request, handler: StrategyHandler): Promise<Response> {
+  async _handle (request: Request, handler: StrategyHandler): Promise<Response> {
     try {
       const url = new URL(request.url)
       const queryParams = new URLSearchParams(url.search)
@@ -111,7 +111,7 @@ export class CacheChildren extends Strategy implements Strategy {
       // That will cause cache collisions.
       const cacheKey = `${CACHE_VERSION}/${owner}/${repo}/${issue_number}/${node_id}`
       // Checking if the cache already has the response.
-      let cachedResponse = await handler.cacheMatch(cacheKey)
+      const cachedResponse = await handler.cacheMatch(cacheKey)
       log.debug(`response(cached) x-vercel-cache header: ${cachedResponse?.headers?.get('x-vercel-cache')}`)
 
       const actualResponse = handler.fetch(request.clone())
